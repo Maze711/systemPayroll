@@ -7,6 +7,8 @@
     <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="I printed &quot;Hello&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/systemPayroll.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/systemPayroll.iml" afterDir="false" />
+
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SYSTEM PAYROLL STARTED">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,15 +40,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.personalinfoMODAL.executor": "Run",
-    "git-widget-placeholder": "Jhay"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.file201.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Maze&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/2024 Python Lesson/systemPayroll&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\NATHANIEL\PycharmProjects\systemPayroll\FILE201" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\2024 Python Lesson\systemPayroll" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -65,13 +69,13 @@
       <option name="presentableId" value="Default" />
       <updated>1718460468106</updated>
     </task>
-    <task id="LOCAL-00001" summary="I printed &quot;Hello&quot;">
+    <task id="LOCAL-00001" summary="SYSTEM PAYROLL STARTED">
       <option name="closed" value="true" />
-      <created>1718462370426</created>
+      <created>1718460575868</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1718462370426</updated>
+      <updated>1718460575868</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -81,14 +85,26 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Maze" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="I printed &quot;Hello&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="I printed &quot;Hello&quot;" />
+    <MESSAGE value="SYSTEM PAYROLL STARTED" />
+    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" 
   </component>
 </project>
