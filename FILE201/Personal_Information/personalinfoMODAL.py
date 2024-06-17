@@ -6,7 +6,7 @@ import sys
 class personalModal(QMainWindow):
     def __init__(self):
         super(personalModal, self).__init__()
-
+        self.setFixedSize(1153,665)
         loadUi("personalinfoMODAL.ui", self)
 
 if __name__ == "__main__":
