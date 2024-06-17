@@ -1,0 +1,1878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1153</width>
+    <height>665</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Poppins</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+   /* background: rgb(45, 45, 68);*/
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(73, 73, 73, 1);
+    min-height: 48px;
+    border-radius: 6px;
+	margin-top: 10x;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>-9</y>
+      <width>811</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>-337</y>
+       <width>1218</width>
+       <height>1138</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QFrame" name="otherInforrmation">
+        <property name="minimumSize">
+         <size>
+          <width>1200</width>
+          <height>1120</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="otherInfLabel">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>301</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>24</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Other Information</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="groupIdNum">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>235</width>
+           <height>304</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color: rgba(217, 217, 217, 1);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="sssLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>211</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>SSS</string>
+          </property>
+         </widget>
+         <widget class="QPlainTextEdit" name="sssTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>52</y>
+            <width>214</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="pagibigLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>92</y>
+            <width>211</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>PAGIBIG</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="tinLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>212</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>TIN</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="philHealthLabel">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>150</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Phil Health</string>
+          </property>
+         </widget>
+         <widget class="QPlainTextEdit" name="philHealthTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>178</y>
+            <width>214</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+          </property>
+         </widget>
+         <widget class="QPlainTextEdit" name="pagibigTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>116</y>
+            <width>214</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+          </property>
+         </widget>
+         <widget class="QPlainTextEdit" name="tinTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>242</y>
+            <width>214</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QLabel" name="idNumLabel">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>211</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>ID Number</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="groupHRNote">
+         <property name="geometry">
+          <rect>
+           <x>250</x>
+           <y>80</y>
+           <width>530</width>
+           <height>304</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color: rgba(217, 217, 217, 1);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QPlainTextEdit" name="hrNoteTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>7</y>
+            <width>510</width>
+            <height>290</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QLabel" name="hrNoteLabel">
+         <property name="geometry">
+          <rect>
+           <x>270</x>
+           <y>60</y>
+           <width>211</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>HR Note</string>
+         </property>
+        </widget>
+        <widget class="QScrollArea" name="scrollWorkExpArea">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>415</y>
+           <width>790</width>
+           <height>321</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollWorkContent">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>790</width>
+            <height>648</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QFrame" name="workExpFrame">
+             <property name="minimumSize">
+              <size>
+               <width>500</width>
+               <height>630</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QFrame{
+background-color: rgba(217, 217, 217, 1);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <widget class="QFrame" name="groupExp2_2">
+              <property name="geometry">
+               <rect>
+                <x>17</x>
+                <y>210</y>
+                <width>736</width>
+                <height>191</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QFrame{
+background-color: rgba(231, 226, 226, 0.66);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QLabel" name="dateLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Date</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="fromLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>140</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>From</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateStart_3">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="toLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>447</x>
+                 <y>23</y>
+                 <width>21</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>To</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateEnd_3">
+               <property name="geometry">
+                <rect>
+                 <x>480</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="companyLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>62</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Company</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="companyTextEdit_3">
+               <property name="geometry">
+                <rect>
+                 <x>191</x>
+                 <y>59</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="addressLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>103</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Address</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="addressTextEdit_3">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>100</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="positionLabel_3">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>143</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="positionTextEdit_3">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>140</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QFrame" name="groupExp1">
+              <property name="geometry">
+               <rect>
+                <x>17</x>
+                <y>10</y>
+                <width>736</width>
+                <height>191</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QFrame{
+background-color: rgba(231, 226, 226, 0.66);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}
+</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QLabel" name="dateLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Date</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="fromLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>140</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>From</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateStart_4">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">b</string>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="toLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>447</x>
+                 <y>23</y>
+                 <width>21</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>To</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateEnd_4">
+               <property name="geometry">
+                <rect>
+                 <x>480</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="companyLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>62</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Company</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="companyTextEdit_4">
+               <property name="geometry">
+                <rect>
+                 <x>191</x>
+                 <y>59</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="addressLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>103</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Address</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="addressTextEdit_4">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>100</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="positionLabel_4">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>143</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="positionTextEdit_4">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>140</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+             </widget>
+             <widget class="QFrame" name="groupExp2_3">
+              <property name="geometry">
+               <rect>
+                <x>17</x>
+                <y>410</y>
+                <width>736</width>
+                <height>191</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QFrame{
+background-color: rgba(231, 226, 226, 0.66);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QLabel" name="dateLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Date</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="fromLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>140</x>
+                 <y>23</y>
+                 <width>51</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>From</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateStart_5">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">b</string>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="toLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>447</x>
+                 <y>23</y>
+                 <width>21</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>To</string>
+               </property>
+              </widget>
+              <widget class="QDateEdit" name="dateEnd_5">
+               <property name="geometry">
+                <rect>
+                 <x>480</x>
+                 <y>22</y>
+                 <width>241</width>
+                 <height>22</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+              <widget class="QLabel" name="companyLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>62</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Company</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="companyTextEdit_5">
+               <property name="geometry">
+                <rect>
+                 <x>191</x>
+                 <y>59</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="addressLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>103</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Address</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="addressTextEdit_5">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>100</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="positionLabel_5">
+               <property name="geometry">
+                <rect>
+                 <x>19</x>
+                 <y>143</y>
+                 <width>91</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Poppins</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+              <widget class="QPlainTextEdit" name="positionTextEdit_5">
+               <property name="geometry">
+                <rect>
+                 <x>190</x>
+                 <y>140</y>
+                 <width>530</width>
+                 <height>27</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+               </property>
+              </widget>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QLabel" name="workExpLabel">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>400</y>
+           <width>211</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Work Experience</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="groupEduInfo">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>771</y>
+           <width>770</width>
+           <height>340</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color: rgba(217, 217, 217, 1);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QWidget" name="techWidget" native="true">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>770</width>
+            <height>131</height>
+           </rect>
+          </property>
+          <widget class="QLabel" name="validationLabel">
+           <property name="geometry">
+            <rect>
+             <x>620</x>
+             <y>10</y>
+             <width>121</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Validation</string>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="validationDate1">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>30</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="certiTextEdit1_3">
+           <property name="geometry">
+            <rect>
+             <x>336</x>
+             <y>90</y>
+             <width>271</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="validationDate1_2">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>60</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="certiLabel">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>12</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Certification</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="techSkillTextEdit_2">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>60</y>
+             <width>321</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="certiTextEdit1_2">
+           <property name="geometry">
+            <rect>
+             <x>336</x>
+             <y>60</y>
+             <width>271</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="certiTextEdit1">
+           <property name="geometry">
+            <rect>
+             <x>336</x>
+             <y>30</y>
+             <width>271</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="techSkillLabel">
+           <property name="geometry">
+            <rect>
+             <x>7</x>
+             <y>12</y>
+             <width>150</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string> Technical Skills</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="techSkillTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>30</y>
+             <width>321</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="validationDate1_3">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>90</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="techSkillTextEdit_3">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>90</y>
+             <width>321</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="schoolWidget" native="true">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>160</y>
+            <width>770</width>
+            <height>131</height>
+           </rect>
+          </property>
+          <widget class="QLabel" name="schoolYear_2">
+           <property name="geometry">
+            <rect>
+             <x>620</x>
+             <y>10</y>
+             <width>121</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Year</string>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="schoolYear">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>30</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="addressTextEdit3">
+           <property name="geometry">
+            <rect>
+             <x>186</x>
+             <y>90</y>
+             <width>291</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="schoolYear2">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>60</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="addressLabel">
+           <property name="geometry">
+            <rect>
+             <x>190</x>
+             <y>12</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Address</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="highTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>60</y>
+             <width>171</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="placeholderText">
+            <string>High-School</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="addressTextEdit2">
+           <property name="geometry">
+            <rect>
+             <x>186</x>
+             <y>60</y>
+             <width>291</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="addressTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>186</x>
+             <y>30</y>
+             <width>291</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="schoolLabel">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>12</y>
+             <width>150</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>School</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="collegeTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>30</y>
+             <width>171</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           </property>
+           <property name="plainText">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>College</string>
+           </property>
+          </widget>
+          <widget class="QDateEdit" name="schoolYear3">
+           <property name="geometry">
+            <rect>
+             <x>616</x>
+             <y>90</y>
+             <width>141</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="elemTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>90</y>
+             <width>171</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="placeholderText">
+            <string>Elementary</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="courseTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>30</y>
+             <width>131</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="courseTextEdit3">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>90</y>
+             <width>131</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="courseTextEdit2">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>60</y>
+             <width>131</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="courseLabel">
+           <property name="geometry">
+            <rect>
+             <x>481</x>
+             <y>12</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>13</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Course</string>
+           </property>
+          </widget>
+          <zorder>courseLabel</zorder>
+          <zorder>schoolYear_2</zorder>
+          <zorder>schoolYear</zorder>
+          <zorder>addressTextEdit3</zorder>
+          <zorder>schoolYear2</zorder>
+          <zorder>addressLabel</zorder>
+          <zorder>highTextEdit</zorder>
+          <zorder>addressTextEdit2</zorder>
+          <zorder>addressTextEdit</zorder>
+          <zorder>schoolLabel</zorder>
+          <zorder>collegeTextEdit</zorder>
+          <zorder>schoolYear3</zorder>
+          <zorder>elemTextEdit</zorder>
+          <zorder>courseTextEdit</zorder>
+          <zorder>courseTextEdit3</zorder>
+          <zorder>courseTextEdit2</zorder>
+         </widget>
+        </widget>
+        <widget class="QLabel" name="workExpLabel_2">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>750</y>
+           <width>211</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Educational Information</string>
+         </property>
+        </widget>
+        <zorder>otherInfLabel</zorder>
+        <zorder>idNumLabel</zorder>
+        <zorder>groupIdNum</zorder>
+        <zorder>hrNoteLabel</zorder>
+        <zorder>groupHRNote</zorder>
+        <zorder>scrollWorkExpArea</zorder>
+        <zorder>workExpLabel</zorder>
+        <zorder>groupEduInfo</zorder>
+        <zorder>workExpLabel_2</zorder>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="empSideBar">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>347</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>347</width>
+      <height>665</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
