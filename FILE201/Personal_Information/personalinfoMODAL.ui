@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1153</width>
+    <height>665</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">#navBar {
+background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
+}</string>
+   </property>
+   <widget class="QWidget" name="navBar" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>347</width>
+      <height>665</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
