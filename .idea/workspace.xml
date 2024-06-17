@@ -4,10 +4,6 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="I printed &quot;Hello&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/systemPayroll.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/systemPayroll.iml" afterDir="false" />
-
     <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SYSTEM PAYROLL STARTED">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -15,13 +11,6 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -105,6 +94,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
-    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" 
+    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" />
   </component>
 </project>
