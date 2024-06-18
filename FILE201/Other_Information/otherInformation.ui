@@ -238,10 +238,19 @@ border: none;
             <height>31</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
 border: 1px solid black;</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
          <widget class="QLabel" name="pagibigLabel">
@@ -310,10 +319,19 @@ border: 1px solid black;</string>
             <height>31</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
 border: 1px solid black;</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
          <widget class="QPlainTextEdit" name="pagibigTextEdit">
@@ -325,10 +343,19 @@ border: 1px solid black;</string>
             <height>31</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
 border: 1px solid black;</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
          <widget class="QPlainTextEdit" name="tinTextEdit">
@@ -340,10 +367,19 @@ border: 1px solid black;</string>
             <height>31</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
 border: 1px solid black;</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
         </widget>
@@ -399,10 +435,19 @@ border: none;
             <height>290</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
 border: 1px solid black;</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
         </widget>
@@ -564,6 +609,9 @@ border: none;
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
+               </property>
                <property name="calendarPopup">
                 <bool>true</bool>
                </property>
@@ -601,6 +649,9 @@ border: none;
                  <family>Poppins</family>
                  <pointsize>13</pointsize>
                 </font>
+               </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
                </property>
                <property name="calendarPopup">
                 <bool>true</bool>
@@ -791,6 +842,9 @@ border: none;
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
+               </property>
                <property name="calendarPopup">
                 <bool>true</bool>
                </property>
@@ -828,6 +882,9 @@ border: none;
                  <family>Poppins</family>
                  <pointsize>13</pointsize>
                 </font>
+               </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
                </property>
                <property name="calendarPopup">
                 <bool>true</bool>
@@ -1017,6 +1074,9 @@ border: none;
                <property name="styleSheet">
                 <string notr="true">b</string>
                </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
+               </property>
                <property name="calendarPopup">
                 <bool>true</bool>
                </property>
@@ -1054,6 +1114,9 @@ border: none;
                  <family>Poppins</family>
                  <pointsize>13</pointsize>
                 </font>
+               </property>
+               <property name="displayFormat">
+                <string>MM/dd/yyyy</string>
                </property>
                <property name="calendarPopup">
                 <bool>true</bool>
@@ -1256,6 +1319,9 @@ border: none;
            <property name="styleSheet">
             <string notr="true"/>
            </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
+           </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -1268,6 +1334,12 @@ border: none;
              <width>271</width>
              <height>27</height>
             </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
@@ -1298,6 +1370,9 @@ border: 1px solid black;</string>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
+           </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1331,6 +1406,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1352,6 +1433,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1372,6 +1459,12 @@ border: 1px solid black;</string>
              <width>271</width>
              <height>27</height>
             </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
@@ -1413,6 +1506,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1443,6 +1542,9 @@ border: 1px solid black;</string>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
+           </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -1455,6 +1557,12 @@ border: 1px solid black;</string>
              <width>321</width>
              <height>27</height>
             </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
@@ -1515,6 +1623,9 @@ border: 1px solid black;</string>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
+           </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -1527,6 +1638,12 @@ border: 1px solid black;</string>
              <width>291</width>
              <height>27</height>
             </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
@@ -1557,6 +1674,9 @@ border: 1px solid black;</string>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
+           </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1590,6 +1710,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1614,6 +1740,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1634,6 +1766,12 @@ border: 1px solid black;</string>
              <width>291</width>
              <height>27</height>
             </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
@@ -1666,36 +1804,6 @@ border: 1px solid black;</string>
             <string>School</string>
            </property>
           </widget>
-          <widget class="QPlainTextEdit" name="collegeTextEdit">
-           <property name="geometry">
-            <rect>
-             <x>9</x>
-             <y>30</y>
-             <width>171</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
-           </property>
-           <property name="verticalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustIgnored</enum>
-           </property>
-           <property name="plainText">
-            <string/>
-           </property>
-           <property name="placeholderText">
-            <string>College</string>
-           </property>
-          </widget>
           <widget class="QDateEdit" name="schoolYear3">
            <property name="geometry">
             <rect>
@@ -1714,6 +1822,9 @@ border: 1px solid black;</string>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
+           <property name="displayFormat">
+            <string>MM/dd/yyyy</string>
+           </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -1730,6 +1841,7 @@ border: 1px solid black;</string>
            <property name="font">
             <font>
              <family>Poppins</family>
+             <pointsize>10</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -1758,6 +1870,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1765,6 +1883,9 @@ border: 1px solid black;</string>
            </property>
            <property name="verticalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="placeholderText">
+            <string>College Course</string>
            </property>
           </widget>
           <widget class="QPlainTextEdit" name="courseTextEdit3">
@@ -1776,6 +1897,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1783,6 +1910,9 @@ border: 1px solid black;</string>
            </property>
            <property name="verticalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
           <widget class="QPlainTextEdit" name="courseTextEdit2">
@@ -1794,6 +1924,12 @@ border: 1px solid black;</string>
              <height>27</height>
             </rect>
            </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 5px;
@@ -1801,6 +1937,9 @@ border: 1px solid black;</string>
            </property>
            <property name="verticalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="placeholderText">
+            <string>High-School Strand</string>
            </property>
           </widget>
           <widget class="QLabel" name="courseLabel">
@@ -1822,6 +1961,36 @@ border: 1px solid black;</string>
             <string>Course</string>
            </property>
           </widget>
+          <widget class="QPlainTextEdit" name="collegeTextEdit">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>30</y>
+             <width>171</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Poppins</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;</string>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="placeholderText">
+            <string>College</string>
+           </property>
+          </widget>
           <zorder>courseLabel</zorder>
           <zorder>schoolYear_2</zorder>
           <zorder>schoolYear</zorder>
@@ -1832,12 +2001,12 @@ border: 1px solid black;</string>
           <zorder>addressTextEdit2</zorder>
           <zorder>addressTextEdit</zorder>
           <zorder>schoolLabel</zorder>
-          <zorder>collegeTextEdit</zorder>
           <zorder>schoolYear3</zorder>
           <zorder>elemTextEdit</zorder>
           <zorder>courseTextEdit</zorder>
           <zorder>courseTextEdit3</zorder>
           <zorder>courseTextEdit2</zorder>
+          <zorder>collegeTextEdit</zorder>
          </widget>
         </widget>
         <widget class="QLabel" name="educInfoLabel">
@@ -2582,7 +2751,7 @@ font-family: Poppins;
            <enum>QDateTimeEdit::MonthSection</enum>
           </property>
           <property name="displayFormat">
-           <string>M - dd - yyyy</string>
+           <string>MM/dd/yyyy</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -3218,7 +3387,8 @@ color: white;
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))</string>
+     <string notr="true">background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255));
+border: 1px solid black</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -3226,6 +3396,125 @@ color: white;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
+   </widget>
+   <widget class="QWidget" name="widgetBTN" native="true">
+    <property name="geometry">
+     <rect>
+      <x>347</x>
+      <y>617</y>
+      <width>807</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#widgetBTN{
+background: rgba(220, 229, 254, 1);
+border: 1px solid black;
+}
+
+#addBTN, #editBTN, #revertBTN, #saveBTN {
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(52, 66, 115, 1);
+    color: white;
+    height: 26px;
+	font-size: 12px;
+    padding: 5px 10px; /* Add padding for spacing */
+}
+</string>
+    </property>
+    <widget class="QPushButton" name="addBTN">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>10</y>
+       <width>75</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>ADD</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="editBTN">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>10</y>
+       <width>75</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>EDIT</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="saveBTN">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>10</y>
+       <width>75</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>SAVE</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="revertBTN">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>10</y>
+       <width>75</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>REVERT</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>
