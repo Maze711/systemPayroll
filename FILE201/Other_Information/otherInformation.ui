@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
+    <width>1154</width>
     <height>665</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@
    <string notr="true">/* VERTICAL SCROLLBAR */
 QScrollBar:vertical {
     border: none;
-   /* background: rgb(45, 45, 68);*/
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
     width: 12px;
     margin: 0;
     height: auto;
@@ -31,10 +31,10 @@ QScrollBar:vertical {
 
 /* HANDLE BAR VERTICAL */
 QScrollBar::handle:vertical {
-    background-color: rgba(73, 73, 73, 1);
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
     min-height: 48px;
     border-radius: 6px;
-	margin-top: 10x;
+    margin-top: 10px;
 }
 
 /* REMOVE THE UP ARROW BUTTON */
@@ -56,6 +56,10 @@ QScrollBar::add-line:vertical {
 /* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
 QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
     background: none;
+}
+
+#frmInfo, #groupIdNum, #groupHRNote, #groupEduInfo {
+background-color: #DCE5FE
 }
 </string>
   </property>
@@ -100,9 +104,9 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>-337</y>
+       <y>-1107</y>
        <width>1218</width>
-       <height>1138</height>
+       <height>1788</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -111,11 +115,50 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
         <property name="minimumSize">
          <size>
           <width>1200</width>
-          <height>1120</height>
+          <height>1770</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true"/>
+         <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background: rgba(220, 229, 254, 1);
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+	background-color: rgba(52, 66, 115, 1);
+    background: rgba(220, 229, 254, 1);
+    min-height: 48px;
+    border-radius: 6px;
+	margin-top: 10x;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: rgba(220, 229, 254, 1);
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -127,7 +170,7 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>10</y>
+           <y>650</y>
            <width>301</width>
            <height>41</height>
           </rect>
@@ -148,17 +191,15 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>80</y>
+           <y>720</y>
            <width>235</width>
            <height>304</height>
           </rect>
          </property>
          <property name="styleSheet">
           <string notr="true">QFrame{
-background-color: rgba(217, 217, 217, 1);
 border: 1px solid black;
 }
-
 QLabel{
 border: none;
 }</string>
@@ -310,7 +351,7 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>60</y>
+           <y>700</y>
            <width>211</width>
            <height>21</height>
           </rect>
@@ -329,14 +370,13 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>250</x>
-           <y>80</y>
+           <y>720</y>
            <width>530</width>
            <height>304</height>
           </rect>
          </property>
          <property name="styleSheet">
           <string notr="true">QFrame{
-background-color: rgba(217, 217, 217, 1);
 border: 1px solid black;
 }
 
@@ -370,7 +410,7 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>270</x>
-           <y>60</y>
+           <y>700</y>
            <width>211</width>
            <height>21</height>
           </rect>
@@ -389,7 +429,7 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>415</y>
+           <y>1055</y>
            <width>790</width>
            <height>321</height>
           </rect>
@@ -429,7 +469,7 @@ border: 1px solid black;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QFrame{
-background-color: rgba(217, 217, 217, 1);
+background-color: #DCE5FE;
 border: 1px solid black;
 }
 
@@ -749,7 +789,7 @@ border: none;
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">b</string>
+                <string notr="true"/>
                </property>
                <property name="calendarPopup">
                 <bool>true</bool>
@@ -1131,7 +1171,7 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>400</y>
+           <y>1040</y>
            <width>211</width>
            <height>21</height>
           </rect>
@@ -1150,14 +1190,13 @@ border: 1px solid black;</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>771</y>
+           <y>1411</y>
            <width>770</width>
            <height>340</height>
           </rect>
          </property>
          <property name="styleSheet">
           <string notr="true">QFrame{
-background-color: rgba(217, 217, 217, 1);
 border: 1px solid black;
 }
 
@@ -1215,9 +1254,7 @@ border: none;
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1260,9 +1297,7 @@ border: 1px solid black;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1406,9 +1441,7 @@ border: 1px solid black;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1480,9 +1513,7 @@ border: 1px solid black;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1525,9 +1556,7 @@ border: 1px solid black;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1683,9 +1712,7 @@ border: 1px solid black;</string>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;</string>
+            <string notr="true"/>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
@@ -1813,11 +1840,11 @@ border: 1px solid black;</string>
           <zorder>courseTextEdit2</zorder>
          </widget>
         </widget>
-        <widget class="QLabel" name="workExpLabel_2">
+        <widget class="QLabel" name="educInfoLabel">
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>750</y>
+           <y>1390</y>
            <width>211</width>
            <height>21</height>
           </rect>
@@ -1832,6 +1859,1332 @@ border: 1px solid black;</string>
           <string>Educational Information</string>
          </property>
         </widget>
+        <widget class="QLabel" name="lblTitle">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>351</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Poppins</family>
+           <pointsize>20</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Personal Information</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frmInfo">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>771</width>
+           <height>341</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#frmInfo{
+border: 1px solid black;
+}
+
+#txtLastName, #txtFirstName, #txtMiddleName, #txtSuffix, #txtStreet, #txtBarangay, #txtCity,
+#txtProvince, #txtZip, #txtPhone, #txtHeight, #txtWeight, #txtPlace {
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+#cmbCivil, #dateEdit, #cmbGender {
+border-radius: 4px;
+border: 1px solid black;
+font-family: Poppins;
+}
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <widget class="QLabel" name="lblLastName">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Last Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtLastName">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>40</y>
+            <width>181</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblFirstName">
+          <property name="geometry">
+           <rect>
+            <x>220</x>
+            <y>20</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>First Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtFirstName">
+          <property name="geometry">
+           <rect>
+            <x>220</x>
+            <y>40</y>
+            <width>181</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtMiddleName">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>40</y>
+            <width>181</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblMiddleName">
+          <property name="geometry">
+           <rect>
+            <x>420</x>
+            <y>20</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Middle Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSuffix">
+          <property name="geometry">
+           <rect>
+            <x>620</x>
+            <y>40</y>
+            <width>131</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>5</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSuffix">
+          <property name="geometry">
+           <rect>
+            <x>620</x>
+            <y>20</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Suffix</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblStreet">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>80</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Street</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtStreet">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>100</y>
+            <width>501</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>50</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtBarangay">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>160</y>
+            <width>251</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>20</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblBarangay">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>140</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Barangay</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtCity">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>160</y>
+            <width>221</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>20</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblCity">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>140</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>City</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblProvince">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>200</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Province</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtProvince">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>220</y>
+            <width>251</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>20</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtZip">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>220</y>
+            <width>141</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>10</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblZip">
+          <property name="geometry">
+           <rect>
+            <x>300</x>
+            <y>200</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Zip</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblPhone">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>260</y>
+            <width>141</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Phone Number</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtPhone">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>280</y>
+            <width>251</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>11</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblHeight">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>100</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Height (cm)</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtHeight">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>100</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>3</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtWeight">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>140</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblWeight">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>140</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Weight (lbs)</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblCivil">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>180</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Civil Status</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblDate">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>220</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Date of Birth</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblPlace">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>260</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Place of Birth</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblGender">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>300</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Gender</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cmbCivil">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>180</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::WheelFocus</enum>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>Single</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="duplicatesEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="frame">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>Single</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Married</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Separated</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Divorced</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Widowed</string>
+           </property>
+          </item>
+         </widget>
+         <widget class="QDateEdit" name="dateEdit">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>220</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="currentSection">
+           <enum>QDateTimeEdit::MonthSection</enum>
+          </property>
+          <property name="displayFormat">
+           <string>M - dd - yyyy</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+          <property name="timeSpec">
+           <enum>Qt::TimeZone</enum>
+          </property>
+          <property name="date">
+           <date>
+            <year>2000</year>
+            <month>1</month>
+            <day>1</day>
+           </date>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtPlace">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>260</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cmbGender">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>300</y>
+            <width>101</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::WheelFocus</enum>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>Male</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="duplicatesEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="frame">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>Male</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Female</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="wgtInfo" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>410</y>
+           <width>771</width>
+           <height>231</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#wgtInfo{
+border-top: 1px groove #BFBFBF;
+}
+
+#lblLastName_2, #lblFirstName_2, #lblMiddleName_2 {
+color: #757171;
+}
+
+#txtFatherLast, #txtFatherFirst, #txtFatherMiddle,
+#txtMotherLast, #txtMotherFirst, #txtMotherMiddle,
+#txtSpouseLast, #txtSpouseFirst, #txtSpouseMiddle,
+#txtBeneLast, #txtBeneFirst, #txtBeneMiddle,
+#txtDependent {
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+#btnAddDependent {
+border-radius: 5px;
+border: 1px solid #344273;
+background-color: #344273;
+color: white;
+}</string>
+         </property>
+         <widget class="QLabel" name="lblLastName_2">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>10</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Last Name</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblFirstName_2">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>10</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>First Name</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblMiddleName_2">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>10</y>
+            <width>121</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Middle Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtFatherLast">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>30</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblFathersName">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Father's Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtFatherFirst">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>30</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtFatherMiddle">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>30</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblMothersName">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>70</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Mother's Name</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtMotherLast">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>70</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtMotherFirst">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>70</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtMotherMiddle">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>70</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSpouseLast">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>110</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSpouse">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>110</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Spouse</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSpouseFirst">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>110</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSpouseMiddle">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>110</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtBeneLast">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>150</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblBeneficiary">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>150</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>13</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Beneficiary</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtBeneFirst">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>150</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtBeneMiddle">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>150</y>
+            <width>191</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtDependent">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>190</y>
+            <width>401</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="maxLength">
+           <number>15</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblDependent">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>190</y>
+            <width>141</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>11</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dependents Name</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btnAddDependent">
+          <property name="geometry">
+           <rect>
+            <x>600</x>
+            <y>190</y>
+            <width>150</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Poppins</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Add Dependent</string>
+          </property>
+         </widget>
+        </widget>
         <zorder>otherInfLabel</zorder>
         <zorder>idNumLabel</zorder>
         <zorder>groupIdNum</zorder>
@@ -1840,7 +3193,10 @@ border: 1px solid black;</string>
         <zorder>scrollWorkExpArea</zorder>
         <zorder>workExpLabel</zorder>
         <zorder>groupEduInfo</zorder>
-        <zorder>workExpLabel_2</zorder>
+        <zorder>educInfoLabel</zorder>
+        <zorder>lblTitle</zorder>
+        <zorder>frmInfo</zorder>
+        <zorder>wgtInfo</zorder>
        </widget>
       </item>
      </layout>
