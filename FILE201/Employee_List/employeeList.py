@@ -1,10 +1,8 @@
-
 import sys
-import os
 import mysql.connector
+import os
 
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from PyQt5.uic import loadUi
 
@@ -31,4 +29,3 @@ class EmployeeList(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.functions.timeClock)
         self.timer.start(1)
-
