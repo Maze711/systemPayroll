@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Already Done with the Personal Info UI" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,7 +37,7 @@
     "git-widget-placeholder": "Maze",
     "last_opened_file_path": "F:/2024 Python Lesson/systemPayroll"
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\2024 Python Lesson\systemPayroll" />
@@ -93,7 +95,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
-    <MESSAGE value="Already Done with the Personal Info UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Already Done with the Personal Info UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" />
   </component>
 </project>
