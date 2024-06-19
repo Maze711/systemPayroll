@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>personalinfoWindow</class>
+ <widget class="QMainWindow" name="personalinfoWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -2729,7 +2729,7 @@ font-family: Poppins;
            </property>
           </item>
          </widget>
-         <widget class="QDateEdit" name="cmbDate">
+         <widget class="QDateEdit" name="dtDateOfBirth">
           <property name="geometry">
            <rect>
             <x>650</x>
