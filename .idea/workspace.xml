@@ -7,6 +7,7 @@
     <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Added the Clock feature">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/otherInformation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/otherInformation.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -245,6 +246,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Already Done with the Personal Info UI" />
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
     <MESSAGE value="Commit g" />
     <MESSAGE value="Employee List UI Structure and Added Icons" />
