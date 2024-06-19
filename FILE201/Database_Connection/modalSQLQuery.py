@@ -14,6 +14,10 @@ def add_employee(data):
 
         cursor = connection.cursor()
 
+        # Insert into personal_information table
+        insert_personal_information = """
+        """
+
         # Insert into list_of_id table
         insert_list_of_id = """
         INSERT INTO list_of_id (sssNum, pagibigNum, philhealthNum, tinNum)
