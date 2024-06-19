@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Already Done with the Personal Info UI">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/systemPayroll.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/systemPayroll.iml" afterDir="false" />
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SYSTEM PAYROLL STARTED">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,15 +29,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.file201.executor": "Run",
-    "Python.personalinfoMODAL.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "F:/2024 Python Lesson/systemPayroll"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.file201.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Maze&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/2024 Python Lesson/systemPayroll&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\2024 Python Lesson\systemPayroll" />
@@ -96,7 +94,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
-    <MESSAGE value="Already Done with the Personal Info UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Already Done with the Personal Info UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" />
   </component>
 </project>
