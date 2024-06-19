@@ -1,9 +1,22 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDateEdit, QCalendarWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDateEdit, QCalendarWidget, QPlainTextEdit
 from PyQt5.uic import loadUi
+from PyQt5.QtCore import Qt
 import sys
 from FILE201.file201_Function.modalFunction import modalFunction
 
+class NumberOnlyPlainTextEdit(QPlainTextEdit):
+    def __init__(self, parent=None):
+        super(NumberOnlyPlainTextEdit, self).__init__(parent)
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        # Allow only numbers, backspace, delete, left arrow, right arrow
+        if key in (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9,
+                   Qt.Key_Backspace, Qt.Key_Delete, Qt.Key_Left, Qt.Key_Right):
+            super(NumberOnlyPlainTextEdit, self).keyPressEvent(event)
+        else:
+            event.ignore()
 
 class personalModal(QMainWindow):
     def __init__(self):
@@ -20,9 +33,29 @@ class personalModal(QMainWindow):
         self.editBTN.clicked.connect(self.functions.edit_Employee)
         self.saveBTN.clicked.connect(self.functions.save_Employee)
         self.revertBTN.clicked.connect(self.functions.revert_Employee)
+
+        self.apply_number_only_validation(self.sssTextEdit)
+        self.apply_number_only_validation(self.pagibigTextEdit)
+        self.apply_number_only_validation(self.philHealthTextEdit)
+        self.apply_number_only_validation(self.tinTextEdit)
+
     def set_current_date_to_all_date_edits(self, current_date):
         for widget in self.findChildren(QtWidgets.QDateEdit):
             widget.setDate(current_date)
+
+    def apply_number_only_validation(self, text_edit):
+        text_edit.installEventFilter(self)
+
+    def eventFilter(self, source, event):
+        if isinstance(source, QPlainTextEdit) and source.objectName() in ['sssTextEdit', 'pagibigTextEdit', 'philHealthTextEdit', 'tinTextEdit']:
+            if event.type() == QtCore.QEvent.KeyPress:
+                key = event.key()
+                if key in (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9,
+                           Qt.Key_Backspace, Qt.Key_Delete, Qt.Key_Left, Qt.Key_Right):
+                    return super(personalModal, self).eventFilter(source, event)
+                else:
+                    return True
+        return super(personalModal, self).eventFilter(source, event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
