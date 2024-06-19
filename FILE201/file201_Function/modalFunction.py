@@ -13,6 +13,28 @@ class modalFunction:
     def add_Employee(self):
         try:
             required_fields = [
+                # Personal information
+                ('Last Name', self.main_window.txtLastName.text()),
+                ('First Name', self.main_window.txtFirstName.text()),
+                ('Middle Name', self.main_window.txtMiddleName.text()),
+                # ('Suffix', self.main_window.txtLastName.text()),
+
+                # Address/Phone Number Inputs
+                ('Street', self.main_window.txtStreet.text()),
+                ('Barangay', self.main_window.txtBarangay.text()),
+                ('City', self.main_window.txtCity.text()),
+                ('Province', self.main_window.txtProvince.text()),
+                ('ZIP', self.main_window.txtZip.text()),
+                ('Phone Number', self.main_window.txtPhone.text()),
+
+                ('Height', self.main_window.txtHeight.text()),
+                ('Weight', self.main_window.txtWeight.text()),
+                ('Civil Status', self.main_window.cmbCivil.currentText()),
+                ('Date of Birth', self.main_window.dateEdit.date().toString("MM.dd.yyyy")),
+                ('Place of Birth', self.main_window.txtPlace.text()),
+                ('Gender', self.main_window.cmbGender.currentText()),
+
+                # Employee ID inputs
                 ('SSS Number', self.main_window.sssTextEdit.toPlainText()),
                 ('Pag-IBIG Number', self.main_window.pagibigTextEdit.toPlainText()),
                 ('PhilHealth Number', self.main_window.philHealthTextEdit.toPlainText()),
@@ -56,15 +78,6 @@ class modalFunction:
                 ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM.dd.yyyy")),
                 ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM.dd.yyyy")),
             ]
-
-            # Validate required fields
-            for field_name, value in required_fields:
-                if not value.strip():  # Check if the value is empty or whitespace
-                    QMessageBox.warning(self.main_window, "Input Error", f"{field_name} is required.")
-                    return
-
-            # Create a dictionary with field names as keys and values as GUI input values
-            data = {name: value for name, value in required_fields}
 
             # Validate required fields
             for field_name, value in required_fields:
