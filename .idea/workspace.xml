@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Already Done with the Personal Info UI">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/systemPayroll.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/systemPayroll.iml" afterDir="false" />
-    </list>
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Already Done with the Personal Info UI" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,7 +32,7 @@
     "Python.file201.executor": "Run",
     "Python.personalinfoMODAL.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Maze",
     "last_opened_file_path": "F:/2024 Python Lesson/systemPayroll"
   }
 }]]></component>
