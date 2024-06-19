@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 from Database_Connection.DBConnection import create_connection
 from Employee_List.employeeList import EmployeeList
 
-
 def main():
     app = QApplication(sys.argv)
     connection = create_connection()
@@ -17,7 +16,6 @@ def main():
         ui = EmployeeList()
         ui.show()
         sys.exit(app.exec_())
-
 
 if __name__ == "__main__":
     main()

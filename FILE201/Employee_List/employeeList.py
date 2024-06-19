@@ -3,11 +3,12 @@ import mysql.connector
 import os
 
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QVBoxLayout, QPushButton
 from PyQt5.uic import loadUi
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from FILE201.file201_Function.listFunction import ListFunction
+from FILE201.Other_Information.otherInformationModal import personalModal
 
 class EmployeeList(QMainWindow):
     def __init__(self):
@@ -29,3 +30,12 @@ class EmployeeList(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.functions.timeClock)
         self.timer.start(1)
+
+        # Connect button click event
+        self.btnViewInfo.clicked.connect(self.open_otherInformationMODAL)
+
+        self.otherInformationMODAL = None
+    def open_otherInformationMODAL(self):
+        if self.otherInformationMODAL is None:
+            self.otherInformationMODAL = personalModal()
+        self.otherInformationMODAL.show()
