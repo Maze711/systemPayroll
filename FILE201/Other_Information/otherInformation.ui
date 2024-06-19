@@ -2729,7 +2729,7 @@ font-family: Poppins;
            </property>
           </item>
          </widget>
-         <widget class="QDateEdit" name="dateEdit">
+         <widget class="QDateEdit" name="cmbDate">
           <property name="geometry">
            <rect>
             <x>650</x>
