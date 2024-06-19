@@ -4,10 +4,6 @@ from PyQt5.QtWidgets import QMessageBox
 from FILE201.Database_Connection.modalSQLQuery import add_employee
 
 # Configure the logger
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler("app.log"), logging.StreamHandler()])
-
 logger = logging.getLogger(__name__)
 
 class modalFunction:
@@ -70,16 +66,28 @@ class modalFunction:
             # Create a dictionary with field names as keys and values as GUI input values
             data = {name: value for name, value in required_fields}
 
+            # Validate required fields
+            for field_name, value in required_fields:
+                if not value.strip():  # Check if the value is empty or whitespace
+                    QMessageBox.warning(self.main_window, "Input Error", f"{field_name} is required.")
+                    return
+
+            # Create a dictionary with field names as keys and values as GUI input values
+            data = {name: value for name, value in required_fields}
+
             # Log data
             for key, value in data.items():
                 logger.info(f"{key}: {value}")
 
             # Call function to add employee data to the database
             success = add_employee(data)
+
+            message = "Employee data added successfully." if success else "Failed to add employee data."
+            logger.info(message)
             if success:
-                QMessageBox.information(self.main_window, "Success", "Employee data added successfully.")
+                QMessageBox.information(self.main_window, "Success", message)
             else:
-                QMessageBox.critical(self.main_window, "Error", "Failed to add employee data.")
+                QMessageBox.critical(self.main_window, "Error", message)
 
         except Exception as e:
             logger.error(f"Error in add_Employee: {e}")
