@@ -104,7 +104,7 @@ background-color: #DCE5FE
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>-916</y>
+       <y>0</y>
        <width>1218</width>
        <height>1788</height>
       </rect>
@@ -2729,7 +2729,7 @@ font-family: Poppins;
            </property>
           </item>
          </widget>
-         <widget class="QDateEdit" name="dtDateOfBirth">
+         <widget class="QDateEdit" name="dateEdit">
           <property name="geometry">
            <rect>
             <x>650</x>

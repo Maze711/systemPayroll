@@ -3,8 +3,8 @@ from mysql.connector import Error
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 def add_employee(data):
     try:
         connection = create_connection()

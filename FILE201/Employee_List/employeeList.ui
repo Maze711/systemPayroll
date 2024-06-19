@@ -159,7 +159,7 @@ background-color: &quot;#DCE5FE&quot;;
        </font>
       </property>
       <property name="text">
-       <string>12:00:00 AM</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -183,7 +183,7 @@ background-color: &quot;#DCE5FE&quot;;
        </font>
       </property>
       <property name="text">
-       <string>Wednesday, September 17, 2024</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
