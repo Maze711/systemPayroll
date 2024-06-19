@@ -104,7 +104,7 @@ background-color: #DCE5FE
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>-593</y>
+       <y>0</y>
        <width>1218</width>
        <height>1788</height>
       </rect>
@@ -447,9 +447,6 @@ border-radius: 5px;
 border: 1px solid black;</string>
           </property>
           <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAsNeeded</enum>
-          </property>
-          <property name="horizontalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>

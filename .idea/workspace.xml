@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SYSTEM PAYROLL STARTED">
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Nav Profile">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/otherInformation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/otherInformation.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +34,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.file201.executor&quot;: &quot;Run&quot;,
+    &quot;Python.personalinfoMODAL.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Maze&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Jhay&quot;,
     &quot;last_opened_file_path&quot;: &quot;F:/2024 Python Lesson/systemPayroll&quot;
   }
 }</component>
@@ -66,7 +69,23 @@
       <option name="project" value="LOCAL" />
       <updated>1718460575868</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="SYSTEM PAYROLL STARTED">
+      <option name="closed" value="true" />
+      <created>1718645597040</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718645597040</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Nav Profile">
+      <option name="closed" value="true" />
+      <created>1718799917115</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718799917115</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -93,7 +112,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Already Done with the Personal Info UI" />
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
-    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" />
+    <MESSAGE value="Nav Profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nav Profile" />
   </component>
 </project>
