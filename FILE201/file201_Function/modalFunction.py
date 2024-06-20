@@ -30,7 +30,7 @@ class modalFunction:
                 ('Height', self.main_window.txtHeight.text()),
                 ('Weight', self.main_window.txtWeight.text()),
                 ('Civil Status', self.main_window.cmbCivil.currentText()),
-                ('Date of Birth', self.main_window.dateEdit.date().toString("MM.dd.yyyy")),
+                ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM.dd.yyyy")),
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
 

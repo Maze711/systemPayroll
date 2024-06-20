@@ -16,7 +16,30 @@ def add_employee(data):
 
         # Insert into personal_information table
         insert_personal_information = """
+        INSERT INTO personal_information (lastName, firstName, middleName, street, barangay, city, province, zip, 
+                                          phoneNum, height, weight, civilStatus, dateOfBirth, placeOfBirth, gender)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
+        last_name = data.get('Last Name', '')
+        first_name = data.get('First Name', '')
+        middle_name = data.get('Middle Name', '')
+        # suffix = data.get('Suffix', '')
+        street = data.get('Street', '')
+        barangay = data.get('Barangay', '')
+        city = data.get('City', '')
+        province = data.get('Province', '')
+        zip_num = data.get('ZIP', '')
+        phone_num = data.get('Phone Number', '')
+        height = data.get('Height', '')
+        weight = data.get('Weight', '')
+        civil_status = data.get('Civil Status', '')
+        date_of_birth = data.get('Date of Birth', '')
+        place_of_birth = data.get('Place of Birth', '')
+        gender = data.get('Gender', '')
+        cursor.execute(insert_personal_information, (last_name, first_name, middle_name, street, barangay, city,
+                                                     province, zip_num, phone_num, height, weight, civil_status,
+                                                     date_of_birth, place_of_birth, gender))
+        logger.info("Inserted into personal_information table")
 
         # Insert into list_of_id table
         insert_list_of_id = """
