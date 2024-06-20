@@ -1,9 +1,11 @@
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDateEdit, QCalendarWidget, QPlainTextEdit
-from PyQt5.uic import loadUi
-from PyQt5.QtCore import Qt
 import sys
 import os
+
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QMainWindow, QApplication, QDateEdit, QCalendarWidget, QPlainTextEdit, QSizeGrip
+from PyQt5.uic import loadUi
+from PyQt5.QtCore import Qt
+
 from FILE201.file201_Function.modalFunction import modalFunction
 
 class NumberOnlyPlainTextEdit(QPlainTextEdit):
@@ -22,6 +24,7 @@ class NumberOnlyPlainTextEdit(QPlainTextEdit):
 class personalModal(QMainWindow):
     def __init__(self):
         super(personalModal, self).__init__()
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setFixedSize(1153, 665)
         ui_file = os.path.join(os.path.dirname(__file__), 'otherInformation.ui')
         loadUi(ui_file, self)

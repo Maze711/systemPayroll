@@ -34,6 +34,7 @@ class EmployeeList(QMainWindow):
         self.timer.start(1)
 
         # Connect button click event
+        self.btnAddEmployee.clicked.connect(self.open_otherInformationMODAL)
         self.btnViewInfo.clicked.connect(self.open_otherInformationMODAL)
 
     def open_otherInformationMODAL(self):
