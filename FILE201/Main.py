@@ -2,10 +2,12 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from Database_Connection.DBConnection import create_connection
 from Employee_List.employeeList import EmployeeList
+from FILE201.fontLoader import load_fonts
 
 def main():
     app = QApplication(sys.argv)
     connection = create_connection()
+    #load_fonts()
 
     # Check if the connection was successful
     if connection is None:
