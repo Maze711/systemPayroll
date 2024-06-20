@@ -34,8 +34,6 @@ class EmployeeList(QMainWindow):
         # Connect button click event
         self.btnViewInfo.clicked.connect(self.open_otherInformationMODAL)
 
-        self.otherInformationMODAL = None
     def open_otherInformationMODAL(self):
-        if self.otherInformationMODAL is None:
-            self.otherInformationMODAL = personalModal()
-        self.otherInformationMODAL.show()
+        self.modal = personalModal()
+        self.modal.show()

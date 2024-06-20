@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QDateEdit, QCalendarWidge
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 import sys
+import os
 from FILE201.file201_Function.modalFunction import modalFunction
 
 class NumberOnlyPlainTextEdit(QPlainTextEdit):
@@ -22,7 +23,8 @@ class personalModal(QMainWindow):
     def __init__(self):
         super(personalModal, self).__init__()
         self.setFixedSize(1153, 665)
-        loadUi("otherInformation.ui", self)
+        ui_file = os.path.join(os.path.dirname(__file__), 'otherInformation.ui')
+        loadUi(ui_file, self)
 
         self.functions = modalFunction(self)
 
@@ -56,9 +58,3 @@ class personalModal(QMainWindow):
                 else:
                     return True
         return super(personalModal, self).eventFilter(source, event)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ui = personalModal()
-    ui.show()
-    app.exec_()

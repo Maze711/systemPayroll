@@ -111,7 +111,7 @@ background-color: #DCE5FE
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QFrame" name="otherInforrmation">
+       <widget class="QFrame" name="otherInformation">
         <property name="minimumSize">
          <size>
           <width>1200</width>
