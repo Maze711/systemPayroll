@@ -2,7 +2,6 @@ import os
 from PyQt5.QtGui import QFont, QFontDatabase
 from PyQt5.QtWidgets import QApplication
 
-
 def load_fonts():
     font_dir = os.path.join(os.path.dirname(__file__), 'ResourceS', 'Fonts')
     font_db = QFontDatabase()
