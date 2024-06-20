@@ -41,6 +41,33 @@ def add_employee(data):
                                                      date_of_birth, place_of_birth, gender))
         logger.info("Inserted into personal_information table")
 
+        # Insert into Family Background
+        insert_family_background = """
+        INSERT INTO family_background (fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, 
+                                       mothersFirstName, mothersMiddleName, spouseLastName, spouseFirstName, 
+                                       spouseMiddleName, beneficiaryLastName, beneficiaryFirstName, 
+                                       beneficiaryMiddleName, dependentsName)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        fathers_lname = data.get("Father's Last Name", '')
+        fathers_fname = data.get("Father's First Name", '')
+        fathers_mname = data.get("Father's Middle Name", '')
+        mothers_lname = data.get("Mother's Last Name", '')
+        mothers_fname = data.get("Mother's First Name", '')
+        mothers_mname = data.get("Mother's Middle Name", '')
+        spouse_lname = data.get("Spouse's Last Name", '')
+        spouse_fname = data.get("Spouse's First Name", '')
+        spouse_mname = data.get("Spouse's Middle Name", '')
+        beneficiary_lname = data.get("Beneficiary's Last Name", '')
+        beneficiary_fname = data.get("Beneficiary's First Name", '')
+        beneficiary_mname = data.get("Beneficiary's Middle Name", '')
+        dependent_name = data.get("Dependent's Name", '')
+        cursor.execute(insert_family_background, (fathers_lname, fathers_fname, fathers_mname, mothers_lname,
+                                                  mothers_fname, mothers_mname, spouse_lname, spouse_fname,
+                                                  spouse_mname, beneficiary_lname, beneficiary_fname, beneficiary_mname,
+                                                  dependent_name))
+        logger.info("Inserted into family_background table")
+
         # Insert into list_of_id table
         insert_list_of_id = """
         INSERT INTO list_of_id (sssNum, pagibigNum, philhealthNum, tinNum)

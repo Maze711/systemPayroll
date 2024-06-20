@@ -17,7 +17,7 @@ class modalFunction:
                 ('Last Name', self.main_window.txtLastName.text()),
                 ('First Name', self.main_window.txtFirstName.text()),
                 ('Middle Name', self.main_window.txtMiddleName.text()),
-                # ('Suffix', self.main_window.txtLastName.text()),
+                ('Suffix', self.main_window.txtLastName.text()),
 
                 # Address/Phone Number Inputs
                 ('Street', self.main_window.txtStreet.text()),
@@ -33,6 +33,25 @@ class modalFunction:
                 ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM.dd.yyyy")),
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
+
+                # Employee's Family Background Inputs
+                ("Father's Last Name", self.main_window.txtFatherLast.text()),
+                ("Father's First Name", self.main_window.txtFatherFirst.text()),
+                ("Father's Middle Name", self.main_window.txtFatherMiddle.text()),
+
+                ("Mother's Last Name", self.main_window.txtMotherLast.text()),
+                ("Mother's First Name", self.main_window.txtMotherFirst.text()),
+                ("Mother's Middle Name", self.main_window.txtMotherMiddle.text()),
+
+                ("Spouse's Last Name", self.main_window.txtSpouseLast.text()),
+                ("Spouse's First Name", self.main_window.txtSpouseFirst.text()),
+                ("Spouse's Middle Name", self.main_window.txtSpouseMiddle.text()),
+
+                ("Beneficiary's Last Name", self.main_window.txtBeneLast.text()),
+                ("Beneficiary's First Name", self.main_window.txtBeneFirst.text()),
+                ("Beneficiary's Middle Name", self.main_window.txtBeneMiddle.text()),
+
+                ("Dependent's Name", self.main_window.txtDependent.text()),
 
                 # Employee ID inputs
                 ('SSS Number', self.main_window.sssTextEdit.toPlainText()),
@@ -81,7 +100,7 @@ class modalFunction:
 
             # Validate required fields
             for field_name, value in required_fields:
-                if not value.strip():  # Check if the value is empty or whitespace
+                if field_name != 'Suffix' and not value.strip():  # Check if the value is empty or whitespace
                     QMessageBox.warning(self.main_window, "Input Error", f"{field_name} is required.")
                     return
 
