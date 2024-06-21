@@ -30,7 +30,7 @@ class modalFunction:
                 ('Height', self.main_window.txtHeight.text()),
                 ('Weight', self.main_window.txtWeight.text()),
                 ('Civil Status', self.main_window.cmbCivil.currentText()),
-                ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM.dd.yyyy")),
+                ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy")),
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
 
@@ -63,8 +63,8 @@ class modalFunction:
                 ('HR Notes', self.main_window.hrNoteTextEdit.toPlainText()),
 
                 # Working Experience Containers/Inputs
-                ('Date From', self.main_window.dateStart_4.date().toString("MM.dd.yyyy")),
-                ('Date To', self.main_window.dateEnd_4.date().toString("MM.dd.yyyy")),
+                ('Date From', self.main_window.dateStart_4.date().toString("MM-dd-yyyy")),
+                ('Date To', self.main_window.dateEnd_4.date().toString("MM-dd-yyyy")),
                 ('Company', self.main_window.companyTextEdit_4.toPlainText()),
                 ('Company Address', self.main_window.addressTextEdit_4.toPlainText()),
                 ('Position', self.main_window.positionTextEdit_4.toPlainText()),
@@ -78,7 +78,7 @@ class modalFunction:
                 # ('Certificate #2', self.main_window.certiTextEdit1_2.toPlainText()),
                 # ('Certificate #3', self.main_window.certiTextEdit1_3.toPlainText()),
 
-                ('Validation Date #1', self.main_window.validationDate1.date().toString("MM.dd.yyyy")),
+                ('Validation Date #1', self.main_window.validationDate1.date().toString("MM-dd-yyyy")),
                 # ('Validation Date #2', self.main_window.validationDate1_2.date().toString("MM.dd.yyyy")),
                 # ('Validation Date #3', self.main_window.validationDate1_3.date().toString("MM.dd.yyyy")),
 
@@ -93,9 +93,9 @@ class modalFunction:
                 ('College Course', self.main_window.courseTextEdit.toPlainText()),
                 ('High-School Strand', self.main_window.courseTextEdit2.toPlainText()),
 
-                ('College Graduate Year', self.main_window.schoolYear.date().toString("MM.dd.yyyy")),
-                ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM.dd.yyyy")),
-                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM.dd.yyyy")),
+                ('College Graduate Year', self.main_window.schoolYear.date().toString("MM-dd-yyyy")),
+                ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM-dd-yyyy")),
+                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
             ]
 
             # Validate required fields

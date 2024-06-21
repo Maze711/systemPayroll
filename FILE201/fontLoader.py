@@ -16,7 +16,7 @@ def load_fonts():
         if font_id != -1:
             font_family = font_db.applicationFontFamilies(font_id)[0]
             font = QFont(font_family)
-            font.setPointSize(10)  # Example: Set default point size
+            font.setPointSize(12)  # Example: Set default point size
             QApplication.instance().setFont(font)
         else:
             print(f"Failed to load font: {font_file}")

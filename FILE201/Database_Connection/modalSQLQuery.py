@@ -133,3 +133,13 @@ def add_employee(data):
             cursor.close()
             connection.close()
             logger.info("Database connection closed")
+
+
+def edit_employee():
+    pass
+
+def save_employee():
+    pass
+
+def revert_employee():
+    pass
