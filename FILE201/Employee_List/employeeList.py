@@ -15,8 +15,6 @@ class EmployeeList(QMainWindow):
         super(EmployeeList, self).__init__()
         self.setFixedSize(1280, 685)
         ui_file = os.path.join(os.path.dirname(__file__), 'employeeList.ui')
-        function_file = os.path.join('file201_function', 'pieGraph')
-        print(function_file)
         loadUi(ui_file, self)
 
         self.frame_layout = QVBoxLayout(self.frameAnnualSummary)
