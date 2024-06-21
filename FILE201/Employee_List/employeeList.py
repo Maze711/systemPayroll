@@ -35,6 +35,12 @@ class EmployeeList(QMainWindow):
         self.btnAddEmployee.clicked.connect(self.open_otherInformationMODAL)
         self.btnViewInfo.clicked.connect(self.open_otherInformationMODAL)
 
+        # Displays employees in the table
+        self.functions.displayEmployees()
+
+        # Item Click event for row selection
+        self.employeeListTable.itemClicked.connect(self.functions.getSelectedRow)
+
     def open_otherInformationMODAL(self):
         self.modal = personalModal()
         self.modal.show()

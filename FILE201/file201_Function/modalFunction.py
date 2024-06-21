@@ -118,6 +118,7 @@ class modalFunction:
             logger.info(message)
             if success:
                 QMessageBox.information(self.main_window, "Success", message)
+                self.main_window.close()  # Closes the modal
             else:
                 QMessageBox.critical(self.main_window, "Error", message)
 
