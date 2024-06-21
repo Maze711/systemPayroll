@@ -455,156 +455,6 @@ QTableWidget {
     <attribute name="verticalHeaderHighlightSections">
      <bool>false</bool>
     </attribute>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>New Row</string>
-     </property>
-    </row>
     <column>
      <property name="text">
       <string>ID</string>
@@ -625,115 +475,6 @@ QTableWidget {
       <string>Middle Name</string>
      </property>
     </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string>dsfsdfssssssssssssssssssssssssssssssssssssssssssssssssssss</string>
-     </property>
-     <property name="textAlignment">
-      <set>AlignLeading|AlignVCenter</set>
-     </property>
-     <property name="flags">
-      <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
-     </property>
-    </item>
-    <item row="0" column="1">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-     <property name="flags">
-      <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
-     </property>
-    </item>
-    <item row="0" column="2">
-     <property name="text">
-      <string>fsdfsdf</string>
-     </property>
-    </item>
-    <item row="0" column="3">
-     <property name="text">
-      <string>sdfsdfsdf</string>
-     </property>
-    </item>
-    <item row="26" column="0">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-    </item>
-    <item row="26" column="1">
-     <property name="text">
-      <string>fsdfsdfs</string>
-     </property>
-    </item>
-    <item row="26" column="2">
-     <property name="text">
-      <string>sdfsdf</string>
-     </property>
-    </item>
-    <item row="26" column="3">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-    </item>
-    <item row="27" column="0">
-     <property name="text">
-      <string>fsdfsdfsd</string>
-     </property>
-    </item>
-    <item row="27" column="1">
-     <property name="text">
-      <string>fsdfsdf</string>
-     </property>
-    </item>
-    <item row="27" column="2">
-     <property name="text">
-      <string>sddsfsdf</string>
-     </property>
-    </item>
-    <item row="27" column="3">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-    </item>
-    <item row="28" column="0">
-     <property name="text">
-      <string>fsdfsdfsd</string>
-     </property>
-    </item>
-    <item row="28" column="1">
-     <property name="text">
-      <string>fsdfsdf</string>
-     </property>
-    </item>
-    <item row="28" column="2">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-    </item>
-    <item row="28" column="3">
-     <property name="text">
-      <string>fsdfsdfsd</string>
-     </property>
-    </item>
-    <item row="29" column="0">
-     <property name="text">
-      <string>sdfsdf</string>
-     </property>
-    </item>
-    <item row="29" column="1">
-     <property name="text">
-      <string>sdfsdfsd</string>
-     </property>
-    </item>
-    <item row="29" column="2">
-     <property name="text">
-      <string>dsfsdfsd</string>
-     </property>
-    </item>
-    <item row="29" column="3">
-     <property name="text">
-      <string>sdfsdfdsfsd</string>
-     </property>
-    </item>
    </widget>
    <widget class="QFrame" name="frameEmployeeBasicInfo">
     <property name="geometry">
@@ -871,7 +612,7 @@ QTableWidget {
       </font>
      </property>
      <property name="text">
-      <string>1000000</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -958,7 +699,7 @@ QTableWidget {
       </font>
      </property>
      <property name="text">
-      <string>First Name</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -982,7 +723,7 @@ QTableWidget {
       </font>
      </property>
      <property name="text">
-      <string>Middle Name</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1006,7 +747,7 @@ QTableWidget {
       </font>
      </property>
      <property name="text">
-      <string>Last Name</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
