@@ -19,9 +19,6 @@ def create_connection():
         password = os.getenv('DB_PASSWORD')
         port = int(os.getenv('DB_PORT', 3306))  # Default MySQL port is 3306
 
-        # Print the connection parameters for debugging
-        print(f"Connecting to database with host={host}, database={database}, user={user}, port={port}")
-
         if not user or not database:
             raise ValueError("Database user and name must be provided")
 
@@ -48,9 +45,3 @@ def create_connection():
         logger.error("Configuration error: %s", ve)
         print("Configuration error:", ve)
         return None
-
-# Example usage
-connection = create_connection()
-if connection:
-    # Perform database operations
-    connection.close()
