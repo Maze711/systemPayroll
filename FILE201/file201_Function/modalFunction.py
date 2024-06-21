@@ -8,6 +8,10 @@ logger = logging.getLogger(__name__)
 
 class modalFunction:
     def __init__(self, main_window):
+        self.txtMiddleName = None
+        self.txtFirstName = None
+        self.txtLastName = None
+        self.txtEmployeeID = None
         self.main_window = main_window
 
     def add_Employee(self):
@@ -134,3 +138,9 @@ class modalFunction:
 
     def revert_Employee(self):
         print("This is a REVERT Button")
+
+    def clearFunction(self):
+        self.main_window.txtEmployeeID.clear()
+        self.main_window.txtLastName.clear()
+        self.main_window.txtFirstName.clear()
+        self.main_window.txtMiddleName.clear()

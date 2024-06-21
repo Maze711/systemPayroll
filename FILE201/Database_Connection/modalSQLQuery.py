@@ -143,3 +143,25 @@ def save_employee():
 
 def revert_employee():
     pass
+
+def executeSearchQuery(query):
+    try:
+        connection = create_connection()
+        if connection is None:
+            logger.error("Error: Could not establish database connection.")
+            return []
+
+        cursor = connection.cursor()
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+
+    except Error as e:
+        logger.error(f"Error executing search query: {e}")
+        return []
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            logger.info("Database connection closed")
