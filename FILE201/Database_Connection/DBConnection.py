@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import logging
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 
 # Load environment variables from .env file if it exists
 load_dotenv()
