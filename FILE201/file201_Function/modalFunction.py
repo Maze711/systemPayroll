@@ -21,7 +21,7 @@ class modalFunction:
                 ('Last Name', self.main_window.txtLastName.text()),
                 ('First Name', self.main_window.txtFirstName.text()),
                 ('Middle Name', self.main_window.txtMiddleName.text()),
-                ('Suffix', self.main_window.txtLastName.text()),
+                ('Suffix', self.main_window.txtSuffix.text()),
 
                 # Address/Phone Number Inputs
                 ('Street', self.main_window.txtStreet.text()),
