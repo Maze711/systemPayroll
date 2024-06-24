@@ -5,6 +5,7 @@ import logging
 # Configure Logging
 logger = logging.getLogger(__name__)
 
+
 def getAllFetchEmployees():
     try:
         connection = create_connection()
@@ -18,7 +19,6 @@ def getAllFetchEmployees():
         fetch_all_employees = "SELECT empID, lastName, firstName, middleName FROM personal_information"
 
         cursor.execute(fetch_all_employees)
-
         result = cursor.fetchall()
         logger.info("Fetched all employees successfully")
 

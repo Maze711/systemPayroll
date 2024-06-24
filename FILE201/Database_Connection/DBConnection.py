@@ -30,8 +30,8 @@ def create_connection():
             port=port
         )
         if connection.is_connected():
-            logger.info("Connected to MySQL database")
-            print("Connection to MySQL database was successful")
+            #logger.info("Connected to MySQL database")
+            #print("Connection to MySQL database was successful")
             return connection
         else:
             logger.info("Failed to connect to MySQL database")

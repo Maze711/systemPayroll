@@ -1,10 +1,16 @@
-from FILE201.Database_Connection.listSQLQuery import getAllFetchEmployees
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QTableWidgetItem
 from time import *
+import logging
+from mysql.connector import Error
 
+# Configure logging
+logger = logging.getLogger(__name__)
+
+from FILE201.Database_Connection.DBConnection import create_connection
 from FILE201.Database_Connection.modalSQLQuery import executeSearchQuery
 from FILE201.Other_Information.otherInformationModal import personalModal
-
+from FILE201.Database_Connection.listSQLQuery import getAllFetchEmployees
 
 class ListFunction:
     def __init__(self, main_window):
@@ -17,7 +23,6 @@ class ListFunction:
 
         date_format = strftime("%A, %B %d, %Y")
         self.main_window.lblDate.setText(date_format)
-
 
     # Displays all employees in the table
     def displayEmployees(self):
@@ -34,7 +39,6 @@ class ListFunction:
             self.main_window.employeeListTable.insertRow(rowNum)
             for column, data in enumerate(eachRow):
                 self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
-
 
     # Retrieves selected row in the employeeListTable
     def getSelectedRow(self):
@@ -67,15 +71,63 @@ class ListFunction:
                 self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
 
     def open_otherInformationMODAL_view(self):
-        self.main_window.modal = personalModal()
-        self.main_window.modal.show()
+        selected_row = self.main_window.employeeListTable.currentRow()
+        if selected_row != -1:
+            empID = self.main_window.employeeListTable.item(selected_row, 0).text()
+            employee_data = self.fetch_employee_data(empID)
+            if employee_data:
+                modal = personalModal()
+                self.populate_modal_with_employee_data(modal, employee_data)
+                modal.exec_()
+
+    def fetch_employee_data(self, empID):
+        query = """
+           SELECT lastName, firstName, middleName
+           FROM personal_information
+           WHERE empID = %s
+           """
+        try:
+            connection = create_connection()
+            if connection is None:
+                logger.error("Error: Could not establish database connection.")
+                return None
+
+            cursor = connection.cursor()
+            cursor.execute(query, (empID,))
+            result = cursor.fetchone()
+            if result:
+                return result
+            return None
+
+        except Error as e:
+            logger.error(f"Error fetching employee data: {e}")
+            return None
+
+        finally:
+            if 'connection' in locals() and connection.is_connected():
+                cursor.close()
+                connection.close()
+                logger.info("Database connection closed")
+
+    def populate_modal_with_employee_data(self, modal, data):
+        lastName, firstName, middleName = data
+
+        modal.txtLastName.setText(lastName)
+        modal.txtFirstName.setText(firstName)
+        modal.txtMiddleName.setText(middleName)
 
     def open_otherInformationMODAL_add(self):
-        self.main_window.modal = personalModal()
-        self.main_window.modal.editBTN.setEnabled(False)
-        self.main_window.modal.saveBTN.setEnabled(False)
-        self.main_window.modal.revertBTN.setEnabled(False)
-        self.main_window.modal.show()
+        modal = personalModal()
+        modal.editBTN.setEnabled(False)
+        modal.saveBTN.setEnabled(False)
+        modal.revertBTN.setEnabled(False)
+        modal.exec_()
+
+    def clearFunction(self):
+        self.main_window.txtEmployeeID.clear()
+        self.main_window.txtLastName.clear()
+        self.main_window.txtFirstName.clear()
+        self.main_window.txtMiddleName.clear()
 
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()

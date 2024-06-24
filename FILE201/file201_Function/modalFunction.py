@@ -138,9 +138,3 @@ class modalFunction:
 
     def revert_Employee(self):
         print("This is a REVERT Button")
-
-    def clearFunction(self):
-        self.main_window.txtEmployeeID.clear()
-        self.main_window.txtLastName.clear()
-        self.main_window.txtFirstName.clear()
-        self.main_window.txtMiddleName.clear()

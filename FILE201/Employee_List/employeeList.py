@@ -1,9 +1,8 @@
 import sys
-import mysql.connector
 import os
 
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QVBoxLayout, QPushButton, QLabel
+from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton
 from PyQt5.uic import loadUi
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
@@ -44,7 +43,7 @@ class EmployeeList(QMainWindow):
         self.employeeListTable.itemClicked.connect(self.functions.getSelectedRow)
 
         # Clearing the displayed information
-        self.btnClear.clicked.connect(self.function.clearFunction)
+        self.btnClear.clicked.connect(self.functions.clearFunction)
 
         # Connect search function to QLineEdit
         self.txtSearch.textChanged.connect(self.functions.searchEmployees)
