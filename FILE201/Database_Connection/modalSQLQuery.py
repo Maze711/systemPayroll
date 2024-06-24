@@ -1,5 +1,6 @@
 from FILE201.Database_Connection.DBConnection import create_connection
 from mysql.connector import Error
+from datetime import datetime
 import logging
 
 # Configure logging
@@ -39,6 +40,9 @@ def add_employee(data):
         cursor.execute(insert_personal_information, (last_name, first_name, middle_name, street, barangay, city,
                                                      province, zip_num, phone_num, height, weight, civil_status,
                                                      date_of_birth, place_of_birth, gender))
+
+        row_id = cursor.lastrowid # Retrieves the id of the new inserted employee
+
         logger.info("Inserted into personal_information table")
 
         # Insert into Family Background
@@ -121,11 +125,16 @@ def add_employee(data):
 
         # Commit changes to the database
         connection.commit()
+
+        # Inserting custom generated employee id to the database
+        insert_generated_employee_id(row_id)
+
         logger.info("Changes committed successfully")
         return True
 
     except Error as e:
         logger.error(f"Error adding employee: {e}")
+        print(e)
         return False
 
     finally:
@@ -134,6 +143,46 @@ def add_employee(data):
             connection.close()
             logger.info("Database connection closed")
 
+def get_generated_employee_id(employee_id): #20240010
+    # Converts the row_id into string
+    str_employee_id = str(employee_id) #20240010
+
+    # slicing the employee_id
+    year = str_employee_id[:4] #2024
+    id_number = str_employee_id[4:] #0010
+
+    current_year = datetime.now().year #2025
+
+    # Validates the format of the employee ID
+    if str_employee_id == "1":
+        generated_employee_id = f"{current_year}{int(str_employee_id):04}"
+        return int(generated_employee_id)
+    elif str(current_year) != year:
+        generated_employee_id = f"{current_year}{int(id_number):04}"
+        return int(generated_employee_id)
+    else:
+        return employee_id
+
+def insert_generated_employee_id(row_id):
+    try:
+        connection = create_connection()
+        if connection is None:
+            logger.error("Error: Could not establish database connection.")
+            return None
+        cursor = connection.cursor()
+        generated_id = get_generated_employee_id(row_id)
+        query = "UPDATE personal_information SET empID = %s WHERE empID = %s"
+        cursor.execute(query, (generated_id, row_id))
+        connection.commit()
+
+    except Error as e:
+        logger.error(f"Error inserting generated employee ID: {e}")
+        return None
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            logger.info("Database connection closed")
 
 def edit_employee():
     pass
