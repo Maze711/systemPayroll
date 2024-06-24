@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QTimer, QDate
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit
 from time import *
 import logging
 
@@ -80,27 +80,38 @@ class ListFunction:
             if employee_data:
                 modal = personalModal()
                 self.populate_modal_with_employee_data(modal, employee_data)
+                self.set_fields_non_editable(modal)
                 modal.exec_()
+
+    def set_fields_non_editable(self, modal):
+        for widget in modal.findChildren(QLineEdit):
+            widget.setReadOnly(True)
+        for widget in modal.findChildren(QDateEdit):
+            widget.setReadOnly(True)
+        for widget in modal.findChildren(QComboBox):
+            widget.setDisabled(True)
+        for widget in modal.findChildren(QPlainTextEdit):
+            widget.setReadOnly(True)
 
     def fetch_employee_data(self, empID):
         query = """
-            SELECT p.lastName, p.firstName, p.middleName, p.street, p.barangay, p.city, p.province, p.zip, 
-                   p.phoneNum, p.height, p.weight, p.civilStatus, p.dateOfBirth, p.placeOfBirth, p.gender,
-                   f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
-                   f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
-                   f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
-                   f.dependentsName,
-                   i.sssNum, i.pagibigNum, i.philhealthNum, i.tinNum,
-                   w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
-                   e.techSkill, e.certificateSkill, e.validationDate, e.college, e.highSchool, e.elemSchool,
-                   e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
-                   e.highschoolYear, e.elemYear
-                   FROM personal_information p
-                   LEFT JOIN family_background f ON p.empID = f.empID
-                   LEFT JOIN list_of_id i ON p.empID = i.empID
-                   LEFT JOIN work_exp w ON p.empID = w.empID
-                   LEFT JOIN educ_information e ON p.empID = e.empID
-                   WHERE p.empID = %s
+            SELECT p.empID, p.lastName, p.firstName, p.middleName, p.street, p.barangay, p.city, p.province, p.zip, 
+               p.phoneNum, p.height, p.weight, p.civilStatus, p.dateOfBirth, p.placeOfBirth, p.gender,
+               f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
+               f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
+               f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
+               f.dependentsName,
+               i.sssNum, i.pagibigNum, i.philhealthNum, i.tinNum,
+               w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+               e.techSkill, e.certificateSkill, e.validationDate, e.college, e.highSchool, e.elemSchool,
+               e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
+               e.highschoolYear, e.elemYear
+               FROM personal_information p
+               LEFT JOIN family_background f ON p.empID = f.empID
+               LEFT JOIN list_of_id i ON p.empID = i.empID
+               LEFT JOIN work_exp w ON p.empID = w.empID
+               LEFT JOIN educ_information e ON p.empID = e.empID
+               WHERE p.empID = %s
             """
         try:
             connection = create_connection()
@@ -127,7 +138,7 @@ class ListFunction:
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
-            (lastName, firstName, middleName, street, barangay, city, province, zip,
+            (empID, lastName, firstName, middleName, street, barangay, city, province, zip,
              phoneNum, height, weight, civilStatus, dateOfBirth, placeOfBirth, gender,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
@@ -138,6 +149,7 @@ class ListFunction:
              college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
              highschool_year, elem_year) = data
 
+            modal.lblTitle_3.setText(f"ID No. {str(empID)}")
             modal.txtLastName.setText(lastName)
             modal.txtFirstName.setText(firstName)
             modal.txtMiddleName.setText(middleName)
@@ -197,7 +209,6 @@ class ListFunction:
             modal.schoolYear.setDate(QDate.fromString(college_year, "MM-dd-yyyy"))
             modal.schoolYear2.setDate(QDate.fromString(highschool_year, "MM-dd-yyyy"))
             modal.schoolYear3.setDate(QDate.fromString(elem_year, "MM-dd-yyyy"))
-
 
         except Exception as e:
             logger.error(f"Error populating modal with employee data: {e}")

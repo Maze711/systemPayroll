@@ -1,10 +1,22 @@
-from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QPlainTextEdit, QLineEdit, QDateEdit, QComboBox
 import logging
 from PyQt5.QtWidgets import QMessageBox
 from FILE201.Database_Connection.modalSQLQuery import add_employee
 
 # Configure the logger
 logger = logging.getLogger(__name__)
+
+
+def set_fields_non_editable(modal):
+    for widget in modal.findChildren(QLineEdit):
+        widget.setReadOnly(False)
+    for widget in modal.findChildren(QDateEdit):
+        widget.setReadOnly(False)
+    for widget in modal.findChildren(QComboBox):
+        widget.setDisabled(False)
+    for widget in modal.findChildren(QPlainTextEdit):
+        widget.setReadOnly(False)
+
 
 class modalFunction:
     def __init__(self, main_window):
@@ -131,10 +143,26 @@ class modalFunction:
             QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
 
     def edit_Employee(self):
-        print("This is a EDIT Button")
+        set_fields_non_editable(self.main_window)
 
     def save_Employee(self):
-        print("This is a SAVE Button")
+        try:
+            empID = self.main_window.lblTitle_3.text()  # Assuming txtEmployeeID holds the empID
+            if empID:
+                print(f"This is a SAVE Button. Employee ID: {empID}")
+            else:
+                print("Employee ID is missing")
+        except Exception as e:
+            logger.error(f"Error in save_Employee: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
 
     def revert_Employee(self):
-        print("This is a REVERT Button")
+        try:
+            empID = self.main_window.lblTitle_3.text()  # Assuming txtEmployeeID holds the empID
+            if empID:
+                print(f"This is a REVERT Button. Employee ID: {empID}")
+            else:
+                print("Employee ID is missing")
+        except Exception as e:
+            logger.error(f"Error in revert_Employee: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
