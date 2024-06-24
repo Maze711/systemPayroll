@@ -208,6 +208,7 @@ class ListFunction:
         modal.editBTN.setEnabled(False)
         modal.saveBTN.setEnabled(False)
         modal.revertBTN.setEnabled(False)
+        modal.finished.connect(self.displayEmployees) # Updates the employeeListTable upon closing
         modal.exec_()
 
     def clearFunction(self):
