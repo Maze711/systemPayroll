@@ -1,21 +1,30 @@
 from PyQt5.QtWidgets import QPlainTextEdit, QLineEdit, QDateEdit, QComboBox
 import logging
 from PyQt5.QtWidgets import QMessageBox
-from FILE201.Database_Connection.modalSQLQuery import add_employee
+from FILE201.Database_Connection.modalSQLQuery import add_employee, save_employee, revert_employee
 
 # Configure the logger
 logger = logging.getLogger(__name__)
 
 
 def set_fields_non_editable(modal):
+    activeStyle = "background-color: white; color: black;"
+
     for widget in modal.findChildren(QLineEdit):
         widget.setReadOnly(False)
+        widget.setStyleSheet(activeStyle)
+
     for widget in modal.findChildren(QDateEdit):
         widget.setReadOnly(False)
+        widget.setStyleSheet(activeStyle)
+
     for widget in modal.findChildren(QComboBox):
         widget.setDisabled(False)
+        widget.setStyleSheet(activeStyle)
+
     for widget in modal.findChildren(QPlainTextEdit):
         widget.setReadOnly(False)
+        widget.setStyleSheet(activeStyle)
 
 
 class modalFunction:
@@ -129,7 +138,6 @@ class modalFunction:
 
             # Call function to add employee data to the database
             success = add_employee(data)
-
             message = "Employee data added successfully." if success else "Failed to add employee data."
             logger.info(message)
             if success:
@@ -145,24 +153,91 @@ class modalFunction:
     def edit_Employee(self):
         set_fields_non_editable(self.main_window)
 
+    def gather_form_data(self):
+        data = {
+            'lastName': self.main_window.txtLastName.text(),
+            'firstName': self.main_window.txtFirstName.text(),
+            'middleName': self.main_window.txtMiddleName.text(),
+            'suffix': self.main_window.txtSuffix.text(),
+
+            'Street': self.main_window.txtStreet.text(),
+            'Barangay': self.main_window.txtBarangay.text(),
+            'City': self.main_window.txtCity.text(),
+            'Province': self.main_window.txtProvince.text(),
+            'ZIP': self.main_window.txtZip.text(),
+            'Phone Number': self.main_window.txtPhone.text(),
+
+            'Height': self.main_window.txtHeight.text(),
+            'Weight': self.main_window.txtWeight.text(),
+            'Civil Status': self.main_window.cmbCivil.currentText(),
+            'Date of Birth': self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy"),
+            'Place of Birth': self.main_window.txtPlace.text(),
+            'Gender': self.main_window.cmbGender.currentText(),
+
+            "Father's Last Name": self.main_window.txtFatherLast.text(),
+            "Father's First Name": self.main_window.txtFatherFirst.text(),
+            "Father's Middle Name": self.main_window.txtFatherMiddle.text(),
+
+            "Mother's Last Name": self.main_window.txtMotherLast.text(),
+            "Mother's First Name": self.main_window.txtMotherFirst.text(),
+            "Mother's Middle Name": self.main_window.txtMotherMiddle.text(),
+
+            "Spouse's Last Name": self.main_window.txtSpouseLast.text(),
+            "Spouse's First Name": self.main_window.txtSpouseFirst.text(),
+            "Spouse's Middle Name": self.main_window.txtSpouseMiddle.text(),
+
+            "Beneficiary's Last Name": self.main_window.txtBeneLast.text(),
+            "Beneficiary's First Name": self.main_window.txtBeneFirst.text(),
+            "Beneficiary's Middle Name": self.main_window.txtBeneMiddle.text(),
+
+            "Dependent's Name": self.main_window.txtDependent.text(),
+
+            'SSS Number': self.main_window.sssTextEdit.toPlainText(),
+            'Pag-IBIG Number': self.main_window.pagibigTextEdit.toPlainText(),
+            'PhilHealth Number': self.main_window.philHealthTextEdit.toPlainText(),
+            'TIN Number': self.main_window.tinTextEdit.toPlainText(),
+
+            'HR Notes': self.main_window.hrNoteTextEdit.toPlainText(),
+
+            'Date From': self.main_window.dateStart_4.date().toString("MM-dd-yyyy"),
+            'Date To': self.main_window.dateEnd_4.date().toString("MM-dd-yyyy"),
+            'Company': self.main_window.companyTextEdit_4.toPlainText(),
+            'Company Address': self.main_window.addressTextEdit_4.toPlainText(),
+            'Position': self.main_window.positionTextEdit_4.toPlainText(),
+
+            'Technical Skills #1': self.main_window.techSkillTextEdit.toPlainText(),
+            'Certificate #1': self.main_window.certiTextEdit1.toPlainText(),
+            'Validation Date #1': self.main_window.validationDate1.date().toString("MM-dd-yyyy"),
+
+            'College': self.main_window.collegeTextEdit.toPlainText(),
+            'High-School': self.main_window.highTextEdit.toPlainText(),
+            'Elementary': self.main_window.elemTextEdit.toPlainText(),
+
+            'College Address': self.main_window.addressTextEdit.toPlainText(),
+            'High-School Address': self.main_window.addressTextEdit2.toPlainText(),
+            'Elementary Address': self.main_window.addressTextEdit3.toPlainText(),
+
+            'College Course': self.main_window.courseTextEdit.toPlainText(),
+            'High-School Strand': self.main_window.courseTextEdit2.toPlainText(),
+
+            'College Graduate Year': self.main_window.schoolYear.date().toString("MM-dd-yyyy"),
+            'High-School Graduate Year': self.main_window.schoolYear2.date().toString("MM-dd-yyyy"),
+            'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy"),
+        }
+        return data
+
     def save_Employee(self):
-        try:
-            empID = self.main_window.lblTitle_3.text()  # Assuming txtEmployeeID holds the empID
-            if empID:
-                print(f"This is a SAVE Button. Employee ID: {empID}")
-            else:
-                print("Employee ID is missing")
-        except Exception as e:
-            logger.error(f"Error in save_Employee: {e}")
-            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
+        empID = self.main_window.lblTitle_3.text()
+        data = self.gather_form_data()
+
+        success = save_employee(empID, data)
+
+        if success:
+            QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
+            self.main_window.close()  # Close the modal upon successful save
+        else:
+            QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")
 
     def revert_Employee(self):
-        try:
-            empID = self.main_window.lblTitle_3.text()  # Assuming txtEmployeeID holds the empID
-            if empID:
-                print(f"This is a REVERT Button. Employee ID: {empID}")
-            else:
-                print("Employee ID is missing")
-        except Exception as e:
-            logger.error(f"Error in revert_Employee: {e}")
-            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
+        print("Revert")
+

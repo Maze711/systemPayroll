@@ -145,6 +145,94 @@ def add_employee(data):
             connection.close()
             logger.info("Database connection closed")
 
+def save_employee(empID, data):
+    try:
+        connection = create_connection()
+        if connection is None:
+            logger.error("Error: Could not establish database connection.")
+            return False
+
+        cursor = connection.cursor()
+
+        # Update personal_information table
+        update_personal_information = """
+        UPDATE personal_information
+        SET lastName = %s, firstName = %s, middleName = %s, suffix = %s, street = %s, barangay = %s, city = %s, 
+            province = %s, zip = %s, phoneNum = %s, height = %s, weight = %s, civilStatus = %s, dateOfBirth = %s, 
+            placeOfBirth = %s, gender = %s
+        WHERE empID = %s
+        """
+        cursor.execute(update_personal_information, (data['lastName'], data['firstName'], data['middleName'], data['suffix'],
+                                                     data['Street'], data['Barangay'], data['City'], data['Province'],
+                                                     data['ZIP'], data['Phone Number'], data['Height'], data['Weight'],
+                                                     data['Civil Status'], data['Date of Birth'], data['Place of Birth'],
+                                                     data['Gender'], empID))
+
+        # Update family_background table
+        update_family_background = """
+        UPDATE family_background
+        SET fathersLastName = %s, fathersFirstName = %s, fathersMiddleName = %s, mothersLastName = %s, 
+            mothersFirstName = %s, mothersMiddleName = %s, spouseLastName = %s, spouseFirstName = %s, 
+            spouseMiddleName = %s, beneficiaryLastName = %s, beneficiaryFirstName = %s, beneficiaryMiddleName = %s, 
+            dependentsName = %s
+        WHERE empID = %s
+        """
+        cursor.execute(update_family_background, (data["Father's Last Name"], data["Father's First Name"], data["Father's Middle Name"],
+                                                  data["Mother's Last Name"], data["Mother's First Name"], data["Mother's Middle Name"],
+                                                  data["Spouse's Last Name"], data["Spouse's First Name"], data["Spouse's Middle Name"],
+                                                  data["Beneficiary's Last Name"], data["Beneficiary's First Name"], data["Beneficiary's Middle Name"],
+                                                  data["Dependent's Name"], empID))
+
+        # Update list_of_id table
+        update_list_of_id = """
+        UPDATE list_of_id
+        SET sssNum = %s, pagibigNum = %s, philhealthNum = %s, tinNum = %s
+        WHERE empID = %s
+        """
+        cursor.execute(update_list_of_id, (data['SSS Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], data['TIN Number'], empID))
+
+        # Update work_exp table
+        update_work_exp = """
+        UPDATE work_exp
+        SET fromDate = %s, toDate = %s, companyName = %s, companyAdd = %s, empPosition = %s
+        WHERE empID = %s
+        """
+        cursor.execute(update_work_exp, (data['Date From'], data['Date To'], data['Company'], data['Company Address'], data['Position'], empID))
+
+        # Update educ_information table
+        update_educ_information = """
+        UPDATE educ_information
+        SET techSkill = %s, certificateSkill = %s, validationDate = %s, college = %s, highSchool = %s, elemSchool = %s,
+            collegeAdd = %s, highschoolAdd = %s, elemAdd = %s, collegeCourse = %s, highschoolStrand = %s, collegeYear = %s,
+            highschoolYear = %s, elemYear = %s
+        WHERE empID = %s
+        """
+        cursor.execute(update_educ_information, (data['Technical Skills #1'], data['Certificate #1'], data['Validation Date #1'],
+                                                 data['College'], data['High-School'], data['Elementary'],
+                                                 data['College Address'], data['High-School Address'], data['Elementary Address'],
+                                                 data['College Course'], data['High-School Strand'],
+                                                 data['College Graduate Year'], data['High-School Graduate Year'], data['Elementary Graduate Year'],
+                                                 empID))
+
+        # Commit changes to the database
+        connection.commit()
+        logger.info(f"Employee with ID {empID} updated successfully")
+        return True
+
+    except Error as e:
+        logger.error(f"Error updating employee with ID {empID}: {e}")
+        print(e)
+        return False
+
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            logger.info("Database connection closed")
+
+def revert_employee():
+    pass
+
 def get_generated_employee_id(employee_id):
     # Converts the row_id into string
     str_employee_id = str(employee_id)
@@ -164,15 +252,6 @@ def get_generated_employee_id(employee_id):
         return generated_employee_id
     else:
         return employee_id
-
-def edit_employee():
-    pass
-
-def save_employee():
-    pass
-
-def revert_employee():
-    pass
 
 def executeSearchQuery(query):
     try:

@@ -7,7 +7,6 @@ from PyQt5.uic import loadUi
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from FILE201.file201_Function.listFunction import ListFunction
-from FILE201.Other_Information.otherInformationModal import personalModal
 from FILE201.file201_Function.modalFunction import modalFunction
 from FILE201.file201_Function.excelExport import fetch_personal_information, export_to_excel
 
