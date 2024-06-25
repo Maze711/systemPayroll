@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QTimer, QDate
-from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit
+from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit, QMessageBox
 from time import *
 import logging
 
@@ -81,17 +81,33 @@ class ListFunction:
                 modal = personalModal()
                 self.populate_modal_with_employee_data(modal, employee_data)
                 self.set_fields_non_editable(modal)
+                modal.finished.connect(self.displayEmployees)
                 modal.exec_()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("Please select a row from the table")
+            msg.setWindowTitle("No Row Selected")
+            msg.exec_()
 
     def set_fields_non_editable(self, modal):
+        disableStyle = "background-color: lightgray; color: gray;"
+
         for widget in modal.findChildren(QLineEdit):
             widget.setReadOnly(True)
+            widget.setStyleSheet(disableStyle)
+
         for widget in modal.findChildren(QDateEdit):
             widget.setReadOnly(True)
+            widget.setStyleSheet(disableStyle)
+
         for widget in modal.findChildren(QComboBox):
             widget.setDisabled(True)
+            widget.setStyleSheet(disableStyle)
+
         for widget in modal.findChildren(QPlainTextEdit):
             widget.setReadOnly(True)
+            widget.setStyleSheet(disableStyle)
 
     def fetch_employee_data(self, empID):
         query = """
@@ -149,7 +165,8 @@ class ListFunction:
              college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
              highschool_year, elem_year) = data
 
-            modal.lblTitle_3.setText(f"ID No. {str(empID)}")
+            modal.lblTitle_2.setText(f"Name: {lastName} {firstName} {middleName}")
+            modal.lblTitle_3.setText(str(empID))
             modal.txtLastName.setText(lastName)
             modal.txtFirstName.setText(firstName)
             modal.txtMiddleName.setText(middleName)
