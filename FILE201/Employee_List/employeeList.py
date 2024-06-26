@@ -52,11 +52,11 @@ class EmployeeList(QMainWindow):
         self.btnExport.clicked.connect(self.export_to_excel)
 
     def export_to_excel(self):
-        data, columns = fetch_personal_information()
-        if data:
+        data_dict = fetch_personal_information()
+        if data_dict:
             # Open a file dialog to select where to save the Excel file
             options = QFileDialog.Options()
             file_name, _ = QFileDialog.getSaveFileName(self, "Save As", "", "Excel Files (*.xlsx);;All Files (*)",
                                                        options=options)
             if file_name:
-                export_to_excel(data, columns, file_name)
+                export_to_excel(data_dict, file_name)
