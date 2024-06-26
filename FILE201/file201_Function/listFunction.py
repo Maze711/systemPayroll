@@ -119,13 +119,16 @@ class ListFunction:
                f.dependentsName,
                i.sssNum, i.pagibigNum, i.philhealthNum, i.tinNum,
                w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
-               e.techSkill, e.certificateSkill, e.validationDate, e.college, e.highSchool, e.elemSchool,
+               t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
+               t.techSkill3, t.certificate3, t.validationDate3,
+               e.college, e.highSchool, e.elemSchool,
                e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                e.highschoolYear, e.elemYear
                FROM personal_information p
                LEFT JOIN family_background f ON p.empID = f.empID
                LEFT JOIN list_of_id i ON p.empID = i.empID
                LEFT JOIN work_exp w ON p.empID = w.empID
+               LEFT JOIN tech_skills t ON p.empID = t.empID
                LEFT JOIN educ_information e ON p.empID = e.empID
                WHERE p.empID = %s
             """
@@ -161,7 +164,8 @@ class ListFunction:
              beneficiaryMiddleName, dependentsName,
              sss_num, pagibig_num, philhealth_num, tin_num,
              from_date, to_date, company_name, company_add, position,
-             tech_skill, certificate_skill, validation_date, college, high_school, elem_school,
+             tech_skill1, certificate_skill1, validation_date1, tech_skill2, certificate_skill2, validation_date2,
+             tech_skill3, certificate_skill3, validation_date3, college, high_school, elem_school,
              college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
              highschool_year, elem_year) = data
 
@@ -208,9 +212,17 @@ class ListFunction:
             modal.addressTextEdit_4.setPlainText(company_add)
             modal.positionTextEdit_4.setPlainText(position)
 
-            modal.techSkillTextEdit.setPlainText(tech_skill)
-            modal.certiTextEdit1.setPlainText(certificate_skill)
-            modal.validationDate1.setDate(QDate.fromString(validation_date, "MM-dd-yyyy"))
+            modal.techSkillTextEdit.setPlainText(tech_skill1)
+            modal.certiTextEdit1.setPlainText(certificate_skill1)
+            modal.validationDate1.setDate(QDate.fromString(validation_date1, "MM-dd-yyyy"))
+
+            modal.techSkillTextEdit_2.setPlainText(tech_skill2)
+            modal.certiTextEdit1_2.setPlainText(certificate_skill2)
+            modal.validationDate1_2.setDate(QDate.fromString(validation_date2, "MM-dd-yyyy"))
+
+            modal.techSkillTextEdit_3.setPlainText(tech_skill3)
+            modal.certiTextEdit1_3.setPlainText(certificate_skill3)
+            modal.validationDate1_3.setDate(QDate.fromString(validation_date3, "MM-dd-yyyy"))
 
             modal.collegeTextEdit.setPlainText(college)
             modal.highTextEdit.setPlainText(high_school)

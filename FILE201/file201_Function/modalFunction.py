@@ -96,16 +96,16 @@ class modalFunction:
 
                 # Educational and Skill Information text and date inputs
                 ('Technical Skills #1', self.main_window.techSkillTextEdit.toPlainText()),
-                # ('Technical Skills #2', self.main_window.techSkillTextEdit_2.toPlainText()),
-                # ('Technical Skills #3', self.main_window.techSkillTextEdit_3.toPlainText()),
+                ('Technical Skills #2', self.main_window.techSkillTextEdit_2.toPlainText()),
+                ('Technical Skills #3', self.main_window.techSkillTextEdit_3.toPlainText()),
 
                 ('Certificate #1', self.main_window.certiTextEdit1.toPlainText()),
-                # ('Certificate #2', self.main_window.certiTextEdit1_2.toPlainText()),
-                # ('Certificate #3', self.main_window.certiTextEdit1_3.toPlainText()),
+                ('Certificate #2', self.main_window.certiTextEdit1_2.toPlainText()),
+                ('Certificate #3', self.main_window.certiTextEdit1_3.toPlainText()),
 
                 ('Validation Date #1', self.main_window.validationDate1.date().toString("MM-dd-yyyy")),
-                # ('Validation Date #2', self.main_window.validationDate1_2.date().toString("MM.dd.yyyy")),
-                # ('Validation Date #3', self.main_window.validationDate1_3.date().toString("MM.dd.yyyy")),
+                ('Validation Date #2', self.main_window.validationDate1_2.date().toString("MM.dd.yyyy")),
+                ('Validation Date #3', self.main_window.validationDate1_3.date().toString("MM.dd.yyyy")),
 
                 ('College', self.main_window.collegeTextEdit.toPlainText()),
                 ('High-School', self.main_window.highTextEdit.toPlainText()),
@@ -123,9 +123,17 @@ class modalFunction:
                 ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
             ]
 
+            not_required_fields = ['Suffix', "Father's Last Name", "Father's First Name", "Father's Middle Name",
+                                   "Mother's Last Name", "Mother's First Name", "Mother's Middle Name",
+                                   "Spouse's Last Name", "Spouse's First Name", "Spouse's Middle Name",
+                                   "Beneficiary's Last Name", "Beneficiary's First Name", "Beneficiary's Middle Name",
+                                   "Dependent's Name", 'Technical Skills #1', 'Certificate #1', 'Validation Date #1',
+                                   'Technical Skills #2', 'Certificate #2', 'Validation Date #2', 'Technical Skills #3',
+                                   'Certificate #3', 'Validation Date #3']
+
             # Validate required fields
             for field_name, value in required_fields:
-                if field_name != 'Suffix' and not value.strip():  # Check if the value is empty or whitespace
+                if field_name not in not_required_fields and not value.strip():  # Check if the value is empty or whitespace
                     QMessageBox.warning(self.main_window, "Input Error", f"{field_name} is required.")
                     return
 
@@ -208,6 +216,14 @@ class modalFunction:
             'Technical Skills #1': self.main_window.techSkillTextEdit.toPlainText(),
             'Certificate #1': self.main_window.certiTextEdit1.toPlainText(),
             'Validation Date #1': self.main_window.validationDate1.date().toString("MM-dd-yyyy"),
+
+            'Technical Skills #2': self.main_window.techSkillTextEdit_2.toPlainText(),
+            'Certificate #2': self.main_window.certiTextEdit1_2.toPlainText(),
+            'Validation Date #2': self.main_window.validationDate1_2.date().toString("MM-dd-yyyy"),
+
+            'Technical Skills #3': self.main_window.techSkillTextEdit_3.toPlainText(),
+            'Certificate #3': self.main_window.certiTextEdit1_3.toPlainText(),
+            'Validation Date #3': self.main_window.validationDate1_3.date().toString("MM-dd-yyyy"),
 
             'College': self.main_window.collegeTextEdit.toPlainText(),
             'High-School': self.main_window.highTextEdit.toPlainText(),
