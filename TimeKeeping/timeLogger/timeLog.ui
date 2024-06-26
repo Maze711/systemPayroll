@@ -309,13 +309,13 @@ QTableWidget {
      <number>50</number>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>115</number>
+     <number>167</number>
     </attribute>
     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
      <bool>false</bool>
     </attribute>
     <attribute name="horizontalHeaderStretchLastSection">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
@@ -345,17 +345,7 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Code #1</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Code #2</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Code #3</string>
+      <string>Sched</string>
      </property>
     </column>
    </widget>
