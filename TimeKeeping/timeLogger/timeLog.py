@@ -42,16 +42,27 @@ class timelogger(QMainWindow):
                 logging.error(f"Row has missing columns: {row}")
                 continue
 
-            bio_no, date_time, mach_code, code_1, code_2, code_3 = columns[:6]
-            trans_date, time_value = date_time.split(' ')
+            try:
+                bio_no, date_time, mach_code, code_1, code_2, code_3 = columns[:6]
+                trans_date, time_value = date_time.split(' ')
+            except ValueError as e:
+                logging.error(f"Error parsing row: {row}, Error: {e}")
+                continue
+
+                # Determine sched based on code_1, code_2, code_3 values
+            if code_1 == '0' and code_2 == '1' and code_3 == '0':
+                sched = 'Time IN'
+            elif code_1 == '1' and code_2 == '1' and code_3 == '0':
+                sched = 'Time OUT'
+            else:
+                sched = 'Unknown'
+
             self.data.append({
                 'bio_no': bio_no.strip(),
                 'trans_date': trans_date.strip(),
                 'time': time_value.strip(),
                 'mach_code': mach_code.strip(),
-                'code_1': code_1.strip(),
-                'code_2': code_2.strip(),
-                'code_3': code_3.strip()
+                'sched': sched  # Store sched instead of code_1, code_2, code_3
             })
 
         end_time = time.time()  # End timing
@@ -98,10 +109,11 @@ class timelogger(QMainWindow):
                 QTableWidgetItem(row['trans_date']),
                 QTableWidgetItem(row['time']),
                 QTableWidgetItem(row['mach_code']),
-                QTableWidgetItem(row['code_1']),
-                QTableWidgetItem(row['code_2']),
-                QTableWidgetItem(row['code_3'])
+                QTableWidgetItem(row['sched'])
             ]
+            for item in items:
+                item.setTextAlignment(Qt.AlignCenter)
+
             for column, item in enumerate(items):
                 self.employeeListTable.setItem(row_position, column, item)
 
