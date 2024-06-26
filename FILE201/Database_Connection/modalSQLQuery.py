@@ -104,14 +104,11 @@ def add_employee(data):
 
         # Insert into educ_information table
         insert_educ_information = """
-        INSERT INTO educ_information (empID, techSkill, certificateSkill, validationDate, college, highSchool, elemSchool,
+        INSERT INTO educ_information (empID, college, highSchool, elemSchool,
                                       collegeAdd, highschoolAdd, elemAdd, collegeCourse, highschoolStrand, collegeYear,
                                       highschoolYear, elemYear)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        tech_skill = data.get('Technical Skills #1', '')
-        certificate_skill = data.get('Certificate #1', '')
-        validation_date = data.get('Validation Date #1', '')
         college = data.get('College', '')
         high_school = data.get('High-School', '')
         elem_school = data.get('Elementary', '')
@@ -123,10 +120,28 @@ def add_employee(data):
         college_year = data.get('College Graduate Year', '')
         highschool_year = data.get('High-School Graduate Year', '')
         elem_year = data.get('Elementary Graduate Year', '')
-        cursor.execute(insert_educ_information, (generated_id, tech_skill, certificate_skill, validation_date, college,
-                                                 high_school, elem_school, college_add, highschool_add, elem_add,
-                                                 college_course, highschool_strand, college_year, highschool_year, elem_year))
+        cursor.execute(insert_educ_information, (generated_id, college, high_school, elem_school, college_add,
+                                                 highschool_add, elem_add, college_course, highschool_strand,
+                                                 college_year, highschool_year, elem_year))
         logger.info("Inserted into educ_information table")
+
+        # Insert into tech_skills table
+        insert_tech_skills = """INSERT INTO tech_skills(empID, techSkill1, certificate1, validationDate1, techSkill2, 
+        certificate2, validationDate2, techSkill3, certificate3, validationDate3)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        tech_skill1 = data.get('Technical Skills #1', '')
+        certificate_skill1 = data.get('Certificate #1', '')
+        validation_date1 = data.get('Validation Date #1', '')
+        tech_skill2 = data.get('Technical Skills #2', '')
+        certificate_skill2 = data.get('Certificate #2', '')
+        validation_date2 = data.get('Validation Date #2', '')
+        tech_skill3 = data.get('Technical Skills #3', '')
+        certificate_skill3 = data.get('Certificate #3', '')
+        validation_date3 = data.get('Validation Date #3', '')
+        cursor.execute(insert_tech_skills, (generated_id, tech_skill1, certificate_skill1, validation_date1,
+                                            tech_skill2, certificate_skill2, validation_date2,
+                                            tech_skill3, certificate_skill3, validation_date3))
+        logger.info("Inserted into tech_skills table")
 
         # Commit changes to the database
         connection.commit()
@@ -202,17 +217,27 @@ def save_employee(empID, data):
         # Update educ_information table
         update_educ_information = """
         UPDATE educ_information
-        SET techSkill = %s, certificateSkill = %s, validationDate = %s, college = %s, highSchool = %s, elemSchool = %s,
+        SET college = %s, highSchool = %s, elemSchool = %s,
             collegeAdd = %s, highschoolAdd = %s, elemAdd = %s, collegeCourse = %s, highschoolStrand = %s, collegeYear = %s,
             highschoolYear = %s, elemYear = %s
         WHERE empID = %s
         """
-        cursor.execute(update_educ_information, (data['Technical Skills #1'], data['Certificate #1'], data['Validation Date #1'],
-                                                 data['College'], data['High-School'], data['Elementary'],
+        cursor.execute(update_educ_information, (data['College'], data['High-School'], data['Elementary'],
                                                  data['College Address'], data['High-School Address'], data['Elementary Address'],
                                                  data['College Course'], data['High-School Strand'],
                                                  data['College Graduate Year'], data['High-School Graduate Year'], data['Elementary Graduate Year'],
                                                  empID))
+        # Update tech_skills table
+        update_tech_skills = """
+        UPDATE tech_skills 
+        SET techSkill1 = %s, certificate1 = %s, validationDate1 = %s, techSkill2 = %s, certificate2 = %s, 
+            validationDate2 = %s, techSkill3 = %s, certificate3 = %s, validationDate3 = %s 
+        WHERE empID = %s
+        """
+        cursor.execute(update_tech_skills, (data['Technical Skills #1'], data['Certificate #1'], data['Validation Date #1'],
+                                            data['Technical Skills #2'], data['Certificate #2'], data['Validation Date #2'],
+                                            data['Technical Skills #3'], data['Certificate #3'], data['Validation Date #3'],
+                                            empID))
 
         # Commit changes to the database
         connection.commit()
