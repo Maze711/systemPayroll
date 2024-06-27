@@ -28,9 +28,10 @@ class dialogModal(QDialog):
                     content = file.read()
                     #logging.info(f"File {fileName} content:\n{content}")
                     self.showData(content)
+                    self.close()
             except Exception as e:
                 logging.error(f"Failed to read file {fileName}: {e}")
 
     def showData(self, content):
         self.time_logger = timelogger(content)  # Pass the content to timelogger
-        self.time_logger.show()  # Show the timelogger dialog
+        self.time_logger.show()
