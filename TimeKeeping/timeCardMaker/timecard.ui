@@ -254,7 +254,7 @@ QTableWidget {
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../FILE201/Resources/Icons/search.svg</pixmap>
+     <pixmap>../../FILE201/Resources/Icons/search.svg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
