@@ -2,24 +2,12 @@ import sys
 import os
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QDialog, QPlainTextEdit
+from PyQt5.QtWidgets import QDialog, QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIntValidator # Founded a new library
 
 from FILE201.file201_Function.modalFunction import modalFunction
-
-class NumberOnlyPlainTextEdit(QPlainTextEdit):
-    def __init__(self, parent=None):
-        super(NumberOnlyPlainTextEdit, self).__init__(parent)
-
-    def keyPressEvent(self, event):
-        key = event.key()
-        # Allow only numbers, backspace, delete, left arrow, right arrow
-        if key in (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9,
-                   Qt.Key_Backspace, Qt.Key_Delete, Qt.Key_Left, Qt.Key_Right):
-            super(NumberOnlyPlainTextEdit, self).keyPressEvent(event)
-        else:
-            event.ignore()
 
 class personalModal(QDialog):
     def __init__(self):
@@ -39,24 +27,25 @@ class personalModal(QDialog):
         self.saveBTN.clicked.connect(self.functions.save_Employee)
         self.revertBTN.clicked.connect(self.functions.revert_Employee)
 
-        self.apply_number_only_validation(self.sssTextEdit)
-        self.apply_number_only_validation(self.pagibigTextEdit)
-        self.apply_number_only_validation(self.philHealthTextEdit)
-        self.apply_number_only_validation(self.tinTextEdit)
+        self.set_validators()
+        self.set_keyboard_shortcut()
 
     def set_current_date_to_all_date_edits(self, current_date):
         for widget in self.findChildren(QtWidgets.QDateEdit):
             widget.setDate(current_date)
 
-    def apply_number_only_validation(self, text_edit):
-        text_edit.installEventFilter(self)
+    def set_validators(self):
+        int_validator = QIntValidator()
 
-    def eventFilter(self, source, event):
-        if isinstance(source, QPlainTextEdit) and source.objectName() in ['sssTextEdit', 'pagibigTextEdit', 'philHealthTextEdit', 'tinTextEdit']:
-            if event.type() == QtCore.QEvent.KeyPress:
-                key = event.key()
-                if key in (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9,
-                           Qt.Key_Backspace, Qt.Key_Delete, Qt.Key_Left, Qt.Key_Right):
-                    return super(personalModal, self).eventFilter(source, event)
-        return super(personalModal, self).eventFilter(source, event)
+        self.txtZip.setValidator(int_validator)
+        self.txtPhone.setValidator(int_validator)
+        self.txtHeight.setValidator(int_validator)
+        self.txtWeight.setValidator(int_validator)
+        self.sssTextEdit.setValidator(int_validator)
+        self.pagibigTextEdit.setValidator(int_validator)
+        self.philHealthTextEdit.setValidator(int_validator)
+        self.tinTextEdit.setValidator(int_validator)
 
+    def set_keyboard_shortcut(self):
+        self.shortcut = QtWidgets.QShortcut(Qt.Key_Escape, self)
+        self.shortcut.activated.connect(self.close)
