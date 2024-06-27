@@ -252,6 +252,10 @@ class ListFunction:
         modal.exec_()
 
     def clearFunction(self):
+        # unselects the current selected row
+        self.main_window.employeeListTable.clearSelection()
+        self.main_window.employeeListTable.selectionModel().clearCurrentIndex()
+
         self.main_window.txtEmployeeID.clear()
         self.main_window.txtLastName.clear()
         self.main_window.txtFirstName.clear()
