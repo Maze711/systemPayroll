@@ -1,10 +1,12 @@
 import sys
 import os
 import logging
-import time  # Importing the time module
+import time
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow
 from PyQt5.uic import loadUi
+
+from TimeKeeping.timeCardMaker.timeCard import timecard
 
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
@@ -13,7 +15,7 @@ logging.basicConfig(level=logging.INFO, filename='file_import.log',
 class timelogger(QMainWindow):
     def __init__(self, content):
         super().__init__()
-        self.setFixedSize(1153, 665)
+        self.setFixedSize(1180, 665)
         loadUi(os.path.join(os.path.dirname(__file__), 'timeLog.ui'), self)
 
         self.content = content
@@ -21,12 +23,15 @@ class timelogger(QMainWindow):
         self.fromCalendar = self.findChild(QDateEdit, 'dateStart')
         self.toCalendar = self.findChild(QDateEdit, 'dateEnd')
         self.filterButton = self.findChild(QPushButton, 'btnFilter')
+        self.createCard = self.findChild(QPushButton, 'btnCard')
         self.employeeListTable = self.findChild(QTableWidget, 'employeeListTable')
 
         self.fromCalendar.setDate(QDate.currentDate())
         self.toCalendar.setDate(QDate.currentDate())
 
         self.filterButton.clicked.connect(self.showFilteredData)
+        self.createCard.clicked.connect(self.openTimeCard)
+        self.createCard.setEnabled(False)
 
         self.processContent()
         self.loadData()
@@ -49,7 +54,7 @@ class timelogger(QMainWindow):
                 logging.error(f"Error parsing row: {row}, Error: {e}")
                 continue
 
-                # Determine sched based on code_1, code_2, code_3 values
+            # Determine sched based on code_1, code_2, code_3 values
             if code_1 == '0' and code_2 == '1' and code_3 == '0':
                 sched = 'Time IN'
             elif code_1 == '1' and code_2 == '1' and code_3 == '0':
@@ -93,6 +98,7 @@ class timelogger(QMainWindow):
         ]
 
         self.populateTable(filtered_data)
+        self.createCard.setEnabled(bool(filtered_data))
 
         end_time = time.time()  # End timing
         logging.info(f"showFilteredData took {end_time - start_time:.4f} seconds")
@@ -119,3 +125,27 @@ class timelogger(QMainWindow):
 
         end_time = time.time()  # End timing
         logging.info(f"populateTable took {end_time - start_time:.4f} seconds")
+
+    def openTimeCard(self):
+        from_date = self.fromCalendar.date()
+        to_date = self.toCalendar.date()
+        from_date_str = from_date.toString("yyyy-MM-dd")
+        to_date_str = to_date.toString("yyyy-MM-dd")
+
+        filtered_data = [
+            {
+                'EmpNumber': '',  # Replace with actual EmpNumber if available
+                'BioNum': row['bio_no'],
+                'EmpName': '',  # Replace with actual EmpName if available
+                'Trans_Date': row['trans_date'],
+                'MachCode': row['mach_code'],
+                'Check_In': '',  # Placeholder for Check_In
+                'Check_Out': ''  # Placeholder for Check_Out
+            }
+            for row in self.data
+            if from_date_str <= row['trans_date'] <= to_date_str
+        ]
+
+        self.timecard_window = timecard(filtered_data)
+        self.timecard_window.show()
+        self.close()

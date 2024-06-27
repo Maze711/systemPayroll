@@ -58,8 +58,5 @@ class personalModal(QDialog):
                 if key in (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9,
                            Qt.Key_Backspace, Qt.Key_Delete, Qt.Key_Left, Qt.Key_Right):
                     return super(personalModal, self).eventFilter(source, event)
-                elif key == Qt.Key_Escape:
-                    self.close()
-                    return True
         return super(personalModal, self).eventFilter(source, event)
 

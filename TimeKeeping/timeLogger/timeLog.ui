@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
+    <width>1160</width>
     <height>665</height>
    </rect>
   </property>
@@ -208,13 +208,47 @@ border-radius: 5px;
       </size>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnCard">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>450</y>
+       <width>220</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(85, 255, 127);
+border-radius: 5px;</string>
+     </property>
+     <property name="text">
+      <string>Create Time Card</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
+     </property>
+    </widget>
    </widget>
    <widget class="QTableWidget" name="employeeListTable">
     <property name="geometry">
      <rect>
       <x>318</x>
       <y>0</y>
-      <width>834</width>
+      <width>860</width>
       <height>665</height>
      </rect>
     </property>
@@ -309,7 +343,10 @@ QTableWidget {
      <number>50</number>
     </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>167</number>
+     <number>170</number>
+    </attribute>
+    <attribute name="horizontalHeaderHighlightSections">
+     <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
      <bool>false</bool>
