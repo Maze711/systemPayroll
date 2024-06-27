@@ -169,8 +169,8 @@ class ListFunction:
              college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
              highschool_year, elem_year) = data
 
-            modal.lblTitle_2.setText(f"Name: {lastName} {firstName} {middleName}")
-            modal.lblTitle_3.setText(str(empID))
+            modal.nameDisplay.setText(f"{lastName} {firstName} {middleName}")
+            modal.idDisplay.setText(str(empID))
             modal.txtLastName.setText(lastName)
             modal.txtFirstName.setText(firstName)
             modal.txtMiddleName.setText(middleName)
@@ -201,39 +201,39 @@ class ListFunction:
             modal.txtBeneMiddle.setText(beneficiaryMiddleName)
             modal.txtDependent.setText(dependentsName)
 
-            modal.sssTextEdit.setPlainText(sss_num)
-            modal.pagibigTextEdit.setPlainText(pagibig_num)
-            modal.philHealthTextEdit.setPlainText(philhealth_num)
-            modal.tinTextEdit.setPlainText(tin_num)
+            modal.sssTextEdit.setText(sss_num)
+            modal.pagibigTextEdit.setText(pagibig_num)
+            modal.philHealthTextEdit.setText(philhealth_num)
+            modal.tinTextEdit.setText(tin_num)
 
             modal.dateStart_4.setDate(QDate.fromString(from_date, "MM-dd-yyyy"))
             modal.dateEnd_4.setDate(QDate.fromString(to_date, "MM-dd-yyyy"))
-            modal.companyTextEdit_4.setPlainText(company_name)
-            modal.addressTextEdit_4.setPlainText(company_add)
-            modal.positionTextEdit_4.setPlainText(position)
+            modal.companyTextEdit_4.setText(company_name)
+            modal.addressTextEdit_4.setText(company_add)
+            modal.positionTextEdit_4.setText(position)
 
-            modal.techSkillTextEdit.setPlainText(tech_skill1)
-            modal.certiTextEdit1.setPlainText(certificate_skill1)
+            modal.techSkillTextEdit.setText(tech_skill1)
+            modal.certiTextEdit1.setText(certificate_skill1)
             modal.validationDate1.setDate(QDate.fromString(validation_date1, "MM-dd-yyyy"))
 
-            modal.techSkillTextEdit_2.setPlainText(tech_skill2)
-            modal.certiTextEdit1_2.setPlainText(certificate_skill2)
+            modal.techSkillTextEdit_2.setText(tech_skill2)
+            modal.certiTextEdit1_2.setText(certificate_skill2)
             modal.validationDate1_2.setDate(QDate.fromString(validation_date2, "MM-dd-yyyy"))
 
-            modal.techSkillTextEdit_3.setPlainText(tech_skill3)
-            modal.certiTextEdit1_3.setPlainText(certificate_skill3)
+            modal.techSkillTextEdit_3.setText(tech_skill3)
+            modal.certiTextEdit1_3.setText(certificate_skill3)
             modal.validationDate1_3.setDate(QDate.fromString(validation_date3, "MM-dd-yyyy"))
 
-            modal.collegeTextEdit.setPlainText(college)
-            modal.highTextEdit.setPlainText(high_school)
-            modal.elemTextEdit.setPlainText(elem_school)
+            modal.collegeTextEdit.setText(college)
+            modal.highTextEdit.setText(high_school)
+            modal.elemTextEdit.setText(elem_school)
 
-            modal.addressTextEdit.setPlainText(college_add)
-            modal.addressTextEdit2.setPlainText(highschool_add)
-            modal.addressTextEdit3.setPlainText(elem_add)
+            modal.addressTextEdit.setText(college_add)
+            modal.addressTextEdit2.setText(highschool_add)
+            modal.addressTextEdit3.setText(elem_add)
 
-            modal.courseTextEdit.setPlainText(college_course)
-            modal.courseTextEdit2.setPlainText(highschool_strand)
+            modal.courseTextEdit.setText(college_course)
+            modal.courseTextEdit2.setText(highschool_strand)
 
             modal.schoolYear.setDate(QDate.fromString(college_year, "MM-dd-yyyy"))
             modal.schoolYear2.setDate(QDate.fromString(highschool_year, "MM-dd-yyyy"))
