@@ -7,7 +7,6 @@ class MplCanvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
 
-
 class graphLoader:
     def __init__(self, canvas):
         self.canvas = canvas

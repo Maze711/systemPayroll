@@ -379,7 +379,7 @@ border: 1px solid black</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-850</y>
+      <y>0</y>
       <width>1218</width>
       <height>1788</height>
      </rect>

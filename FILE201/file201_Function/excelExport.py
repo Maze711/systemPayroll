@@ -4,7 +4,7 @@ import pandas as pd
 from mysql.connector import Error
 from FILE201.Database_Connection.DBConnection import create_connection
 
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 def fetch_personal_information():
     try:

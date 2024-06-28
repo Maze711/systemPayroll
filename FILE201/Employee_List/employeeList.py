@@ -10,11 +10,21 @@ from FILE201.file201_Function.listFunction import ListFunction
 from FILE201.file201_Function.modalFunction import modalFunction
 from FILE201.file201_Function.excelExport import fetch_personal_information, export_to_excel
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS2
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 class EmployeeList(QMainWindow):
     def __init__(self):
         super(EmployeeList, self).__init__()
         self.setFixedSize(1280, 685)
-        ui_file = os.path.join(os.path.dirname(__file__), 'employeeList.ui')
+        #ui_file = os.path.join(os.path.dirname(__file__), 'employeeList.ui')
+        ui_file = (resource_path("FILE201\\Employee_List\\employeeList.ui"))
         loadUi(ui_file, self)
 
         self.frame_layout = QVBoxLayout(self.frameAnnualSummary)

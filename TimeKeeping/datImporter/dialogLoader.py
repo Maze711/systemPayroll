@@ -8,15 +8,24 @@ from PyQt5.uic import loadUi
 from TimeKeeping.timeLogger.timeLog import timelogger  # Import timelogger class
 
 # Configure the logger
-logging.basicConfig(level=logging.INFO, filename='TimeKeeping/file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+#logging.basicConfig(level=logging.INFO, filename='TimeKeeping/file_import.log',
+                    #format='%(asctime)s - %(levelname)s - %(message)s')
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS2
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(418, 392)
-        loadUi(os.path.join(os.path.dirname(__file__), 'dialogImporter.ui'), self)
+        #loadUi(os.path.join(os.path.dirname(__file__), 'dialogImporter.ui'), self)
+        ui_file = (resource_path("TimeKeeping\\datImporter\\dialogImporter.ui"))
+        loadUi(ui_file, self)
         self.importBTN.clicked.connect(self.importTxt)
 
     def importTxt(self):

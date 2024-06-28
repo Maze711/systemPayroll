@@ -1,0 +1,614 @@
+2024-06-25 14:05:59,653 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:05:59,653 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:06:01,387 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:06:20,164 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:06:20,164 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:07:01,022 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:07:01,022 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:07:02,579 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:07:04,990 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:07:04,991 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:07:15,731 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:07:15,732 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:07:17,375 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:07:20,719 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:07:20,720 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:08:26,324 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:08:26,324 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:08:50,691 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:08:50,691 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:09:02,361 - FILE201.file201_Function.modalFunction - INFO - Last Name: TEST
+2024-06-25 14:09:02,362 - FILE201.file201_Function.modalFunction - INFO - First Name: TEST
+2024-06-25 14:09:02,362 - FILE201.file201_Function.modalFunction - INFO - Middle Name: TEST
+2024-06-25 14:09:02,362 - FILE201.file201_Function.modalFunction - INFO - Suffix: TEST
+2024-06-25 14:09:02,364 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into personal_information table
+2024-06-25 14:09:02,364 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into family_background table
+2024-06-25 14:09:02,364 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into list_of_id table
+2024-06-25 14:09:02,364 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into work_exp table
+2024-06-25 14:09:02,365 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into educ_information table
+2024-06-25 14:09:02,383 - FILE201.Database_Connection.modalSQLQuery - INFO - Changes committed successfully
+2024-06-25 14:09:02,384 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:09:02,384 - FILE201.file201_Function.modalFunction - INFO - Employee data added successfully.
+2024-06-25 14:09:03,612 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:09:03,613 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:09:05,468 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:09:07,893 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:09:07,894 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:10:47,935 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:10:47,936 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:10:49,312 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:11:03,413 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:11:03,413 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:11:18,247 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:11:18,248 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:11:19,645 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:11:36,733 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:11:36,734 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:23:33,240 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:23:33,240 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:23:34,761 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:27:09,513 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:27:09,514 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:27:10,922 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:36:56,075 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:36:56,075 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:36:59,235 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:36:59,235 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:37:00,645 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:37:20,769 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:37:20,769 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:37:41,361 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:37:41,361 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:37:42,790 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:37:55,557 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:37:55,558 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:38:02,559 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:38:02,560 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:38:04,600 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:38:08,408 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:38:08,409 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:38:37,094 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:38:37,094 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:38:40,173 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:38:43,965 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:38:43,965 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:39:13,427 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:39:13,427 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:39:14,852 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:39:20,462 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:39:20,462 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:41:26,532 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:41:26,533 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:41:28,022 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:41:37,907 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:41:37,907 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:41:40,562 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:41:42,548 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:41:42,549 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:20,821 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:50:20,821 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:22,304 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:50:23,898 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:50:23,898 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:24,929 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:50:24,929 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:29,405 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:50:32,586 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:50:32,586 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:33,492 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:50:33,493 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:50:35,542 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:50:38,085 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:50:38,086 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:51:53,284 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:51:53,284 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:52:05,214 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:52:05,214 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:52:06,802 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:52:14,151 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:52:14,151 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:52:14,965 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:52:14,965 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:52:16,215 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:53:27,167 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:53:27,167 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:53:53,902 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:53:56,858 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:53:56,858 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:54:00,408 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:54:15,221 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:54:15,222 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:54:15,956 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:54:15,956 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:54:17,378 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:54:26,588 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:54:26,588 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:54:28,009 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:54:28,009 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:54:29,698 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:55:49,479 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:55:49,480 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:57:12,839 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:57:12,839 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:57:16,832 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:57:16,832 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:57:18,224 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:57:18,224 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:57:21,765 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:57:22,417 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:57:22,417 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:57:38,277 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:57:38,277 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:58:22,830 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:58:22,830 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:58:24,909 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:58:53,229 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:58:53,230 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:58:54,074 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:58:54,074 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:58:55,287 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:58:57,417 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:58:57,417 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:18,368 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:59:18,368 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:19,864 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:59:21,610 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:59:21,610 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:23,567 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:59:23,567 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:28,596 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:59:33,492 - FILE201.Database_Connection.modalSQLQuery - INFO - Employee with ID 20240001 updated successfully
+2024-06-25 14:59:33,493 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:34,401 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:59:34,402 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-25 14:59:36,882 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-25 14:59:43,524 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-25 14:59:43,524 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 19:28:48,933 - Database_Connection.DBConnection - ERROR - Error while connecting to MySQL: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+Traceback (most recent call last):
+  File "C:\Users\Maze\AppData\Local\Programs\Python\Python39\lib\site-packages\mysql\connector\connection_cext.py", line 327, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on 'localhost:3306' (10061)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\2024 Python Lesson\systemPayroll\FILE201\Database_Connection\DBConnection.py", line 25, in create_connection
+    connection = mysql.connector.connect(
+  File "C:\Users\Maze\AppData\Local\Programs\Python\Python39\lib\site-packages\mysql\connector\pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "C:\Users\Maze\AppData\Local\Programs\Python\Python39\lib\site-packages\mysql\connector\connection_cext.py", line 144, in __init__
+    self.connect(**kwargs)
+  File "C:\Users\Maze\AppData\Local\Programs\Python\Python39\lib\site-packages\mysql\connector\abstracts.py", line 1360, in connect
+    self._open_connection()
+  File "C:\Users\Maze\AppData\Local\Programs\Python\Python39\lib\site-packages\mysql\connector\connection_cext.py", line 332, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2024-06-26 19:29:00,242 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 19:29:00,242 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 19:31:05,719 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 19:31:05,719 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 19:37:11,217 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 19:37:11,217 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 19:38:17,909 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 19:38:17,910 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 19:39:59,737 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 19:39:59,738 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 21:01:35,723 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 21:01:35,723 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 21:01:57,252 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 21:01:57,253 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 21:02:31,549 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 21:02:31,550 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 21:02:37,511 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 21:02:37,511 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:40:25,718 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:40:25,719 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:40:30,896 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:40:38,580 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:40:38,580 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:40:41,436 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:40:43,236 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:40:43,236 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Last Name: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - First Name: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Middle Name: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Suffix: asaaa
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Street: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Barangay: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - City: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Province: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - ZIP: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Phone Number: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Height: asa
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Weight: asaa
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Civil Status: Single
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Date of Birth: 06-26-2024
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Place of Birth: asaaasasd
+2024-06-26 22:49:59,306 - FILE201.file201_Function.modalFunction - INFO - Gender: Male
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Father's Last Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Father's First Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Father's Middle Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Mother's Last Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Mother's First Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Mother's Middle Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Spouse's Last Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Spouse's First Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Spouse's Middle Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Last Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's First Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Middle Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Dependent's Name: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - SSS Number: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Pag-IBIG Number: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - PhilHealth Number: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - TIN Number: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - HR Notes: asaaasasd
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Date From: 06-26-2024
+2024-06-26 22:49:59,307 - FILE201.file201_Function.modalFunction - INFO - Date To: 06-26-2024
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Company: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Company Address: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Position: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #1: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Certificate #1: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Validation Date #1: 06-26-2024
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - College: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - High-School: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Elementary: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - College Address: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - High-School Address: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Elementary Address: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - College Course: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - High-School Strand: asaaasasd
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - College Graduate Year: 06-26-2024
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - High-School Graduate Year: 06-26-2024
+2024-06-26 22:49:59,308 - FILE201.file201_Function.modalFunction - INFO - Elementary Graduate Year: 06-26-2024
+2024-06-26 22:49:59,310 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into personal_information table
+2024-06-26 22:49:59,311 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into family_background table
+2024-06-26 22:49:59,311 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into list_of_id table
+2024-06-26 22:49:59,311 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into work_exp table
+2024-06-26 22:49:59,311 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into educ_information table
+2024-06-26 22:49:59,315 - FILE201.Database_Connection.modalSQLQuery - INFO - Changes committed successfully
+2024-06-26 22:49:59,315 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-26 22:49:59,315 - FILE201.file201_Function.modalFunction - INFO - Employee data added successfully.
+2024-06-26 22:50:00,153 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:50:00,156 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:50:33,317 - FILE201.file201_Function.modalFunction - INFO - Last Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - First Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Middle Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Suffix: asaaa
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Street: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Barangay: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - City: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Province: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - ZIP: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Phone Number: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Height: asa
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Weight: asaa
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Civil Status: Single
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Date of Birth: 06-26-2024
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Place of Birth: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Gender: Male
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Father's Last Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Father's First Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Father's Middle Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Mother's Last Name: asaaasasd
+2024-06-26 22:50:33,318 - FILE201.file201_Function.modalFunction - INFO - Mother's First Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Mother's Middle Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Spouse's Last Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Spouse's First Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Spouse's Middle Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Last Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's First Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Middle Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Dependent's Name: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - SSS Number: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Pag-IBIG Number: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - PhilHealth Number: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - TIN Number: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - HR Notes: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Date From: 06-26-2024
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Date To: 06-26-2024
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Company: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Company Address: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Position: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #1: asaaasasdasaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Certificate #1: asaaasasd
+2024-06-26 22:50:33,319 - FILE201.file201_Function.modalFunction - INFO - Validation Date #1: 06-26-2024
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - College: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - High-School: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - Elementary: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - College Address: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - High-School Address: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - Elementary Address: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - College Course: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - High-School Strand: asaaasasd
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - College Graduate Year: 06-26-2024
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - High-School Graduate Year: 06-26-2024
+2024-06-26 22:50:33,320 - FILE201.file201_Function.modalFunction - INFO - Elementary Graduate Year: 06-26-2024
+2024-06-26 22:50:33,336 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into personal_information table
+2024-06-26 22:50:33,336 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into family_background table
+2024-06-26 22:50:33,336 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into list_of_id table
+2024-06-26 22:50:33,337 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into work_exp table
+2024-06-26 22:50:33,337 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into educ_information table
+2024-06-26 22:50:33,344 - FILE201.Database_Connection.modalSQLQuery - INFO - Changes committed successfully
+2024-06-26 22:50:33,344 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-26 22:50:33,344 - FILE201.file201_Function.modalFunction - INFO - Employee data added successfully.
+2024-06-26 22:50:34,039 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:50:34,040 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:50:36,306 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:50:38,627 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:50:38,627 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Last Name: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - First Name: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Middle Name: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Suffix: asaaa
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Street: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Barangay: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - City: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Province: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - ZIP: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Phone Number: asaaasasd
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Height: asa
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Weight: asaa
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Civil Status: Single
+2024-06-26 22:51:13,542 - FILE201.file201_Function.modalFunction - INFO - Date of Birth: 06-26-2024
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Place of Birth: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Gender: Male
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Father's Last Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Father's First Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Father's Middle Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Mother's Last Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Mother's First Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Mother's Middle Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Spouse's Last Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Spouse's First Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Spouse's Middle Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Last Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's First Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Middle Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Dependent's Name: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - SSS Number: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Pag-IBIG Number: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - PhilHealth Number: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - TIN Number: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - HR Notes: asaaasasd
+2024-06-26 22:51:13,543 - FILE201.file201_Function.modalFunction - INFO - Date From: 06-26-2024
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Date To: 06-26-2024
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Company: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Company Address: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Position: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #1: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Certificate #1: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Validation Date #1: 06-26-2024
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - College: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - High-School: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Elementary: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - College Address: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - High-School Address: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Elementary Address: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - College Course: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - High-School Strand: asaaasasd
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - College Graduate Year: 06-26-2024
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - High-School Graduate Year: 06-26-2024
+2024-06-26 22:51:13,544 - FILE201.file201_Function.modalFunction - INFO - Elementary Graduate Year: 06-26-2024
+2024-06-26 22:51:13,546 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into personal_information table
+2024-06-26 22:51:13,546 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into family_background table
+2024-06-26 22:51:13,547 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into list_of_id table
+2024-06-26 22:51:13,547 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into work_exp table
+2024-06-26 22:51:13,547 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into educ_information table
+2024-06-26 22:51:13,561 - FILE201.Database_Connection.modalSQLQuery - INFO - Changes committed successfully
+2024-06-26 22:51:13,561 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:13,561 - FILE201.file201_Function.modalFunction - INFO - Employee data added successfully.
+2024-06-26 22:51:14,201 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:14,202 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:15,520 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:17,521 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:17,521 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:24,454 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:24,454 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:27,157 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:28,218 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:28,218 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:30,429 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:31,222 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:31,223 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:32,543 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:33,125 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:33,126 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:34,367 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:34,892 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:34,892 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:35,961 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:36,507 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:36,507 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:37,881 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:38,445 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:38,445 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:40,785 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:41,497 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:41,497 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:42,612 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:43,331 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:43,331 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:44,460 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:45,069 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:45,069 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:46,236 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:46,920 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:46,920 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:51:48,574 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:51:49,206 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:51:49,206 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:52:51,429 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:52:52,510 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:52:52,511 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:52:55,413 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:52:56,071 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:52:56,072 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-26 22:52:59,096 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-26 22:52:59,584 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-26 22:52:59,584 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 08:44:00,562 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 08:44:00,575 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 08:44:03,346 - FILE201.file201_Function.listFunction - ERROR - Error fetching employee data: 1146 (42S02): Table 'file201.tech_skills' doesn't exist
+2024-06-27 08:44:03,347 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 08:44:04,402 - FILE201.file201_Function.listFunction - ERROR - Error fetching employee data: 1146 (42S02): Table 'file201.tech_skills' doesn't exist
+2024-06-27 08:44:04,402 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 08:44:04,889 - FILE201.file201_Function.listFunction - ERROR - Error fetching employee data: 1146 (42S02): Table 'file201.tech_skills' doesn't exist
+2024-06-27 08:44:04,889 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 08:44:05,089 - FILE201.file201_Function.listFunction - ERROR - Error fetching employee data: 1146 (42S02): Table 'file201.tech_skills' doesn't exist
+2024-06-27 08:44:05,089 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 08:44:13,337 - FILE201.file201_Function.listFunction - ERROR - Error fetching employee data: 1146 (42S02): Table 'file201.tech_skills' doesn't exist
+2024-06-27 08:44:13,337 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 08:44:16,016 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 08:44:16,017 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 19:46:07,589 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 19:46:07,606 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:38:49,344 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:38:49,344 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:38:59,176 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:38:59,176 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:39:06,257 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:39:06,257 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:39:36,118 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:39:36,118 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:40:36,878 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:40:36,879 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:40:45,706 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:40:45,706 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:42:47,852 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:42:47,852 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 20:43:01,561 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 20:43:01,562 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:15:56,690 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:15:56,690 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:16:55,901 - FILE201.file201_Function.modalFunction - ERROR - Error in add_Employee: 'QLineEdit' object has no attribute 'toPlainText'
+2024-06-27 21:19:08,727 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:19:08,727 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:22:02,305 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:22:02,306 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:22:56,353 - FILE201.file201_Function.modalFunction - ERROR - Error in add_Employee: 'QPlainTextEdit' object has no attribute 'text'
+2024-06-27 21:24:16,972 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:24:16,972 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:25:49,287 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:25:49,287 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Last Name: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - First Name: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Middle Name: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Suffix: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Street: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Barangay: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - City: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Province: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - ZIP: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Phone Number: TEST
+2024-06-27 21:26:44,453 - FILE201.file201_Function.modalFunction - INFO - Height: TES
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Weight: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Civil Status: Single
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Date of Birth: 06-27-2024
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Place of Birth: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Gender: Male
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Father's Last Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Father's First Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Father's Middle Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Mother's Last Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Mother's First Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Mother's Middle Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Spouse's Last Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Spouse's First Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Spouse's Middle Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Last Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's First Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Beneficiary's Middle Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - Dependent's Name: TEST
+2024-06-27 21:26:44,454 - FILE201.file201_Function.modalFunction - INFO - SSS Number: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Pag-IBIG Number: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - PhilHealth Number: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - TIN Number: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - HR Notes: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Date From: 06-27-2024
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Date To: 06-27-2024
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Company: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Company Address: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Position: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #1: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #2: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Technical Skills #3: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Certificate #1: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Certificate #2: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Certificate #3: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Validation Date #1: 06-27-2024
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Validation Date #2: 06.27.2024
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Validation Date #3: 06.27.2024
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - College: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - High-School: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - Elementary: TEST
+2024-06-27 21:26:44,455 - FILE201.file201_Function.modalFunction - INFO - College Address: TEST
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - High-School Address: TEST
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - Elementary Address: TEST
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - College Course: TEST
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - High-School Strand: TEST
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - College Graduate Year: 06-27-2024
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - High-School Graduate Year: 06-27-2024
+2024-06-27 21:26:44,456 - FILE201.file201_Function.modalFunction - INFO - Elementary Graduate Year: 06-27-2024
+2024-06-27 21:26:44,458 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into personal_information table
+2024-06-27 21:26:44,477 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into family_background table
+2024-06-27 21:26:44,479 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into list_of_id table
+2024-06-27 21:26:44,481 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into work_exp table
+2024-06-27 21:26:44,483 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into educ_information table
+2024-06-27 21:26:44,485 - FILE201.Database_Connection.modalSQLQuery - INFO - Inserted into tech_skills table
+2024-06-27 21:26:44,489 - FILE201.Database_Connection.modalSQLQuery - INFO - Changes committed successfully
+2024-06-27 21:26:44,490 - FILE201.Database_Connection.modalSQLQuery - INFO - Database connection closed
+2024-06-27 21:26:44,490 - FILE201.file201_Function.modalFunction - INFO - Employee data added successfully.
+2024-06-27 21:26:45,398 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:26:45,398 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:26:47,097 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:26:47,169 - FILE201.file201_Function.listFunction - ERROR - Error populating modal with employee data: 'QLineEdit' object has no attribute 'setPlainText'
+2024-06-27 21:27:26,076 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:27:26,076 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:28:11,400 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:28:11,400 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:28:13,241 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:28:25,605 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:28:25,605 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:35:08,235 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:35:08,236 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:35:15,246 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:35:22,685 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:35:22,686 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:35:44,406 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:35:44,406 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:35:46,426 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:35:56,801 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:35:56,801 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:36:10,331 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:36:10,332 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:36:11,698 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:36:15,834 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:36:15,835 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:37:06,812 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:37:06,813 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:37:08,171 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:37:12,739 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:37:12,739 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:37:39,052 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:37:39,053 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:37:40,570 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:37:43,791 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:37:43,791 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:37:58,783 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:37:58,783 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:38:00,676 - FILE201.file201_Function.listFunction - INFO - Database connection closed
+2024-06-27 21:38:07,110 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:38:07,110 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:41:01,307 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:41:01,308 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:45:51,061 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:45:51,061 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:45:57,671 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:45:57,672 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:50:28,699 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:50:28,699 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed
+2024-06-27 21:50:30,142 - FILE201.Database_Connection.listSQLQuery - INFO - Fetched all employees successfully
+2024-06-27 21:50:30,142 - FILE201.Database_Connection.listSQLQuery - INFO - Database connection closed

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMessageBox
 from FILE201.Database_Connection.modalSQLQuery import add_employee, save_employee, revert_employee
 
 # Configure the logger
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 
 def set_fields_non_editable(modal):
@@ -141,13 +141,13 @@ class modalFunction:
             data = {name: value for name, value in required_fields}
 
             # Log data
-            for key, value in data.items():
-                logger.info(f"{key}: {value}")
+            #for key, value in data.items():
+                #logger.info(f"{key}: {value}")
 
             # Call function to add employee data to the database
             success = add_employee(data)
             message = "Employee data added successfully." if success else "Failed to add employee data."
-            logger.info(message)
+            #logger.info(message)
             if success:
                 QMessageBox.information(self.main_window, "Success", message)
                 self.main_window.close()  # Closes the modal
@@ -155,7 +155,7 @@ class modalFunction:
                 QMessageBox.critical(self.main_window, "Error", message)
 
         except Exception as e:
-            logger.error(f"Error in add_Employee: {e}")
+            #logger.error(f"Error in add_Employee: {e}")
             QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
 
     def edit_Employee(self):
