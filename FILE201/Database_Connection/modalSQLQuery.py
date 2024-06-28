@@ -4,13 +4,13 @@ from datetime import datetime
 import logging
 
 # Configure logging
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 def add_employee(data):
     try:
         connection = create_connection()
         if connection is None:
-            logger.error("Error: Could not establish database connection.")
+            #logger.error("Error: Could not establish database connection.")
             return False
 
         cursor = connection.cursor()
@@ -48,7 +48,7 @@ def add_employee(data):
         query = "UPDATE personal_information SET empID = %s WHERE empID = %s"
         cursor.execute(query, (generated_id, row_id))
 
-        logger.info("Inserted into personal_information table")
+        #logger.info("Inserted into personal_information table")
 
         # Insert into Family Background
         insert_family_background = """
@@ -75,7 +75,7 @@ def add_employee(data):
                                                   mothers_fname, mothers_mname, spouse_lname, spouse_fname,
                                                   spouse_mname, beneficiary_lname, beneficiary_fname, beneficiary_mname,
                                                   dependent_name))
-        logger.info("Inserted into family_background table")
+        #logger.info("Inserted into family_background table")
 
         # Insert into list_of_id table
         insert_list_of_id = """
@@ -87,7 +87,7 @@ def add_employee(data):
         philhealth_num = data.get('PhilHealth Number', '')
         tin_num = data.get('TIN Number', '')
         cursor.execute(insert_list_of_id, (generated_id, sss_num, pagibig_num, philhealth_num, tin_num))
-        logger.info("Inserted into list_of_id table")
+        #logger.info("Inserted into list_of_id table")
 
         # Insert into work_exp table
         insert_work_exp = """
@@ -100,7 +100,7 @@ def add_employee(data):
         company_add = data.get('Company Address', '')
         position = data.get('Position', '')
         cursor.execute(insert_work_exp, (generated_id, from_date, to_date, company_name, company_add, position))
-        logger.info("Inserted into work_exp table")
+        #logger.info("Inserted into work_exp table")
 
         # Insert into educ_information table
         insert_educ_information = """
@@ -123,7 +123,7 @@ def add_employee(data):
         cursor.execute(insert_educ_information, (generated_id, college, high_school, elem_school, college_add,
                                                  highschool_add, elem_add, college_course, highschool_strand,
                                                  college_year, highschool_year, elem_year))
-        logger.info("Inserted into educ_information table")
+        #logger.info("Inserted into educ_information table")
 
         # Insert into tech_skills table
         insert_tech_skills = """INSERT INTO tech_skills(empID, techSkill1, certificate1, validationDate1, techSkill2, 
@@ -141,16 +141,16 @@ def add_employee(data):
         cursor.execute(insert_tech_skills, (generated_id, tech_skill1, certificate_skill1, validation_date1,
                                             tech_skill2, certificate_skill2, validation_date2,
                                             tech_skill3, certificate_skill3, validation_date3))
-        logger.info("Inserted into tech_skills table")
+        #logger.info("Inserted into tech_skills table")
 
         # Commit changes to the database
         connection.commit()
 
-        logger.info("Changes committed successfully")
+        #logger.info("Changes committed successfully")
         return True
 
     except Error as e:
-        logger.error(f"Error adding employee: {e}")
+        #logger.error(f"Error adding employee: {e}")
         print(e)
         return False
 
@@ -158,13 +158,13 @@ def add_employee(data):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            logger.info("Database connection closed")
+            #logger.info("Database connection closed")
 
 def save_employee(empID, data):
     try:
         connection = create_connection()
         if connection is None:
-            logger.error("Error: Could not establish database connection.")
+            #logger.error("Error: Could not establish database connection.")
             return False
 
         cursor = connection.cursor()
@@ -241,11 +241,11 @@ def save_employee(empID, data):
 
         # Commit changes to the database
         connection.commit()
-        logger.info(f"Employee with ID {empID} updated successfully")
+        #logger.info(f"Employee with ID {empID} updated successfully")
         return True
 
     except Error as e:
-        logger.error(f"Error updating employee with ID {empID}: {e}")
+        #logger.error(f"Error updating employee with ID {empID}: {e}")
         print(e)
         return False
 
@@ -253,7 +253,7 @@ def save_employee(empID, data):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            logger.info("Database connection closed")
+            #logger.info("Database connection closed")
 
 def revert_employee():
     pass
@@ -282,7 +282,7 @@ def executeSearchQuery(query):
     try:
         connection = create_connection()
         if connection is None:
-            logger.error("Error: Could not establish database connection.")
+            #logger.error("Error: Could not establish database connection.")
             return []
 
         cursor = connection.cursor()
@@ -291,11 +291,11 @@ def executeSearchQuery(query):
         return results
 
     except Error as e:
-        logger.error(f"Error executing search query: {e}")
+        #logger.error(f"Error executing search query: {e}")
         return []
 
     finally:
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            logger.info("Database connection closed")
+            #logger.info("Database connection closed")

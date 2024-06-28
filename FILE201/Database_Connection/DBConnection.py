@@ -1,15 +1,24 @@
+import sys
+import os
 import mysql.connector
 from mysql.connector import Error
 import logging
-import os
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS2
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 # Load environment variables from .env file if it exists
-load_dotenv()
+dotenv_path = resource_path("FILE201\\Database_Connection\\.env")
+load_dotenv(dotenv_path)
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, filename='app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+#logging.basicConfig(level=logging.INFO, filename='app.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#logger = logging.getLogger(__name__)
 
 def create_connection():
     try:
@@ -31,17 +40,17 @@ def create_connection():
         )
         if connection.is_connected():
             #logger.info("Connected to MySQL database")
-            #print("Connection to MySQL database was successful")
+            print("Connection to MySQL database was successful")
             return connection
         else:
-            logger.info("Failed to connect to MySQL database")
+            #logger.info("Failed to connect to MySQL database")
             print("Failed to connect to MySQL database")
             return None
     except Error as e:
-        logger.exception("Error while connecting to MySQL: %s", e)
+        #logger.exception("Error while connecting to MySQL: %s", e)
         print("Error while connecting to MySQL:", e)
         return None
     except ValueError as ve:
-        logger.error("Configuration error: %s", ve)
+        #logger.error("Configuration error: %s", ve)
         print("Configuration error:", ve)
         return None
