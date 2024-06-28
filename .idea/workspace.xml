@@ -4,6 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="Bug fix on clearFunction">
+      <change beforePath="$PROJECT_DIR$/.idea/systemPayroll.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/systemPayroll.iml" afterDir="false" />
     <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SVG File Directory Changed">
       <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Black.ttf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-BlackItalic.ttf" afterDir="false" />
@@ -29,30 +31,6 @@
       <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/user-plus.svg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/user.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/DBConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/DBConnection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/listSQLQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/listSQLQuery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/modalSQLQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/modalSQLQuery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Employee_List/employeeList.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Employee_List/employeeList.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/otherInformationModal.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/otherInformationModal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/personalInformation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/personalInformation.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/excelExport.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/excelExport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/listFunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/listFunction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/modalFunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/modalFunction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/pieGraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/pieGraph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/fontLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/fontLoader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE201/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainFrame/Main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/Resources/Main.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainFrame/MainWindow.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeKeeping/datImporter/dialogLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/datImporter/dialogLoader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeKeeping/timeCardMaker/timeCard.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/timeCardMaker/timeCard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeKeeping/timeLogger/timeLog.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/timeLogger/timeLog.py" afterDir="false" />
-    </list>
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -164,10 +142,108 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="RunManager" selected="Python.MainWindow">
+    <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/FILE201" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FILE201/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="MainWindow" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/MainFrame" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MainFrame/MainWindow.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TimeKeepingMain" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TimeKeeping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TimeKeeping/TimeKeepingMain.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="otherInformationModal" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/FILE201/Other_Information" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FILE201/Other_Information/otherInformationModal.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.MainWindow" />
+        <item itemvalue="Python.Main" />
+        <item itemvalue="Python.TimeKeepingMain" />
+        <item itemvalue="Python.otherInformationModal" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-babbdf50b680-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.15989.155" />
+        <option value="bundled-python-sdk-48aec45f0201-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17011.127" />
       </set>
     </attachedChunks>
   </component>
