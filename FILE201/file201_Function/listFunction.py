@@ -7,7 +7,7 @@ from PyQt5.uic.properties import QtCore
 from mysql.connector import Error
 
 # Configure logging
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 from FILE201.Database_Connection.DBConnection import create_connection
 from FILE201.Database_Connection.modalSQLQuery import executeSearchQuery
@@ -135,7 +135,7 @@ class ListFunction:
         try:
             connection = create_connection()
             if connection is None:
-                logger.error("Error: Could not establish database connection.")
+                #logger.error("Error: Could not establish database connection.")
                 return None
 
             cursor = connection.cursor()
@@ -146,14 +146,14 @@ class ListFunction:
             return None
 
         except Error as e:
-            logger.error(f"Error fetching employee data: {e}")
+            #logger.error(f"Error fetching employee data: {e}")
             return None
 
         finally:
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
-                logger.info("Database connection closed")
+                #logger.info("Database connection closed")
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
@@ -240,7 +240,7 @@ class ListFunction:
             modal.schoolYear3.setDate(QDate.fromString(elem_year, "MM-dd-yyyy"))
 
         except Exception as e:
-            logger.error(f"Error populating modal with employee data: {e}")
+            #logger.error(f"Error populating modal with employee data: {e}")
             print(f"Error: {e}")
 
     def open_otherInformationMODAL_add(self):

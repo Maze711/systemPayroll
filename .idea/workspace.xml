@@ -4,13 +4,64 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SYSTEM PAYROLL STARTED">
+    <list default="true" id="441ba65f-b8b2-41c5-93b1-9548689fec27" name="Changes" comment="SVG File Directory Changed">
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Black.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-BlackItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-ExtraBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-ExtraBoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-ExtraLight.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-ExtraLightItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Light.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-LightItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Medium.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-MediumItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-SemiBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-SemiBoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-Thin.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Fonts/Poppins-ThinItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/arrow-right.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/export.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/search.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/user-plus.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MainFrame/Resources/Icons/user.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/DBConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/DBConnection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/listSQLQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/listSQLQuery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Database_Connection/modalSQLQuery.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Database_Connection/modalSQLQuery.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Employee_List/employeeList.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Employee_List/employeeList.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/otherInformationModal.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/otherInformationModal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/Other_Information/personalInformation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/Other_Information/personalInformation.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/excelExport.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/excelExport.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/listFunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/listFunction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/modalFunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/modalFunction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/file201_Function/pieGraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/FILE201/file201_Function/pieGraph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/fontLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/fontLoader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FILE201/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainFrame/Main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/MainFrame/Resources/Main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainFrame/MainWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeKeeping/datImporter/dialogLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/datImporter/dialogLoader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeKeeping/timeCardMaker/timeCard.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/timeCardMaker/timeCard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeKeeping/timeLogger/timeLog.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeKeeping/timeLogger/timeLog.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -29,18 +80,89 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.file201.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Maze&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/2024 Python Lesson/systemPayroll&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Main.executor": "Run",
+    "Python.MainWindow (1).executor": "Run",
+    "Python.MainWindow.executor": "Run",
+    "Python.TimeKeepingMain.executor": "Run",
+    "Python.dialogLoader.executor": "Run",
+    "Python.employeeList.executor": "Run",
+    "Python.file201.executor": "Run",
+    "Python.otherInformationModal.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Maze",
+    "last_opened_file_path": "C:/Users/Maze/Desktop/systemPayroll/FILE201",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\2024 Python Lesson\systemPayroll" />
+      <recent name="C:\Users\Maze\Desktop\systemPayroll\FILE201" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\MainFrame" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\TimeKeeping\timeCardMaker" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\TimeKeeping\timeLogger" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\FILE201\Other_Information" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\2024 Python Lesson\systemPayroll\MainFrame" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\MainFrame\Resources" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\MainFrame\Resources\Fonts" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\TimeKeeping\timeCardMaker" />
+      <recent name="F:\2024 Python Lesson\systemPayroll\TimeKeeping\timeLogger" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.MainWindow (1)">
+    <configuration name="MainWindow (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MainWindow.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="MainWindow" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="systemPayroll" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/MainFrame" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MainFrame/MainWindow.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.MainWindow (1)" />
+        <item itemvalue="Python.MainWindow" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -66,7 +188,151 @@
       <option name="project" value="LOCAL" />
       <updated>1718460575868</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Font Loader tester">
+      <option name="closed" value="true" />
+      <created>1718878289292</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718878289292</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated from Jhay-em and Rodel">
+      <option name="closed" value="true" />
+      <created>1718888395215</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718888395215</updated>
+    </task>
+    <task id="LOCAL-00004" summary="UI Changed (otherInformationModal) and added the define methods in SQL">
+      <option name="closed" value="true" />
+      <created>1718953189377</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718953189377</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updated and Secure database connection, I guess">
+      <option name="closed" value="true" />
+      <created>1718956294410</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1718956294410</updated>
+    </task>
+    <task id="LOCAL-00006" summary=".ENV Created altered the connection instead from local it connects in .env">
+      <option name="closed" value="true" />
+      <created>1718957838418</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1718957838418</updated>
+    </task>
+    <task id="LOCAL-00007" summary="DB Connection updated">
+      <option name="closed" value="true" />
+      <created>1718966045689</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1718966045689</updated>
+    </task>
+    <task id="LOCAL-00008" summary="QDialog has been made">
+      <option name="closed" value="true" />
+      <created>1719215577780</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1719215577780</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Modified View Personal Information fetch">
+      <option name="closed" value="true" />
+      <created>1719221552446</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1719221552446</updated>
+    </task>
+    <task id="LOCAL-00010" summary="CRUD Button almost done, fetching ID done">
+      <option name="closed" value="true" />
+      <created>1719255363932</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1719255363932</updated>
+    </task>
+    <task id="LOCAL-00011" summary="SQL Update for modal and tables">
+      <option name="closed" value="true" />
+      <created>1719298884291</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1719298884291</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Time Keeping start">
+      <option name="closed" value="true" />
+      <created>1719298993973</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1719298993973</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Importing and Logger works">
+      <option name="closed" value="true" />
+      <created>1719303900475</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1719303900475</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Created a table to show inside of import">
+      <option name="closed" value="true" />
+      <created>1719306352994</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1719306352994</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Adjusted Directory, timeLog created">
+      <option name="closed" value="true" />
+      <created>1719371918373</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1719371918373</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Add just a time test (Stress App)">
+      <option name="closed" value="true" />
+      <created>1719396898269</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1719396898269</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Time Card Started">
+      <option name="closed" value="true" />
+      <created>1719463728069</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1719463728069</updated>
+    </task>
+    <task id="LOCAL-00018" summary="SVG File Directory Changed">
+      <option name="closed" value="true" />
+      <created>1719464223661</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1719464223661</updated>
+    </task>
+    <task id="LOCAL-00019" summary="SVG File Directory Changed">
+      <option name="closed" value="true" />
+      <created>1719496250167</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1719496250167</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -94,6 +360,23 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="SYSTEM PAYROLL STARTED" />
-    <option name="LAST_COMMIT_MESSAGE" value="SYSTEM PAYROLL STARTED" />
+    <MESSAGE value="Font Loader tester" />
+    <MESSAGE value="Updated from Jhay-em and Rodel" />
+    <MESSAGE value="UI Changed (otherInformationModal) and added the define methods in SQL" />
+    <MESSAGE value="Updated and Secure database connection, I guess" />
+    <MESSAGE value=".ENV Created altered the connection instead from local it connects in .env" />
+    <MESSAGE value="DB Connection updated" />
+    <MESSAGE value="QDialog has been made" />
+    <MESSAGE value="Modified View Personal Information fetch" />
+    <MESSAGE value="CRUD Button almost done, fetching ID done" />
+    <MESSAGE value="SQL Update for modal and tables" />
+    <MESSAGE value="Time Keeping start" />
+    <MESSAGE value="Importing and Logger works" />
+    <MESSAGE value="Created a table to show inside of import" />
+    <MESSAGE value="Adjusted Directory, timeLog created" />
+    <MESSAGE value="Add just a time test (Stress App)" />
+    <MESSAGE value="Time Card Started" />
+    <MESSAGE value="SVG File Directory Changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="SVG File Directory Changed" />
   </component>
 </project>

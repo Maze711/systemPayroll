@@ -3,14 +3,14 @@ from mysql.connector import Error
 import logging
 
 # Configure Logging
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 
 def getAllFetchEmployees():
     try:
         connection = create_connection()
         if connection is None:
-            logger.error("Error: Could not establish database connection.")
+            #logger.error("Error: Could not establish database connection.")
             return None
 
         cursor = connection.cursor()
@@ -20,16 +20,16 @@ def getAllFetchEmployees():
 
         cursor.execute(fetch_all_employees)
         result = cursor.fetchall()
-        logger.info("Fetched all employees successfully")
+        #logger.info("Fetched all employees successfully")
 
         return result
 
     except Error as e:
-        logger.error(f"Error fetching all employees: {e}")
+        #logger.error(f"Error fetching all employees: {e}")
         return None
 
     finally:
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            logger.info("Database connection closed")
+            #logger.info("Database connection closed")
