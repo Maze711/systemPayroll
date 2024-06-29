@@ -269,7 +269,7 @@ QTableWidget {
     <rect>
      <x>520</x>
      <y>20</y>
-     <width>191</width>
+     <width>121</width>
      <height>21</height>
     </rect>
    </property>
@@ -282,7 +282,7 @@ QTableWidget {
     </font>
    </property>
    <property name="text">
-    <string>dateFrom</string>
+    <string>Date From:</string>
    </property>
   </widget>
   <widget class="QLabel" name="lblDateTo">
@@ -290,7 +290,7 @@ QTableWidget {
     <rect>
      <x>820</x>
      <y>20</y>
-     <width>191</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
@@ -303,7 +303,55 @@ QTableWidget {
     </font>
    </property>
    <property name="text">
-    <string>dateTo</string>
+    <string>Date To:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblFrom">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>20</y>
+     <width>181</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblTo">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>20</y>
+     <width>181</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
