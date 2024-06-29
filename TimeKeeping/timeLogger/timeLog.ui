@@ -23,6 +23,13 @@
       <height>665</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">#sideBar{
 	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
@@ -35,7 +42,40 @@ color: white;
 #btnFilter{
 background-color: white;
 border-radius: 5px;
-}</string>
+}
+
+
+QCalendarWidget {
+    background-color: white; /* Background color of the calendar */
+    border: 1px solid #ccc; /* Border around the calendar */
+    selection-background-color: #3498db; /* Background color of selected dates */
+    selection-color: white; /* Text color of selected dates */
+}
+
+QCalendarWidget QToolButton {
+    height: 30px; /* Height of navigation buttons */
+    width: 70px; /* Width of navigation buttons */
+    color: black; /* Text color of navigation buttons */
+    font-size: 14px; /* Font size of navigation buttons */
+    font-family: &quot;Poppins SemiBold&quot;; /* Font family of navigation buttons */
+    background-color: transparent; /* Background color of navigation buttons */
+    border: none; /* Remove button borders */
+    padding: 5px; /* Padding inside buttons */
+}
+
+QCalendarWidget QAbstractItemView QWidget {
+    color: black; /* Text color of the date text */
+    font-size: 12px; /* Font size of the date text */
+    font-family: &quot;Poppins SemiBold&quot;; /* Font family of the date text */
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+}
+
+QCalendarWidget QAbstractItemView:disabled {
+    color: #808080; /* Disabled text color */
+}
+
+</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -98,11 +138,11 @@ border-radius: 5px;
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">color: black;</string>
      </property>
      <property name="dateTime">
       <datetime>
@@ -115,7 +155,7 @@ border-radius: 5px;
       </datetime>
      </property>
      <property name="displayFormat">
-      <string>MM/dd/yyyy</string>
+      <string>yyyy-MM-dd</string>
      </property>
      <property name="calendarPopup">
       <bool>true</bool>
@@ -152,11 +192,13 @@ border-radius: 5px;
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">color: black;</string>
      </property>
      <property name="dateTime">
       <datetime>
@@ -169,7 +211,7 @@ border-radius: 5px;
       </datetime>
      </property>
      <property name="displayFormat">
-      <string>MM/dd/yyyy</string>
+      <string>yyyy-MM-dd</string>
      </property>
      <property name="calendarPopup">
       <bool>true</bool>

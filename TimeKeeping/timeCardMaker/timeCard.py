@@ -3,7 +3,7 @@ import os
 import logging
 import time  # Importing the time module
 from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow, QLineEdit
 from PyQt5.uic import loadUi
 
 # Configure the logger
@@ -19,22 +19,41 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 class timecard(QDialog):
-    def __init__(self, filtered_data):
+    def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
-        self.setFixedSize(1153, 665)
+        self.setFixedSize(1155, 665)
         #loadUi(os.path.join(os.path.dirname(__file__), 'timecard.ui'), self)
         ui_file = (resource_path("TimeKeeping\\timeCardMaker\\timecard.ui"))
         loadUi(ui_file, self)
 
         self.filtered_data = filtered_data
-        self.populateTimeList()
 
-    def populateTimeList(self):
+        self.lblFrom = self.findChild(QLabel, 'lblFrom')
+        self.lblTo = self.findChild(QLabel, 'lblTo')
+        self.lblFrom.setText(from_date_str)
+        self.lblTo.setText(to_date_str)
+
+        # Add search functionality
+        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
+        self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
+
+        self.populateTimeList(self.filtered_data)
+
+    def populateTimeList(self, data):
         self.TimeListTable.clearContents()
-        self.TimeListTable.setRowCount(len(self.filtered_data))
+        self.TimeListTable.setRowCount(len(data))
 
-        for row_index, row_data in enumerate(self.filtered_data):
+        for row_index, row_data in enumerate(data):
             for col_index, (key, value) in enumerate(row_data.items()):
                 item = QTableWidgetItem(value)
                 item.setTextAlignment(Qt.AlignCenter)
                 self.TimeListTable.setItem(row_index, col_index, item)
+
+    def searchBioNumFunction(self):
+        search_text = self.searchBioNum.text().strip()
+        if not search_text:
+            self.populateTimeList(self.filtered_data)
+            return
+
+        filtered_data = [row for row in self.filtered_data if row['BioNum'].startswith(search_text)]
+        self.populateTimeList(filtered_data)

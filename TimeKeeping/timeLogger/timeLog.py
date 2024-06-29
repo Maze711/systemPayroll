@@ -143,19 +143,31 @@ class timelogger(QMainWindow):
         to_date_str = to_date.toString("yyyy-MM-dd")
 
         filtered_data = [
-            {
-                'EmpNumber': '',  # Replace with actual EmpNumber if available
-                'BioNum': row['bio_no'],
-                'EmpName': '',  # Replace with actual EmpName if available
-                'Trans_Date': row['trans_date'],
-                'MachCode': row['mach_code'],
-                'Check_In': '',  # Placeholder for Check_In
-                'Check_Out': ''  # Placeholder for Check_Out
-            }
-            for row in self.data
+            row for row in self.data
             if from_date_str <= row['trans_date'] <= to_date_str
         ]
 
-        self.timecard_window = timecard(filtered_data)
+        combined_data = {}
+        for row in filtered_data:
+            bio_no = row['bio_no']
+            if bio_no not in combined_data:
+                combined_data[bio_no] = {
+                    'EmpNumber': '',  # Replace with actual EmpNumber if available
+                    'BioNum': bio_no,
+                    'EmpName': '',  # Replace with actual EmpName if available
+                    'Trans_Date': row['trans_date'],
+                    'MachCode': row['mach_code'],
+                    'Check_In': 'Missing',
+                    'Check_Out': 'Missing'
+                }
+
+            if row['sched'] == 'Time IN':
+                combined_data[bio_no]['Check_In'] = row['time']
+            elif row['sched'] == 'Time OUT':
+                combined_data[bio_no]['Check_Out'] = row['time']
+
+        final_data = list(combined_data.values())
+
+        self.timecard_window = timecard(final_data, from_date_str, to_date_str)
         self.timecard_window.show()
         self.close()

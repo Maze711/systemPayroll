@@ -871,10 +871,11 @@ border: none;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -906,10 +907,11 @@ border: none;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -1110,10 +1112,11 @@ border: none;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -1158,10 +1161,11 @@ border: none;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -1223,7 +1227,7 @@ border: none;
 color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -1278,10 +1282,11 @@ color: black;</string>
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
                 </property>
                 <property name="displayFormat">
-                 <string>MM/dd/yyyy</string>
+                 <string>yyyy-MM-dd</string>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
@@ -1476,7 +1481,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1501,7 +1506,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1564,7 +1569,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1684,7 +1689,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1709,7 +1714,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1772,7 +1777,7 @@ font-family: Poppins;
            <string notr="true"/>
           </property>
           <property name="displayFormat">
-           <string>MM/dd/yyyy</string>
+           <string>yyyy-MM-dd</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -2805,10 +2810,10 @@ font-family: Poppins;
           <string notr="true"/>
          </property>
          <property name="currentSection">
-          <enum>QDateTimeEdit::MonthSection</enum>
+          <enum>QDateTimeEdit::YearSection</enum>
          </property>
          <property name="displayFormat">
-          <string>MM/dd/yyyy</string>
+          <string>yyyy-MM-dd</string>
          </property>
          <property name="calendarPopup">
           <bool>true</bool>
