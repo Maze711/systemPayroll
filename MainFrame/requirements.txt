@@ -12,3 +12,4 @@ wincertstore==0.2
 matplotlib==3.9.0
 mysql-connector-python==8.4.0
 pandas==2.2.2
+xlrd >= 2.0.1
