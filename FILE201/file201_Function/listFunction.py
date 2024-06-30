@@ -7,7 +7,7 @@ from PyQt5.uic.properties import QtCore
 from mysql.connector import Error
 
 # Configure logging
-#logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 from FILE201.Database_Connection.DBConnection import create_connection
 from FILE201.Database_Connection.modalSQLQuery import executeSearchQuery
@@ -47,13 +47,13 @@ class ListFunction:
         selected_row = self.main_window.employeeListTable.currentRow()
 
         if selected_row != -1:
-            empID = self.main_window.employeeListTable.item(selected_row, 0).text()
+            empl_no = self.main_window.employeeListTable.item(selected_row, 0).text()
             lastName = self.main_window.employeeListTable.item(selected_row, 1).text()
             firstName = self.main_window.employeeListTable.item(selected_row, 2).text()
             middleName = self.main_window.employeeListTable.item(selected_row, 3).text()
 
         # Displays the data of selected row in the Employee Basic Info Frame
-            self.main_window.txtEmployeeID.setText(empID)
+            self.main_window.txtEmployeeID.setText(empl_no)
             self.main_window.txtLastName.setText(lastName)
             self.main_window.txtFirstName.setText(firstName)
             self.main_window.txtMiddleName.setText(middleName)
@@ -111,13 +111,13 @@ class ListFunction:
 
     def fetch_employee_data(self, empID):
         query = """
-            SELECT p.empID, p.lastName, p.firstName, p.middleName, p.street, p.barangay, p.city, p.province, p.zip, 
-               p.phoneNum, p.height, p.weight, p.civilStatus, p.dateOfBirth, p.placeOfBirth, p.gender,
+            SELECT p.empl_no, p.lastName, p.firstName, p.middleName, p.street, p.barangay, p.city, p.province, p.zipcode, 
+               p.phoneNum, p.height, p.weight, p.status, p.birthday, p.placeOfBirth, p.gender,
                f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
                f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
                f.dependentsName,
-               i.sssNum, i.pagibigNum, i.philhealthNum, i.tinNum,
+               i.sss, i.tin, i.pagibig, i.philhealth,
                w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
                t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                t.techSkill3, t.certificate3, t.validationDate3,
@@ -125,17 +125,17 @@ class ListFunction:
                e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                e.highschoolYear, e.elemYear
                FROM personal_information p
-               LEFT JOIN family_background f ON p.empID = f.empID
-               LEFT JOIN list_of_id i ON p.empID = i.empID
-               LEFT JOIN work_exp w ON p.empID = w.empID
-               LEFT JOIN tech_skills t ON p.empID = t.empID
-               LEFT JOIN educ_information e ON p.empID = e.empID
-               WHERE p.empID = %s
+               LEFT JOIN family_background f ON p.empl_no = f.empID
+               LEFT JOIN list_of_id i ON p.empl_no = i.empl_no
+               LEFT JOIN work_exp w ON p.empl_no = w.empID
+               LEFT JOIN tech_skills t ON p.empl_no = t.empID
+               LEFT JOIN educ_information e ON p.empl_no = e.empID
+               WHERE p.empl_no = %s
             """
         try:
             connection = create_connection()
             if connection is None:
-                #logger.error("Error: Could not establish database connection.")
+                logger.error("Error: Could not establish database connection.")
                 return None
 
             cursor = connection.cursor()
@@ -146,19 +146,19 @@ class ListFunction:
             return None
 
         except Error as e:
-            #logger.error(f"Error fetching employee data: {e}")
+            logger.error(f"Error fetching employee data: {e}")
             return None
 
         finally:
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
-                #logger.info("Database connection closed")
+                logger.info("Database connection closed")
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
-            (empID, lastName, firstName, middleName, street, barangay, city, province, zip,
-             phoneNum, height, weight, civilStatus, dateOfBirth, placeOfBirth, gender,
+            (empl_no, lastName, firstName, middleName, street, barangay, city, province, zipcode,
+             phoneNum, height, weight, status, birthday, placeOfBirth, gender,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
              beneficiaryMiddleName, dependentsName,
@@ -170,7 +170,7 @@ class ListFunction:
              highschool_year, elem_year) = data
 
             modal.nameDisplay.setText(f"{lastName} {firstName} {middleName}")
-            modal.idDisplay.setText(str(empID))
+            modal.idDisplay.setText(empl_no)
             modal.txtLastName.setText(lastName)
             modal.txtFirstName.setText(firstName)
             modal.txtMiddleName.setText(middleName)
@@ -178,12 +178,12 @@ class ListFunction:
             modal.txtBarangay.setText(barangay)
             modal.txtCity.setText(city)
             modal.txtProvince.setText(province)
-            modal.txtZip.setText(zip)
+            modal.txtZip.setText(zipcode)
             modal.txtPhone.setText(phoneNum)
             modal.txtHeight.setText(str(height))
             modal.txtWeight.setText(str(weight))
-            modal.cmbCivil.setCurrentText(civilStatus)
-            modal.dtDateOfBirth.setDate(QDate.fromString(dateOfBirth, "MM-dd-yyyy"))
+            modal.cmbCivil.setCurrentText(status)
+            modal.dtDateOfBirth.setDate(QDate.fromString(birthday, "yyyy-MM-dd"))
             modal.txtPlace.setText(placeOfBirth)
             modal.cmbGender.setCurrentText(gender)
 
@@ -264,7 +264,7 @@ class ListFunction:
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()
         if searchText:
-            query = f"SELECT * FROM personal_information WHERE empID LIKE '%{searchText}%' OR lastName LIKE '%{searchText}%' OR firstName LIKE '%{searchText}%'"
+            query = f"SELECT * FROM personal_information WHERE empl_no LIKE '%{searchText}%' OR lastName LIKE '%{searchText}%' OR firstName LIKE '%{searchText}%'"
             self.main_window.functions.searchAndDisplay(query)
         else:
             self.main_window.functions.displayEmployees()
