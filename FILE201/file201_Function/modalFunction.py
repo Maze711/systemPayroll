@@ -123,13 +123,18 @@ class modalFunction:
                 ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
             ]
 
-            not_required_fields = ['Suffix', "Father's Last Name", "Father's First Name", "Father's Middle Name",
+            not_required_fields = ['Suffix', 'ZIP', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
+                                   'Company', 'Company Address', 'Position',
+                                   "Father's Last Name", "Father's First Name", "Father's Middle Name",
                                    "Mother's Last Name", "Mother's First Name", "Mother's Middle Name",
                                    "Spouse's Last Name", "Spouse's First Name", "Spouse's Middle Name",
                                    "Beneficiary's Last Name", "Beneficiary's First Name", "Beneficiary's Middle Name",
-                                   "Dependent's Name", 'Technical Skills #1', 'Certificate #1', 'Validation Date #1',
-                                   'Technical Skills #2', 'Certificate #2', 'Validation Date #2', 'Technical Skills #3',
-                                   'Certificate #3', 'Validation Date #3']
+                                   'HR Notes', "Dependent's Name", 'Technical Skills #1', 'Certificate #1',
+                                   'Validation Date #1', 'Technical Skills #2', 'Certificate #2', 'Validation Date #2',
+                                   'Technical Skills #3', 'Certificate #3', 'Validation Date #3', 'Elementary',
+                                   'Elementary Address', 'Elementary Graduate Year', 'High-School', 'High-School Address',
+                                   'High-School Strand', 'High-School Graduate Year', 'College', 'College Address',
+                                   'College Course', 'College Graduate Year']
 
             # Validate required fields
             for field_name, value in required_fields:

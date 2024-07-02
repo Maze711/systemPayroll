@@ -4,7 +4,7 @@ from datetime import datetime
 import logging
 
 # Configure logging
-#logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 def add_employee(data):
     try:
@@ -17,11 +17,11 @@ def add_employee(data):
 
         # Insert into personal_information table
         insert_personal_information = """
-        INSERT INTO personal_information (lastName, firstName, middleName, suffix, street, barangay, city, province, zip, 
-                                          phoneNum, height, weight, civilStatus, dateOfBirth, placeOfBirth, gender)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO personal_information (surname, firstname, mi, suffix, addr1, mobile, height, weight, civil_stat, 
+                                          birthday, placeOfBirth, gender)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        last_name = data.get('Last Name', '')
+        surname = data.get('Last Name', '')
         first_name = data.get('First Name', '')
         middle_name = data.get('Middle Name', '')
         suffix = data.get('Suffix', '')
@@ -29,23 +29,23 @@ def add_employee(data):
         barangay = data.get('Barangay', '')
         city = data.get('City', '')
         province = data.get('Province', '')
-        zip_num = data.get('ZIP', '')
+        # zip_num = data.get('ZIP', '')
+        address = f"{street} {barangay} {city} {province}"
         phone_num = data.get('Phone Number', '')
         height = data.get('Height', '')
         weight = data.get('Weight', '')
         civil_status = data.get('Civil Status', '')
-        date_of_birth = data.get('Date of Birth', '')
+        birthday = data.get('Date of Birth', '')
         place_of_birth = data.get('Place of Birth', '')
         gender = data.get('Gender', '')
-        cursor.execute(insert_personal_information, (last_name, first_name, middle_name, suffix, street, barangay, city,
-                                                     province, zip_num, phone_num, height, weight, civil_status,
-                                                     date_of_birth, place_of_birth, gender))
+        cursor.execute(insert_personal_information, (surname, first_name, middle_name, suffix, address, phone_num,
+                                                     height, weight, civil_status, birthday, place_of_birth, gender))
 
         row_id = cursor.lastrowid # Retrieves the unformatted id of the new inserted employee
 
         # Inserting custom generated employee id to the database
         generated_id = get_generated_employee_id(row_id)
-        query = "UPDATE personal_information SET empID = %s WHERE empID = %s"
+        query = "UPDATE personal_information SET emp_id = %s WHERE emp_id = %s"
         cursor.execute(query, (generated_id, row_id))
 
         #logger.info("Inserted into personal_information table")
@@ -79,14 +79,14 @@ def add_employee(data):
 
         # Insert into list_of_id table
         insert_list_of_id = """
-        INSERT INTO list_of_id (empID, sssNum, pagibigNum, philhealthNum, tinNum)
+        INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth)
         VALUES (%s, %s, %s, %s, %s)
         """
         sss_num = data.get('SSS Number', '')
         pagibig_num = data.get('Pag-IBIG Number', '')
         philhealth_num = data.get('PhilHealth Number', '')
         tin_num = data.get('TIN Number', '')
-        cursor.execute(insert_list_of_id, (generated_id, sss_num, pagibig_num, philhealth_num, tin_num))
+        cursor.execute(insert_list_of_id, (generated_id, sss_num, tin_num, pagibig_num, philhealth_num))
         #logger.info("Inserted into list_of_id table")
 
         # Insert into work_exp table
@@ -150,10 +150,12 @@ def add_employee(data):
         return True
 
     except Error as e:
-        #logger.error(f"Error adding employee: {e}")
+        logger.error(f"Error adding employee: {e}")
         print(e)
         return False
-
+    except Exception as ex:
+        logger.error(f"Error adding employee: {ex}")
+        return False
     finally:
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
