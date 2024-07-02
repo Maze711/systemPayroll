@@ -45,18 +45,6 @@ def create_connection():
         logging.exception("Error while connecting to MySQL: %s", e)
         return None
 
-def parse_birthday(birthday, workbook_datemode):
-    if birthday in ('', '-', '-   -', ' ', '  -   -', '-   -  ', ' -   -', '--'):
-        return '0000-00-00'
-    try:
-        if isinstance(birthday, float):  # Excel date format
-            return xlrd.xldate.xldate_as_datetime(birthday, workbook_datemode).strftime('%Y-%m-%d')
-        elif isinstance(birthday, str) and birthday.strip():
-            return datetime.strptime(birthday.strip(), '%d-%b-%y').strftime('%Y-%m-%d')
-    except Exception as e:
-        logging.warning(f"Error converting date: {e}")
-    return '0000-00-00'
-
 class EmployeeList(QMainWindow):
     def __init__(self):
         super(EmployeeList, self).__init__()
@@ -108,11 +96,11 @@ class EmployeeList(QMainWindow):
             sheet = workbook.sheet_by_index(0)
 
             required_personal_columns = [
-                'empl_no', 'empl_id', 'idnum', 'empl_name', 'street', 'city', 'zipcode', 'birthday', 'telephone',
-                'status'
+                'empno', 'surname', 'firstname', 'mi', 'emp_id', 'addr1', 'mobile', 'birthday',
+                'civil_stat', 'gender', 'email'
             ]
             required_list_columns = [
-                'empl_no', 'taxstat', 'sss', 'tin', 'pagibig', 'philhealth'
+                'emp_id', 'sssno', 'tin', 'pagibig', 'philhealth'
             ]
 
             headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
@@ -124,21 +112,21 @@ class EmployeeList(QMainWindow):
                 return
 
             personal_column_mapping = {
-                'empl_no': 'empl_no',
-                'empl_id': 'empl_id',
-                'idnum': 'idnum',
-                'empl_name': 'empl_name',
-                'street': 'street',
-                'city': 'city',
-                'zipcode': 'zipcode',
+                'empno': 'empno',
+                'surname': 'surname',
+                'firstname': 'firstname',
+                'mi': 'mi',
+                'emp_id': 'emp_id',
+                'addr1': 'addr1',
+                'mobile': 'mobile',
                 'birthday': 'birthday',
-                'telephone': 'telephone',
-                'status': 'status',
+                'civil_stat': 'civil_stat',
+                'gender': 'gender',
+                'email': 'email'
             }
             list_column_mapping = {
-                'empl_no': 'empl_no',
-                'taxstat': 'taxstat',
-                'sss': 'sss',
+                'emp_id': 'emp_id',
+                'sssno': 'sssno',
                 'tin': 'tin',
                 'pagibig': 'pagibig',
                 'philhealth': 'philhealth',
@@ -151,44 +139,53 @@ class EmployeeList(QMainWindow):
             cursor = connection.cursor()
 
             insert_personal_query = """
-            INSERT INTO personal_information (empl_no, empl_id, idnum, lastName, firstName, street, city, zipcode,
-                                              birthday, phoneNum, status)
+            INSERT INTO personal_information (empno, surname, firstname, mi, emp_id, addr1, mobile, birthday,
+                                              civil_stat, gender, email)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             insert_list_query = """
-            INSERT INTO list_of_id (empl_no, taxstat, sss, tin, pagibig, philhealth)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth)
+            VALUES (%s, %s, %s, %s, %s)
             """
 
             for row_idx in range(1, sheet.nrows):
                 row = sheet.row_values(row_idx)
 
-                empl_no = row[headers.index('empl_no')] if 'empl_no' in headers else ''
-                if not empl_no:
-                    logging.warning(f"Skipping row {row_idx + 1} due to missing empl_no.")
+                empno = row[headers.index('empno')] if 'empno' in headers else ''
+                if not empno:
+                    logging.warning(f"Skipping row {row_idx + 1} due to missing empno.")
                     continue
 
-                personal_data = {key: row[headers.index(personal_column_mapping[key])] if key in personal_column_mapping else '' for key in personal_column_mapping.keys()}
-                list_data = {key: row[headers.index(list_column_mapping[key])] if key in list_column_mapping else '' for key in list_column_mapping.keys()}
+                personal_data = {
+                    key: row[headers.index(personal_column_mapping[key])] if key in personal_column_mapping else '' for
+                    key in personal_column_mapping.keys()}
+                list_data = {key: row[headers.index(list_column_mapping[key])] if key in list_column_mapping else '' for
+                             key in list_column_mapping.keys()}
 
-                full_name = personal_data.get('empl_name', '')
-                if ',' in full_name:
-                    personal_data['lastName'], personal_data['firstName'] = map(str.strip, full_name.split(',', 1))
+                birthday = personal_data.get('birthday', '')
+                if birthday and isinstance(birthday, str):
+                    birthday = birthday.split(' ')[0]  # Remove time part if present
+                    try:
+                        birthday_date = datetime.strptime(birthday, '%m/%d/%Y')
+                        birthday = birthday_date.strftime('%Y-%m-%d')
+                    except ValueError:
+                        birthday = '0000-00-00'  # Set default value if parsing fails
+                elif isinstance(birthday, float):
+                    birthday = xlrd.xldate.xldate_as_datetime(birthday, workbook.datemode).strftime('%Y-%m-%d')
                 else:
-                    personal_data['lastName'] = full_name
-                    personal_data['firstName'] = ''
+                    birthday = '0000-00-00'
 
-                personal_data['birthday'] = parse_birthday(personal_data.get('birthday', ''), workbook.datemode)
+                personal_data['birthday'] = birthday
 
                 try:
                     cursor.execute(insert_personal_query, (
-                        personal_data['empl_no'], personal_data['empl_id'], personal_data['idnum'],
-                        personal_data['lastName'], personal_data['firstName'], personal_data['street'],
-                        personal_data['city'], personal_data['zipcode'], personal_data['birthday'],
-                        personal_data['telephone'], personal_data['status']))
+                        personal_data['empno'], personal_data['surname'], personal_data['firstname'],
+                        personal_data['mi'], personal_data['emp_id'], personal_data['addr1'], personal_data['mobile'],
+                        personal_data['birthday'], personal_data['civil_stat'], personal_data['gender'],
+                        personal_data['email']))
                     cursor.execute(insert_list_query, (
-                        list_data['empl_no'], list_data['taxstat'], list_data['sss'], list_data['tin'],
-                        list_data['pagibig'], list_data['philhealth']))
+                        list_data['emp_id'], list_data['sssno'], list_data['tin'], list_data['pagibig'],
+                        list_data['philhealth']))
 
                     connection.commit()
 
@@ -208,3 +205,4 @@ class EmployeeList(QMainWindow):
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
+
