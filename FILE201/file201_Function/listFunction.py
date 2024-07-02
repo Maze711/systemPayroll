@@ -170,7 +170,7 @@ class ListFunction:
              highschool_year, elem_year) = data
 
             modal.nameDisplay.setText(f"{surname} {firstname} {mi}")
-            modal.idDisplay.setText(emp_id)
+            modal.idDisplay.setText(str(emp_id))
             modal.txtLastName.setText(surname)
             modal.txtFirstName.setText(firstname)
             modal.txtMiddleName.setText(mi)
