@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
+    <width>1345</width>
     <height>665</height>
    </rect>
   </property>
@@ -16,6 +16,12 @@
   <property name="styleSheet">
    <string notr="true">#Dialog{
 	background-color: white;
+}
+
+#btnCheckSched {
+	background-color: &quot;#344273&quot;;
+	color: white;
+	border-radius: 5px;
 }</string>
   </property>
   <widget class="QTableWidget" name="TimeListTable">
@@ -23,7 +29,7 @@
     <rect>
      <x>0</x>
      <y>60</y>
-     <width>1161</width>
+     <width>1351</width>
      <height>610</height>
     </rect>
    </property>
@@ -108,6 +114,9 @@ QTableWidget {
    <property name="cornerButtonEnabled">
     <bool>false</bool>
    </property>
+   <property name="columnCount">
+    <number>9</number>
+   </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
    </attribute>
@@ -178,6 +187,12 @@ QTableWidget {
      <string>Check_Out</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Schedule</string>
+    </property>
+   </column>
+   <column/>
   </widget>
   <widget class="QFrame" name="searchBar">
    <property name="geometry">
@@ -267,7 +282,7 @@ QTableWidget {
   <widget class="QLabel" name="lblDateFrom">
    <property name="geometry">
     <rect>
-     <x>520</x>
+     <x>730</x>
      <y>20</y>
      <width>121</width>
      <height>21</height>
@@ -288,7 +303,7 @@ QTableWidget {
   <widget class="QLabel" name="lblDateTo">
    <property name="geometry">
     <rect>
-     <x>820</x>
+     <x>1030</x>
      <y>20</y>
      <width>91</width>
      <height>21</height>
@@ -309,7 +324,7 @@ QTableWidget {
   <widget class="QLabel" name="lblFrom">
    <property name="geometry">
     <rect>
-     <x>640</x>
+     <x>850</x>
      <y>20</y>
      <width>181</width>
      <height>21</height>
@@ -333,7 +348,7 @@ QTableWidget {
   <widget class="QLabel" name="lblTo">
    <property name="geometry">
     <rect>
-     <x>910</x>
+     <x>1120</x>
      <y>20</y>
      <width>181</width>
      <height>21</height>
@@ -352,6 +367,39 @@ QTableWidget {
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCheckSched">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>10</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Check Schedule</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
    </property>
   </widget>
  </widget>

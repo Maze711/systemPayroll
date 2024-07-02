@@ -264,7 +264,7 @@ class ListFunction:
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()
         if searchText:
-            query = f"SELECT * FROM personal_information WHERE empID LIKE '%{searchText}%' OR lastName LIKE '%{searchText}%' OR firstName LIKE '%{searchText}%'"
+            query = f"SELECT * FROM personal_information WHERE emp_id LIKE '%{searchText}%' OR surname LIKE '%{searchText}%' OR firstname LIKE '%{searchText}%'"
             self.main_window.functions.searchAndDisplay(query)
         else:
             self.main_window.functions.displayEmployees()

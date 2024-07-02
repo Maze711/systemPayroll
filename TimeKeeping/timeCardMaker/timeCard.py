@@ -5,6 +5,7 @@ import time  # Importing the time module
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow, QLineEdit
 from PyQt5.uic import loadUi
+from TimeKeeping.checkSched import chkSched
 
 # Configure the logger
 #logging.basicConfig(level=logging.INFO, filename='file_import.log',
@@ -21,7 +22,7 @@ def resource_path(relative_path):
 class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
-        self.setFixedSize(1155, 665)
+        self.setFixedSize(1345, 665)
         #loadUi(os.path.join(os.path.dirname(__file__), 'timecard.ui'), self)
         ui_file = (resource_path("TimeKeeping\\timeCardMaker\\timecard.ui"))
         loadUi(ui_file, self)
@@ -36,6 +37,8 @@ class timecard(QDialog):
         # Add search functionality
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
         self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
+
+        self.btnCheckSched.clicked.connect(self.CheckSched)
 
         self.populateTimeList(self.filtered_data)
 
@@ -57,3 +60,8 @@ class timecard(QDialog):
 
         filtered_data = [row for row in self.filtered_data if row['BioNum'].startswith(search_text)]
         self.populateTimeList(filtered_data)
+
+    def CheckSched(self):
+        dialog = chkSched()
+        dialog.exec_()
+
