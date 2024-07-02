@@ -205,41 +205,41 @@ class modalFunction:
 
             "Dependent's Name": self.main_window.txtDependent.text(),
 
-            'SSS Number': self.main_window.sssTextEdit.toPlainText(),
-            'Pag-IBIG Number': self.main_window.pagibigTextEdit.toPlainText(),
-            'PhilHealth Number': self.main_window.philHealthTextEdit.toPlainText(),
-            'TIN Number': self.main_window.tinTextEdit.toPlainText(),
+            'SSS Number': self.main_window.sssTextEdit.text(),
+            'Pag-IBIG Number': self.main_window.pagibigTextEdit.text(),
+            'PhilHealth Number': self.main_window.philHealthTextEdit.text(),
+            'TIN Number': self.main_window.tinTextEdit.text(),
 
             'HR Notes': self.main_window.hrNoteTextEdit.toPlainText(),
 
             'Date From': self.main_window.dateStart_4.date().toString("MM-dd-yyyy"),
             'Date To': self.main_window.dateEnd_4.date().toString("MM-dd-yyyy"),
-            'Company': self.main_window.companyTextEdit_4.toPlainText(),
-            'Company Address': self.main_window.addressTextEdit_4.toPlainText(),
-            'Position': self.main_window.positionTextEdit_4.toPlainText(),
+            'Company': self.main_window.companyTextEdit_4.text(),
+            'Company Address': self.main_window.addressTextEdit_4.text(),
+            'Position': self.main_window.positionTextEdit_4.text(),
 
-            'Technical Skills #1': self.main_window.techSkillTextEdit.toPlainText(),
-            'Certificate #1': self.main_window.certiTextEdit1.toPlainText(),
+            'Technical Skills #1': self.main_window.techSkillTextEdit.text(),
+            'Certificate #1': self.main_window.certiTextEdit1.text(),
             'Validation Date #1': self.main_window.validationDate1.date().toString("MM-dd-yyyy"),
 
-            'Technical Skills #2': self.main_window.techSkillTextEdit_2.toPlainText(),
-            'Certificate #2': self.main_window.certiTextEdit1_2.toPlainText(),
+            'Technical Skills #2': self.main_window.techSkillTextEdit_2.text(),
+            'Certificate #2': self.main_window.certiTextEdit1_2.text(),
             'Validation Date #2': self.main_window.validationDate1_2.date().toString("MM-dd-yyyy"),
 
-            'Technical Skills #3': self.main_window.techSkillTextEdit_3.toPlainText(),
-            'Certificate #3': self.main_window.certiTextEdit1_3.toPlainText(),
+            'Technical Skills #3': self.main_window.techSkillTextEdit_3.text(),
+            'Certificate #3': self.main_window.certiTextEdit1_3.text(),
             'Validation Date #3': self.main_window.validationDate1_3.date().toString("MM-dd-yyyy"),
 
-            'College': self.main_window.collegeTextEdit.toPlainText(),
-            'High-School': self.main_window.highTextEdit.toPlainText(),
-            'Elementary': self.main_window.elemTextEdit.toPlainText(),
+            'College': self.main_window.collegeTextEdit.text(),
+            'High-School': self.main_window.highTextEdit.text(),
+            'Elementary': self.main_window.elemTextEdit.text(),
 
-            'College Address': self.main_window.addressTextEdit.toPlainText(),
-            'High-School Address': self.main_window.addressTextEdit2.toPlainText(),
-            'Elementary Address': self.main_window.addressTextEdit3.toPlainText(),
+            'College Address': self.main_window.addressTextEdit.text(),
+            'High-School Address': self.main_window.addressTextEdit2.text(),
+            'Elementary Address': self.main_window.addressTextEdit3.text(),
 
-            'College Course': self.main_window.courseTextEdit.toPlainText(),
-            'High-School Strand': self.main_window.courseTextEdit2.toPlainText(),
+            'College Course': self.main_window.courseTextEdit.text(),
+            'High-School Strand': self.main_window.courseTextEdit2.text(),
 
             'College Graduate Year': self.main_window.schoolYear.date().toString("MM-dd-yyyy"),
             'High-School Graduate Year': self.main_window.schoolYear2.date().toString("MM-dd-yyyy"),
@@ -248,7 +248,7 @@ class modalFunction:
         return data
 
     def save_Employee(self):
-        empID = self.main_window.lblTitle_3.text()
+        empID = self.main_window.idDisplay.text()
         data = self.gather_form_data()
 
         success = save_employee(empID, data)

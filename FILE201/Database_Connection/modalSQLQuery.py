@@ -174,14 +174,12 @@ def save_employee(empID, data):
         # Update personal_information table
         update_personal_information = """
         UPDATE personal_information
-        SET lastName = %s, firstName = %s, middleName = %s, suffix = %s, street = %s, barangay = %s, city = %s, 
-            province = %s, zip = %s, phoneNum = %s, height = %s, weight = %s, civilStatus = %s, dateOfBirth = %s, 
-            placeOfBirth = %s, gender = %s
-        WHERE empID = %s
+        SET surname = %s, firstname = %s, mi = %s, suffix = %s, addr1 = %s, mobile = %s, height = %s, weight = %s, 
+            civil_stat = %s, birthday = %s, placeOfBirth = %s, gender = %s
+        WHERE emp_id = %s
         """
         cursor.execute(update_personal_information, (data['lastName'], data['firstName'], data['middleName'], data['suffix'],
-                                                     data['Street'], data['Barangay'], data['City'], data['Province'],
-                                                     data['ZIP'], data['Phone Number'], data['Height'], data['Weight'],
+                                                     data['Street'], data['Phone Number'], data['Height'], data['Weight'],
                                                      data['Civil Status'], data['Date of Birth'], data['Place of Birth'],
                                                      data['Gender'], empID))
 
@@ -203,10 +201,10 @@ def save_employee(empID, data):
         # Update list_of_id table
         update_list_of_id = """
         UPDATE list_of_id
-        SET sssNum = %s, pagibigNum = %s, philhealthNum = %s, tinNum = %s
-        WHERE empID = %s
+        SET sssno = %s, tin = %s, pagibig = %s, philhealth = %s
+        WHERE emp_id = %s
         """
-        cursor.execute(update_list_of_id, (data['SSS Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], data['TIN Number'], empID))
+        cursor.execute(update_list_of_id, (data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empID))
 
         # Update work_exp table
         update_work_exp = """
