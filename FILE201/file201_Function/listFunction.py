@@ -47,13 +47,13 @@ class ListFunction:
         selected_row = self.main_window.employeeListTable.currentRow()
 
         if selected_row != -1:
-            empl_no = self.main_window.employeeListTable.item(selected_row, 0).text()
+            emp_id = self.main_window.employeeListTable.item(selected_row, 0).text()
             lastName = self.main_window.employeeListTable.item(selected_row, 1).text()
             firstName = self.main_window.employeeListTable.item(selected_row, 2).text()
             middleName = self.main_window.employeeListTable.item(selected_row, 3).text()
 
         # Displays the data of selected row in the Employee Basic Info Frame
-            self.main_window.txtEmployeeID.setText(empl_no)
+            self.main_window.txtEmployeeID.setText(emp_id)
             self.main_window.txtLastName.setText(lastName)
             self.main_window.txtFirstName.setText(firstName)
             self.main_window.txtMiddleName.setText(middleName)
@@ -111,13 +111,13 @@ class ListFunction:
 
     def fetch_employee_data(self, empID):
         query = """
-            SELECT p.empl_no, p.lastName, p.firstName, p.middleName, p.street, p.barangay, p.city, p.province, p.zipcode, 
-               p.phoneNum, p.height, p.weight, p.status, p.birthday, p.placeOfBirth, p.gender,
+            SELECT p.emp_id, p.surname, p.firstname, p.mi, p.addr1,
+               p.mobile, p.height, p.weight, p.civil_stat, p.birthday, p.placeOfBirth, p.gender,
                f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
                f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
                f.dependentsName,
-               i.sss, i.tin, i.pagibig, i.philhealth,
+               i.sssno, i.tin, i.pagibig, i.philhealth,
                w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
                t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                t.techSkill3, t.certificate3, t.validationDate3,
@@ -125,12 +125,12 @@ class ListFunction:
                e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                e.highschoolYear, e.elemYear
                FROM personal_information p
-               LEFT JOIN family_background f ON p.empl_no = f.empID
-               LEFT JOIN list_of_id i ON p.empl_no = i.empl_no
-               LEFT JOIN work_exp w ON p.empl_no = w.empID
-               LEFT JOIN tech_skills t ON p.empl_no = t.empID
-               LEFT JOIN educ_information e ON p.empl_no = e.empID
-               WHERE p.empl_no = %s
+               LEFT JOIN family_background f ON p.emp_id = f.empID
+               LEFT JOIN list_of_id i ON p.emp_id = i.emp_id
+               LEFT JOIN work_exp w ON p.emp_id = w.empID
+               LEFT JOIN tech_skills t ON p.emp_id = t.empID
+               LEFT JOIN educ_information e ON p.emp_id = e.empID
+               WHERE p.emp_id = %s
             """
         try:
             connection = create_connection()
@@ -157,29 +157,26 @@ class ListFunction:
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
-            (empl_no, lastName, firstName, middleName, street, barangay, city, province, zipcode,
-             phoneNum, height, weight, status, birthday, placeOfBirth, gender,
+            (emp_id, surname, firstname, mi, addr1,
+             mobile, height, weight, status, birthday, placeOfBirth, gender,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
              beneficiaryMiddleName, dependentsName,
-             sss_num, pagibig_num, philhealth_num, tin_num,
+             sssno, pagibig_num, philhealth_num, tin_num,
              from_date, to_date, company_name, company_add, position,
              tech_skill1, certificate_skill1, validation_date1, tech_skill2, certificate_skill2, validation_date2,
              tech_skill3, certificate_skill3, validation_date3, college, high_school, elem_school,
              college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
              highschool_year, elem_year) = data
 
-            modal.nameDisplay.setText(f"{lastName} {firstName} {middleName}")
-            modal.idDisplay.setText(empl_no)
-            modal.txtLastName.setText(lastName)
-            modal.txtFirstName.setText(firstName)
-            modal.txtMiddleName.setText(middleName)
-            modal.txtStreet.setText(street)
-            modal.txtBarangay.setText(barangay)
-            modal.txtCity.setText(city)
-            modal.txtProvince.setText(province)
-            modal.txtZip.setText(zipcode)
-            modal.txtPhone.setText(phoneNum)
+            modal.nameDisplay.setText(f"{surname} {firstname} {mi}")
+            modal.idDisplay.setText(emp_id)
+            modal.txtLastName.setText(surname)
+            modal.txtFirstName.setText(firstname)
+            modal.txtMiddleName.setText(mi)
+            modal.txtStreet.setText(addr1)
+            # txtbrgy, txtcity, txtprov, txtzip has been removed
+            modal.txtPhone.setText(mobile)
             modal.txtHeight.setText(str(height))
             modal.txtWeight.setText(str(weight))
             modal.cmbCivil.setCurrentText(status)
@@ -201,7 +198,7 @@ class ListFunction:
             modal.txtBeneMiddle.setText(beneficiaryMiddleName)
             modal.txtDependent.setText(dependentsName)
 
-            modal.sssTextEdit.setText(sss_num)
+            modal.sssTextEdit.setText(sssno)
             modal.pagibigTextEdit.setText(pagibig_num)
             modal.philHealthTextEdit.setText(philhealth_num)
             modal.tinTextEdit.setText(tin_num)
@@ -264,7 +261,7 @@ class ListFunction:
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()
         if searchText:
-            query = f"SELECT * FROM personal_information WHERE empl_no LIKE '%{searchText}%' OR lastName LIKE '%{searchText}%' OR firstName LIKE '%{searchText}%'"
+            query = f"SELECT * FROM personal_information WHERE emp_id LIKE '%{searchText}%' OR surname LIKE '%{searchText}%' OR firstname LIKE '%{searchText}%'"
             self.main_window.functions.searchAndDisplay(query)
         else:
             self.main_window.functions.displayEmployees()
