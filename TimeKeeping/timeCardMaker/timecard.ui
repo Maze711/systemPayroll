@@ -76,7 +76,7 @@ QTableWidget {
 }</string>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
+    <enum>Qt::ScrollBarAsNeeded</enum>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -121,7 +121,7 @@ QTableWidget {
     <bool>true</bool>
    </attribute>
    <attribute name="horizontalHeaderCascadingSectionResizes">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <attribute name="horizontalHeaderMinimumSectionSize">
     <number>50</number>
@@ -136,7 +136,7 @@ QTableWidget {
     <bool>false</bool>
    </attribute>
    <attribute name="horizontalHeaderStretchLastSection">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
@@ -192,7 +192,11 @@ QTableWidget {
      <string>Schedule</string>
     </property>
    </column>
-   <column/>
+   <column>
+    <property name="text">
+     <string/>
+    </property>
+   </column>
   </widget>
   <widget class="QFrame" name="searchBar">
    <property name="geometry">

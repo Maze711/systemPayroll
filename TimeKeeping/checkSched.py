@@ -16,6 +16,6 @@ def resource_path(relative_path):
 class chkSched(QDialog):
     def __init__(self):
         super(chkSched, self).__init__()
-        self.setFixedSize(731, 409)
+        self.setFixedSize(731, 405)
         ui_file = (resource_path("TimeKeeping\\Schedule.ui"))
         loadUi(ui_file, self)

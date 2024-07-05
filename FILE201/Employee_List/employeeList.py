@@ -30,6 +30,7 @@ def resource_path(relative_path):
 def create_connection():
     try:
         connection = mysql.connector.connect(
+            #host='127.0.0.1',
             host='localhost',
             database='file201',
             user='root',
