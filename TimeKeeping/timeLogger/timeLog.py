@@ -135,6 +135,7 @@ class timelogger(QMainWindow):
         self.createCard.setEnabled(bool(filtered_data))
 
         end_time = time.time()  # End timing
+        logging.info(filtered_data)
         logging.info(f"showFilteredData took {end_time - start_time:.4f} seconds")
 
     def populateTable(self, data):
@@ -197,8 +198,8 @@ class timelogger(QMainWindow):
                             'EmpName': emp_name,
                             'Trans_Date': row['trans_date'],
                             'MachCode': row['mach_code'],
-                            'Check_In': 'Missing',
-                            'Check_Out': 'Missing',
+                            'Check_In': None,  # Initialize Check_In and Check_Out to None
+                            'Check_Out': None,
                             'Schedule': sche_name  # Assign sche_name to the Schedule key
                         }
 
@@ -207,7 +208,11 @@ class timelogger(QMainWindow):
                     elif row['sched'] == 'Time OUT':
                         combined_data[bio_no]['Check_Out'] = row['time']
 
-                final_data = list(combined_data.values())
+                # After processing, ensure Check_In and Check_Out are correctly paired
+                final_data = []
+                for emp_data in combined_data.values():
+                    if emp_data['Check_In'] and emp_data['Check_Out']:
+                        final_data.append(emp_data)
 
                 self.timecard_window = timecard(final_data, from_date_str, to_date_str)
                 self.timecard_window.show()
