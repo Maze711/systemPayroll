@@ -10,12 +10,11 @@ def resource_path(relative_path):
         base_path = sys._MEIPASS2
     except Exception:
         base_path = os.path.abspath(".")
-
     return os.path.join(base_path, relative_path)
 
 class chkSched(QDialog):
     def __init__(self):
         super(chkSched, self).__init__()
         self.setFixedSize(731, 405)
-        ui_file = (resource_path("TimeKeeping\\Schedule.ui"))
+        ui_file = (resource_path("TimeKeeping\\schedValidator\\Schedule.ui"))
         loadUi(ui_file, self)
