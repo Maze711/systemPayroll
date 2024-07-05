@@ -379,7 +379,7 @@ QTableWidget {
      <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderCascadingSectionResizes">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>50</number>
@@ -394,7 +394,7 @@ QTableWidget {
      <bool>false</bool>
     </attribute>
     <attribute name="horizontalHeaderStretchLastSection">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>

@@ -22,6 +22,7 @@ load_dotenv(dotenv_path)
 
 def create_connection():
     try:
+        #host = os.getenv('DB_HOST', '192.168.1.2')
         host = os.getenv('DB_HOST', '127.0.0.1')
         database = os.getenv('DB_DATABASE')
         user = os.getenv('DB_USER')
