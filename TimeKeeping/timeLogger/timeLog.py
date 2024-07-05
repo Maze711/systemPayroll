@@ -178,11 +178,15 @@ class timelogger(QMainWindow):
                 cursor = connection.cursor()
                 for row in filtered_data:
                     bio_no = row['bio_no']
-                    query = f"SELECT surname, firstname, mi FROM personal_information WHERE emp_id = '{bio_no}'"
+                    query = f"SELECT pi.surname, pi.firstname, pi.mi, ep.sche_name " \
+                            f"FROM personal_information pi " \
+                            f"JOIN emp_posnsched ep ON pi.emp_id = ep.emp_id " \
+                            f"WHERE pi.emp_id = '{bio_no}'"
                     cursor.execute(query)
                     result = cursor.fetchone()
                     if result:
-                        emp_name = ' '.join(result)
+                        surname, firstname, mi, sche_name = result
+                        emp_name = f"{surname}, {firstname} {mi}"
                     else:
                         emp_name = "Unknown"
 
@@ -194,7 +198,8 @@ class timelogger(QMainWindow):
                             'Trans_Date': row['trans_date'],
                             'MachCode': row['mach_code'],
                             'Check_In': 'Missing',
-                            'Check_Out': 'Missing'
+                            'Check_Out': 'Missing',
+                            'Schedule': sche_name  # Assign sche_name to the Schedule key
                         }
 
                     if row['sched'] == 'Time IN':
@@ -209,7 +214,7 @@ class timelogger(QMainWindow):
                 self.close()
 
             except Error as e:
-                logging.error(f"Error fetching employee name: {e}")
+                logging.error(f"Error fetching employee data: {e}")
 
             finally:
                 cursor.close()
