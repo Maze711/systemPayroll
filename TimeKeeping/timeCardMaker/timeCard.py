@@ -1,11 +1,9 @@
 import sys
 import os
-import logging
-import time  # Importing the time module
-from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow, QLineEdit
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit
 from PyQt5.uic import loadUi
-from TimeKeeping.checkSched import chkSched
+from TimeKeeping.schedValidator.checkSched import chkSched
 
 # Configure the logger
 #logging.basicConfig(level=logging.INFO, filename='file_import.log',
