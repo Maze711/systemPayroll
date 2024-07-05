@@ -19,6 +19,7 @@ from FILE201.file201_Function.excelExport import fetch_personal_information, exp
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS2
@@ -26,6 +27,7 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 
 def create_connection():
     try:
@@ -45,6 +47,7 @@ def create_connection():
     except Error as e:
         logging.exception("Error while connecting to MySQL: %s", e)
         return None
+
 
 class EmployeeList(QMainWindow):
     def __init__(self):
@@ -97,21 +100,42 @@ class EmployeeList(QMainWindow):
             sheet = workbook.sheet_by_index(0)
 
             required_personal_columns = [
-                'empno', 'surname', 'firstname', 'mi', 'emp_id', 'addr1', 'mobile', 'birthday',
-                'civil_stat', 'gender', 'email'
+                'empno', 'surname', 'firstname', 'mi', 'emp_id', 'addr1', 'mobile', 'birthday', 'civil_stat', 'gender',
+                'email', 'emer_name', 'height', 'weight', 'birthplace', 'religion', 'citizenship', 'blood_type'
             ]
             required_list_columns = [
-                'emp_id', 'sssno', 'tin', 'pagibig', 'philhealth'
+                'emp_id', 'sssno', 'tin', 'pagibig', 'philhealth', 'txcode'
+            ]
+            required_posnsched_columns = [
+                'emp_id', 'pos_descr', 'sche_name', 'dept_name'
+            ]
+            required_empstatus_columns = [
+                'emp_id', 'status'
+            ]
+            required_vacnsic_columns = [
+                'emp_id', 'max_vacn', 'max_sick'
+            ]
+            required_acct_columns = [
+                'emp_id', 'paycode', 'acct_no', 'bank_code', 'cola'
             ]
 
             headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
-            missing_columns = [col for col in required_personal_columns + required_list_columns if col not in headers]
+            missing_columns = [col for col in required_acct_columns + required_personal_columns + required_list_columns
+                               + required_posnsched_columns + required_empstatus_columns + required_vacnsic_columns
+                               if col not in headers]
 
             if missing_columns:
                 error_message = f"Missing required columns: {', '.join(missing_columns)}"
                 QMessageBox.warning(self, "Missing Columns", error_message)
                 return
 
+            acct_no_mapping = {
+                'emp_id': 'emp_id',
+                'paycode': 'paycode',
+                'acct_no': 'acct_no',
+                'bank_code': 'bank_code',
+                'cola': 'cola'
+            }
             personal_column_mapping = {
                 'empno': 'empno',
                 'surname': 'surname',
@@ -123,7 +147,14 @@ class EmployeeList(QMainWindow):
                 'birthday': 'birthday',
                 'civil_stat': 'civil_stat',
                 'gender': 'gender',
-                'email': 'email'
+                'email': 'email',
+                'emer_name': 'emer_name',
+                'height': 'height',
+                'weight': 'weight',
+                'birthplace': 'birthplace',
+                'religion': 'religion',
+                'citizenship': 'citizenship',
+                'blood_type': 'blood_type'
             }
             list_column_mapping = {
                 'emp_id': 'emp_id',
@@ -131,6 +162,22 @@ class EmployeeList(QMainWindow):
                 'tin': 'tin',
                 'pagibig': 'pagibig',
                 'philhealth': 'philhealth',
+                'txcode': 'txcode'
+            }
+            posnnsched_column_mapping = {
+                'emp_id': 'emp_id',
+                'pos_descr': 'pos_descr',
+                'sche_name': 'sche_name',
+                'dept_name': 'dept_name'
+            }
+            empstatus_column_mapping = {
+                'emp_id': 'emp_id',
+                'status': 'status'
+            }
+            vacnsic_column_mapping = {
+                'emp_id': 'emp_id',
+                'max_vacn': 'max_vacn',
+                'max_sick': 'max_sick'
             }
 
             connection = create_connection()
@@ -139,14 +186,28 @@ class EmployeeList(QMainWindow):
 
             cursor = connection.cursor()
 
-            insert_personal_query = """
-            INSERT INTO personal_information (empno, surname, firstname, mi, emp_id, addr1, mobile, birthday,
-                                              civil_stat, gender, email)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_list_query = """
-            INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth)
+            insert_acc_no_query = """
+            INSERT INTO acct_no (emp_id, paycode, acct_no, bank_code, cola)
             VALUES (%s, %s, %s, %s, %s)
+            """
+            insert_personal_query = """INSERT INTO personal_information (empno, surname, firstname, mi, emp_id, 
+            addr1, emer_name, mobile, height, weight, civil_stat, birthday, birthplace, religion, gender, email, 
+            blood_type, citizenship) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            insert_list_query = """
+            INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth, txcode)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """
+            insert_posnsched_query = """
+            INSERT INTO emp_posnsched (emp_id, pos_descr, sche_name, dept_name)
+            VALUES (%s, %s, %s, %s)
+            """
+            insert_emp_stauts_query = """
+            INSERT INTO emp_status (emp_id, status)
+            VALUES (%s, %s)
+            """
+            insert_vacnsic_query = """
+            INSERT INTO vacn_sick_count (emp_id, max_vacn, max_sick)
+            VALUES (%s, %s, %s)
             """
 
             for row_idx in range(1, sheet.nrows):
@@ -157,11 +218,25 @@ class EmployeeList(QMainWindow):
                     logging.warning(f"Skipping row {row_idx + 1} due to missing empno.")
                     continue
 
+                acc_no = {key: row[headers.index(acct_no_mapping[key])] if key in acct_no_mapping else '' for
+                             key in acct_no_mapping.keys()}
                 personal_data = {
                     key: row[headers.index(personal_column_mapping[key])] if key in personal_column_mapping else '' for
                     key in personal_column_mapping.keys()}
                 list_data = {key: row[headers.index(list_column_mapping[key])] if key in list_column_mapping else '' for
                              key in list_column_mapping.keys()}
+                posnsched_data = {
+                    key: row[headers.index(posnnsched_column_mapping[key])] if key in posnnsched_column_mapping else ''
+                    for key in posnnsched_column_mapping.keys()
+                }
+                empstatus_data = {
+                    key: row[headers.index(empstatus_column_mapping[key])] if key in empstatus_column_mapping else ''
+                    for key in empstatus_column_mapping.keys()
+                }
+                vacnsic_data = {
+                    key: row[headers.index(vacnsic_column_mapping[key])] if key in vacnsic_column_mapping else ''
+                    for key in vacnsic_column_mapping.keys()
+                }
 
                 birthday = personal_data.get('birthday', '')
                 if birthday and isinstance(birthday, str):
@@ -181,12 +256,34 @@ class EmployeeList(QMainWindow):
                 try:
                     cursor.execute(insert_personal_query, (
                         personal_data['empno'], personal_data['surname'], personal_data['firstname'],
-                        personal_data['mi'], personal_data['emp_id'], personal_data['addr1'], personal_data['mobile'],
-                        personal_data['birthday'], personal_data['civil_stat'], personal_data['gender'],
-                        personal_data['email']))
+                        personal_data['mi'], personal_data['emp_id'], personal_data['addr1'],
+                        personal_data['emer_name'],
+                        personal_data['mobile'], personal_data['height'], personal_data['weight'],
+                        personal_data['birthday'],
+                        personal_data['birthplace'], personal_data['religion'], personal_data['citizenship'],
+                        personal_data['blood_type'], personal_data['civil_stat'], personal_data['gender'],
+                        personal_data['email']
+                    ))
+                    cursor.execute(insert_acc_no_query, (
+                        acc_no['emp_id'], acc_no['paycode'], acc_no['acct_no'], acc_no['bank_code'],
+                        acc_no['cola']
+                    ))
                     cursor.execute(insert_list_query, (
                         list_data['emp_id'], list_data['sssno'], list_data['tin'], list_data['pagibig'],
-                        list_data['philhealth']))
+                        list_data['philhealth'], list_data['txcode']
+                    ))
+                    cursor.execute(insert_posnsched_query, (
+                        posnsched_data['emp_id'], posnsched_data['pos_descr'], posnsched_data['sche_name'],
+                        posnsched_data['dept_name']
+                    ))
+                    cursor.execute(insert_emp_stauts_query, (
+                        empstatus_data['emp_id'],
+                        empstatus_data['status']
+                    ))
+                    cursor.execute(insert_vacnsic_query, (
+                        vacnsic_data['emp_id'], vacnsic_data['max_vacn'],
+                        vacnsic_data['max_sick']
+                    ))
 
                     connection.commit()
 
@@ -206,4 +303,3 @@ class EmployeeList(QMainWindow):
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
-
