@@ -115,7 +115,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>9</number>
+    <number>8</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -190,11 +190,6 @@ QTableWidget {
    <column>
     <property name="text">
      <string>Schedule</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string/>
     </property>
    </column>
   </widget>

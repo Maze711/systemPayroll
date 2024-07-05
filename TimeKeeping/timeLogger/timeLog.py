@@ -7,7 +7,8 @@ import logging
 
 import time
 from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, \
+    QTableWidget, QMainWindow, QHeaderView
 from PyQt5.uic import loadUi
 
 from TimeKeeping.timeCardMaker.timeCard import timecard
@@ -69,6 +70,10 @@ class timelogger(QMainWindow):
 
         self.processContent()
         self.loadData()
+
+        # Make the column headers fixed size
+        self.employeeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.employeeListTable.horizontalHeader().setStretchLastSection(True)
 
     def processContent(self):
         start_time = time.time()  # Start timing

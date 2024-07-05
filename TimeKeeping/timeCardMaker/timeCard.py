@@ -6,7 +6,7 @@ from mysql.connector import Error
 import logging
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView
 from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 
@@ -50,6 +50,10 @@ class timecard(QDialog):
         loadUi(ui_file, self)
 
         self.filtered_data = filtered_data
+
+        # Make the column headers fixed size
+        self.TimeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.TimeListTable.horizontalHeader().setStretchLastSection(True)
 
         self.lblFrom = self.findChild(QLabel, 'lblFrom')
         self.lblTo = self.findChild(QLabel, 'lblTo')
