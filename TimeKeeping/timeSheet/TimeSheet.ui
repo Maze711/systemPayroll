@@ -53,7 +53,6 @@ QHeaderView::section {
 	color: white;
 	background-color: &quot;#344273&quot;;
 	border: none;
-	padding-bottom: 20px;
 }
 
 /* Style for the selected row */

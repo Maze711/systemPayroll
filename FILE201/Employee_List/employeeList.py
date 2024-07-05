@@ -8,7 +8,7 @@ import xlrd
 import logging
 
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView
 from PyQt5.uic import loadUi
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
@@ -57,6 +57,10 @@ class EmployeeList(QMainWindow):
         loadUi(ui_file, self)
 
         self.frame_layout = QVBoxLayout(self.frameAnnualSummary)
+
+        # Make the column headers fixed size
+        self.employeeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.employeeListTable.horizontalHeader().setStretchLastSection(True)
 
         self.canvas = MplCanvas(self, width=5, height=4, dpi=100)
         self.frame_layout.addWidget(self.canvas)
