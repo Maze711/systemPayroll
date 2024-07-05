@@ -140,7 +140,6 @@ class timelogger(QMainWindow):
         self.createCard.setEnabled(bool(filtered_data))
 
         end_time = time.time()  # End timing
-        logging.info(filtered_data)
         logging.info(f"showFilteredData took {end_time - start_time:.4f} seconds")
 
     def populateTable(self, data):
@@ -167,14 +166,11 @@ class timelogger(QMainWindow):
         logging.info(f"populateTable took {end_time - start_time:.4f} seconds")
 
     def openTimeCard(self):
-        from_date = self.fromCalendar.date()
-        to_date = self.toCalendar.date()
-        from_date_str = from_date.toString("yyyy-MM-dd")
-        to_date_str = to_date.toString("yyyy-MM-dd")
-
+        from_date = self.fromCalendar.date().toString("yyyy-MM-dd")
+        to_date = self.toCalendar.date().toString("yyyy-MM-dd")
         filtered_data = [
             row for row in self.data
-            if from_date_str <= row['trans_date'] <= to_date_str
+            if from_date <= row['trans_date'] <= to_date
         ]
 
         combined_data = {}
@@ -184,6 +180,18 @@ class timelogger(QMainWindow):
                 cursor = connection.cursor()
                 for row in filtered_data:
                     bio_no = row['bio_no']
+                    trans_date = row['trans_date']
+                    mach_code = row['mach_code']
+                    if row['sched'] == 'Time IN':
+                        time_in = row['time']
+                        time_out = None
+                    elif row['sched'] == 'Time OUT':
+                        time_out = row['time']
+                        time_in = None
+                    else:
+                        time_in = None
+                        time_out = None
+
                     query = f"SELECT pi.surname, pi.firstname, pi.mi, ep.sche_name " \
                             f"FROM personal_information pi " \
                             f"JOIN emp_posnsched ep ON pi.emp_id = ep.emp_id " \
@@ -195,39 +203,39 @@ class timelogger(QMainWindow):
                         emp_name = f"{surname}, {firstname} {mi}"
                     else:
                         emp_name = "Unknown"
+                        sche_name = "Unknown"
 
-                    if bio_no not in combined_data:
-                        combined_data[bio_no] = {
+                    # Create a key based on bio_no and trans_date to handle unique entries per date
+                    key = (bio_no, trans_date)
+                    if key not in combined_data:
+                        combined_data[key] = {
                             'EmpNumber': '',  # Replace with actual EmpNumber if available
                             'BioNum': bio_no,
                             'EmpName': emp_name,
-                            'Trans_Date': row['trans_date'],
-                            'MachCode': row['mach_code'],
-                            'Check_In': None,  # Initialize Check_In and Check_Out to None
-                            'Check_Out': None,
+                            'Trans_Date': trans_date,
+                            'MachCode': mach_code,
+                            'Check_In': time_in if time_in else 'Missing',
+                            'Check_Out': time_out if time_out else 'Missing',
                             'Schedule': sche_name  # Assign sche_name to the Schedule key
                         }
+                    else:
+                        if time_in:
+                            combined_data[key]['Check_In'] = time_in
+                        if time_out:
+                            combined_data[key]['Check_Out'] = time_out
 
-                    if row['sched'] == 'Time IN':
-                        combined_data[bio_no]['Check_In'] = row['time']
-                    elif row['sched'] == 'Time OUT':
-                        combined_data[bio_no]['Check_Out'] = row['time']
-
-                # After processing, ensure Check_In and Check_Out are correctly paired
-                final_data = []
-                for emp_data in combined_data.values():
-                    if emp_data['Check_In'] and emp_data['Check_Out']:
-                        final_data.append(emp_data)
-
-                self.timecard_window = timecard(final_data, from_date_str, to_date_str)
+                final_data = list(combined_data.values())
+                self.timecard_window = timecard(final_data, from_date, to_date)
                 self.timecard_window.show()
                 self.close()
 
-            except Error as e:
-                logging.error(f"Error fetching employee data: {e}")
+            except Exception as e:
+                logging.error(f"Error fetching or processing data: {e}")
 
             finally:
-                cursor.close()
-                connection.close()
+                if 'cursor' in locals() and cursor is not None:
+                    cursor.close()
+                if 'connection' in locals() and connection is not None:
+                    connection.close()
         else:
             logging.error("Failed to establish database connection")
