@@ -1,13 +1,18 @@
 import sys
 import os
+import mysql.connector
+from mysql.connector import Error
+
+import logging
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit
 from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 
 # Configure the logger
-#logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    #format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, filename='file_import.log',
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 def resource_path(relative_path):
     try:
@@ -16,6 +21,25 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+def create_connection():
+    try:
+        connection = mysql.connector.connect(
+            #host='127.0.0.1',
+            host='localhost',
+            database='file201',
+            user='root',
+            password=''
+        )
+        if connection.is_connected():
+            logging.info("Connected to MySQL database")
+            return connection
+        else:
+            logging.info("Failed to connect to MySQL database")
+            return None
+    except Error as e:
+        logging.exception("Error while connecting to MySQL: %s", e)
+        return None
 
 class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):

@@ -1,6 +1,10 @@
 import sys
 import os
+import mysql.connector
+from mysql.connector import Error
+
 import logging
+
 import time
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow
@@ -9,8 +13,8 @@ from PyQt5.uic import loadUi
 from TimeKeeping.timeCardMaker.timeCard import timecard
 
 # Configure the logger
-#logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    #format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, filename='file_import.log',
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 def resource_path(relative_path):
     try:
@@ -19,6 +23,26 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+def create_connection():
+    try:
+        connection = mysql.connector.connect(
+            #host='127.0.0.1',
+            host='localhost',
+            database='file201',
+            user='root',
+            password=''
+        )
+        if connection.is_connected():
+            logging.info("Connected to MySQL database")
+            return connection
+        else:
+            logging.info("Failed to connect to MySQL database")
+            return None
+    except Error as e:
+        logging.exception("Error while connecting to MySQL: %s", e)
+        return None
+
 
 class timelogger(QMainWindow):
     def __init__(self, content):
@@ -148,26 +172,47 @@ class timelogger(QMainWindow):
         ]
 
         combined_data = {}
-        for row in filtered_data:
-            bio_no = row['bio_no']
-            if bio_no not in combined_data:
-                combined_data[bio_no] = {
-                    'EmpNumber': '',  # Replace with actual EmpNumber if available
-                    'BioNum': bio_no,
-                    'EmpName': '',  # Replace with actual EmpName if available
-                    'Trans_Date': row['trans_date'],
-                    'MachCode': row['mach_code'],
-                    'Check_In': 'Missing',
-                    'Check_Out': 'Missing'
-                }
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                for row in filtered_data:
+                    bio_no = row['bio_no']
+                    query = f"SELECT surname, firstname, mi FROM personal_information WHERE emp_id = '{bio_no}'"
+                    cursor.execute(query)
+                    result = cursor.fetchone()
+                    if result:
+                        emp_name = ' '.join(result)
+                    else:
+                        emp_name = "Unknown"
 
-            if row['sched'] == 'Time IN':
-                combined_data[bio_no]['Check_In'] = row['time']
-            elif row['sched'] == 'Time OUT':
-                combined_data[bio_no]['Check_Out'] = row['time']
+                    if bio_no not in combined_data:
+                        combined_data[bio_no] = {
+                            'EmpNumber': '',  # Replace with actual EmpNumber if available
+                            'BioNum': bio_no,
+                            'EmpName': emp_name,
+                            'Trans_Date': row['trans_date'],
+                            'MachCode': row['mach_code'],
+                            'Check_In': 'Missing',
+                            'Check_Out': 'Missing'
+                        }
 
-        final_data = list(combined_data.values())
+                    if row['sched'] == 'Time IN':
+                        combined_data[bio_no]['Check_In'] = row['time']
+                    elif row['sched'] == 'Time OUT':
+                        combined_data[bio_no]['Check_Out'] = row['time']
 
-        self.timecard_window = timecard(final_data, from_date_str, to_date_str)
-        self.timecard_window.show()
-        self.close()
+                final_data = list(combined_data.values())
+
+                self.timecard_window = timecard(final_data, from_date_str, to_date_str)
+                self.timecard_window.show()
+                self.close()
+
+            except Error as e:
+                logging.error(f"Error fetching employee name: {e}")
+
+            finally:
+                cursor.close()
+                connection.close()
+        else:
+            logging.error("Failed to establish database connection")
