@@ -28,7 +28,6 @@ class MainWindow(QMainWindow):
 
         # Window Connections
         self.btnEmployeeList.clicked.connect(self.employeeWindow)
-        self.btnTimeKeeping.clicked.connect(self.dialogWindow)
 
         # Additional buttons list
         self.additional_buttons = []
@@ -64,6 +63,9 @@ class MainWindow(QMainWindow):
             button.installEventFilter(self)
             self.additional_buttons.append(button)
 
+            if text == "Time Logger":
+                button.clicked.connect(self.openTimeLogger)
+
     def checkAndHideAdditionalButtons(self):
         if not (self.btnTimeKeeping.underMouse() or any(button.underMouse() for button in self.additional_buttons)):
             self.hideAdditionalButtons()
@@ -78,7 +80,7 @@ class MainWindow(QMainWindow):
         self.employee_list_window = EmployeeList()
         self.employee_list_window.show()
 
-    def dialogWindow(self):
+    def openTimeLogger(self):
         self.timekeeping_window = dialogModal()
         self.timekeeping_window.show()
 
