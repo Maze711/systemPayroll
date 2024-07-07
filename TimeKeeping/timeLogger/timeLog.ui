@@ -284,6 +284,19 @@ border-radius: 5px;</string>
       </size>
      </property>
     </widget>
+    <widget class="QProgressBar" name="progressBar">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>630</y>
+       <width>311</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+    </widget>
    </widget>
    <widget class="QTableWidget" name="employeeListTable">
     <property name="geometry">
