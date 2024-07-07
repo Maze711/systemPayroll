@@ -59,9 +59,9 @@ background-color: rgb(96, 206, 114);
      <widget class="QProgressBar" name="progressBar">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>130</y>
-        <width>118</width>
+        <x>10</x>
+        <y>250</y>
+        <width>391</width>
         <height>23</height>
        </rect>
       </property>
