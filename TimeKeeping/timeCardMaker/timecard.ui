@@ -18,10 +18,15 @@
 	background-color: white;
 }
 
-#btnCheckSched {
+#btnCheckSched{
 	background-color: &quot;#344273&quot;;
 	color: white;
 	border-radius: 5px;
+}
+
+#btnTimeSheet{
+border-radius: 5px;
+background-color: rgb(96, 206, 114);
 }</string>
   </property>
   <widget class="QTableWidget" name="TimeListTable">
@@ -281,7 +286,7 @@ QTableWidget {
   <widget class="QLabel" name="lblDateFrom">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>760</x>
      <y>20</y>
      <width>121</width>
      <height>21</height>
@@ -302,7 +307,7 @@ QTableWidget {
   <widget class="QLabel" name="lblDateTo">
    <property name="geometry">
     <rect>
-     <x>1030</x>
+     <x>1060</x>
      <y>20</y>
      <width>91</width>
      <height>21</height>
@@ -323,7 +328,7 @@ QTableWidget {
   <widget class="QLabel" name="lblFrom">
    <property name="geometry">
     <rect>
-     <x>850</x>
+     <x>880</x>
      <y>20</y>
      <width>181</width>
      <height>21</height>
@@ -347,7 +352,7 @@ QTableWidget {
   <widget class="QLabel" name="lblTo">
    <property name="geometry">
     <rect>
-     <x>1120</x>
+     <x>1150</x>
      <y>20</y>
      <width>181</width>
      <height>21</height>
@@ -371,7 +376,7 @@ QTableWidget {
   <widget class="QPushButton" name="btnCheckSched">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>390</x>
      <y>10</y>
      <width>171</width>
      <height>41</height>
@@ -393,6 +398,39 @@ QTableWidget {
    </property>
    <property name="text">
     <string>Check Schedule</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnTimeSheet">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>10</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Create Time Sheet</string>
    </property>
    <property name="iconSize">
     <size>
