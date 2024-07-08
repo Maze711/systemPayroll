@@ -6,10 +6,10 @@ from mysql.connector import Error
 import logging
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView, QPushButton
 from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
-
+from TimeKeeping.timeSheet.timeSheet import TimeSheet
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -60,6 +60,9 @@ class timecard(QDialog):
         self.lblFrom.setText(from_date_str)
         self.lblTo.setText(to_date_str)
 
+        self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
+        self.timeSheetButton.clicked.connect(self.createTimeSheet)
+
         # Add search functionality
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
         self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
@@ -91,3 +94,6 @@ class timecard(QDialog):
         dialog = chkSched()
         dialog.exec_()
 
+    def createTimeSheet(self):
+        dialog = TimeSheet()
+        dialog.exec_()
