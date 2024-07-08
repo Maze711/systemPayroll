@@ -370,10 +370,10 @@ QTableWidget {
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderMinimumSectionSize">
-    <number>50</number>
+    <number>23</number>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>500</number>
+    <number>31</number>
    </attribute>
    <attribute name="verticalHeaderHighlightSections">
     <bool>false</bool>
