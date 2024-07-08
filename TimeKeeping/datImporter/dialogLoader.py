@@ -1,6 +1,7 @@
 import sys
 import os
 import logging
+import time
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar
@@ -18,6 +19,7 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -37,7 +39,7 @@ class FileProcessor(QObject):
                 lines = file.readlines()
 
             total_lines = len(lines)
-            chunk_size = 100
+            chunk_size = 200
             chunks = [lines[i:i + chunk_size] for i in range(0, total_lines, chunk_size)]
 
             for i, chunk in enumerate(chunks):
@@ -45,6 +47,7 @@ class FileProcessor(QObject):
                 with open(chunk_file, 'w') as cf:
                     cf.writelines(chunk)
                 self.progressChanged.emit(int(((i + 1) / len(chunks)) * 100))
+                QThread.msleep(1)
 
             self.finished.emit(temp_folder)
         except Exception as e:
@@ -78,18 +81,31 @@ class dialogModal(QDialog):
 
     def updateProgressBar(self, value):
         self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.setFormat("Finishing Up..")
+        QApplication.processEvents()
 
     def fileProcessingFinished(self, temp_folder):
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
         self.processChunks(temp_folder)
+        self.deleteChunkFiles(temp_folder)
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
+
+    def deleteChunkFiles(self, temp_folder):
+        for file_name in os.listdir(temp_folder):
+            file_path = os.path.join(temp_folder, file_name)
+            try:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            except Exception as e:
+                logging.error(f"Failed to delete file {file_path}: {e}")
 
     def processChunks(self, temp_folder):
         content = ""
@@ -102,3 +118,4 @@ class dialogModal(QDialog):
     def showData(self, content):
         self.time_logger = timelogger(content)  # Pass the content to timelogger
         self.time_logger.show()
+        self.close()
