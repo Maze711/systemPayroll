@@ -114,5 +114,16 @@ class timecard(QDialog):
             )
 
     def createTimeSheet(self):
-        dialog = TimeSheet()
+        dataMerge = [
+            {
+                'BioNum': item['BioNum'],
+                'EmpName': item['EmpName'],
+                'MachCode': item['MachCode'],
+                'Check_In': item['Check_In'],
+                'Check_Out': item['Check_Out']
+            }
+            for item in self.filtered_data
+        ]
+
+        dialog = TimeSheet(dataMerge)
         dialog.exec_()
