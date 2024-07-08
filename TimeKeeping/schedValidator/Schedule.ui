@@ -49,29 +49,12 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>Employee Name:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="empName">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>60</y>
-        <width>311</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="lblBio">
@@ -87,25 +70,27 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>Bio No.:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="bioNum">
+     <widget class="QLabel" name="bioNumTxt">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>90</x>
         <y>100</y>
-        <width>241</width>
+        <width>231</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>poppins</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -125,6 +110,8 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -134,9 +121,9 @@ font-family: poppins;
      <widget class="QLabel" name="lblBio_3">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>170</x>
         <y>141</y>
-        <width>91</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
@@ -144,63 +131,65 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>Time Out:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="timeIn">
+     <widget class="QLabel" name="timeInTxt">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>89</x>
         <y>141</y>
-        <width>90</width>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>poppins</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="timeOut">
+     <widget class="QLabel" name="timeOutTxt">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>141</y>
-        <width>90</width>
+        <x>280</x>
+        <y>140</y>
+        <width>71</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>poppins</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>00:00:00</string>
       </property>
      </widget>
-     <widget class="QLabel" name="typeDay">
+     <widget class="QLabel" name="typeDayTxt">
       <property name="geometry">
        <rect>
         <x>160</x>
         <y>220</y>
-        <width>151</width>
+        <width>181</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>poppins</family>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -212,7 +201,7 @@ font-family: poppins;
        <rect>
         <x>0</x>
         <y>220</y>
-        <width>151</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -220,13 +209,18 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>Type of Day:</string>
       </property>
      </widget>
-     <widget class="QDateEdit" name="dateEdit">
+     <widget class="QDateEdit" name="dateOfWork">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>160</x>
@@ -258,10 +252,71 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
        <string>Date of Work:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="empNameTxt">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>50</y>
+        <width>301</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>260</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Hours Worked:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="hoursWorkedTxt">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>260</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
@@ -281,6 +336,8 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -300,6 +357,8 @@ font-family: poppins;
        <font>
         <family>poppins</family>
         <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -370,7 +429,7 @@ font-family: poppins;
        </rect>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_2">
+     <widget class="QComboBox" name="typeOfDayCb">
       <property name="geometry">
        <rect>
         <x>170</x>
@@ -379,6 +438,27 @@ font-family: poppins;
         <height>22</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <item>
+       <property name="text">
+        <string>Ordinary Day</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Regular Holiday</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Special Holiday</string>
+       </property>
+      </item>
      </widget>
     </widget>
    </item>
