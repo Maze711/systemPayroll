@@ -427,7 +427,7 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Regular Day</string>
+     <string>Ordinary Day</string>
     </property>
    </column>
    <column>

@@ -39,14 +39,16 @@ class TimeSheet(QDialog):
             emp_name_item.setToolTip(row['EmpName'])  # Set tooltip to show full name on hover
             check_in_item = QTableWidgetItem(row['Check_In'])
             check_out_item = QTableWidgetItem(row['Check_Out'])
+            hours_worked_item = QTableWidgetItem(row['Hours_Worked'])
 
-            for item in [bio_num_item, emp_name_item, check_in_item, check_out_item]:
+            for item in [bio_num_item, emp_name_item, check_in_item, check_out_item, hours_worked_item]:
                 item.setTextAlignment(Qt.AlignCenter)
 
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee
             self.TimeSheetTable.setItem(i, 3, check_in_item)  # Check In
             self.TimeSheetTable.setItem(i, 4, check_out_item)  # Check Out
+            self.TimeSheetTable.setItem(i, 5, hours_worked_item)  # Hours Worked
 
             if i == 0:
                 self.lblMach.setText(row['MachCode'])

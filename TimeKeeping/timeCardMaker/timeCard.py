@@ -5,11 +5,12 @@ from mysql.connector import Error
 
 import logging
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTime
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView, QPushButton, QMessageBox
 from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet
+
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -25,7 +26,6 @@ def resource_path(relative_path):
 def create_connection():
     try:
         connection = mysql.connector.connect(
-            #host='127.0.0.1',
             host='localhost',
             database='file201',
             user='root',
@@ -45,8 +45,7 @@ class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
         self.setFixedSize(1345, 665)
-        #loadUi(os.path.join(os.path.dirname(__file__), 'timecard.ui'), self)
-        ui_file = (resource_path("TimeKeeping\\timeCardMaker\\timecard.ui"))
+        ui_file = resource_path("TimeKeeping\\timeCardMaker\\timecard.ui")
         loadUi(ui_file, self)
 
         self.filtered_data = filtered_data
@@ -67,6 +66,7 @@ class timecard(QDialog):
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
         self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
 
+        self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
         self.btnCheckSched.clicked.connect(self.CheckSched)
 
         self.populateTimeList(self.filtered_data)
@@ -90,6 +90,29 @@ class timecard(QDialog):
         filtered_data = [row for row in self.filtered_data if row['BioNum'].startswith(search_text)]
         self.populateTimeList(filtered_data)
 
+    def getTotalHoursWorked(self, time_start, time_end):
+        if time_start == 'Missing' or time_end == 'Missing':
+            return "Unknown"
+
+        timeIn = QTime.fromString(time_start, "HH:mm:ss")
+        timeOut = QTime.fromString(time_end, "HH:mm:ss")
+
+        # Converting time into seconds
+        seconds_in_a_day = 24 * 60 * 60
+        time_in_seconds = (timeIn.hour() * 3600) + (timeIn.minute() * 60) + timeIn.second()
+        time_out_seconds = (timeOut.hour() * 3600) + (timeOut.minute() * 60) + timeOut.second()
+
+        # Handle crossing midnight
+        if time_out_seconds < time_in_seconds:
+            time_out_seconds += seconds_in_a_day
+
+        time_difference = time_out_seconds - time_in_seconds
+
+        # Convert the difference to hours
+        work_duration_in_hours = time_difference / 3600
+
+        return round(work_duration_in_hours, 2)
+
     def CheckSched(self):
         selected_row = self.TimeListTable.currentRow()
 
@@ -102,7 +125,9 @@ class timecard(QDialog):
             checkOut = self.TimeListTable.item(selected_row, 6).text()
             sched = self.TimeListTable.item(selected_row, 7).text()
 
-            data = (empNum, bioNum, empName, trans_date, checkIn, checkOut, sched)
+            total_hours = self.getTotalHoursWorked(checkIn, checkOut)
+
+            data = (empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours)
 
             dialog = chkSched(data)
             dialog.exec_()
@@ -120,7 +145,8 @@ class timecard(QDialog):
                 'EmpName': item['EmpName'],
                 'MachCode': item['MachCode'],
                 'Check_In': item['Check_In'],
-                'Check_Out': item['Check_Out']
+                'Check_Out': item['Check_Out'],
+                'Hours_Worked': str(self.getTotalHoursWorked(item['Check_In'], item['Check_Out']))
             }
             for item in self.filtered_data
         ]
