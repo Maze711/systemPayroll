@@ -41,6 +41,39 @@ def create_connection():
         logging.exception("Error while connecting to MySQL: %s", e)
         return None
 
+def getTypeOfDate(trans_date):
+    try:
+        connection = mysql.connector.connect(
+            host='localhost',
+            database='timekeeping',  # Connect to the timekeeping database
+            user='root',
+            password=''
+        )
+        if connection.is_connected():
+            logging.info("Connected to MySQL database")
+            cursor = connection.cursor()
+
+            fetch_type_of_date = "SELECT dateType FROM type_of_dates WHERE date = %s"
+            cursor.execute(fetch_type_of_date, (trans_date, ))
+
+            result = cursor.fetchone()
+            if result:
+                return result[0]  # Return the dateType if found
+
+            return "Ordinary Day"  # Default to Ordinary Day if no match found
+        else:
+            logging.info("Failed to connect to MySQL database")
+            return "Ordinary Day"  # Default to Ordinary Day on connection failure
+
+    except Error as e:
+        logging.error(f"Error fetching type of date: {e}")
+        return "Ordinary Day"  # Return Ordinary Day on error
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            logging.info("Database connection closed")
+
 class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
@@ -139,17 +172,45 @@ class timecard(QDialog):
             )
 
     def createTimeSheet(self):
-        dataMerge = [
-            {
+        dataMerge = []
+        for item in self.filtered_data:
+            checkIn = item['Check_In']
+            checkOut = item['Check_Out']
+            trans_date = item['Trans_Date']
+            workHours = item['workHours'] if 'workHours' in item else 'N/A'
+            hoursWorked = self.getTotalHoursWorked(checkIn, checkOut)
+            difference = ''  # Initialize as empty string
+
+            # Check the type of the date
+            dateType = getTypeOfDate(trans_date)
+            if dateType == "Ordinary Day" and workHours != 'N/A' and hoursWorked != 'Unknown':
+                try:
+                    workHours = round(float(workHours), 2)
+                    hoursWorked = round(float(hoursWorked), 2)
+                    difference = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
+                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
+                                 f"Difference: {difference:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating difference for BioNum: {item['BioNum']}")
+                    difference = 'N/A'
+
+            dataMerge.append({
                 'BioNum': item['BioNum'],
                 'EmpName': item['EmpName'],
                 'MachCode': item['MachCode'],
-                'Check_In': item['Check_In'],
-                'Check_Out': item['Check_Out'],
-                'Hours_Worked': str(self.getTotalHoursWorked(item['Check_In'], item['Check_Out']))
-            }
-            for item in self.filtered_data
-        ]
+                'Check_In': checkIn,
+                'Check_Out': checkOut,
+                'Hours_Worked': str(hoursWorked),
+                'Difference': difference
+            })
 
-        dialog = TimeSheet(dataMerge)
-        dialog.exec_()
+        for data in dataMerge:
+            logging.info(data)
+
+        # Now pass the dataMerge into the TimeSheet dialog
+        try:
+            dialog = TimeSheet(dataMerge)
+            dialog.exec_()
+        except Exception as e:
+            logging.error(f"Error opening TimeSheet dialog: {e}")

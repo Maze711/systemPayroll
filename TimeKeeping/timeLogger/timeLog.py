@@ -6,6 +6,7 @@ from mysql.connector import Error
 import logging
 
 import time
+from datetime import datetime
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, \
     QTableWidget, QMainWindow, QHeaderView
@@ -17,6 +18,7 @@ from TimeKeeping.timeCardMaker.timeCard import timecard
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS2
@@ -24,6 +26,7 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 
 def create_connection():
     try:
@@ -192,18 +195,26 @@ class timelogger(QMainWindow):
                         time_in = None
                         time_out = None
 
-                    query = f"SELECT pi.surname, pi.firstname, pi.mi, ep.sche_name " \
+                    query = f"SELECT ep.sched_in, ep.sched_out, pi.surname, pi.firstname, pi.mi " \
                             f"FROM personal_information pi " \
                             f"JOIN emp_posnsched ep ON pi.emp_id = ep.emp_id " \
                             f"WHERE pi.emp_id = '{bio_no}'"
                     cursor.execute(query)
                     result = cursor.fetchone()
                     if result:
-                        surname, firstname, mi, sche_name = result
+                        sched_in, sched_out, surname, firstname, mi = result
                         emp_name = f"{surname}, {firstname} {mi}"
+                        if sched_in and sched_out:
+                            workHours = self.calculateHoursWorked(sched_in, sched_out)
+                        else:
+                            workHours = "Unknown"
+                        sche_name = f"{sched_in} - {sched_out}"
+
                     else:
                         emp_name = "Unknown"
                         sche_name = "Unknown"
+                        workHours = "Unknown"
+                        logging.warning(f"No data found for Employee ID: {bio_no}")
 
                     # Create a key based on bio_no and trans_date to handle unique entries per date
                     key = (bio_no, trans_date)
@@ -216,7 +227,8 @@ class timelogger(QMainWindow):
                             'MachCode': mach_code,
                             'Check_In': time_in if time_in else 'Missing',
                             'Check_Out': time_out if time_out else 'Missing',
-                            'Schedule': sche_name  # Assign sche_name to the Schedule key
+                            'Schedule': sche_name,  # Assign formatted schedule name
+                            'workHours': workHours  # Assign calculated hours worked
                         }
                     else:
                         if time_in:
@@ -239,3 +251,16 @@ class timelogger(QMainWindow):
                     connection.close()
         else:
             logging.error("Failed to establish database connection")
+
+    def calculateHoursWorked(self, sched_in, sched_out):
+        try:
+            sched_in_time = datetime.strptime(sched_in, "%I:%M %p")  # Example: '6:00 am'
+            sched_out_time = datetime.strptime(sched_out, "%I:%M %p")  # Example: '2:00 pm'
+
+            diff = sched_out_time - sched_in_time
+            hours_worked = diff.total_seconds() / 3600
+
+            return round(hours_worked, 2)
+
+        except ValueError:
+            return "Invalid Time Format"

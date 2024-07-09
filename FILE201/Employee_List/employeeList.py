@@ -92,6 +92,21 @@ class EmployeeList(QMainWindow):
             if file_name:
                 export_to_excel(data_dict, file_name)
 
+    def format_time(self, time_str):
+        # Function to format time strings like "6am" or "2pm" to "6:00 am" or "2:00 pm"
+        try:
+            time_obj = datetime.strptime(time_str, '%I%p')  # Parse time string
+            formatted_time = time_obj.strftime('%I:%M %p')  # Format to "6:00 am" or "2:00 pm"
+            return formatted_time
+        except ValueError:
+            try:
+                # Attempt to parse with minutes included
+                time_obj = datetime.strptime(time_str, '%I:%M %p')
+                formatted_time = time_obj.strftime('%I:%M %p')
+                return formatted_time
+            except ValueError:
+                return time_str
+
     def importIntoDB(self):
         try:
             options = QFileDialog.Options()
@@ -119,12 +134,9 @@ class EmployeeList(QMainWindow):
             required_vacnsic_columns = [
                 'emp_id', 'max_vacn', 'max_sick'
             ]
-            required_acct_columns = [
-                'emp_id', 'paycode', 'acct_no', 'bank_code', 'cola'
-            ]
 
             headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
-            missing_columns = [col for col in required_acct_columns + required_personal_columns + required_list_columns
+            missing_columns = [col for col in required_personal_columns + required_list_columns
                                + required_posnsched_columns + required_empstatus_columns + required_vacnsic_columns
                                if col not in headers]
 
@@ -133,6 +145,13 @@ class EmployeeList(QMainWindow):
                 QMessageBox.warning(self, "Missing Columns", error_message)
                 return
 
+            connection = create_connection()
+            if connection is None:
+                return
+
+            cursor = connection.cursor()
+
+            # Original mappings and queries
             acct_no_mapping = {
                 'emp_id': 'emp_id',
                 'paycode': 'paycode',
@@ -168,7 +187,7 @@ class EmployeeList(QMainWindow):
                 'philhealth': 'philhealth',
                 'txcode': 'txcode'
             }
-            posnnsched_column_mapping = {
+            posnsched_column_mapping = {
                 'emp_id': 'emp_id',
                 'pos_descr': 'pos_descr',
                 'sche_name': 'sche_name',
@@ -184,35 +203,32 @@ class EmployeeList(QMainWindow):
                 'max_sick': 'max_sick'
             }
 
-            connection = create_connection()
-            if connection is None:
-                return
-
-            cursor = connection.cursor()
-
             insert_acc_no_query = """
-            INSERT INTO acct_no (emp_id, paycode, acct_no, bank_code, cola)
-            VALUES (%s, %s, %s, %s, %s)
-            """
-            insert_personal_query = """INSERT INTO personal_information (empno, surname, firstname, mi, emp_id, 
-            addr1, emer_name, mobile, height, weight, civil_stat, birthday, birthplace, religion, gender, email, 
-            blood_type, citizenship) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+               INSERT INTO acct_no (emp_id, paycode, acct_no, bank_code, cola)
+               VALUES (%s, %s, %s, %s, %s)
+               """
+            insert_personal_query = """
+               INSERT INTO personal_information (empno, surname, firstname, mi, emp_id, addr1, emer_name, mobile, height,
+                                                 weight, civil_stat, birthday, birthplace, religion, gender, email,
+                                                 blood_type, citizenship)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+               """
             insert_list_query = """
-            INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth, txcode)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """
+               INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth, txcode)
+               VALUES (%s, %s, %s, %s, %s, %s)
+               """
             insert_posnsched_query = """
-            INSERT INTO emp_posnsched (emp_id, pos_descr, sche_name, dept_name)
-            VALUES (%s, %s, %s, %s)
-            """
+               INSERT INTO emp_posnsched (emp_id, pos_descr, sched_in, sched_out, dept_name)
+               VALUES (%s, %s, %s, %s, %s)
+               """
             insert_emp_stauts_query = """
-            INSERT INTO emp_status (emp_id, status)
-            VALUES (%s, %s)
-            """
+               INSERT INTO emp_status (emp_id, status)
+               VALUES (%s, %s)
+               """
             insert_vacnsic_query = """
-            INSERT INTO vacn_sick_count (emp_id, max_vacn, max_sick)
-            VALUES (%s, %s, %s)
-            """
+               INSERT INTO vacn_sick_count (emp_id, max_vacn, max_sick)
+               VALUES (%s, %s, %s)
+               """
 
             for row_idx in range(1, sheet.nrows):
                 row = sheet.row_values(row_idx)
@@ -223,15 +239,15 @@ class EmployeeList(QMainWindow):
                     continue
 
                 acc_no = {key: row[headers.index(acct_no_mapping[key])] if key in acct_no_mapping else '' for
-                             key in acct_no_mapping.keys()}
+                          key in acct_no_mapping.keys()}
                 personal_data = {
                     key: row[headers.index(personal_column_mapping[key])] if key in personal_column_mapping else '' for
                     key in personal_column_mapping.keys()}
                 list_data = {key: row[headers.index(list_column_mapping[key])] if key in list_column_mapping else '' for
                              key in list_column_mapping.keys()}
                 posnsched_data = {
-                    key: row[headers.index(posnnsched_column_mapping[key])] if key in posnnsched_column_mapping else ''
-                    for key in posnnsched_column_mapping.keys()
+                    key: row[headers.index(posnsched_column_mapping[key])] if key in posnsched_column_mapping else ''
+                    for key in posnsched_column_mapping.keys()
                 }
                 empstatus_data = {
                     key: row[headers.index(empstatus_column_mapping[key])] if key in empstatus_column_mapping else ''
@@ -242,60 +258,34 @@ class EmployeeList(QMainWindow):
                     for key in vacnsic_column_mapping.keys()
                 }
 
-                birthday = personal_data.get('birthday', '')
-                if birthday and isinstance(birthday, str):
-                    birthday = birthday.split(' ')[0]  # Remove time part if present
-                    try:
-                        birthday_date = datetime.strptime(birthday, '%m/%d/%Y')
-                        birthday = birthday_date.strftime('%Y-%m-%d')
-                    except ValueError:
-                        birthday = '0000-00-00'  # Set default value if parsing fails
-                elif isinstance(birthday, float):
-                    birthday = xlrd.xldate.xldate_as_datetime(birthday, workbook.datemode).strftime('%Y-%m-%d')
-                else:
-                    birthday = '0000-00-00'
-
-                personal_data['birthday'] = birthday
-
                 try:
-                    cursor.execute(insert_personal_query, (
-                        personal_data['empno'], personal_data['surname'], personal_data['firstname'],
-                        personal_data['mi'], personal_data['emp_id'], personal_data['addr1'],
-                        personal_data['emer_name'],
-                        personal_data['mobile'], personal_data['height'], personal_data['weight'],
-                        personal_data['birthday'],
-                        personal_data['birthplace'], personal_data['religion'], personal_data['citizenship'],
-                        personal_data['blood_type'], personal_data['civil_stat'], personal_data['gender'],
-                        personal_data['email']
-                    ))
-                    cursor.execute(insert_acc_no_query, (
-                        acc_no['emp_id'], acc_no['paycode'], acc_no['acct_no'], acc_no['bank_code'],
-                        acc_no['cola']
-                    ))
-                    cursor.execute(insert_list_query, (
-                        list_data['emp_id'], list_data['sssno'], list_data['tin'], list_data['pagibig'],
-                        list_data['philhealth'], list_data['txcode']
-                    ))
-                    cursor.execute(insert_posnsched_query, (
-                        posnsched_data['emp_id'], posnsched_data['pos_descr'], posnsched_data['sche_name'],
-                        posnsched_data['dept_name']
-                    ))
-                    cursor.execute(insert_emp_stauts_query, (
-                        empstatus_data['emp_id'],
-                        empstatus_data['status']
-                    ))
-                    cursor.execute(insert_vacnsic_query, (
-                        vacnsic_data['emp_id'], vacnsic_data['max_vacn'],
-                        vacnsic_data['max_sick']
-                    ))
+                    cursor.execute(insert_acc_no_query, tuple(acc_no.values()))
+                    cursor.execute(insert_personal_query, tuple(personal_data.values()))
+                    cursor.execute(insert_list_query, tuple(list_data.values()))
+
+                    # Split sche_name and remove "sched" if present
+                    if 'sche_name' in posnsched_data:
+                        sche_name = posnsched_data['sche_name'].strip().lower()
+                        if sche_name.endswith(' sched'):
+                            sche_name = sche_name[:-6].strip()  # Remove 'sched' and trim whitespace
+
+                        # Split by dash and get the parts
+                        sche_name_parts = sche_name.split('-')
+                        sched_in = self.format_time(sche_name_parts[0].strip())
+                        sched_out = self.format_time(sche_name_parts[1].strip()) if len(sche_name_parts) > 1 else ''
+
+                        cursor.execute(insert_posnsched_query, (
+                            posnsched_data['emp_id'], posnsched_data['pos_descr'], sched_in, sched_out,
+                            posnsched_data['dept_name']
+                        ))
+
+                    cursor.execute(insert_emp_stauts_query, tuple(empstatus_data.values()))
+                    cursor.execute(insert_vacnsic_query, tuple(vacnsic_data.values()))
 
                     connection.commit()
 
                 except Error as e:
                     logging.error(f"Error inserting row {row_idx + 1} into database: {e}")
-
-            cursor.close()
-            connection.close()
 
             print("Data imported successfully")
             self.functions.displayEmployees()
