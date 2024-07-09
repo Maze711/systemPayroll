@@ -180,6 +180,8 @@ class timecard(QDialog):
             workHours = item['workHours'] if 'workHours' in item else 'N/A'
             hoursWorked = self.getTotalHoursWorked(checkIn, checkOut)
             difference = ''  # Initialize as empty string
+            regularOT = ''
+            specialOT = ''
 
             # Check the type of the date
             dateType = getTypeOfDate(trans_date)
@@ -195,6 +197,30 @@ class timecard(QDialog):
                     logging.error(f"Error calculating difference for BioNum: {item['BioNum']}")
                     difference = 'N/A'
 
+            if dateType == "Regular Holiday" and workHours != 'N/A' and hoursWorked != 'Unknown':
+                try:
+                    workHours = round(float(workHours), 2)
+                    hoursWorked = round(float(hoursWorked), 2)
+                    regularOT = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
+                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
+                                 f"Regular Holiday Overtime: {regularOT:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating regular holiday for BioNum: {item['BioNum']}")
+                    regularOT = 'N/A'
+
+            if dateType == "Special Holiday" and workHours != 'N/A' and hoursWorked != 'Unknown':
+                try:
+                    workHours = round(float(workHours), 2)
+                    hoursWorked = round(float(hoursWorked), 2)
+                    specialOT = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
+                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
+                                 f"Special Holiday Overtime: {specialOT:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating special holiday for BioNum: {item['BioNum']}")
+                    specialOT = 'N/A'
+
             dataMerge.append({
                 'BioNum': item['BioNum'],
                 'EmpName': item['EmpName'],
@@ -202,7 +228,9 @@ class timecard(QDialog):
                 'Check_In': checkIn,
                 'Check_Out': checkOut,
                 'Hours_Worked': str(hoursWorked),
-                'Difference': difference
+                'Difference': difference,
+                'Regular Holiday Overtime': regularOT,
+                'Special Holiday Overtime': specialOT
             })
 
         for data in dataMerge:
