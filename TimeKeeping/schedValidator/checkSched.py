@@ -41,7 +41,7 @@ def create_connection():
 class chkSched(QDialog):
     def __init__(self, data):
         super(chkSched, self).__init__()
-        self.setFixedSize(731, 405)
+        self.setFixedSize(780, 413)
         ui_file = resource_path("TimeKeeping\\schedValidator\\Schedule.ui")
         loadUi(ui_file, self)
 
@@ -58,8 +58,35 @@ class chkSched(QDialog):
         self.timeInTxt.setText(checkIn)
         self.timeOutTxt.setText(checkOut)
         self.hoursWorkedTxt.setText(str(total_hours))
-        self.typeDayTxt.setText(self.getTypeOfDate(trans_date))
+        self.holidayNameTxt.setText(self.getHolidayName(trans_date))
         self.typeOfDayCb.setCurrentText(self.getTypeOfDate(trans_date))
+
+    def getHolidayName(self, trans_date):
+        try:
+            connection = create_connection()
+            if connection is None:
+                logging.error("Error: Could not establish database connection.")
+                return None
+            cursor = connection.cursor()
+
+            # Fetches the holiday name in type_of_dates database
+            fetch_holiday_name = "SELECT holidayName FROM type_of_dates WHERE date = %s"
+            cursor.execute(fetch_holiday_name, (trans_date, ))
+
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+
+            return "Normal Day"
+
+        except Error as e:
+            logging.error(f"Error fetching holiday name: {e}")
+            return
+        finally:
+            if 'connection' in locals() and connection.is_connected():
+                cursor.close()
+                connection.close()
+                logging.info("Database connection closed")
 
     def getTypeOfDate(self, trans_date):
         try:
