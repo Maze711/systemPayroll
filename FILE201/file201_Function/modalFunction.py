@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QPlainTextEdit, QLineEdit, QDateEdit, QComboBox
-import logging
 from PyQt5.QtWidgets import QMessageBox
-from FILE201.Database_Connection.modalSQLQuery import add_employee, save_employee, revert_employee
+from MainFrame.Database_Connection.modalSQLQuery import add_employee, save_employee
+
 
 # Configure the logger
 #logger = logging.getLogger(__name__)

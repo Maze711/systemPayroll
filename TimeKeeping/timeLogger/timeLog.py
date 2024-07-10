@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem
     QTableWidget, QMainWindow, QHeaderView
 from PyQt5.uic import loadUi
 
+from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.timeCard import timecard
 
 # Configure the logger
@@ -26,26 +27,6 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
-
-
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            #host='127.0.0.1',
-            host='localhost',
-            database='file201',
-            user='root',
-            password=''
-        )
-        if connection.is_connected():
-            logging.info("Connected to MySQL database")
-            return connection
-        else:
-            logging.info("Failed to connect to MySQL database")
-            return None
-    except Error as e:
-        logging.exception("Error while connecting to MySQL: %s", e)
-        return None
 
 
 class timelogger(QMainWindow):
@@ -177,7 +158,7 @@ class timelogger(QMainWindow):
         ]
 
         combined_data = {}
-        connection = create_connection()
+        connection = create_connection('FILE201')
         if connection:
             try:
                 cursor = connection.cursor()

@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 
 from mysql.connector import Error
-from FILE201.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 logger = logging.getLogger(__name__)
 

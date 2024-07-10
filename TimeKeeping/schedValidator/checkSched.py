@@ -9,6 +9,8 @@ from PyQt5.QtCore import QDate, Qt, QTime
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, QTableWidget, QMainWindow, QLineEdit, QMessageBox, QHeaderView
 from PyQt5.uic import loadUi
 
+from MainFrame.Database_Connection.DBConnection import create_connection
+
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -19,24 +21,6 @@ def resource_path(relative_path):
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
-
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='timekeeping',
-            user='root',
-            password=''
-        )
-        if connection.is_connected():
-            logging.info("Connected to MySQL database")
-            return connection
-        else:
-            logging.info("Failed to connect to MySQL database")
-            return None
-    except Error as e:
-        logging.exception("Error while connecting to MySQL: %s", e)
-        return None
 
 class chkSched(QDialog):
     def __init__(self, data):
@@ -63,7 +47,7 @@ class chkSched(QDialog):
 
     def getHolidayName(self, trans_date):
         try:
-            connection = create_connection()
+            connection = create_connection('TIMEKEEPING')
             if connection is None:
                 logging.error("Error: Could not establish database connection.")
                 return None
@@ -90,7 +74,7 @@ class chkSched(QDialog):
 
     def getTypeOfDate(self, trans_date):
         try:
-            connection = create_connection()
+            connection = create_connection('TIMEKEEPING')
             if connection is None:
                 logging.error("Error: Could not establish database connection.")
                 return None

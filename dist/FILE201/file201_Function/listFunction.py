@@ -1,18 +1,17 @@
-from PyQt5.QtCore import QTimer, QDate
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit, QMessageBox
 from time import *
 import logging
 
-from PyQt5.uic.properties import QtCore
 from mysql.connector import Error
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-from FILE201.Database_Connection.DBConnection import create_connection
-from FILE201.Database_Connection.modalSQLQuery import executeSearchQuery
+from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.modalSQLQuery import executeSearchQuery
 from FILE201.Other_Information.otherInformationModal import personalModal
-from FILE201.Database_Connection.listSQLQuery import getAllFetchEmployees
+from MainFrame.Database_Connection.listSQLQuery import getAllFetchEmployees
 
 class ListFunction:
     def __init__(self, main_window):

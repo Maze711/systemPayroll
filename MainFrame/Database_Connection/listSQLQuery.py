@@ -1,4 +1,4 @@
-from FILE201.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.DBConnection import create_connection
 from mysql.connector import Error
 import logging
 
@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def getAllFetchEmployees():
     try:
-        connection = create_connection()
+        connection = create_connection('FILE201')
         if connection is None:
             logger.error("Error: Could not establish database connection.")
             return None

@@ -1,18 +1,18 @@
-from PyQt5.QtCore import QTimer, QDate
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit, QMessageBox
 from time import *
 import logging
 
-from PyQt5.uic.properties import QtCore
 from mysql.connector import Error
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-from FILE201.Database_Connection.DBConnection import create_connection
-from FILE201.Database_Connection.modalSQLQuery import executeSearchQuery
+from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.modalSQLQuery import executeSearchQuery
 from FILE201.Other_Information.otherInformationModal import personalModal
-from FILE201.Database_Connection.listSQLQuery import getAllFetchEmployees
+from MainFrame.Database_Connection.listSQLQuery import getAllFetchEmployees
+
 
 class ListFunction:
     def __init__(self, main_window):
@@ -52,7 +52,7 @@ class ListFunction:
             firstName = self.main_window.employeeListTable.item(selected_row, 2).text()
             middleName = self.main_window.employeeListTable.item(selected_row, 3).text()
 
-        # Displays the data of selected row in the Employee Basic Info Frame
+            # Displays the data of selected row in the Employee Basic Info Frame
             self.main_window.txtEmployeeID.setText(emp_id)
             self.main_window.txtLastName.setText(lastName)
             self.main_window.txtFirstName.setText(firstName)
@@ -112,7 +112,7 @@ class ListFunction:
     def fetch_employee_data(self, empID):
         query = """
             SELECT p.emp_id, p.surname, p.firstname, p.mi, p.addr1,
-               p.mobile, p.height, p.weight, p.civil_stat, p.birthday, p.placeOfBirth, p.gender,
+               p.mobile, p.height, p.weight, p.civil_stat, p.birthday, p.birthplace, p.gender,
                f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
                f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
@@ -133,7 +133,7 @@ class ListFunction:
                WHERE p.emp_id = %s
             """
         try:
-            connection = create_connection()
+            connection = create_connection('FILE201')
             if connection is None:
                 logger.error("Error: Could not establish database connection.")
                 return None
@@ -158,7 +158,7 @@ class ListFunction:
     def populate_modal_with_employee_data(self, modal, data):
         try:
             (emp_id, surname, firstname, mi, addr1,
-             mobile, height, weight, status, birthday, placeOfBirth, gender,
+             mobile, height, weight, status, birthday, birthplace, gender,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
              beneficiaryMiddleName, dependentsName,
@@ -181,7 +181,7 @@ class ListFunction:
             modal.txtWeight.setText(str(weight))
             modal.cmbCivil.setCurrentText(status)
             modal.dtDateOfBirth.setDate(QDate.fromString(birthday, "yyyy-MM-dd"))
-            modal.txtPlace.setText(placeOfBirth)
+            modal.txtPlace.setText(birthplace)
             modal.cmbGender.setCurrentText(gender)
 
             modal.txtFatherLast.setText(fathersLastName)
@@ -245,7 +245,7 @@ class ListFunction:
         modal.editBTN.setEnabled(False)
         modal.saveBTN.setEnabled(False)
         modal.revertBTN.setEnabled(False)
-        modal.finished.connect(self.displayEmployees) # Updates the employeeListTable upon closing
+        modal.finished.connect(self.displayEmployees)  # Updates the employeeListTable upon closing
         modal.exec_()
 
     def clearFunction(self):
