@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeade
 from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
@@ -23,51 +24,28 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='file201',
-            user='root',
-            password=''
-        )
-        if connection.is_connected():
-            logging.info("Connected to MySQL database")
-            return connection
-        else:
-            logging.info("Failed to connect to MySQL database")
-            return None
-    except Error as e:
-        logging.exception("Error while connecting to MySQL: %s", e)
-        return None
-
 def getTypeOfDate(trans_date):
     try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='timekeeping',  # Connect to the timekeeping database
-            user='root',
-            password=''
-        )
-        if connection.is_connected():
-            logging.info("Connected to MySQL database")
-            cursor = connection.cursor()
+        connection = create_connection('TIMEKEEPING')
+        if connection is None:
+            logging.error("Error: Could not establish database connection.")
+            return "Ordinary Day"  # Return default value on connection failure
 
-            fetch_type_of_date = "SELECT dateType FROM type_of_dates WHERE date = %s"
-            cursor.execute(fetch_type_of_date, (trans_date, ))
+        cursor = connection.cursor()
 
-            result = cursor.fetchone()
-            if result:
-                return result[0]  # Return the dateType if found
+        fetch_type_of_date = "SELECT dateType FROM type_of_dates WHERE date = %s"
+        cursor.execute(fetch_type_of_date, (trans_date,))
 
-            return "Ordinary Day"  # Default to Ordinary Day if no match found
-        else:
-            logging.info("Failed to connect to MySQL database")
-            return "Ordinary Day"  # Default to Ordinary Day on connection failure
+        result = cursor.fetchone()
+        if result:
+            return result[0]  # Return the dateType if found
+
+        return "Ordinary Day"  # Default to Ordinary Day if no match found
 
     except Error as e:
         logging.error(f"Error fetching type of date: {e}")
-        return "Ordinary Day"  # Return Ordinary Day on error
+        return "Ordinary Day"  # Return default value on error
+
     finally:
         if 'connection' in locals() and connection.is_connected():
             cursor.close()

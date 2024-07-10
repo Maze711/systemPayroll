@@ -8,26 +8,10 @@ from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QDate
 
+from MainFrame.Database_Connection.DBConnection import create_connection
+
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
-
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='timekeeping',
-            user='root',
-            password=''
-        )
-        if connection.is_connected():
-            logging.info("Connected to MySQL database")
-            return connection
-        else:
-            logging.info("Failed to connect to MySQL database")
-            return None
-    except Error as e:
-        logging.exception("Error while connecting to MySQL: %s", e)
-        return None
 
 def resource_path(relative_path):
     try:
@@ -43,7 +27,7 @@ class DateChange(QDialog):
         ui_file = resource_path("TimeKeeping\\dateChange\\datechange.ui")
         loadUi(ui_file, self)
 
-        self.connection = create_connection()
+        self.connection = create_connection('TIMEKEEPING')
         self.cmbHoliday.currentIndexChanged.connect(self.fetch_holiday_data)
         self.btnUpdate.clicked.connect(self.update_holiday_date)
 

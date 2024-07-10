@@ -1,4 +1,4 @@
-from FILE201.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.DBConnection import create_connection
 from mysql.connector import Error
 from datetime import datetime
 import logging
@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def add_employee(data):
     try:
-        connection = create_connection()
+        connection = create_connection('FILE201')
         if connection is None:
             #logger.error("Error: Could not establish database connection.")
             return False
@@ -164,7 +164,7 @@ def add_employee(data):
 
 def save_employee(empID, data):
     try:
-        connection = create_connection()
+        connection = create_connection('FILE201')
         if connection is None:
             #logger.error("Error: Could not establish database connection.")
             return False
@@ -280,7 +280,7 @@ def get_generated_employee_id(employee_id):
 
 def executeSearchQuery(query):
     try:
-        connection = create_connection()
+        connection = create_connection('FILE201')
         if connection is None:
             #logger.error("Error: Could not establish database connection.")
             return []

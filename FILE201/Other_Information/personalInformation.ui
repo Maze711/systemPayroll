@@ -221,7 +221,7 @@ border: 1px solid black</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../Resources/Icons/user.svg</pixmap>
+     <pixmap>../../MainFrame/Resources/Icons/user.svg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
@@ -379,7 +379,7 @@ border: 1px solid black</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-522</y>
+      <y>0</y>
       <width>1218</width>
       <height>1788</height>
      </rect>
