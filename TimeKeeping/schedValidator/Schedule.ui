@@ -417,12 +417,25 @@ font-family: poppins;
         <bold>true</bold>
        </font>
       </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">	background-color: &quot;#344273&quot;;
 	color: white;</string>
       </property>
       <property name="text">
-       <string>Update</string>
+       <string> Update</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../../MainFrame/Resources/Icons/update.svg</normaloff>../../MainFrame/Resources/Icons/update.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
       </property>
      </widget>
      <widget class="QComboBox" name="comboBox">

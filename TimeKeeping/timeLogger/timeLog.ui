@@ -241,12 +241,16 @@ QCalendarWidget QAbstractItemView:disabled {
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Filter</string>
+      <string> Filter</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../MainFrame/Resources/Icons/date-filter.svg</normaloff>../../MainFrame/Resources/Icons/date-filter.svg</iconset>
      </property>
      <property name="iconSize">
       <size>
-       <width>22</width>
-       <height>22</height>
+       <width>24</width>
+       <height>24</height>
       </size>
      </property>
     </widget>
