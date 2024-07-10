@@ -276,7 +276,8 @@ QCalendarWidget QAbstractItemView:disabled {
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(85, 255, 127);
-border-radius: 5px;</string>
+border-radius: 5px;
+color: white;</string>
      </property>
      <property name="text">
       <string>Create Time Card</string>
