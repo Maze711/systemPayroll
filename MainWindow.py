@@ -43,7 +43,7 @@ class MainWindow(QMainWindow):
             if event.type() == QEvent.HoverEnter:
                 source.setStyleSheet("background-color: #344273; color: white; font-family: Poppins;")
             elif event.type() == QEvent.HoverLeave:
-                source.setStyleSheet("background-color: none;")
+                source.setStyleSheet("background-color: white;")
             if event.type() == QEvent.Enter:
                 return True
             elif event.type() == QEvent.Leave:
@@ -62,12 +62,13 @@ class MainWindow(QMainWindow):
 
         self.additional_buttons_container = QWidget(self)
         self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
-        self.additional_buttons_container.setStyleSheet("background-color: white; border: 1px solid gray; font-family: Poppins;")
+        self.additional_buttons_container.setStyleSheet("background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
 
         additional_button_texts = ["Date Change", "Time Logger"]
         for i, text in enumerate(additional_button_texts):
             button = QPushButton(text, self.additional_buttons_container)
             button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
+            button.setStyleSheet("background-color: white;")
             button.installEventFilter(self)
 
             if text == "Date Change":
