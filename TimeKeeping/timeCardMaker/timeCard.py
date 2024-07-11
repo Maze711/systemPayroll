@@ -1,5 +1,7 @@
 import sys
 import os
+import traceback
+
 import mysql.connector
 from mysql.connector import Error
 
@@ -11,6 +13,7 @@ from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.Database_Connection.DBConnection import create_connection
+from TimeKeeping.timeCardMaker.filter import filter
 
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
@@ -59,6 +62,7 @@ class timecard(QDialog):
         ui_file = resource_path("TimeKeeping\\timeCardMaker\\timecard.ui")
         loadUi(ui_file, self)
 
+        self.original_data = filtered_data.copy()
         self.filtered_data = filtered_data
 
         # Make the column headers fixed size
@@ -79,6 +83,9 @@ class timecard(QDialog):
 
         self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
         self.btnCheckSched.clicked.connect(self.CheckSched)
+
+        self.btnFilter = self.findChild(QPushButton, 'btnFilter')
+        self.btnFilter.clicked.connect(self.filterModal)
 
         self.populateTimeList(self.filtered_data)
 
@@ -220,3 +227,56 @@ class timecard(QDialog):
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
+
+    def filterModal(self):
+        try:
+            filter_dialog = filter(self)
+            if filter_dialog.exec_() == QDialog.Accepted:
+                filter_values = filter_dialog.get_filter_values()
+                logging.info(f"Filter values received: {filter_values}")
+                self.apply_filter(filter_values)
+        except Exception as e:
+            logging.error(f"Error in filterModal: {str(e)}")
+            logging.error(traceback.format_exc())
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+    def apply_filter(self, filter_values):
+        try:
+            filtered = []
+            for row in self.original_data:
+                check_in_time = row['Check_In']
+                check_out_time = row['Check_Out']
+
+                logging.info(f"Processing row: Check-in {check_in_time}, Check-out {check_out_time}")
+
+                if check_in_time == 'Missing' or check_out_time == 'Missing':
+                    logging.info("Skipping row due to missing check-in or check-out time")
+                    continue
+
+                check_in_hour = check_in_time.split(':')[0]
+                check_out_hour = check_out_time.split(':')[0]
+
+                check_in_matches = (filter_values['check_in_ampm'] == "AM" and int(check_in_hour) < 12) or \
+                                   (filter_values['check_in_ampm'] == "PM" and int(check_in_hour) >= 12)
+
+                check_out_matches = (filter_values['check_out_ampm'] == "AM" and int(check_out_hour) < 12) or \
+                                    (filter_values['check_out_ampm'] == "PM" and int(check_out_hour) >= 12)
+
+                logging.info(f"Check-in matches: {check_in_matches}, Check-out matches: {check_out_matches}")
+
+                if check_in_matches and check_out_matches:
+                    filtered.append(row)
+                    logging.info("Row added to filtered data")
+
+            self.filtered_data = filtered
+            logging.info(f"Filtered data count: {len(filtered)}")
+            self.populateTimeList(self.filtered_data)
+        except Exception as e:
+            logging.error(f"Error in apply_filter: {str(e)}")
+            logging.error(traceback.format_exc())
+            QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
+
+    def clear_filter(self):
+        self.filtered_data = self.original_data.copy()
+        logging.info("Filter cleared, reset to original data")
+        self.populateTimeList(self.filtered_data)
