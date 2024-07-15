@@ -92,12 +92,15 @@ class timecard(QDialog):
     def populateTimeList(self, data):
         self.TimeListTable.clearContents()
         self.TimeListTable.setRowCount(len(data))
+        logging.info(f"Populating table with {len(data)} rows")
 
         for row_index, row_data in enumerate(data):
             for col_index, (key, value) in enumerate(row_data.items()):
-                item = QTableWidgetItem(value)
+                item = QTableWidgetItem(str(value))
                 item.setTextAlignment(Qt.AlignCenter)
                 self.TimeListTable.setItem(row_index, col_index, item)
+
+        logging.info("Table population complete")
 
     def searchBioNumFunction(self):
         search_text = self.searchBioNum.text().strip()
@@ -228,20 +231,12 @@ class timecard(QDialog):
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
 
-    def filterModal(self):
-        try:
-            filter_dialog = filter(self)
-            if filter_dialog.exec_() == QDialog.Accepted:
-                filter_values = filter_dialog.get_filter_values()
-                logging.info(f"Filter values received: {filter_values}")
-                self.apply_filter(filter_values)
-        except Exception as e:
-            logging.error(f"Error in filterModal: {str(e)}")
-            logging.error(traceback.format_exc())
-            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
-
     def apply_filter(self, filter_values):
         try:
+            logging.info(f"Filter values received: {filter_values}")
+            logging.info(f"Total rows in original data: {len(self.original_data)}")
+            logging.info(f"Show missing flag: {filter_values['show_missing']}")
+
             filtered = []
             for row in self.original_data:
                 check_in_time = row['Check_In']
@@ -249,34 +244,55 @@ class timecard(QDialog):
 
                 logging.info(f"Processing row: Check-in {check_in_time}, Check-out {check_out_time}")
 
-                if check_in_time == 'Missing' or check_out_time == 'Missing':
-                    logging.info("Skipping row due to missing check-in or check-out time")
-                    continue
+                if filter_values['show_missing']:
+                    if check_in_time == 'Missing' or check_out_time == 'Missing':
+                        filtered.append(row)
+                        logging.info("Added missing entry to filtered data")
+                else:
+                    # if check_in_time != 'Missing' and check_out_time != 'Missing':
+                        check_in_hour = int(check_in_time.split(':')[0])
+                        check_out_hour = int(check_out_time.split(':')[0])
 
-                check_in_hour = check_in_time.split(':')[0]
-                check_out_hour = check_out_time.split(':')[0]
+                        check_in_matches = (filter_values['check_in_ampm'] == "AM/PM") or \
+                                           (filter_values['check_in_ampm'] == "AM" and check_in_hour < 12) or \
+                                           (filter_values['check_in_ampm'] == "PM" and check_in_hour >= 12)
 
-                check_in_matches = (filter_values['check_in_ampm'] == "AM" and int(check_in_hour) < 12) or \
-                                   (filter_values['check_in_ampm'] == "PM" and int(check_in_hour) >= 12)
+                        check_out_matches = (filter_values['check_out_ampm'] == "AM/PM") or \
+                                            (filter_values['check_out_ampm'] == "AM" and check_out_hour < 12) or \
+                                            (filter_values['check_out_ampm'] == "PM" and check_out_hour >= 12)
 
-                check_out_matches = (filter_values['check_out_ampm'] == "AM" and int(check_out_hour) < 12) or \
-                                    (filter_values['check_out_ampm'] == "PM" and int(check_out_hour) >= 12)
-
-                logging.info(f"Check-in matches: {check_in_matches}, Check-out matches: {check_out_matches}")
-
-                if check_in_matches and check_out_matches:
-                    filtered.append(row)
-                    logging.info("Row added to filtered data")
+                        if check_in_matches and check_out_matches:
+                            filtered.append(row)
 
             self.filtered_data = filtered
             logging.info(f"Filtered data count: {len(filtered)}")
+            logging.info(f"First few filtered entries: {filtered[:5]}")
             self.populateTimeList(self.filtered_data)
         except Exception as e:
             logging.error(f"Error in apply_filter: {str(e)}")
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
 
+    def filterModal(self):
+        try:
+            filter_dialog = filter(self)
+            if filter_dialog.exec_() == QDialog.Accepted:
+                filter_values = filter_dialog.get_filter_values()
+                logging.info(f"Filter values received in timecard: {filter_values}")
+                self.apply_filter(filter_values)
+        except Exception as e:
+            logging.error(f"Error in filterModal: {str(e)}")
+            logging.error(traceback.format_exc())
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
     def clear_filter(self):
         self.filtered_data = self.original_data.copy()
         logging.info("Filter cleared, reset to original data")
+        self.populateTimeList(self.filtered_data)
+
+    def show_missing_entries(self):
+        missing_entries = [row for row in self.original_data if
+                           row['Check_In'] == 'Missing' or row['Check_Out'] == 'Missing']
+        self.filtered_data = missing_entries
+        logging.info(f"Showing {len(missing_entries)} missing entries")
         self.populateTimeList(self.filtered_data)

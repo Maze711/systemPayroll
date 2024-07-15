@@ -31,14 +31,20 @@ class filter(QDialog):
             self.cmbCheckOut = self.findChild(QComboBox, 'cmbCheckOut')
             self.btnOK = self.findChild(QPushButton, 'btnOK')
             self.btnClear = self.findChild(QPushButton, 'btnClear')
+            self.btnMissing = self.findChild(QPushButton, 'btnMissing')
 
-            if not all([self.cmbCheckIn, self.cmbCheckOut, self.btnOK, self.btnClear]):
+            if not all([self.cmbCheckIn, self.cmbCheckOut, self.btnOK, self.btnClear, self.btnMissing]):
                 raise ValueError("One or more UI elements not found")
 
             self.cmbCheckIn.currentIndexChanged.connect(self.save_settings)
             self.cmbCheckOut.currentIndexChanged.connect(self.save_settings)
             self.btnOK.clicked.connect(self.accept)
             self.btnClear.clicked.connect(self.clear_filter)
+            self.btnMissing.clicked.connect(self.show_missing)
+
+            for combo in [self.cmbCheckIn, self.cmbCheckOut]:
+                if combo.itemText(0) != "AM/PM":
+                    combo.insertItem(0, "AM/PM")
 
             self.load_settings()
         except Exception as e:
@@ -67,10 +73,22 @@ class filter(QDialog):
         self.accept()
         logging.info("Filter cleared")
 
+    def show_missing(self):
+        if self.parent():
+            filter_values = {
+                'check_in_ampm': "AM/PM",
+                'check_out_ampm': "AM/PM",
+                'show_missing': True
+            }
+            logging.info("Showing missing entries with filter values: %s", filter_values)
+            self.parent().apply_filter(filter_values)
+        self.accept()
+
     def get_filter_values(self):
         values = {
-            'check_in_ampm': "AM" if self.cmbCheckIn.currentIndex() == 0 else "PM",
-            'check_out_ampm': "AM" if self.cmbCheckOut.currentIndex() == 0 else "PM"
+            'check_in_ampm': self.cmbCheckIn.currentText(),
+            'check_out_ampm': self.cmbCheckOut.currentText(),
+            'show_missing': False
         }
         logging.info(f"Filter values: {values}")
         return values
