@@ -18,7 +18,7 @@
 	background-color: white;
 }
 
-#btnCheckSched{
+#btnCheckSched, #btnFilter {
 	background-color: &quot;#344273&quot;;
 	color: white;
 	border-radius: 5px;
@@ -203,7 +203,7 @@ QTableWidget {
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>361</width>
+     <width>231</width>
      <height>41</height>
     </rect>
    </property>
@@ -227,7 +227,7 @@ QTableWidget {
      <rect>
       <x>43</x>
       <y>10</y>
-      <width>301</width>
+      <width>181</width>
       <height>21</height>
      </rect>
     </property>
@@ -431,6 +431,39 @@ QTableWidget {
    </property>
    <property name="text">
     <string>Create Time Sheet</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnFilter">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>10</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Filter</string>
    </property>
    <property name="iconSize">
     <size>
