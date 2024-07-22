@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1700</width>
+    <height>665</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="paytransTable">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>1701</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins SemiBold</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* Header Design */
+
+QHeaderView::section {
+	font-family: Poppins;
+	font-weight: bold;
+	font-size: 13px;
+	color: white;
+	background-color: &quot;#344273&quot;;
+	border: none;
+}
+
+/* Style for the selected row */
+QTableView::item:selected:active {
+	 selection-background-color: &quot;#9DADDF&quot;;
+}
+
+/* Style for the alternate row */
+QTableWidget {
+	alternate-background-color: &quot;#DDDDDD&quot;;
+}</string>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
+    <property name="tabKeyNavigation">
+     <bool>false</bool>
+    </property>
+    <property name="showDropIndicator" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropOverwriteMode">
+     <bool>false</bool>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideRight</enum>
+    </property>
+    <property name="showGrid">
+     <bool>false</bool>
+    </property>
+    <property name="gridStyle">
+     <enum>Qt::SolidLine</enum>
+    </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="cornerButtonEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="columnCount">
+     <number>50</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>50</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>150</number>
+    </attribute>
+    <attribute name="horizontalHeaderHighlightSections">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderStretchLastSection">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>23</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>31</number>
+    </attribute>
+    <attribute name="verticalHeaderHighlightSections">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Emp Number</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Employee Name</string>
+     </property>
+     <property name="font">
+      <font>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="foreground">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </brush>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Basic</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>DailyRate</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>DaysWork</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OT_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Sun_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SunOT_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SunNP_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Hldy_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>NP_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>NPOT_hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Reg_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Sun_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SunOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SunNP_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Hldy_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>NP_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>NPOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>MonthlyAllowance</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>DailyAllowance</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OTH_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>CashAdv</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Canteen</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OTH_Dedt</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SSS_Loan</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Love_Loan</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SLVL</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SLVL_Amt</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Absent</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Absent_Amt</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Late</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Late_Amt</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Net_income</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>TTL_Income</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>M13</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>GrossM13</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>GrossMonth</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>TaxIncome</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SSE</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SSR</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Med</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>MedR</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>EC</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Tax</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>GrossTax</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>PagIbig</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Cast_Atm</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Emp_Status</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1711</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: white;</string>
+    </property>
+    <widget class="QFrame" name="searchBar">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>361</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#searchBar{
+	border: 1px solid &quot;#344273&quot;;
+	border-radius: 3px; 
+}</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLineEdit" name="txtSearch">
+      <property name="geometry">
+       <rect>
+        <x>43</x>
+        <y>10</y>
+        <width>301</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#txtSearch{
+
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <property name="placeholderText">
+       <string>Type to search...</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="searchIcon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#searchIcon{
+	background-color: white;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="lblDateFrom">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>20</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date From:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblFrom">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>20</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblTo">
+     <property name="geometry">
+      <rect>
+       <x>990</x>
+       <y>20</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblDateTo">
+     <property name="geometry">
+      <rect>
+       <x>900</x>
+       <y>20</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date To:</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
