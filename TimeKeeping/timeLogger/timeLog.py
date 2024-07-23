@@ -14,6 +14,7 @@ from PyQt5.uic import loadUi
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.timeCard import timecard
+from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 
 # Configure the logger
 logging.basicConfig(level=logging.INFO, filename='file_import.log',
@@ -49,7 +50,8 @@ class timelogger(QMainWindow):
         self.toCalendar.setDate(QDate.currentDate())
 
         self.filterButton.clicked.connect(self.showFilteredData)
-        self.createCard.clicked.connect(self.openTimeCard)
+        # self.createCard.clicked.connect(self.openTimeCard)
+        self.createCard.clicked.connect(self.createPaytimeSheet)
         self.createCard.setEnabled(False)
 
         self.processContent()
@@ -245,3 +247,53 @@ class timelogger(QMainWindow):
 
         except ValueError:
             return "Invalid Time Format"
+
+    def createPaytimeSheet(self):
+        from_date = self.fromCalendar.date().toString("yyyy-MM-dd")
+        to_date = self.toCalendar.date().toString("yyyy-MM-dd")
+
+        filtered_data = [
+            row for row in self.data
+            if from_date <= row['trans_date'] <= to_date
+        ]
+
+        data = []
+        num_of_present_days = {}
+        processed_bio_num = set()
+
+        for row in filtered_data:
+            bio_num = row['bio_no']
+            trans_date = row['trans_date']
+
+            # If bio_num is not in num_of_present_days, initialize it with an empty set
+            if bio_num not in num_of_present_days:
+                num_of_present_days[bio_num] = set()
+
+            # Add the transaction date to the set for the bio_num
+            num_of_present_days[bio_num].add(trans_date)
+
+        logging.info(f"Number of days: \n{num_of_present_days}")
+
+        # Replacing the value with total/sum of all the dates present
+        num_of_present_days = {bio_num: len(dates) for bio_num, dates in num_of_present_days.items()}
+
+        for row in filtered_data:
+            bio_num = row['bio_no']
+
+            # Prevents the duplication of bio_no
+            if bio_num in processed_bio_num:
+                continue
+            else:
+                processed_bio_num.add(bio_num)
+
+            data.append({
+                'BioNum': bio_num,
+                'Present Days': num_of_present_days[bio_num]
+            })
+
+        logging.info(f"Data to be passed: \n{data}")
+
+
+        self.window = PaytimeSheet(data, from_date, to_date) # Passing the data to PaytimeSheet
+        self.window.show()
+        self.close()
