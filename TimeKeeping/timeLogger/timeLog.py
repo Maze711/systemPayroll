@@ -1,6 +1,5 @@
 import sys
 import os
-import mysql.connector
 from mysql.connector import Error
 
 import logging
@@ -260,6 +259,8 @@ class timelogger(QMainWindow):
         data = []
         num_of_present_days = {}
         processed_bio_num = set()
+        sum_of_holidays = {}
+        holiday_dates = self.fetch_all_holidays()
 
         for row in filtered_data:
             bio_num = row['bio_no']
@@ -273,6 +274,12 @@ class timelogger(QMainWindow):
             num_of_present_days[bio_num].add(trans_date)
 
         logging.info(f"Number of days: \n{num_of_present_days}")
+
+        # Stores the sum of bio_num and present holidays based on the dates present
+        num_of_present_holidays = {
+            bio_num: len(dates.intersection(holiday_dates))
+            for bio_num, dates in num_of_present_days.items()
+        }
 
         # Replacing the value with total/sum of all the dates present
         num_of_present_days = {bio_num: len(dates) for bio_num, dates in num_of_present_days.items()}
@@ -288,12 +295,33 @@ class timelogger(QMainWindow):
 
             data.append({
                 'BioNum': bio_num,
-                'Present Days': num_of_present_days[bio_num]
+                'Present Days': num_of_present_days[bio_num],
+                'Present Holidays': num_of_present_holidays[bio_num]
             })
 
         logging.info(f"Data to be passed: \n{data}")
 
-
         self.window = PaytimeSheet(data, from_date, to_date) # Passing the data to PaytimeSheet
         self.window.show()
         self.close()
+
+    def fetch_all_holidays(self):
+        connection = create_connection('TIMEKEEPING')
+        if connection:
+            try:
+                cursor = connection.cursor()
+                query = "SELECT date FROM type_of_dates"
+                cursor.execute(query)
+                result = cursor.fetchall()
+                if result:
+                    # Formats the tuple result to string with the format 'year-month-day'
+                    formatted_dates = [date[0].strftime('%Y-%m-%d') for date in result]
+                    return formatted_dates
+
+            except Error as e:
+                logging.error(f"Error fetching all holidays: {e}")
+
+            finally:
+                if 'connection' in locals() and connection.is_connected():
+                    cursor.close()
+                    connection.close()
