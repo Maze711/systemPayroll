@@ -44,10 +44,12 @@ class PaytimeSheet(QMainWindow):
         for i, row in enumerate(data):
             bio_num_item = QTableWidgetItem(row['BioNum'])
             present_days_item = QTableWidgetItem(str(row['Present Days']))
+            present_holidays_item = QTableWidgetItem(str(row['Present Holidays']))
 
             # Centers the all the item
-            for item in [bio_num_item, present_days_item]:
+            for item in [bio_num_item, present_days_item, present_holidays_item]:
                 item.setTextAlignment(Qt.AlignCenter)
 
             self.paytimesheetTable.setItem(i, 1, bio_num_item)
             self.paytimesheetTable.setItem(i, 5, present_days_item)
+            self.paytimesheetTable.setItem(i, 7, present_holidays_item)
