@@ -31,7 +31,9 @@ class ListFunction:
         # Clears/Resets the rows in the table
         self.main_window.employeeListTable.setRowCount(0)
 
-        employees = getAllFetchEmployees()
+        # Select only the required columns and order by surname
+        query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY surname"
+        employees = executeSearchQuery(query)
 
         if employees is None:
             print("There are no current employees")
@@ -39,6 +41,7 @@ class ListFunction:
 
         for rowNum, eachRow in enumerate(employees):
             self.main_window.employeeListTable.insertRow(rowNum)
+            # Assuming eachRow contains (empl_id, surname, firstname, mi)
             for column, data in enumerate(eachRow):
                 self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
 
@@ -47,13 +50,13 @@ class ListFunction:
         selected_row = self.main_window.employeeListTable.currentRow()
 
         if selected_row != -1:
-            emp_id = self.main_window.employeeListTable.item(selected_row, 0).text()
+            empl_id = self.main_window.employeeListTable.item(selected_row, 0).text()
             lastName = self.main_window.employeeListTable.item(selected_row, 1).text()
             firstName = self.main_window.employeeListTable.item(selected_row, 2).text()
             middleName = self.main_window.employeeListTable.item(selected_row, 3).text()
 
             # Displays the data of selected row in the Employee Basic Info Frame
-            self.main_window.txtEmployeeID.setText(emp_id)
+            self.main_window.txtEmployeeID.setText(empl_id)
             self.main_window.txtLastName.setText(lastName)
             self.main_window.txtFirstName.setText(firstName)
             self.main_window.txtMiddleName.setText(middleName)
@@ -124,7 +127,8 @@ class ListFunction:
                e.college, e.highSchool, e.elemSchool,
                e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                e.highschoolYear, e.elemYear
-               FROM personal_information p
+               FROM emp_info p
+               LEFT JOIN educ_information e on p.empl_id = e.empl_id
                LEFT JOIN family_background f ON p.emp_id = f.empID
                LEFT JOIN list_of_id i ON p.emp_id = i.emp_id
                LEFT JOIN work_exp w ON p.emp_id = w.empID
@@ -261,7 +265,9 @@ class ListFunction:
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()
         if searchText:
-            query = f"SELECT * FROM personal_information WHERE emp_id LIKE '%{searchText}%' OR surname LIKE '%{searchText}%' OR firstname LIKE '%{searchText}%'"
+            query = (
+                f"SELECT empl_id, surname, firstname, mi FROM emp_info WHERE empl_id LIKE '%{searchText}%' OR surname LIKE '%{searchText}%' OR "
+                f"firstname LIKE '%{searchText}%' ORDER BY surname")
             self.main_window.functions.searchAndDisplay(query)
         else:
             self.main_window.functions.displayEmployees()

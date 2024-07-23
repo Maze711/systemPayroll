@@ -20,7 +20,7 @@
       <x>0</x>
       <y>60</y>
       <width>1701</width>
-      <height>601</height>
+      <height>605</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -405,7 +405,7 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Cast_Atm</string>
+      <string>Cash_Atm</string>
      </property>
     </column>
     <column>
