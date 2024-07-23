@@ -16,7 +16,7 @@ def getAllFetchEmployees():
         cursor = connection.cursor()
 
         # Fetches all the employees in personal_information table
-        fetch_all_employees = "SELECT emp_id, surname, firstname, mi FROM personal_information"
+        fetch_all_employees = "SELECT empl_id, surname, firstname, mi FROM emp_info"
 
         cursor.execute(fetch_all_employees)
         result = cursor.fetchall()
