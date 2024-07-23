@@ -177,7 +177,7 @@ class timelogger(QMainWindow):
                         time_out = None
 
                     query = f"SELECT ep.sched_in, ep.sched_out, pi.surname, pi.firstname, pi.mi " \
-                            f"FROM personal_information pi " \
+                            f"FROM emp_info pi " \
                             f"JOIN emp_posnsched ep ON pi.emp_id = ep.emp_id " \
                             f"WHERE pi.emp_id = '{bio_no}'"
                     cursor.execute(query)
