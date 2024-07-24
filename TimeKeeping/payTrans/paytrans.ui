@@ -108,7 +108,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>50</number>
+     <number>51</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -152,6 +152,11 @@ QTableWidget {
     <column>
      <property name="text">
       <string>Emp Number</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Bio Num</string>
      </property>
     </column>
     <column>
@@ -514,7 +519,7 @@ QTableWidget {
     <widget class="QLabel" name="lblDateFrom">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>1110</x>
        <y>20</y>
        <width>121</width>
        <height>21</height>
@@ -535,7 +540,7 @@ QTableWidget {
     <widget class="QLabel" name="lblFrom">
      <property name="geometry">
       <rect>
-       <x>720</x>
+       <x>1230</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -559,7 +564,7 @@ QTableWidget {
     <widget class="QLabel" name="lblTo">
      <property name="geometry">
       <rect>
-       <x>990</x>
+       <x>1500</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -583,7 +588,7 @@ QTableWidget {
     <widget class="QLabel" name="lblDateTo">
      <property name="geometry">
       <rect>
-       <x>900</x>
+       <x>1410</x>
        <y>20</y>
        <width>91</width>
        <height>21</height>

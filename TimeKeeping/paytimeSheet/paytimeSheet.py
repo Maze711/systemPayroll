@@ -3,8 +3,10 @@ import os
 import logging
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
 from PyQt5.uic import loadUi
+
+from TimeKeeping.payTrans.payTransLoader import PayTrans
 
 def resource_path(relative_path):
     try:
@@ -18,7 +20,6 @@ logging.basicConfig(level=logging.INFO, filename='file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 class PaytimeSheet(QMainWindow):
-
     def __init__(self, data, fromDate, toDate):
         super(PaytimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
@@ -32,6 +33,9 @@ class PaytimeSheet(QMainWindow):
 
         self.lblFrom.setText(fromDate)
         self.lblTo.setText(toDate)
+
+        self.payTransBtn = self.findChild(QPushButton, 'btnPayTrans')
+        self.payTransBtn.clicked.connect(self.createPayTrans)
 
         self.populatePaytimeSheetTable(self.data)
 
@@ -58,3 +62,30 @@ class PaytimeSheet(QMainWindow):
             self.paytimesheetTable.setItem(i, 2, emp_name_item)
             self.paytimesheetTable.setItem(i, 4, present_days_item)
             self.paytimesheetTable.setItem(i, 7, present_holidays_item)
+
+    def createPayTrans(self):
+        from_date = self.lblFrom.text()
+        to_date = self.lblTo.text()
+
+        selected_data = []
+        for row in range(self.paytimesheetTable.rowCount()):
+            emp_no_item = self.paytimesheetTable.item(row, 0)
+            bio_num_item = self.paytimesheetTable.item(row, 1)
+            emp_name_item = self.paytimesheetTable.item(row, 2)
+            present_days_item = self.paytimesheetTable.item(row, 4)
+            selected_data.append({
+                'EmpNo': emp_no_item.text(),
+                'BioNum': bio_num_item.text(),
+                'EmpName': emp_name_item.text(),
+                'Present Days':present_days_item.text()
+            })
+
+        print(f"Selected Data: {selected_data}")
+
+        try:
+            self.window = PayTrans(from_date, to_date, selected_data)
+            self.window.show()
+            self.close()
+        except Exception as e:
+            logging.error(f"Failed to create PayTrans window: {e}")
+            print(f"Failed to create PayTrans window: {e}")
