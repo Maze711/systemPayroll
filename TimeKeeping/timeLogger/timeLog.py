@@ -259,49 +259,73 @@ class timelogger(QMainWindow):
         data = []
         num_of_present_days = {}
         processed_bio_num = set()
-        sum_of_holidays = {}
+        num_of_present_holidays = {}
         holiday_dates = self.fetch_all_holidays()
 
         for row in filtered_data:
             bio_num = row['bio_no']
             trans_date = row['trans_date']
 
-            # If bio_num is not in num_of_present_days, initialize it with an empty set
             if bio_num not in num_of_present_days:
                 num_of_present_days[bio_num] = set()
 
-            # Add the transaction date to the set for the bio_num
             num_of_present_days[bio_num].add(trans_date)
 
         logging.info(f"Number of days: \n{num_of_present_days}")
 
-        # Stores the sum of bio_num and present holidays based on the dates present
         num_of_present_holidays = {
             bio_num: len(dates.intersection(holiday_dates))
             for bio_num, dates in num_of_present_days.items()
         }
 
-        # Replacing the value with total/sum of all the dates present
         num_of_present_days = {bio_num: len(dates) for bio_num, dates in num_of_present_days.items()}
 
-        for row in filtered_data:
-            bio_num = row['bio_no']
+        connection = create_connection('FILE201')
+        if connection:
+            try:
+                cursor = connection.cursor()
+                for bio_num in num_of_present_days:
+                    if bio_num in processed_bio_num:
+                        continue
+                    else:
+                        processed_bio_num.add(bio_num)
 
-            # Prevents the duplication of bio_no
-            if bio_num in processed_bio_num:
-                continue
-            else:
-                processed_bio_num.add(bio_num)
+                    query = f"SELECT pi.empl_no, pi.surname, pi.firstname, pi.mi " \
+                            f"FROM emp_info pi " \
+                            f"WHERE pi.empl_id = '{bio_num}'"
+                    cursor.execute(query)
+                    result = cursor.fetchone()
+                    if result:
+                        empl_no, surname, firstname, mi = result
+                        emp_name = f"{surname}, {firstname} {mi}"
+                    else:
+                        empl_no = "Unknown"
+                        emp_name = "Unknown"
+                        logging.warning(f"No data found for Employee ID: {bio_num}")
 
-            data.append({
-                'BioNum': bio_num,
-                'Present Days': num_of_present_days[bio_num],
-                'Present Holidays': num_of_present_holidays[bio_num]
-            })
+                    data.append({
+                        'EmpNo': empl_no,
+                        'BioNum': bio_num,
+                        'EmpName': emp_name,
+                        'Present Days': num_of_present_days[bio_num],
+                        'Present Holidays': num_of_present_holidays[bio_num]
+                    })
+
+            except Error as e:
+                logging.error(f"Error fetching employee details: {e}")
+
+            finally:
+                if 'cursor' in locals() and cursor is not None:
+                    cursor.close()
+                if 'connection' in locals() and connection is not None:
+                    connection.close()
+
+        # Sort data by EmpName in alphabetical order
+        data.sort(key=lambda x: x['EmpName'])
 
         logging.info(f"Data to be passed: \n{data}")
 
-        self.window = PaytimeSheet(data, from_date, to_date) # Passing the data to PaytimeSheet
+        self.window = PaytimeSheet(data, from_date, to_date)
         self.window.show()
         self.close()
 

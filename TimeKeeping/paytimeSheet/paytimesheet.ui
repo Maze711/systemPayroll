@@ -20,7 +20,7 @@
       <x>0</x>
       <y>60</y>
       <width>1701</width>
-      <height>601</height>
+      <height>605</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -294,7 +294,21 @@ QTableWidget {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: white;</string>
+     <string notr="true">#widget{
+background-color: white;
+}
+
+#btnCheckSched, #btnFilter {
+	background-color: &quot;#344273&quot;;
+	color: white;
+	border-radius: 5px;
+}
+
+
+#btnPayTrans{
+border-radius: 5px;
+background-color: rgb(96, 206, 114);
+}</string>
     </property>
     <widget class="QFrame" name="searchBar">
      <property name="geometry">
@@ -384,7 +398,7 @@ QTableWidget {
     <widget class="QLabel" name="lblDateFrom">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>1110</x>
        <y>20</y>
        <width>121</width>
        <height>21</height>
@@ -405,7 +419,7 @@ QTableWidget {
     <widget class="QLabel" name="lblFrom">
      <property name="geometry">
       <rect>
-       <x>720</x>
+       <x>1230</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -429,7 +443,7 @@ QTableWidget {
     <widget class="QLabel" name="lblTo">
      <property name="geometry">
       <rect>
-       <x>990</x>
+       <x>1500</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -453,7 +467,7 @@ QTableWidget {
     <widget class="QLabel" name="lblDateTo">
      <property name="geometry">
       <rect>
-       <x>900</x>
+       <x>1410</x>
        <y>20</y>
        <width>91</width>
        <height>21</height>
@@ -469,6 +483,105 @@ QTableWidget {
      </property>
      <property name="text">
       <string>Date To:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPayTrans">
+     <property name="geometry">
+      <rect>
+       <x>700</x>
+       <y>10</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Create Pay Trans</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnFilter">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>10</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Filter</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnCheckSched">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>10</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Check Schedule</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
      </property>
     </widget>
    </widget>
