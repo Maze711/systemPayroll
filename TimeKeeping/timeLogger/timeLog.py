@@ -179,8 +179,8 @@ class timelogger(QMainWindow):
 
                     query = f"SELECT ep.sched_in, ep.sched_out, pi.surname, pi.firstname, pi.mi " \
                             f"FROM emp_info pi " \
-                            f"JOIN emp_posnsched ep ON pi.emp_id = ep.emp_id " \
-                            f"WHERE pi.emp_id = '{bio_no}'"
+                            f"JOIN emp_posnsched ep ON pi.empl_id = ep.empl_id " \
+                            f"WHERE pi.empl_id = '{bio_no}'"
                     cursor.execute(query)
                     result = cursor.fetchone()
                     if result:
@@ -290,21 +290,21 @@ class timelogger(QMainWindow):
                     else:
                         processed_bio_num.add(bio_num)
 
-                    query = f"SELECT pi.empl_no, pi.surname, pi.firstname, pi.mi " \
+                    query = f"SELECT pi.empl_id, pi.surname, pi.firstname, pi.mi " \
                             f"FROM emp_info pi " \
                             f"WHERE pi.empl_id = '{bio_num}'"
                     cursor.execute(query)
                     result = cursor.fetchone()
                     if result:
-                        empl_no, surname, firstname, mi = result
+                        empl_id, surname, firstname, mi = result
                         emp_name = f"{surname}, {firstname} {mi}"
                     else:
-                        empl_no = "Unknown"
+                        empl_id = "Unknown"
                         emp_name = "Unknown"
                         logging.warning(f"No data found for Employee ID: {bio_num}")
 
                     data.append({
-                        'EmpNo': empl_no,
+                        'EmpNo': empl_id,
                         'BioNum': bio_num,
                         'EmpName': emp_name,
                         'Present Days': num_of_present_days[bio_num],
