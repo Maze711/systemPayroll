@@ -1,18 +1,11 @@
-import sys
-import os
-import logging
-
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QTableWidgetItem, QHeaderView, QLineEdit
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QLineEdit
 from PyQt5.uic import loadUi
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+from Logger_config import get_logger
 
-    return os.path.join(base_path, relative_path)
+logging = get_logger()
 
 class TimeSheet(QDialog):
     def __init__(self, data):

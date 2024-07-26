@@ -1,59 +1,17 @@
-import sys
-import os
 import traceback
-
-import mysql.connector
-from mysql.connector import Error
-
-import logging
 
 from PyQt5.QtCore import Qt, QTime
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView, QPushButton, QMessageBox
 from PyQt5.uic import loadUi
+
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet
-from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.filter import filter
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path, getTypeOfDate
+from Logger_config import get_logger
 
-# Configure the logger
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging = get_logger()
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-def getTypeOfDate(trans_date):
-    try:
-        connection = create_connection('TIMEKEEPING')
-        if connection is None:
-            logging.error("Error: Could not establish database connection.")
-            return "Ordinary Day"  # Return default value on connection failure
-
-        cursor = connection.cursor()
-
-        fetch_type_of_date = "SELECT dateType FROM type_of_dates WHERE date = %s"
-        cursor.execute(fetch_type_of_date, (trans_date,))
-
-        result = cursor.fetchone()
-        if result:
-            return result[0]  # Return the dateType if found
-
-        return "Ordinary Day"  # Default to Ordinary Day if no match found
-
-    except Error as e:
-        logging.error(f"Error fetching type of date: {e}")
-        return "Ordinary Day"  # Return default value on error
-
-    finally:
-        if 'connection' in locals() and connection.is_connected():
-            cursor.close()
-            connection.close()
-            logging.info("Database connection closed")
 
 class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
@@ -249,7 +207,7 @@ class timecard(QDialog):
                         filtered.append(row)
                         logging.info("Added missing entry to filtered data")
                 else:
-                    # if check_in_time != 'Missing' and check_out_time != 'Missing':
+                    if check_in_time != 'Missing' and check_out_time != 'Missing':
                         check_in_hour = int(check_in_time.split(':')[0])
                         check_out_hour = int(check_out_time.split(':')[0])
 
