@@ -9,6 +9,8 @@ from FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
 from TimeKeeping.datImporter.dialogLoader import dialogModal
 from TimeKeeping.dateChange.dateChange import DateChange
+from Logger_config import delete_log_file
+
 
 def resource_path(relative_path):
     try:
@@ -105,7 +107,8 @@ def main():
     load_fonts()
     main_window = MainWindow()
     main_window.show()
-    sys.exit(app.exec_())
+    app.exec_()
+    delete_log_file()
 
 if __name__ == "__main__":
     main()

@@ -1,32 +1,19 @@
-import sys
-import os
-from mysql.connector import Error
-
-import logging
-
 import time
+
+from mysql.connector import Error
 from datetime import datetime
 from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QTableWidgetItem, QDateEdit, QLabel, QPushButton, \
+from PyQt5.QtWidgets import QTableWidgetItem, QDateEdit, QPushButton, \
     QTableWidget, QMainWindow, QHeaderView
 from PyQt5.uic import loadUi
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.timeCard import timecard
 from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path, appendDate
+from Logger_config import get_logger
 
-# Configure the logger
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+logging = get_logger()
 
 
 class timelogger(QMainWindow):
@@ -49,7 +36,7 @@ class timelogger(QMainWindow):
         self.toCalendar.setDate(QDate.currentDate())
 
         self.filterButton.clicked.connect(self.showFilteredData)
-        # self.createCard.clicked.connect(self.openTimeCard)
+        #self.createCard.clicked.connect(self.openTimeCard)
         self.createCard.clicked.connect(self.createPaytimeSheet)
         self.createCard.setEnabled(False)
 
@@ -151,12 +138,7 @@ class timelogger(QMainWindow):
         logging.info(f"populateTable took {end_time - start_time:.4f} seconds")
 
     def openTimeCard(self):
-        from_date = self.fromCalendar.date().toString("yyyy-MM-dd")
-        to_date = self.toCalendar.date().toString("yyyy-MM-dd")
-        filtered_data = [
-            row for row in self.data
-            if from_date <= row['trans_date'] <= to_date
-        ]
+        filtered_data, from_date, to_date = appendDate(self.fromCalendar, self.toCalendar, self.data)
 
         combined_data = {}
         connection = create_connection('FILE201')
@@ -248,13 +230,7 @@ class timelogger(QMainWindow):
             return "Invalid Time Format"
 
     def createPaytimeSheet(self):
-        from_date = self.fromCalendar.date().toString("yyyy-MM-dd")
-        to_date = self.toCalendar.date().toString("yyyy-MM-dd")
-
-        filtered_data = [
-            row for row in self.data
-            if from_date <= row['trans_date'] <= to_date
-        ]
+        filtered_data, from_date, to_date = appendDate(self.fromCalendar, self.toCalendar, self.data)
 
         data = []
         num_of_present_days = {}

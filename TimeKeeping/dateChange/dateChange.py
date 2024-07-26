@@ -1,24 +1,14 @@
-import sys
-import os
-import logging
-import mysql.connector
-
 from mysql.connector import Error
-from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox
+from PyQt5.QtWidgets import QDialog,  QMessageBox
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QDate
 
 from MainFrame.Database_Connection.DBConnection import create_connection
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+from Logger_config import get_logger
 
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging = get_logger()
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
 
 class DateChange(QDialog):
     def __init__(self):
