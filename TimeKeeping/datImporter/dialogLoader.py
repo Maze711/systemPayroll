@@ -1,24 +1,13 @@
-import sys
 import os
-import logging
-import time
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar
 from PyQt5.uic import loadUi
 from TimeKeeping.timeLogger.timeLog import timelogger  # Import timelogger class
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+from Logger_config import get_logger
 
-# Configure the logger
-logging.basicConfig(level=logging.INFO, filename='TimeKeeping/file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+logging = get_logger()
 
 
 class FileProcessor(QObject):
