@@ -1,13 +1,15 @@
 import sys
 import os
-import logging
 import xlrd
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
 from PyQt5.uic import loadUi
 
 from TimeKeeping.payTrans.payTransLoader import PayTrans
+from Logger_config import get_logger
+
+logging = get_logger()
 
 def resource_path(relative_path):
     try:
@@ -15,10 +17,6 @@ def resource_path(relative_path):
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
-
-# Configure the logger
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class PaytimeSheet(QMainWindow):
     def __init__(self, data, fromDate, toDate):

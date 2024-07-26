@@ -1,10 +1,12 @@
 import sys
 import os
-import logging
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QMainWindow
+from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QMainWindow
 from PyQt5.uic import loadUi
+from Logger_config import get_logger
+
+logging = get_logger()
 
 def resource_path(relative_path):
     try:
@@ -12,10 +14,6 @@ def resource_path(relative_path):
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
-
-# Configure the logger
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class PayTrans(QMainWindow):
     def __init__(self, from_date, to_date, data):
