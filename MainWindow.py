@@ -7,7 +7,8 @@ from PyQt5.uic import loadUi
 
 from FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
-from TimeKeeping.datImporter.dialogLoader import dialogModal
+#from TimeKeeping.datImporter.dialogLoader import dialogModal
+from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import dialogModal
 from TimeKeeping.dateChange.dateChange import DateChange
 from Logger_config import delete_log_file
 
