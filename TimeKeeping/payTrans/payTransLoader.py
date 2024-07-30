@@ -5,15 +5,10 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QMainWindow
 from PyQt5.uic import loadUi
 from Logger_config import get_logger
+from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
 
 logging = get_logger()
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
 
 class PayTrans(QMainWindow):
     def __init__(self, from_date, to_date, data):
