@@ -2,13 +2,7 @@ from MainFrame.Resources.lib import *
 
 from FILE201.file201_Function.modalFunction import modalFunction
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath("")
-
-    return os.path.join(base_path, relative_path)
+from MainFrame.systemFunctions import globalFunction
 
 class personalModal(QDialog):
     def __init__(self):
@@ -16,7 +10,7 @@ class personalModal(QDialog):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setFixedSize(1153, 665)
         #ui_file = os.path.join(os.path.dirname(__file__), 'personalInformation.ui')
-        ui_file = (resource_path("MainFrame\\Resources\\UI\\personalInformation.ui"))
+        ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\personalInformation.ui"))
         loadUi(ui_file, self)
 
         self.functions = modalFunction(self)

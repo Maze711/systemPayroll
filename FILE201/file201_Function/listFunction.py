@@ -1,11 +1,10 @@
 from MainFrame.Resources.lib import *
 
-# Configure logging
-logger = logging.getLogger(__name__)
-
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.Database_Connection.modalSQLQuery import executeSearchQuery
+from MainFrame.Database_Connection.modalSQLQuery import executeQuery
 from FILE201.Other_Information.otherInformationModal import personalModal
+
+from MainFrame.systemFunctions import single_function_logger
 
 
 class ListFunction:
@@ -27,7 +26,7 @@ class ListFunction:
 
         # Select only the required columns and order by surname
         query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY surname"
-        employees = executeSearchQuery(query)
+        employees = executeQuery(query)
 
         if employees is None:
             print("There are no current employees")
@@ -55,10 +54,16 @@ class ListFunction:
             self.main_window.txtFirstName.setText(firstName)
             self.main_window.txtMiddleName.setText(middleName)
 
-    def searchAndDisplay(self, query):
+    def searchAndDisplay(self, searchText):
         self.main_window.employeeListTable.setRowCount(0)
 
-        employees = executeSearchQuery(query)
+        query = """
+            SELECT empl_id, surname, firstname, mi FROM emp_info 
+            WHERE empl_id LIKE %s OR surname LIKE %s OR firstname LIKE %s OR mi LIKE %s
+            ORDER BY surname
+        """
+        searchText = f"%{searchText}%"
+        employees = executeQuery(query, searchText, searchText, searchText, searchText)
 
         if employees is None:
             print("No employees match the search criteria")
@@ -106,6 +111,7 @@ class ListFunction:
             widget.setReadOnly(True)
             widget.setStyleSheet(disableStyle)
 
+    @single_function_logger.log_function
     def fetch_employee_data(self, empID):
         query = """
             SELECT p.emp_id, p.surname, p.firstname, p.mi, p.addr1,
@@ -133,7 +139,7 @@ class ListFunction:
         try:
             connection = create_connection('FILE201')
             if connection is None:
-                logger.error("Error: Could not establish database connection.")
+                logging.error("Error: Could not establish database connection.")
                 return None
 
             cursor = connection.cursor()
@@ -144,14 +150,14 @@ class ListFunction:
             return None
 
         except Error as e:
-            logger.error(f"Error fetching employee data: {e}")
+            logging.error(f"Error fetching employee data: {e}")
             return None
 
         finally:
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
-                logger.info("Database connection closed")
+                logging.info("Database connection closed")
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
@@ -259,9 +265,6 @@ class ListFunction:
     def searchEmployees(self):
         searchText = self.main_window.txtSearch.text()
         if searchText:
-            query = (
-                f"SELECT empl_id, surname, firstname, mi FROM emp_info WHERE empl_id LIKE '%{searchText}%' OR surname LIKE '%{searchText}%' OR "
-                f"firstname LIKE '%{searchText}%' ORDER BY surname")
-            self.main_window.functions.searchAndDisplay(query)
+            self.main_window.functions.searchAndDisplay(searchText)
         else:
             self.main_window.functions.displayEmployees()
