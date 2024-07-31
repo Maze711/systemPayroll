@@ -1,12 +1,4 @@
-import time
-import logging
-
-from mysql.connector import Error
-from datetime import datetime
-from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QDateEdit, QPushButton, \
-    QTableWidget, QMainWindow, QHeaderView
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.timeCard import timecard

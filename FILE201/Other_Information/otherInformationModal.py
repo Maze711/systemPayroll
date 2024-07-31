@@ -1,11 +1,4 @@
-import sys
-import os
-
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QDialog, QLineEdit
-from PyQt5.uic import loadUi
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIntValidator # Founded a new library
+from MainFrame.Resources.lib import *
 
 from FILE201.file201_Function.modalFunction import modalFunction
 

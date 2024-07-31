@@ -1,11 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QMainWindow
-from PyQt5.uic import loadUi
-import logging
-
+from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
-
-
 
 
 class PayTrans(QMainWindow):
