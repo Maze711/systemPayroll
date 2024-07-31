@@ -4,16 +4,15 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path, getTypeOfDate
-from Logger_config import get_logger
+from MainFrame.systemFunctions import globalFunction
+import logging
 
-logging = get_logger()
 
 class chkSched(QDialog):
     def __init__(self, data):
         super(chkSched, self).__init__()
         self.setFixedSize(780, 413)
-        ui_file = resource_path("TimeKeeping\\schedValidator\\Schedule.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\schedValidator\\Schedule.ui")
         loadUi(ui_file, self)
 
         self.data = data
@@ -30,7 +29,7 @@ class chkSched(QDialog):
         self.timeOutTxt.setText(checkOut)
         self.hoursWorkedTxt.setText(str(total_hours))
         self.holidayNameTxt.setText(self.getHolidayName(trans_date))
-        self.typeOfDayCb.setCurrentText(getTypeOfDate(trans_date))
+        self.typeOfDayCb.setCurrentText(globalFunction.getTypeOfDate(trans_date))
 
     def getHolidayName(self, trans_date):
         try:

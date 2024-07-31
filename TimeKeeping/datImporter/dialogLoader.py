@@ -1,13 +1,12 @@
 import os
+import logging
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar
 from PyQt5.uic import loadUi
-from TimeKeeping.timeLogger.timeLog import timelogger  # Import timelogger class
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
-from Logger_config import get_logger
 
-logging = get_logger()
+from TimeKeeping.timeLogger.timeLog import timelogger
+from MainFrame.systemFunctions import globalFunction, single_function_logger
 
 
 class FileProcessor(QObject):
@@ -19,6 +18,7 @@ class FileProcessor(QObject):
         super().__init__()
         self.fileName = fileName
 
+    @single_function_logger.log_function
     def process(self):
         try:
             temp_folder = "temp_folder"
@@ -46,14 +46,15 @@ class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(418, 392)
-        ui_file = resource_path("TimeKeeping\\datImporter\\dialogImporter.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\datImporter\\dialogImporter.ui")
         loadUi(ui_file, self)
 
         self.importBTN.clicked.connect(self.importTxt)
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
 
-    def importTxt(self):
+    @single_function_logger.log_function
+    def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Text or DAT File", "",
                                                   "Text Files (*.txt);;DAT Files (*.DAT);;All Files (*)")
         if fileName:

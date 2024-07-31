@@ -2,16 +2,15 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QLineEdit
 from PyQt5.uic import loadUi
 
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
-from Logger_config import get_logger
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
+import logging
 
-logging = get_logger()
 
 class TimeSheet(QDialog):
     def __init__(self, data):
         super(TimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = (resource_path("TimeKeeping\\timeSheet\\TimeSheet.ui"))
+        ui_file = (globalFunction.resource_path("TimeKeeping\\timeSheet\\TimeSheet.ui"))
         loadUi(ui_file, self)
 
         self.data = data
@@ -21,7 +20,7 @@ class TimeSheet(QDialog):
 
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch_4')
         if self.searchBioNum is not None:
-            self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
+            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
         else:
             logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
@@ -62,12 +61,3 @@ class TimeSheet(QDialog):
 
             if i == 0:
                 self.lblMach.setText(row['MachCode'])
-
-    def searchBioNumFunction(self):
-        search_text = self.searchBioNum.text().strip().lower()
-        if not search_text:
-            self.populateTimeSheet(self.data)
-            return
-
-        filtered_data = [row for row in self.data if row['BioNum'].lower().startswith(search_text)]
-        self.populateTimeSheet(filtered_data)
