@@ -2,6 +2,9 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
+from MainFrame.systemFunctions import single_function_logger
+
+@single_function_logger.log_function
 def convert_to_24hour(time_str):
     try:
         if isinstance(time_str, str):
@@ -24,6 +27,7 @@ def split_schedule(sche_name):
             return sched_in, sched_out
     return None, None
 
+@single_function_logger.log_function
 def importIntoDB(parent, display_employees_callback):
     try:
         options = QFileDialog.Options()
