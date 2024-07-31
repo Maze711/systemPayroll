@@ -11,7 +11,7 @@ from MainFrame.systemFunctions import globalFunction
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        ui_file = globalFunction.resource_path("MainFrame/Resources/UI/Main.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\Main.ui")
         loadUi(ui_file, self)
 
         self.functions = self
