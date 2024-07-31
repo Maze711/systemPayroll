@@ -2,7 +2,6 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
-#logger = logging.getLogger(__name__)
 
 def fetch_personal_information():
     try:

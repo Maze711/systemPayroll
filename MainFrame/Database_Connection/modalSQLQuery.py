@@ -2,9 +2,9 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
-# Configure logging
-logger = logging.getLogger(__name__)
+from MainFrame.systemFunctions import single_function_logger
 
+@single_function_logger.log_function
 def add_employee(data):
     try:
         connection = create_connection('FILE201')
@@ -149,11 +149,11 @@ def add_employee(data):
         return True
 
     except Error as e:
-        logger.error(f"Error adding employee: {e}")
+        logging.error(f"Error adding employee: {e}")
         print(e)
         return False
     except Exception as ex:
-        logger.error(f"Error adding employee: {ex}")
+        logging.error(f"Error adding employee: {ex}")
         return False
     finally:
         if 'connection' in locals() and connection.is_connected():
@@ -161,11 +161,12 @@ def add_employee(data):
             connection.close()
             #logger.info("Database connection closed")
 
+@single_function_logger.log_function
 def save_employee(empID, data):
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            #logger.error("Error: Could not establish database connection.")
+            logging.error("Error: Could not establish database connection.")
             return False
 
         cursor = connection.cursor()
@@ -277,20 +278,22 @@ def get_generated_employee_id(employee_id):
     else:
         return employee_id
 
-def executeSearchQuery(query):
+@single_function_logger.log_function
+def executeQuery(query, *args):
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            #logger.error("Error: Could not establish database connection.")
+            logging.error("Error: Could not establish database connection.")
             return []
 
         cursor = connection.cursor()
-        cursor.execute(query)
+        values = args
+        cursor.execute(query, values)
         results = cursor.fetchall()
         return results
 
     except Error as e:
-        #logger.error(f"Error executing search query: {e}")
+        logging.error(f"Error executing query: {e}")
         return []
 
     finally:
