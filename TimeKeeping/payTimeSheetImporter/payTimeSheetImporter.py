@@ -43,7 +43,7 @@ class FileProcessor(QObject):
             self.error.emit(str(e))
 
 
-class dialogModal(QDialog):
+class PayrollDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(418, 392)
