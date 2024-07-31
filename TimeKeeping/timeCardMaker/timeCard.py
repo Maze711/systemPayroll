@@ -1,4 +1,5 @@
 import traceback
+import logging
 
 from PyQt5.QtCore import Qt, QTime
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView, QPushButton, QMessageBox
@@ -7,21 +8,20 @@ from PyQt5.uic import loadUi
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet
 from TimeKeeping.timeCardMaker.filter import filter
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path, getTypeOfDate
-from Logger_config import get_logger
-
-logging = get_logger()
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
 
 class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
         self.setFixedSize(1345, 665)
-        ui_file = resource_path("TimeKeeping\\timeCardMaker\\timecard.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\timeCardMaker\\timecard.ui")
         loadUi(ui_file, self)
 
         self.original_data = filtered_data.copy()
         self.filtered_data = filtered_data
+
+        self.timekeepfunction = timekeepingFunction()
 
         # Make the column headers fixed size
         self.TimeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -37,7 +37,7 @@ class timecard(QDialog):
 
         # Add search functionality
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
-        self.searchBioNum.textChanged.connect(self.searchBioNumFunction)
+        self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 
         self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
         self.btnCheckSched.clicked.connect(self.CheckSched)
@@ -47,6 +47,7 @@ class timecard(QDialog):
 
         self.populateTimeList(self.filtered_data)
 
+    @single_function_logger.log_function
     def populateTimeList(self, data):
         self.TimeListTable.clearContents()
         self.TimeListTable.setRowCount(len(data))
@@ -60,15 +61,7 @@ class timecard(QDialog):
 
         logging.info("Table population complete")
 
-    def searchBioNumFunction(self):
-        search_text = self.searchBioNum.text().strip()
-        if not search_text:
-            self.populateTimeList(self.filtered_data)
-            return
-
-        filtered_data = [row for row in self.filtered_data if row['BioNum'].startswith(search_text)]
-        self.populateTimeList(filtered_data)
-
+    @single_function_logger.log_function
     def getTotalHoursWorked(self, time_start, time_end):
         if time_start == 'Missing' or time_end == 'Missing':
             return "Unknown"
@@ -92,7 +85,8 @@ class timecard(QDialog):
 
         return round(work_duration_in_hours, 2)
 
-    def CheckSched(self):
+    @single_function_logger.log_function
+    def CheckSched(self, checked=False):
         selected_row = self.TimeListTable.currentRow()
 
         if selected_row != -1:
@@ -117,6 +111,7 @@ class timecard(QDialog):
                 "Please select a row from the table first!"
             )
 
+    @single_function_logger.log_function
     def createTimeSheet(self):
         dataMerge = []
         for item in self.filtered_data:
@@ -130,7 +125,7 @@ class timecard(QDialog):
             specialOT = ''
 
             # Check the type of the date
-            dateType = getTypeOfDate(trans_date)
+            dateType = self.timekeepfunction.getTypeOfDate(trans_date)
             if dateType == "Ordinary Day" and workHours != 'N/A' and hoursWorked != 'Unknown':
                 try:
                     workHours = round(float(workHours), 2)
@@ -189,6 +184,7 @@ class timecard(QDialog):
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
 
+    @single_function_logger.log_function
     def apply_filter(self, filter_values):
         try:
             logging.info(f"Filter values received: {filter_values}")
@@ -231,7 +227,8 @@ class timecard(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
 
-    def filterModal(self):
+    @single_function_logger.log_function
+    def filterModal(self, checked=False):
         try:
             filter_dialog = filter(self)
             if filter_dialog.exec_() == QDialog.Accepted:
@@ -243,11 +240,13 @@ class timecard(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
 
+    @single_function_logger.log_function
     def clear_filter(self):
         self.filtered_data = self.original_data.copy()
         logging.info("Filter cleared, reset to original data")
         self.populateTimeList(self.filtered_data)
 
+    @single_function_logger.log_function
     def show_missing_entries(self):
         missing_entries = [row for row in self.original_data if
                            row['Check_In'] == 'Missing' or row['Check_Out'] == 'Missing']

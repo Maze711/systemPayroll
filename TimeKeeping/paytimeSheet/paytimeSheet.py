@@ -1,5 +1,3 @@
-import sys
-import os
 import xlrd
 
 from PyQt5.QtCore import Qt
@@ -7,17 +5,16 @@ from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView, QPushBut
 from PyQt5.uic import loadUi
 
 from TimeKeeping.payTrans.payTransLoader import PayTrans
-from Logger_config import get_logger
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+from MainFrame.systemFunctions import globalFunction
 
-logging = get_logger()
+import logging
 
 
 class PaytimeSheet(QMainWindow):
     def __init__(self, content):
         super(PaytimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = resource_path("TimeKeeping\\paytimeSheet\\paytimesheet.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\paytimeSheet\\paytimesheet.ui")
         loadUi(ui_file, self)
 
         self.data = content

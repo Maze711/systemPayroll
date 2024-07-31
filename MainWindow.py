@@ -1,5 +1,4 @@
 import sys
-import os
 
 from PyQt5.QtCore import QEvent, QTimer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
@@ -7,24 +6,16 @@ from PyQt5.uic import loadUi
 
 from FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
-#from TimeKeeping.datImporter.dialogLoader import dialogModal
-from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import dialogModal
+from TimeKeeping.datImporter.dialogLoader import dialogModal
+# from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import dialogModal
 from TimeKeeping.dateChange.dateChange import DateChange
-from Logger_config import delete_log_file
+from MainFrame.systemFunctions import globalFunction
 
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        ui_file = resource_path("MainFrame\\Resources\\Main.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\Main.ui")
         loadUi(ui_file, self)
 
         self.functions = self
@@ -103,13 +94,14 @@ class MainWindow(QMainWindow):
         self.timekeeping_window = dialogModal()
         self.timekeeping_window.show()
 
+
 def main():
     app = QApplication(sys.argv)
     load_fonts()
     main_window = MainWindow()
     main_window.show()
     app.exec_()
-    delete_log_file()
+
 
 if __name__ == "__main__":
     main()
