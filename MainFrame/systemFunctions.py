@@ -2,12 +2,14 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
+
 class SingleFunctionLogger:
     def __init__(self, log_file='file_import.log'):
         self.log_file = log_file
         self.logger = logging.getLogger('SingleFunctionLogger')
         self.logger.setLevel(logging.INFO)
         self.file_handler = None
+        self._setup_logger()
 
     def _setup_logger(self):
         if self.file_handler:
@@ -23,17 +25,24 @@ class SingleFunctionLogger:
         @wraps(func)
         def wrapper(*args, **kwargs):
             self._setup_logger()
-            self.logger.info(f"Executing function: {func.__name__}")
+            start_time = time.time()
+            self.logger.info(f"Starting execution of function: {func.__name__}")
             try:
                 result = func(*args, **kwargs)
-                self.logger.info(f"Function {func.__name__} completed successfully")
+                end_time = time.time()
+                duration = end_time - start_time
+                self.logger.info(f"Function {func.__name__} completed successfully in {duration:.2f} seconds")
                 return result
             except Exception as e:
-                self.logger.error(f"Error in function {func.__name__}: {str(e)}")
+                end_time = time.time()
+                duration = end_time - start_time
+                self.logger.error(
+                    f"Error in function {func.__name__}: {str(e)} (Execution time: {duration:.2f} seconds)")
                 raise
+
         return wrapper
 
-# Create an instance of the SingleFunctionLogger
+
 single_function_logger = SingleFunctionLogger()
 
 
