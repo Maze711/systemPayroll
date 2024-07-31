@@ -16,7 +16,7 @@ class personalModal(QDialog):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setFixedSize(1153, 665)
         #ui_file = os.path.join(os.path.dirname(__file__), 'personalInformation.ui')
-        ui_file = (resource_path("FILE201\\Other_Information\\personalInformation.ui"))
+        ui_file = (resource_path("MainFrame\\Resources\\UI\\personalInformation.ui"))
         loadUi(ui_file, self)
 
         self.functions = modalFunction(self)

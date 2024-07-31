@@ -21,7 +21,7 @@ class EmployeeList(QMainWindow):
     def __init__(self):
         super(EmployeeList, self).__init__()
         self.setFixedSize(1280, 685)
-        ui_file = resource_path("FILE201\\Employee_List\\employeeList.ui")
+        ui_file = resource_path("MainFrame\\Resources\\UI\\employeeList.ui")
         loadUi(ui_file, self)
 
         self.frame_layout = QVBoxLayout(self.frameAnnualSummary)
