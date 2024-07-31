@@ -11,7 +11,7 @@ class timelogger(QMainWindow):
         super().__init__()
         self.setFixedSize(1180, 665)
         #loadUi(os.path.join(os.path.dirname(__file__), 'timeLog.ui'), self)
-        ui_file = (globalFunction.resource_path("TimeKeeping\\timeLogger\\timeLog.ui"))
+        ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\timeLog.ui"))
         loadUi(ui_file, self)
 
         self.content = content
@@ -39,7 +39,6 @@ class timelogger(QMainWindow):
 
     @single_function_logger.log_function
     def processContent(self):
-        start_time = time.time()  # Start timing
 
         rows = self.content.strip().split('\n')
         self.data = []
@@ -72,24 +71,17 @@ class timelogger(QMainWindow):
                 'sched': sched  # Store sched instead of code_1, code_2, code_3
             })
 
-        end_time = time.time()  # End timing
-        logging.info(f"processContent took {end_time - start_time:.4f} seconds")
 
     @single_function_logger.log_function
     def loadData(self):
-        start_time = time.time()  # Start timing
 
         try:
             self.populateTable(self.data)
         except Exception as e:
             logging.error(f"Error loading data: {e}")
 
-        end_time = time.time()  # End timing
-        logging.info(f"loadData took {end_time - start_time:.4f} seconds")
-
     @single_function_logger.log_function
     def showFilteredData(self, checked=False):
-        start_time = time.time()  # Start timing
 
         from_date = self.fromCalendar.date()
         to_date = self.toCalendar.date()
@@ -104,12 +96,8 @@ class timelogger(QMainWindow):
         self.populateTable(filtered_data)
         self.createCard.setEnabled(bool(filtered_data))
 
-        end_time = time.time()  # End timing
-        logging.info(f"showFilteredData took {end_time - start_time:.4f} seconds")
-
     @single_function_logger.log_function
     def populateTable(self, data):
-        start_time = time.time()  # Start timing
 
         self.employeeListTable.setRowCount(len(data))
         self.employeeListTable.clearContents()
@@ -128,8 +116,6 @@ class timelogger(QMainWindow):
             for column, item in enumerate(items):
                 self.employeeListTable.setItem(row_position, column, item)
 
-        end_time = time.time()  # End timing
-        logging.info(f"populateTable took {end_time - start_time:.4f} seconds")
 
     @single_function_logger.log_function
     def openTimeCard(self, checked=False):

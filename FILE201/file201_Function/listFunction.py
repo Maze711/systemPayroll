@@ -6,7 +6,6 @@ logger = logging.getLogger(__name__)
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeSearchQuery
 from FILE201.Other_Information.otherInformationModal import personalModal
-from MainFrame.Database_Connection.listSQLQuery import getAllFetchEmployees
 
 
 class ListFunction:
