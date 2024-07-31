@@ -12,7 +12,7 @@ class filter(QDialog):
         try:
             super().__init__(parent)
             self.setFixedSize(400, 300)
-            ui_file = globalFunction.resource_path("TimeKeeping\\timeCardMaker\\filter.ui")
+            ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\filter.ui")
             loadUi(ui_file, self)
 
 

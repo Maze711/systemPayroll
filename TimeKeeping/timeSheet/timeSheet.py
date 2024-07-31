@@ -7,7 +7,7 @@ class TimeSheet(QDialog):
     def __init__(self, data):
         super(TimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = (globalFunction.resource_path("TimeKeeping\\timeSheet\\TimeSheet.ui"))
+        ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\TimeSheet.ui"))
         loadUi(ui_file, self)
 
         self.data = data

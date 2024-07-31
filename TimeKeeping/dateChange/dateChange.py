@@ -8,7 +8,7 @@ class DateChange(QDialog):
     def __init__(self):
         super(DateChange, self).__init__()
         self.setFixedSize(400, 300)
-        ui_file = globalFunction.resource_path("TimeKeeping\\dateChange\\datechange.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\datechange.ui")
         loadUi(ui_file, self)
 
         self.connection = create_connection('TIMEKEEPING')

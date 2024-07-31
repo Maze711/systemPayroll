@@ -6,7 +6,7 @@ class PayTrans(QMainWindow):
     def __init__(self, from_date, to_date, data):
         super(PayTrans, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = globalFunction.resource_path("TimeKeeping\\payTrans\\paytrans.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytrans.ui")
         loadUi(ui_file, self)
 
         self.data = data

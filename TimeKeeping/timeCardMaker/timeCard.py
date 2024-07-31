@@ -10,7 +10,7 @@ class timecard(QDialog):
     def __init__(self, filtered_data, from_date_str, to_date_str):
         super().__init__()
         self.setFixedSize(1345, 665)
-        ui_file = globalFunction.resource_path("TimeKeeping\\timeCardMaker\\timecard.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\timecard.ui")
         loadUi(ui_file, self)
 
         self.original_data = filtered_data.copy()

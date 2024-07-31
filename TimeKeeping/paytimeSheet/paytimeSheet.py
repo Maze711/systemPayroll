@@ -8,7 +8,7 @@ class PaytimeSheet(QMainWindow):
     def __init__(self, content):
         super(PaytimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = globalFunction.resource_path("TimeKeeping\\paytimeSheet\\paytimesheet.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytimesheet.ui")
         loadUi(ui_file, self)
 
         self.data = content
