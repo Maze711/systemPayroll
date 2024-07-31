@@ -1,5 +1,3 @@
-import os
-
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar, QMessageBox
 from PyQt5.uic import loadUi
@@ -7,11 +5,9 @@ from PyQt5.uic import loadUi
 import xlrd
 
 from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+from MainFrame.systemFunctions import globalFunction
+import logging
 
-from Logger_config import get_logger
-
-logging = get_logger()
 
 
 class FileProcessor(QObject):
@@ -51,7 +47,7 @@ class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(418, 392)
-        ui_file = resource_path("TimeKeeping\\datImporter\\dialogImporter.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\datImporter\\dialogImporter.ui")
         loadUi(ui_file, self)
 
         self.importBTN.clicked.connect(self.importTxt)

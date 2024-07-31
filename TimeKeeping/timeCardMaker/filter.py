@@ -3,17 +3,16 @@ import traceback
 from PyQt5.QtWidgets import QDialog, QComboBox, QPushButton, QMessageBox
 from PyQt5.uic import loadUi
 
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
-from Logger_config import get_logger
+from MainFrame.systemFunctions import globalFunction
+import logging
 
-logging = get_logger()
 
 class filter(QDialog):
     def __init__(self, parent=None):
         try:
             super().__init__(parent)
             self.setFixedSize(400, 300)
-            ui_file = resource_path("TimeKeeping\\timeCardMaker\\filter.ui")
+            ui_file = globalFunction.resource_path("TimeKeeping\\timeCardMaker\\filter.ui")
             loadUi(ui_file, self)
 
 

@@ -1,4 +1,5 @@
 import time
+import logging
 
 from mysql.connector import Error
 from datetime import datetime
@@ -10,10 +11,7 @@ from PyQt5.uic import loadUi
 from MainFrame.Database_Connection.DBConnection import create_connection
 from TimeKeeping.timeCardMaker.timeCard import timecard
 from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path, appendDate
-from Logger_config import get_logger
-
-logging = get_logger()
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
 
 class timelogger(QMainWindow):
@@ -21,7 +19,7 @@ class timelogger(QMainWindow):
         super().__init__()
         self.setFixedSize(1180, 665)
         #loadUi(os.path.join(os.path.dirname(__file__), 'timeLog.ui'), self)
-        ui_file = (resource_path("TimeKeeping\\timeLogger\\timeLog.ui"))
+        ui_file = (globalFunction.resource_path("TimeKeeping\\timeLogger\\timeLog.ui"))
         loadUi(ui_file, self)
 
         self.content = content
@@ -36,8 +34,8 @@ class timelogger(QMainWindow):
         self.toCalendar.setDate(QDate.currentDate())
 
         self.filterButton.clicked.connect(self.showFilteredData)
-        #self.createCard.clicked.connect(self.openTimeCard)
-        self.createCard.clicked.connect(self.createPaytimeSheet)
+        self.createCard.clicked.connect(self.openTimeCard)
+        # self.createCard.clicked.connect(self.createPaytimeSheet)
         self.createCard.setEnabled(False)
 
         self.processContent()
@@ -47,6 +45,7 @@ class timelogger(QMainWindow):
         self.employeeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.employeeListTable.horizontalHeader().setStretchLastSection(True)
 
+    @single_function_logger.log_function
     def processContent(self):
         start_time = time.time()  # Start timing
 
@@ -84,6 +83,7 @@ class timelogger(QMainWindow):
         end_time = time.time()  # End timing
         logging.info(f"processContent took {end_time - start_time:.4f} seconds")
 
+    @single_function_logger.log_function
     def loadData(self):
         start_time = time.time()  # Start timing
 
@@ -95,7 +95,8 @@ class timelogger(QMainWindow):
         end_time = time.time()  # End timing
         logging.info(f"loadData took {end_time - start_time:.4f} seconds")
 
-    def showFilteredData(self):
+    @single_function_logger.log_function
+    def showFilteredData(self, checked=False):
         start_time = time.time()  # Start timing
 
         from_date = self.fromCalendar.date()
@@ -114,6 +115,7 @@ class timelogger(QMainWindow):
         end_time = time.time()  # End timing
         logging.info(f"showFilteredData took {end_time - start_time:.4f} seconds")
 
+    @single_function_logger.log_function
     def populateTable(self, data):
         start_time = time.time()  # Start timing
 
@@ -137,8 +139,9 @@ class timelogger(QMainWindow):
         end_time = time.time()  # End timing
         logging.info(f"populateTable took {end_time - start_time:.4f} seconds")
 
-    def openTimeCard(self):
-        filtered_data, from_date, to_date = appendDate(self.fromCalendar, self.toCalendar, self.data)
+    @single_function_logger.log_function
+    def openTimeCard(self, checked=False):
+        filtered_data, from_date, to_date = timekeepingFunction.appendDate(self.fromCalendar, self.toCalendar, self.data)
 
         combined_data = {}
         connection = create_connection('FILE201')
@@ -203,11 +206,10 @@ class timelogger(QMainWindow):
                 final_data = list(combined_data.values())
                 self.timecard_window = timecard(final_data, from_date, to_date)
                 self.timecard_window.show()
-                self.close()
+                self.hide()
 
             except Exception as e:
                 logging.error(f"Error fetching or processing data: {e}")
-
             finally:
                 if 'cursor' in locals() and cursor is not None:
                     cursor.close()
@@ -216,6 +218,7 @@ class timelogger(QMainWindow):
         else:
             logging.error("Failed to establish database connection")
 
+    @single_function_logger.log_function
     def calculateHoursWorked(self, sched_in, sched_out):
         try:
             sched_in_time = datetime.strptime(sched_in, "%I:%M %p")  # Example: '6:00 am'
@@ -229,8 +232,9 @@ class timelogger(QMainWindow):
         except ValueError:
             return "Invalid Time Format"
 
+    @single_function_logger.log_function
     def createPaytimeSheet(self):
-        filtered_data, from_date, to_date = appendDate(self.fromCalendar, self.toCalendar, self.data)
+        filtered_data, from_date, to_date = timekeepingFunction.appendDate(self.fromCalendar, self.toCalendar, self.data)
 
         data = []
         num_of_present_days = {}
@@ -305,6 +309,7 @@ class timelogger(QMainWindow):
         self.window.show()
         self.close()
 
+    @single_function_logger.log_function
     def fetch_all_holidays(self):
         connection = create_connection('TIMEKEEPING')
         if connection:

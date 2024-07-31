@@ -1,20 +1,18 @@
-import sys
-import os
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView, QMainWindow
 from PyQt5.uic import loadUi
-from Logger_config import get_logger
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
+import logging
 
-logging = get_logger()
+from MainFrame.systemFunctions import globalFunction
+
+
 
 
 class PayTrans(QMainWindow):
     def __init__(self, from_date, to_date, data):
         super(PayTrans, self).__init__()
         self.setFixedSize(1700, 665)
-        ui_file = resource_path("TimeKeeping\\payTrans\\paytrans.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\payTrans\\paytrans.ui")
         loadUi(ui_file, self)
 
         self.data = data

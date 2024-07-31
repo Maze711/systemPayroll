@@ -1,20 +1,19 @@
+import logging
+
 from mysql.connector import Error
 from PyQt5.QtWidgets import QDialog,  QMessageBox
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QDate
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from TimeKeeping.timekeeping_Function.timekeepingFunction import resource_path
-from Logger_config import get_logger
-
-logging = get_logger()
+from MainFrame.systemFunctions import globalFunction, single_function_logger
 
 
 class DateChange(QDialog):
     def __init__(self):
         super(DateChange, self).__init__()
         self.setFixedSize(400, 300)
-        ui_file = resource_path("TimeKeeping\\dateChange\\datechange.ui")
+        ui_file = globalFunction.resource_path("TimeKeeping\\dateChange\\datechange.ui")
         loadUi(ui_file, self)
 
         self.connection = create_connection('TIMEKEEPING')
@@ -23,7 +22,8 @@ class DateChange(QDialog):
 
         self.fetch_holiday_data()
 
-    def fetch_holiday_data(self):
+    @single_function_logger.log_function
+    def fetch_holiday_data(self, index=None):
         holiday_name = self.cmbHoliday.currentText()
         try:
             cursor = self.connection.cursor()
@@ -47,7 +47,8 @@ class DateChange(QDialog):
             logging.exception("Error while fetching data from MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to load data")
 
-    def update_holiday_date(self):
+    @single_function_logger.log_function
+    def update_holiday_date(self, checked=False):
         holiday_name = self.cmbHoliday.currentText()
         new_date = self.dateEdit.date().toString("yyyy-MM-dd")
 
