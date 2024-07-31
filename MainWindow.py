@@ -7,7 +7,7 @@ from PyQt5.uic import loadUi
 from FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
 from TimeKeeping.datImporter.dialogLoader import dialogModal
-# from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import dialogModal
+from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 
@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.additional_buttons_container = None
 
         self.btnTimeKeeping.installEventFilter(self)
+        self.btnPayRoll.clicked.connect(self.openPayRoll)
 
     def eventFilter(self, source, event):
         if source == self.btnTimeKeeping:
@@ -93,6 +94,10 @@ class MainWindow(QMainWindow):
     def openTimeLogger(self):
         self.timekeeping_window = dialogModal()
         self.timekeeping_window.show()
+
+    def openPayRoll(self):
+        self.payroll_window = PayrollDialog()
+        self.payroll_window.show()
 
 
 def main():
