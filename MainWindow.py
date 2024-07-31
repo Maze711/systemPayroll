@@ -5,8 +5,15 @@ from MainFrame.fontLoader import load_fonts
 from TimeKeeping.datImporter.dialogLoader import dialogModal
 from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from TimeKeeping.dateChange.dateChange import DateChange
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
+# Setup logging for application load duration
+duration_logger = logging.getLogger('DurationLogger')
+duration_logger.setLevel(logging.DEBUG)
+duration_file_handler = logging.FileHandler('application_duration.log', mode='w')
+duration_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+duration_file_handler.setFormatter(duration_formatter)
+duration_logger.addHandler(duration_file_handler)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -15,14 +22,16 @@ class MainWindow(QMainWindow):
         loadUi(ui_file, self)
 
         self.functions = self
+        self.employee_list_window = None
+        self.datechange = None
+        self.timekeeping_window = None
+        self.payroll_window = None
 
         # Window Connections
         self.btnEmployeeList.clicked.connect(self.employeeWindow)
-
-        self.additional_buttons_container = None
-
-        self.btnTimeKeeping.installEventFilter(self)
         self.btnPayRoll.clicked.connect(self.openPayRoll)
+        self.btnTimeKeeping.installEventFilter(self)
+        self.additional_buttons_container = None
 
     def eventFilter(self, source, event):
         if source == self.btnTimeKeeping:
@@ -80,29 +89,45 @@ class MainWindow(QMainWindow):
             self.additional_buttons_container = None
 
     def employeeWindow(self):
-        self.employee_list_window = EmployeeList()
+        if self.employee_list_window is None:
+            self.employee_list_window = EmployeeList()
         self.employee_list_window.show()
 
     def openDateChange(self):
-        self.datechange = DateChange()
+        if self.datechange is None:
+            self.datechange = DateChange()
         self.datechange.show()
 
     def openTimeLogger(self):
-        self.timekeeping_window = dialogModal()
+        if self.timekeeping_window is None:
+            self.timekeeping_window = dialogModal()
         self.timekeeping_window.show()
 
     def openPayRoll(self):
-        self.payroll_window = PayrollDialog()
+        if self.payroll_window is None:
+            self.payroll_window = PayrollDialog()
         self.payroll_window.show()
 
-
 def main():
-    app = QApplication(sys.argv)
-    load_fonts()
-    main_window = MainWindow()
-    main_window.show()
-    app.exec_()
+    start_time = time.time()
+    logging.debug("Starting application")
 
+    try:
+        app = QApplication(sys.argv)
+        load_fonts()
+        main_window = MainWindow()
+        main_window.show()
+    except Exception as e:
+        logging.error("Error occurred while loading application: %s", str(e))
+        print(f"Error occurred: {e}")
+        sys.exit(1)
+
+    end_time = time.time()
+    duration = end_time - start_time
+    duration_logger.info(f"Application loaded in {duration:.2f} seconds")
+    print(f"Application loaded in {duration:.2f} seconds")
+
+    app.exec_()
 
 if __name__ == "__main__":
     main()
