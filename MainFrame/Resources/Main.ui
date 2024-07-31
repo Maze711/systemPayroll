@@ -54,7 +54,7 @@ background-color: &quot;#DCE5FE&quot;;
 	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
 }
 
-#btnEmployeeList, #btnTimeKeeping {
+#btnEmployeeList, #btnTimeKeeping, #btnPayRoll {
 	background-color: white;
 	border: 1px solid &quot;#344273&quot;;
 	border-radius: 5px;
@@ -130,6 +130,42 @@ background-color: &quot;#DCE5FE&quot;;
      </property>
      <property name="text">
       <string>Time Keeping</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPayRoll">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>390</y>
+       <width>211</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Payroll</string>
      </property>
      <property name="iconSize">
       <size>
