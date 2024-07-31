@@ -1,8 +1,4 @@
-import sys
-import os
-import mysql.connector
-from mysql.connector import Error
-from dotenv import load_dotenv
+from MainFrame.Resources.lib import *
 
 def resource_path(relative_path):
     try:

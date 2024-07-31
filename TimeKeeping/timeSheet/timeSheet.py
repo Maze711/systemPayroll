@@ -1,9 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QLineEdit
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
-import logging
 
 
 class TimeSheet(QDialog):

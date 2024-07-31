@@ -1,6 +1,6 @@
+from MainFrame.Resources.lib import *
+
 from MainFrame.Database_Connection.DBConnection import create_connection
-from mysql.connector import Error
-import logging
 
 # Configure Logging
 logger = logging.getLogger(__name__)
