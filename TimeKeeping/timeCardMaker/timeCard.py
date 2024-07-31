@@ -1,9 +1,4 @@
-import traceback
-import logging
-
-from PyQt5.QtCore import Qt, QTime
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QLabel, QLineEdit, QHeaderView, QPushButton, QMessageBox
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from TimeKeeping.schedValidator.checkSched import chkSched
 from TimeKeeping.timeSheet.timeSheet import TimeSheet

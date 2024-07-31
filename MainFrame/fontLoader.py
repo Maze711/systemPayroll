@@ -1,9 +1,4 @@
-import os
-import sys
-
-from PyQt5.QtGui import QFont, QFontDatabase
-from PyQt5.QtWidgets import QApplication
-
+from MainFrame.Resources.lib import *
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS2

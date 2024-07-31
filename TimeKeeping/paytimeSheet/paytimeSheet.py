@@ -1,13 +1,7 @@
-import xlrd
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from TimeKeeping.payTrans.payTransLoader import PayTrans
 from MainFrame.systemFunctions import globalFunction
-
-import logging
 
 
 class PaytimeSheet(QMainWindow):

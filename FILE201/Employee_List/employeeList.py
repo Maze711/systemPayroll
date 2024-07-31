@@ -1,15 +1,4 @@
-import sys
-import os
-import mysql.connector
-import pandas as pd
-from mysql.connector import Error
-from datetime import datetime
-import xlrd
-import logging
-
-from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView, QPushButton
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from FILE201.file201_Function.listFunction import ListFunction

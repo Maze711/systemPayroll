@@ -1,6 +1,5 @@
-import pandas as pd
+from MainFrame.Resources.lib import *
 
-from mysql.connector import Error
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 #logger = logging.getLogger(__name__)

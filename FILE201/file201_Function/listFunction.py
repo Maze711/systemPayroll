@@ -1,9 +1,4 @@
-from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit, QMessageBox
-from time import *
-import logging
-
-from mysql.connector import Error
+from MainFrame.Resources.lib import *
 
 # Configure logging
 logger = logging.getLogger(__name__)

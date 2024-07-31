@@ -1,9 +1,4 @@
-import os
-import logging
-
-from PyQt5.QtCore import QObject, pyqtSignal, QThread
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from TimeKeeping.timeLogger.timeLog import timelogger
 from MainFrame.systemFunctions import globalFunction, single_function_logger

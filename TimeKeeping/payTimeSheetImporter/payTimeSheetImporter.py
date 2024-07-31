@@ -1,13 +1,7 @@
-from PyQt5.QtCore import QObject, pyqtSignal, QThread
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QProgressBar, QMessageBox
-from PyQt5.uic import loadUi
-
-import xlrd
+from MainFrame.Resources.lib import *
 
 from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction
-import logging
-
 
 
 class FileProcessor(QObject):
@@ -95,7 +89,8 @@ class PayrollDialog(QDialog):
                 'rstshlyda4', 'empcompany', 'legalholid'
             ]
 
-            missing_columns = [col for col in required_columns if col not in [header.strip().lower() for header in headers]]
+            missing_columns = [col for col in required_columns if
+                               col not in [header.strip().lower() for header in headers]]
 
             if missing_columns:
                 error_message = f"Missing required columns: {', '.join(missing_columns)}"

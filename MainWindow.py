@@ -1,8 +1,4 @@
-import sys
-
-from PyQt5.QtCore import QEvent, QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
-from PyQt5.uic import loadUi
+from MainFrame.Resources.lib import *
 
 from FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts

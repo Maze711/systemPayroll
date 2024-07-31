@@ -1,11 +1,6 @@
-from PyQt5.QtWidgets import QPlainTextEdit, QLineEdit, QDateEdit, QComboBox
-from PyQt5.QtWidgets import QMessageBox
+from MainFrame.Resources.lib import *
+
 from MainFrame.Database_Connection.modalSQLQuery import add_employee, save_employee
-
-
-# Configure the logger
-#logger = logging.getLogger(__name__)
-
 
 def set_fields_non_editable(modal):
     activeStyle = "background-color: white; color: black;"
