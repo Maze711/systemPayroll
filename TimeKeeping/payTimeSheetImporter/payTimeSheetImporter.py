@@ -41,7 +41,7 @@ class PayrollDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(418, 392)
-        ui_file = globalFunction.resource_path("TimeKeeping\\datImporter\\dialogImporter.ui")
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
 
         self.importBTN.clicked.connect(self.importTxt)

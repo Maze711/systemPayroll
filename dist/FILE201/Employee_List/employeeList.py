@@ -1,8 +1,7 @@
-import sys
 import os
 
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QFileDialog
 from PyQt5.uic import loadUi
 
 from FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
