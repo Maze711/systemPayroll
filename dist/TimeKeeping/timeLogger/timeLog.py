@@ -9,7 +9,7 @@ from PyQt5.uic import loadUi
 from TimeKeeping.timeCardMaker.timeCard import timecard
 
 # Configure the logger
-logging.basicConfig(level=logging.INFO, filename='file_import.log',
+logging.basicConfig(level=logging.INFO, filename='Mainframe\\file_import.log',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 class timelogger(QMainWindow):
