@@ -1,7 +1,7 @@
 from MainFrame.Resources.lib import *
 
 from TimeKeeping.payTrans.payTransLoader import PayTrans
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, single_function_logger
 
 
 class PaytimeSheet(QMainWindow):
@@ -21,6 +21,7 @@ class PaytimeSheet(QMainWindow):
 
         self.populatePaytimeSheetTable(self.data)
 
+    @single_function_logger.log_function
     def populatePaytimeSheetTable(self, data):
         # Define column names in the Excel file
         column_names = {
@@ -76,7 +77,8 @@ class PaytimeSheet(QMainWindow):
             # Logging the row data being added
             logging.info(f"Adding row {i}: {row}")
 
-    def createPayTrans(self):
+    @single_function_logger.log_function
+    def createPayTrans(self, checked=False):
         from_date = self.lblFrom.text()
         to_date = self.lblTo.text()
 

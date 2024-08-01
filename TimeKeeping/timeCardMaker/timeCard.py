@@ -16,8 +16,6 @@ class timecard(QDialog):
         self.original_data = filtered_data.copy()
         self.filtered_data = filtered_data
 
-        self.timekeepfunction = timekeepingFunction()
-
         # Make the column headers fixed size
         self.TimeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.TimeListTable.horizontalHeader().setStretchLastSection(True)
@@ -107,7 +105,7 @@ class timecard(QDialog):
             )
 
     @single_function_logger.log_function
-    def createTimeSheet(self):
+    def createTimeSheet(self, checked=False):
         dataMerge = []
         for item in self.filtered_data:
             checkIn = item['Check_In']
@@ -120,7 +118,7 @@ class timecard(QDialog):
             specialOT = ''
 
             # Check the type of the date
-            dateType = self.timekeepfunction.getTypeOfDate(trans_date)
+            dateType = timekeepingFunction.getTypeOfDate(trans_date)
             if dateType == "Ordinary Day" and workHours != 'N/A' and hoursWorked != 'Unknown':
                 try:
                     workHours = round(float(workHours), 2)

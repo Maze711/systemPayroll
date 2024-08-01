@@ -1,7 +1,7 @@
 from MainFrame.Resources.lib import *
 
 from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, single_function_logger
 
 
 class FileProcessor(QObject):
@@ -72,6 +72,7 @@ class PayrollDialog(QDialog):
             self.progressBar.setFormat("Finishing Up..")
         QApplication.processEvents()
 
+    @single_function_logger.log_function
     def fileProcessingFinished(self, content):
         self.progressBar.setVisible(False)
         self.thread.quit()
