@@ -5,7 +5,7 @@ from MainFrame.fontLoader import load_fonts
 from TimeKeeping.datImporter.dialogLoader import dialogModal
 from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from TimeKeeping.dateChange.dateChange import DateChange
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction
 
 # Setup logging for application load duration
 duration_logger = logging.getLogger('DurationLogger')

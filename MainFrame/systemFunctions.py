@@ -4,7 +4,7 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 
 
 class SingleFunctionLogger:
-    def __init__(self, log_file='file_import.log'):
+    def __init__(self, log_file='Mainframe\\file_import.log'):
         self.log_file = log_file
         self.logger = logging.getLogger('SingleFunctionLogger')
         self.logger.setLevel(logging.INFO)

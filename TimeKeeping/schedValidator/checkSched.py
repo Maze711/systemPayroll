@@ -1,7 +1,7 @@
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
 
 class chkSched(QDialog):
@@ -12,7 +12,6 @@ class chkSched(QDialog):
         loadUi(ui_file, self)
 
         self.data = data
-
         self.populate_schedule_with_data(data)
 
     def populate_schedule_with_data(self, data):
@@ -25,8 +24,9 @@ class chkSched(QDialog):
         self.timeOutTxt.setText(checkOut)
         self.hoursWorkedTxt.setText(str(total_hours))
         self.holidayNameTxt.setText(self.getHolidayName(trans_date))
-        self.typeOfDayCb.setCurrentText(globalFunction.getTypeOfDate(trans_date))
+        self.typeOfDayCb.setCurrentText(timekeepingFunction.getTypeOfDate(trans_date))
 
+    @single_function_logger.log_function
     def getHolidayName(self, trans_date):
         try:
             connection = create_connection('TIMEKEEPING')

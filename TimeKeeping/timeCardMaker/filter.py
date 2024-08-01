@@ -1,13 +1,9 @@
-import traceback
+from MainFrame.Resources.lib import *
 
-from PyQt5.QtWidgets import QDialog, QComboBox, QPushButton, QMessageBox
-from PyQt5.uic import loadUi
-
-from MainFrame.systemFunctions import globalFunction
-import logging
-
+from MainFrame.systemFunctions import globalFunction, single_function_logger
 
 class filter(QDialog):
+    @single_function_logger.log_function
     def __init__(self, parent=None):
         try:
             super().__init__(parent)
@@ -38,6 +34,7 @@ class filter(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred while initializing the filter dialog: {str(e)}")
 
+    @single_function_logger.log_function
     def clear_filter(self):
         self.cmbCheckIn.setCurrentIndex(0)
         self.cmbCheckOut.setCurrentIndex(0)
@@ -46,6 +43,7 @@ class filter(QDialog):
         self.accept()
         logging.info("Filter cleared")
 
+    @single_function_logger.log_function
     def show_missing(self):
         if self.parent():
             filter_values = {
@@ -57,6 +55,7 @@ class filter(QDialog):
             self.parent().apply_filter(filter_values)
         self.accept()
 
+    @single_function_logger.log_function
     def get_filter_values(self):
         values = {
             'check_in_ampm': self.cmbCheckIn.currentText(),
