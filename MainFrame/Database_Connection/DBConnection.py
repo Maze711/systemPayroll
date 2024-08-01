@@ -1,26 +1,41 @@
 from MainFrame.Resources.lib import *
 
+# Configure the logger
+logging.basicConfig(
+    filename='db_error.log',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath("")
+    except AttributeError:
+        base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-# Load environment variables from .env file if it exists
-dotenv_path = resource_path("MainFrame\\Database_Connection\\.env")
-load_dotenv(dotenv_path)
+# Load environment variables from .env file
+dotenv_path = resource_path(".env")
+logging.info(f"Loading .env file from: {dotenv_path}")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+    logging.info("Environment variables loaded.")
+else:
+    logging.error(f".env file not found at: {dotenv_path}")
 
 def create_connection(db_key):
     try:
-        host = os.getenv(f'DB_HOST_{db_key}', '127.0.0.1')
+        host = os.getenv(f'DB_HOST_{db_key}', 'localhost')
         database = os.getenv(f'DB_DATABASE_{db_key}')
-        user = os.getenv(f'DB_USER_{db_key}')
-        password = os.getenv(f'DB_PASSWORD_{db_key}')
-        port = int(os.getenv('DB_PORT', 3306))  # Default MySQL port is 3306
+        user = os.getenv(f'DB_USER_{db_key}', 'root')
+        password = os.getenv(f'DB_PASSWORD_{db_key}', '')
+        port = int(os.getenv(f'DB_PORT_{db_key}', 3306))
 
-        if not user or not database:
-            raise ValueError("Database user and name must be provided")
+        logging.info(f"Attempting to connect to {database} at {host}:{port} with user {user}")
+
+        if database is None:
+            logging.error(f"Database name is not specified in the .env file for key {db_key}")
+            return None
 
         connection = mysql.connector.connect(
             host=host,
@@ -30,28 +45,28 @@ def create_connection(db_key):
             port=port
         )
         if connection.is_connected():
-            print(f"Connection to {database} database was successful")
+            logging.info(f"Connection to {database} database was successful")
             return connection
         else:
-            print(f"Failed to connect to {database} database")
+            logging.warning(f"Failed to connect to {database} database")
             return None
     except Error as e:
-        print(f"Error while connecting to MySQL {database}:", e)
-        return None
-    except ValueError as ve:
-        print("Configuration error:", ve)
+        logging.error(f"Error while connecting to MySQL {database}: {e}")
         return None
 
-# Connect to the FILE201 database
+# Test connections (for debugging)
 file201_connection = create_connection('FILE201')
-
-# Connect to the TIMEKEEPING database
 timekeeping_connection = create_connection('TIMEKEEPING')
+listlogimport_connection = create_connection('LIST_LOG_IMPORT')
 
 if file201_connection and file201_connection.is_connected():
     file201_connection.close()
-    print("FILE201 database connection closed")
+    logging.info("FILE201 database connection closed")
 
 if timekeeping_connection and timekeeping_connection.is_connected():
     timekeeping_connection.close()
-    print("TIMEKEEPING database connection closed")
+    logging.info("TIMEKEEPING database connection closed")
+
+if listlogimport_connection and listlogimport_connection.is_connected():
+    listlogimport_connection.close()
+    logging.info("List Log Import database connection closed")
