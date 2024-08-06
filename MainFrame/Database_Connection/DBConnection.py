@@ -9,13 +9,14 @@ logging.basicConfig(
 
 def resource_path(relative_path):
     try:
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS2
     except AttributeError:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
 # Load environment variables from .env file
-dotenv_path = resource_path(".env")
+#dotenv_path = resource_path("C:/Users/Maze/Desktop/systemPayroll/MainFrame/Database_Connection/.env")
+dotenv_path = resource_path("MainFrame\\Database_Connection\\.env")
 logging.info(f"Loading .env file from: {dotenv_path}")
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
@@ -31,7 +32,7 @@ def create_connection(db_key):
         password = os.getenv(f'DB_PASSWORD_{db_key}', '')
         port = int(os.getenv(f'DB_PORT_{db_key}', 3306))
 
-        logging.info(f"Attempting to connect to {database} at {host}:{port} with user {user}")
+        logging.info(f"Host: {host}, Database: {database}, User: {user}, Port: {port}")
 
         if database is None:
             logging.error(f"Database name is not specified in the .env file for key {db_key}")
