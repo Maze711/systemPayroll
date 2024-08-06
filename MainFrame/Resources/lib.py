@@ -5,7 +5,7 @@ from mysql.connector import Error
 import pandas as pd
 import logging
 import xlrd
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import *
 import time
 from functools import wraps
