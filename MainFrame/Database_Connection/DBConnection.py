@@ -1,11 +1,12 @@
 from MainFrame.Resources.lib import *
 
 # Configure the logger
-logging.basicConfig(
-    filename='db_error.log',
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+# logging.basicConfig(
+#     filename='db_error.log',
+#     level=logging.DEBUG,
+#     format='%(asctime)s - %(levelname)s - %(message)s'
+# )
+
 
 def resource_path(relative_path):
     try:
@@ -14,15 +15,18 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+
 # Load environment variables from .env file
 #dotenv_path = resource_path("C:/Users/Maze/Desktop/systemPayroll/MainFrame/Database_Connection/.env")
 dotenv_path = resource_path("MainFrame\\Database_Connection\\.env")
-logging.info(f"Loading .env file from: {dotenv_path}")
+#logging.info(f"Loading .env file from: {dotenv_path}")
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
-    logging.info("Environment variables loaded.")
-else:
-    logging.error(f".env file not found at: {dotenv_path}")
+    #logging.info("Environment variables loaded.")
+
+
+#else:
+#logging.error(f".env file not found at: {dotenv_path}")
 
 def create_connection(db_key):
     try:
@@ -54,6 +58,7 @@ def create_connection(db_key):
     except Error as e:
         logging.error(f"Error while connecting to MySQL {database}: {e}")
         return None
+
 
 # Test connections (for debugging)
 file201_connection = create_connection('FILE201')

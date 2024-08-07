@@ -1,8 +1,6 @@
 from MainFrame.Resources.lib import *
-
 from TimeKeeping.payTrans.payTransLoader import PayTrans
-from MainFrame.systemFunctions import globalFunction, single_function_logger
-
+from MainFrame.systemFunctions import globalFunction, single_function_logger, timekeepingFunction
 
 class PaytimeSheet(QMainWindow):
     def __init__(self, content):
@@ -12,6 +10,7 @@ class PaytimeSheet(QMainWindow):
         loadUi(ui_file, self)
 
         self.data = content
+        self.original_data = content  # Store original data
 
         self.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
@@ -19,10 +18,18 @@ class PaytimeSheet(QMainWindow):
         self.payTransBtn = self.findChild(QPushButton, 'btnPayTrans')
         self.payTransBtn.clicked.connect(self.createPayTrans)
 
+        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
+        if self.searchBioNum is not None:
+            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+        else:
+            logging.error("Error: txtSearch QLineEdit not found in the UI.")
+
         self.populatePaytimeSheetTable(self.data)
 
     @single_function_logger.log_function
     def populatePaytimeSheetTable(self, data):
+        for row in range(self.paytimesheetTable.rowCount()):
+            self.paytimesheetTable.setRowHidden(row, False)
         # Define column names in the Excel file
         column_names = {
             'Emp Number': 'empnumber',
@@ -90,9 +97,15 @@ class PaytimeSheet(QMainWindow):
             emp_name_item = self.paytimesheetTable.item(row, 2)
             present_days_item = self.paytimesheetTable.item(row, 5)  # DaysPresent
 
+            # Remove the first four digits from the bio_num
+            if bio_num_item and bio_num_item.text():
+                bio_num = bio_num_item.text()[3:]
+            else:
+                bio_num = ""
+
             selected_data.append({
                 'EmpNo': emp_no_item.text(),
-                'BioNum': bio_num_item.text(),
+                'BioNum': bio_num,
                 'EmpName': emp_name_item.text(),
                 'Present Days': present_days_item.text()
             })
@@ -116,9 +129,8 @@ class PaytimeSheet(QMainWindow):
                 empl_id = sheet.cell_value(row_idx, empl_id_index)
                 rate = sheet.cell_value(row_idx, rate_index)
 
-                # Process empl_id and update bio_num_to_rate
-                processed_empl_id = empl_id[2:] if isinstance(empl_id, str) and len(empl_id) > 2 else empl_id
-                bio_num_to_rate[processed_empl_id] = str(rate)
+                # Update bio_num_to_rate
+                bio_num_to_rate[empl_id] = str(rate)
 
             logging.info(f"Processed Employee IDs and Rates from Excel file: {bio_num_to_rate}")
 
