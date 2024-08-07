@@ -16,8 +16,8 @@ def add_employee(data):
 
         # Insert into personal_information table
         insert_personal_information = """
-        INSERT INTO personal_information (surname, firstname, mi, suffix, addr1, mobile, height, weight, civil_stat, 
-                                          birthday, placeOfBirth, gender)
+        INSERT INTO emp_info (surname, firstname, mi, suffix, addr1, mobile, height, weight, status, 
+                                          birthday, birthplace, sex)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         surname = data.get('Last Name', '')
@@ -44,7 +44,7 @@ def add_employee(data):
 
         # Inserting custom generated employee id to the database
         generated_id = get_generated_employee_id(row_id)
-        query = "UPDATE personal_information SET emp_id = %s WHERE emp_id = %s"
+        query = "UPDATE emp_info SET empl_id = %s WHERE empl_id = %s"
         cursor.execute(query, (generated_id, row_id))
 
         #logger.info("Inserted into personal_information table")
@@ -78,7 +78,7 @@ def add_employee(data):
 
         # Insert into list_of_id table
         insert_list_of_id = """
-        INSERT INTO list_of_id (emp_id, sssno, tin, pagibig, philhealth)
+        INSERT INTO emp_list_id (empl_id, sss, tin, pagibig, philhealth)
         VALUES (%s, %s, %s, %s, %s)
         """
         sss_num = data.get('SSS Number', '')
@@ -173,10 +173,10 @@ def save_employee(empID, data):
 
         # Update personal_information table
         update_personal_information = """
-        UPDATE personal_information
+        UPDATE emp_info
         SET surname = %s, firstname = %s, mi = %s, suffix = %s, addr1 = %s, mobile = %s, height = %s, weight = %s, 
-            civil_stat = %s, birthday = %s, placeOfBirth = %s, gender = %s
-        WHERE emp_id = %s
+            status = %s, birthday = %s, birthplace = %s, sex = %s
+        WHERE empl_id = %s
         """
         cursor.execute(update_personal_information, (data['lastName'], data['firstName'], data['middleName'], data['suffix'],
                                                      data['Street'], data['Phone Number'], data['Height'], data['Weight'],
@@ -200,9 +200,9 @@ def save_employee(empID, data):
 
         # Update list_of_id table
         update_list_of_id = """
-        UPDATE list_of_id
-        SET sssno = %s, tin = %s, pagibig = %s, philhealth = %s
-        WHERE emp_id = %s
+        UPDATE emp_list_id
+        SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
+        WHERE empl_id = %s
         """
         cursor.execute(update_list_of_id, (data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empID))
 

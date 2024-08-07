@@ -14,7 +14,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Employee List</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -266,7 +266,7 @@ background-color: &quot;#DCE5FE&quot;;
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+      <pixmap>../Icons/search.svg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -304,7 +304,7 @@ background-color: &quot;#DCE5FE&quot;;
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../MainFrame/Resources/Icons/user-plus.svg</iconset>
+      <normaloff>../Icons/user-plus.svg</normaloff>../Icons/user-plus.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -341,7 +341,7 @@ background-color: &quot;#DCE5FE&quot;;
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../../MainFrame/Resources/Icons/export.svg</normaloff>../../MainFrame/Resources/Icons/export.svg</iconset>
+      <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
