@@ -1,6 +1,5 @@
 from MainFrame.Resources.lib import *
-from MainFrame.systemFunctions import globalFunction
-
+from MainFrame.systemFunctions import globalFunction, single_function_logger, timekeepingFunction
 
 class PayTrans(QMainWindow):
     def __init__(self, from_date, to_date, data):
@@ -10,15 +9,25 @@ class PayTrans(QMainWindow):
         loadUi(ui_file, self)
 
         self.data = data
+        self.original_data = data  # Store original data
         self.from_date = from_date
         self.to_date = to_date
 
         self.paytransTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.paytransTable.horizontalHeader().setStretchLastSection(True)
 
+        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
+        if self.searchBioNum is not None:
+            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+        else:
+            logging.error("Error: txtSearch QLineEdit not found in the UI.")
+
         self.populatePayTransTable(self.data)
 
     def populatePayTransTable(self, data):
+        for row in range(self.paytransTable.rowCount()):
+            self.paytransTable.setRowHidden(row, False)
+
         self.paytransTable.setRowCount(len(data))
 
         for i, row in enumerate(data):
