@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PayTrans</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="paytransTable">
@@ -455,7 +455,7 @@ QTableWidget {
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLineEdit" name="txtSearch">
+     <widget class="QLineEdit" name="searchBioNum">
       <property name="geometry">
        <rect>
         <x>43</x>
@@ -506,7 +506,7 @@ QTableWidget {
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+       <pixmap>../Icons/search.svg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
