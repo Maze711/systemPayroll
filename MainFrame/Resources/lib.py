@@ -5,13 +5,16 @@ from mysql.connector import Error
 import pandas as pd
 import logging
 import xlrd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from time import *
 import time
 from functools import wraps
 import traceback
 import bcrypt
 import openpyxl
+from email.message import EmailMessage
+import ssl
+import smtplib
 
 from dotenv import load_dotenv
 

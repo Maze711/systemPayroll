@@ -374,7 +374,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/user-name.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -448,9 +448,9 @@ background-color: &quot;#DCE5FE&quot;;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>10</y>
+          <y>0</y>
           <width>31</width>
-          <height>21</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -462,7 +462,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/lock.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -708,7 +708,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/user-name.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -796,7 +796,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -884,7 +884,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1100,7 +1100,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/user-name.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1304,7 +1304,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1392,7 +1392,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+         <pixmap>../Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
