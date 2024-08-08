@@ -12,54 +12,55 @@ class FileProcessor(QObject):
     def __init__(self, fileName):
         super().__init__()
         self.fileName = fileName
-        self.data = []
+        self.data = pd.DataFrame()  # Initialize as an empty DataFrame
         self.temp_folder = os.path.join(os.path.dirname(self.fileName), "temp_chunks")
 
     @single_function_logger.log_function
     def process(self):
+        """Main processing method that handles the entire workflow."""
         try:
             self.processContent()
 
+            # Create a temporary folder if it does not exist
             if not os.path.exists(self.temp_folder):
                 os.makedirs(self.temp_folder)
 
-            total_rows = len(self.data)
+            # Chunk data into date ranges and process each chunk
             chunks = self.chunkDataByDateRange(15)
             total_chunks = len(chunks)
-            rows_processed = 0
-
             for i, (chunk_name, chunk_data) in enumerate(chunks.items()):
                 chunk_file = os.path.join(self.temp_folder, f"{chunk_name}.csv")
                 chunk_data.to_csv(chunk_file, sep='\t', index=False, header=False)
-                rows_in_chunk = len(chunk_data)
                 self.importChunkToDatabase(chunk_file, chunk_name)
-
-                rows_processed += rows_in_chunk
-                percentage = int((rows_processed / total_rows) * 100)
-                self.progressChanged.emit(percentage)
-
+                progress = int(((i + 1) / total_chunks) * 100)
+                self.progressChanged.emit(progress)
                 QThread.msleep(1)
 
-            self.progressChanged.emit(100)  # Ensure progress reaches 100%
             self.finished.emit("Data imported successfully.")
         except Exception as e:
             logging.error(f"Error in process method: {e}")
             self.error.emit(f"Error in process method: {e}")
 
     def processContent(self):
+        """Reads and processes the content of the input file."""
         try:
-            self.data = pd.read_csv(self.fileName, sep='\t', header=None,
-                                    names=['bio_no', 'date_time', 'mach_code', 'code_1', 'code_2', 'code_3'])
-            self.data['date_time'] = pd.to_datetime(self.data['date_time'])
-            self.data['date'] = self.data['date_time'].dt.date
-            self.data['time'] = self.data['date_time'].dt.time
+            self.data = pd.read_csv(
+                self.fileName, sep='\t', header=None,
+                names=['bio_no', 'date_time', 'mach_code', 'code_1', 'code_2', 'code_3']
+            )
+            # Split 'date_time' into 'date' and 'time'
+            self.data['date'] = self.data['date_time'].str.split(' ').str[0]
+            self.data['time'] = self.data['date_time'].str.split(' ').str[1]
+            # Determine the schedule based on code values
             self.data['sched'] = self.data.apply(
-                lambda row: self.determine_schedule(str(row['code_1']), str(row['code_2']), str(row['code_3'])), axis=1)
+                lambda row: self.determine_schedule(str(row['code_1']), str(row['code_2']), str(row['code_3'])), axis=1
+            )
         except Exception as e:
             logging.error(f"Error processing content: {e}")
             self.error.emit(f"Error processing content: {e}")
 
     def determine_schedule(self, code_1, code_2, code_3):
+        """Determines the schedule type based on code values."""
         if code_1 == '0' and code_2 == '1' and code_3 == '0':
             return 'Time IN'
         elif code_1 == '1' and code_2 == '1' and code_3 == '0':
@@ -68,65 +69,65 @@ class FileProcessor(QObject):
             return 'Unknown'
 
     def chunkDataByDateRange(self, days):
-        start_date = self.data['date'].min()
-        end_date = self.data['date'].max()
+        """Chunks the data into date ranges specified by the number of days."""
+        start_date = datetime.strptime(self.data['date'].min(), '%Y-%m-%d')
+        end_date = datetime.strptime(self.data['date'].max(), '%Y-%m-%d')
         current_start = start_date
 
         chunks = {}
         while current_start <= end_date:
             current_end = current_start + timedelta(days=days - 1)
             chunk_name = f"{current_start.strftime('%Y%m%d')}_to_{current_end.strftime('%Y%m%d')}"
-            chunk_data = self.data[(self.data['date'] >= current_start) &
-                                   (self.data['date'] <= current_end)]
+            chunk_data = self.data[
+                (self.data['date'] >= current_start.strftime('%Y-%m-%d')) &
+                (self.data['date'] <= current_end.strftime('%Y-%m-%d'))
+            ]
             chunks[chunk_name] = chunk_data
             current_start = current_end + timedelta(days=1)
 
         return chunks
 
     def importChunkToDatabase(self, chunk_file, chunk_name):
+        """Imports the chunk data into the database."""
         connection = create_connection('LIST_LOG_IMPORT')
         if connection is None:
             self.error.emit("Failed to connect to LIST_LOG_IMPORT database.")
             return
 
         cursor = connection.cursor()
-        table_name = f"imported_data_{chunk_name}"
 
-        # Check if table exists
-        cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-        result = cursor.fetchone()
-        if result:
-            logging.info(f"Table {table_name} already exists.")
-        else:
-            # Create table if it does not exist
-            create_table_query = f"""
-                CREATE TABLE {table_name} (
-                    bioNum INT,
-                    date DATE,
-                    time TIME,
-                    sched VARCHAR(10),
-                    PRIMARY KEY (bioNum, date, time)
-                )
-            """
-            try:
-                cursor.execute(create_table_query)
-                connection.commit()
-                logging.info(f"Table {table_name} created successfully.")
-            except Error as e:
-                logging.error(f"Error creating table: {e}")
-                self.error.emit(f"Error creating table: {e}")
-                return
+        # Create table name based on chunk name
+        table_name = f"FROM_{chunk_name.replace('-', '_')}"
 
-        # Insert or update data
+        create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS {table_name} (
+                ID INT AUTO_INCREMENT PRIMARY KEY, 
+                bioNum INT,
+                date DATE,
+                time TIME,
+                sched VARCHAR(225),
+                edited_by VARCHAR(225),
+                UNIQUE KEY unique_entry (bioNum, date, time)
+            )
+        """
         try:
-            chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, names=['bioNum', 'date', 'time', 'sched'])
+            cursor.execute(create_table_query)
+            connection.commit()
+            logging.info(f"Table {table_name} created successfully.")
+        except Error as e:
+            logging.error(f"Error creating table: {e}")
+            self.error.emit(f"Error creating table: {e}")
+            return
+
+        try:
+            chunk_data = pd.read_csv(chunk_file, sep='\t', header=None)
             for _, entry in chunk_data.iterrows():
                 insert_query = f"""
                     INSERT INTO {table_name} (bioNum, date, time, sched)
                     VALUES (%s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE sched=VALUES(sched)
+                    ON DUPLICATE KEY UPDATE sched = VALUES(sched)
                 """
-                cursor.execute(insert_query, (entry['bioNum'], entry['date'], entry['time'], entry['sched']))
+                cursor.execute(insert_query, (entry[0], entry[6], entry[7], entry[8]))
                 connection.commit()
         except Error as e:
             logging.error(f"Error inserting data: {e}")
@@ -156,31 +157,11 @@ class dialogModal(QDialog):
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
 
-        # Store the original window flags
-        self.original_flags = self.windowFlags()
-        self.close_button_disabled_flags = self.original_flags | Qt.WindowStaysOnTopHint
-
-    def set_buttons_enabled(self, enabled):
-        self.importBTN.setEnabled(enabled)
-        # Toggle the Close button
-        if enabled:
-            self.setWindowFlags(self.original_flags)
-        else:
-            self.setWindowFlags(self.close_button_disabled_flags)
-        self.show()  # Ensure changes to window flags are applied
-
-    def closeEvent(self, event):
-        if self.importBTN.isEnabled():
-            super().closeEvent(event)
-        else:
-            event.ignore()  # Ignore close event when processing
-
     @single_function_logger.log_function
     def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Text or DAT File", "",
                                                   "Text Files (*.txt);;DAT Files (*.DAT);;All Files (*)")
         if fileName:
-            self.set_buttons_enabled(False)  # Disable buttons while processing
             self.progressBar.setVisible(True)
             self.progressBar.setValue(0)
             self.thread = QThread()
@@ -193,16 +174,13 @@ class dialogModal(QDialog):
             self.thread.start()
 
     def updateProgressBar(self, value):
-        if value < 100:
-            self.progressBar.setValue(value)
-            self.progressBar.setFormat(f"{value}%")
-        else:
+        self.progressBar.setValue(value)
+        if value == 100:
             self.progressBar.setFormat("Finishing Up..")
         QApplication.processEvents()
 
     def fileProcessingFinished(self, message):
         self.progressBar.setVisible(False)
-        self.set_buttons_enabled(True)  # Re-enable buttons after processing
         self.thread.quit()
         self.thread.wait()
         QMessageBox.information(self, "Success", message)
@@ -210,7 +188,6 @@ class dialogModal(QDialog):
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
         self.progressBar.setVisible(False)
-        self.set_buttons_enabled(True)  # Re-enable buttons after processing
         self.thread.quit()
         self.thread.wait()
         QMessageBox.critical(self, "Error", f"Failed to process file: {error}")
