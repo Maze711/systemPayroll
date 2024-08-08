@@ -29,7 +29,7 @@ class timecard(QDialog):
         self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
 
     def populate_year_combo_box(self):
-        """Populate the year combo box with available years from table names."""
+        """Populate the year combo box with available year-month combinations from table names."""
         connection = create_connection('LIST_LOG_IMPORT')
         if not connection:
             return
@@ -39,17 +39,18 @@ class timecard(QDialog):
             cursor.execute("SHOW TABLES")
             tables = cursor.fetchall()
 
-            # Extract years from table names
-            years = set()
-            year_pattern = re.compile(r'from_(\d{4})')
+            # Extract year-month combinations from table names
+            year_months = set()
+            year_month_pattern = re.compile(r'table_(\d{4})_(\d{2})')
 
             for (table_name,) in tables:
-                match = year_pattern.search(table_name)
+                match = year_month_pattern.search(table_name)
                 if match:
-                    years.add(match.group(1))
+                    year_month = f"{match.group(1)}_{match.group(2)}"
+                    year_months.add(year_month)
 
-            # Add years to the combo box
-            self.yearCC.addItems(sorted(years))
+            # Add year-month combinations to the combo box
+            self.yearCC.addItems(sorted(year_months))
 
         except Exception as e:
             print(f"Error populating year combo box: {e}")
@@ -59,9 +60,9 @@ class timecard(QDialog):
             connection.close()
 
     def populate_date_combo_boxes(self):
-        """Populate the date combo boxes based on the selected year."""
-        selected_year = self.yearCC.currentText()
-        if not selected_year:
+        """Populate the date combo boxes based on the selected year-month."""
+        selected_year_month = self.yearCC.currentText()
+        if not selected_year_month:
             return
 
         connection = create_connection('LIST_LOG_IMPORT')
@@ -70,28 +71,32 @@ class timecard(QDialog):
 
         try:
             cursor = connection.cursor()
-            cursor.execute("SHOW TABLES")
-            tables = cursor.fetchall()
+            table_name = f"table_{selected_year_month}"
 
-            # Extract dates from table names
-            date_from_set = set()
-            date_to_set = set()
+            # Check if table exists
+            cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+            if not cursor.fetchone():
+                return
 
-            date_pattern = re.compile(
-                rf'from_{selected_year}(\d{{2}})(\d{{2}})_to_{selected_year}(\d{{2}})(\d{{2}})')
+            # Extract days from the records in the selected year-month table
+            days_from_set = set()
+            days_to_set = set()
 
-            for (table_name,) in tables:
-                match = date_pattern.search(table_name)
-                if match:
-                    from_date = f"{match.group(1)}-{match.group(2)}"
-                    to_date = f"{match.group(3)}-{match.group(4)}"
+            cursor.execute(f"""
+                SELECT DISTINCT DATE_FORMAT(date, '%d') AS day
+                FROM `{table_name}`
+            """)
+            days = cursor.fetchall()
 
-                    date_from_set.add(from_date)
-                    date_to_set.add(to_date)
+            for (day,) in days:
+                days_from_set.add(day)
+                days_to_set.add(day)
 
             # Update date combo boxes
-            self.dateFromCC.addItems(sorted(date_from_set))
-            self.dateToCC.addItems(sorted(date_to_set))
+            self.dateFromCC.clear()  # Clear previous items
+            self.dateToCC.clear()  # Clear previous items
+            self.dateFromCC.addItems(sorted(days_from_set))
+            self.dateToCC.addItems(sorted(days_to_set))
 
         except Exception as e:
             print(f"Error populating date combo boxes: {e}")
@@ -102,26 +107,41 @@ class timecard(QDialog):
 
     def populate_time_list_table(self):
         """Populate the time list table with check-in and check-out times."""
-        selected_year = self.yearCC.currentText()
-        from_date = self.dateFromCC.currentText()
-        to_date = self.dateToCC.currentText()
+        selected_year_month = self.yearCC.currentText()
+        from_day = self.dateFromCC.currentText()
+        to_day = self.dateToCC.currentText()
 
-        if not selected_year or not from_date or not to_date:
+        if not selected_year_month or not from_day or not to_day:
             return
 
-        # Format table name based on selected dates
-        table_name = f"from_{selected_year}{from_date.replace('-', '')}_to_{selected_year}{to_date.replace('-', '')}"
+        # Construct full dates
+        from_date = f"{selected_year_month}_{from_day.zfill(2)}"
+        to_date = f"{selected_year_month}_{to_day.zfill(2)}"
+
+        # Construct table name
+        table_name = f"table_{selected_year_month}"
+
         connection = create_connection('LIST_LOG_IMPORT')
         if not connection:
             return
 
         try:
             cursor = connection.cursor()
-            cursor.execute(f"""
+
+            # Check if the table exists
+            cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+            if not cursor.fetchone():
+                print(f"Error: Table does not exist: {table_name}")
+                return
+
+            # Query data within the selected date range
+            query = f"""
                 SELECT bioNum, date, time, sched
                 FROM `{table_name}`
+                WHERE DATE_FORMAT(date, '%Y_%m_%d') BETWEEN '{from_date}' AND '{to_date}'
                 ORDER BY bioNum, date, time
-            """)
+            """
+            cursor.execute(query)
             records = cursor.fetchall()
 
             # Clear existing rows in the table
