@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1345</width>
+    <width>1442</width>
     <height>665</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
 	background-color: white;
 }
 
-#btnCheckSched, #btnFilter {
+#btnCheckSched, #btnFilter, #btnCostCenter {
 	background-color: &quot;#344273&quot;;
 	color: white;
 	border-radius: 5px;
@@ -32,9 +32,9 @@ background-color: rgb(96, 206, 114);
   <widget class="QTableWidget" name="TimeListTable">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>60</y>
-     <width>1351</width>
+     <x>250</x>
+     <y>55</y>
+     <width>1191</width>
      <height>610</height>
     </rect>
    </property>
@@ -81,7 +81,7 @@ QTableWidget {
 }</string>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAsNeeded</enum>
+    <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -120,7 +120,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>8</number>
+    <number>7</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -152,11 +152,6 @@ QTableWidget {
    <attribute name="verticalHeaderHighlightSections">
     <bool>false</bool>
    </attribute>
-   <column>
-    <property name="text">
-     <string>EmpNumber</string>
-    </property>
-   </column>
    <column>
     <property name="text">
      <string>BioNum</string>
@@ -198,98 +193,13 @@ QTableWidget {
     </property>
    </column>
   </widget>
-  <widget class="QFrame" name="searchBar">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>231</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::StrongFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#searchBar{
-	border: 1px solid &quot;#344273&quot;;
-	border-radius: 3px; 
-}</string>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QLineEdit" name="txtSearch">
-    <property name="geometry">
-     <rect>
-      <x>43</x>
-      <y>10</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Poppins</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#txtSearch{
-
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="frame">
-     <bool>false</bool>
-    </property>
-    <property name="placeholderText">
-     <string>Type to search...</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="searchIcon">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#searchIcon{
-	background-color: white;
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>../../FILE201/Resources/Icons/search.svg</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>false</bool>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-  </widget>
   <widget class="QLabel" name="lblDateFrom">
    <property name="geometry">
     <rect>
-     <x>760</x>
-     <y>20</y>
+     <x>870</x>
+     <y>10</y>
      <width>121</width>
-     <height>21</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -307,10 +217,10 @@ QTableWidget {
   <widget class="QLabel" name="lblDateTo">
    <property name="geometry">
     <rect>
-     <x>1060</x>
-     <y>20</y>
+     <x>1170</x>
+     <y>11</y>
      <width>91</width>
-     <height>21</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -325,151 +235,375 @@ QTableWidget {
     <string>Date To:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblFrom">
+  <widget class="QFrame" name="sideBar">
    <property name="geometry">
     <rect>
-     <x>880</x>
-     <y>20</y>
-     <width>181</width>
-     <height>21</height>
+     <x>0</x>
+     <y>0</y>
+     <width>251</width>
+     <height>670</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Poppins</family>
-     <pointsize>12</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
+   <property name="styleSheet">
+    <string notr="true">#sideBar{
+	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
+}</string>
    </property>
-   <property name="text">
-    <string/>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QPushButton" name="btnTimeSheet">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>182</y>
+      <width>230</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Create Time Sheet</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QFrame" name="searchBar">
+    <property name="geometry">
+     <rect>
+      <x>13</x>
+      <y>20</y>
+      <width>230</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#searchBar{
+	border: 1px solid &quot;#344273&quot;;
+	border-radius: 3px; 
+	background-color: white;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLineEdit" name="txtSearch">
+     <property name="geometry">
+      <rect>
+       <x>43</x>
+       <y>10</y>
+       <width>180</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#txtSearch{
+
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>Type to search...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="searchIcon">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#searchIcon{
+	background-color: white;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Icons/search.svg</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="btnFilter">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>80</y>
+      <width>230</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Filter</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnCheckSched">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>130</y>
+      <width>230</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Check Schedule</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>460</y>
+      <width>240</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Change Schedule</string>
+    </property>
+    <widget class="QComboBox" name="costCenterTo">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>140</y>
+       <width>91</width>
+       <height>40</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="costCenterFrom">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>140</y>
+       <width>91</width>
+       <height>40</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblToCC">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>110</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>To:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblSelectCC">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>40</y>
+       <width>211</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Select Cost Center</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="costCenterBox">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>60</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblFromCC">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>61</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>From:</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
-  <widget class="QLabel" name="lblTo">
+  <widget class="QComboBox" name="dateFromCC">
    <property name="geometry">
     <rect>
-     <x>1150</x>
-     <y>20</y>
-     <width>181</width>
-     <height>21</height>
+     <x>994</x>
+     <y>11</y>
+     <width>170</width>
+     <height>40</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>Poppins</family>
-     <pointsize>12</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
   </widget>
-  <widget class="QPushButton" name="btnCheckSched">
+  <widget class="QComboBox" name="dateToCC">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>1265</x>
+     <y>11</y>
+     <width>170</width>
+     <height>40</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblYear">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
      <y>10</y>
-     <width>171</width>
+     <width>71</width>
      <height>41</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Poppins</family>
-     <pointsize>12</pointsize>
+     <pointsize>16</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
    <property name="text">
-    <string>Check Schedule</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
+    <string>Year:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnTimeSheet">
+  <widget class="QComboBox" name="yearCC">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>10</y>
-     <width>171</width>
-     <height>41</height>
+     <x>690</x>
+     <y>11</y>
+     <width>170</width>
+     <height>40</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Poppins</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="text">
-    <string>Create Time Sheet</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnFilter">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>10</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Poppins</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="text">
-    <string>Filter</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
    </property>
   </widget>
  </widget>
