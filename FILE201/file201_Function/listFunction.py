@@ -75,12 +75,15 @@ class ListFunction:
                 self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
 
     def open_otherInformationMODAL_view(self):
+        modal = personalModal()
+        modal.addBTN.setEnabled(False)
+        modal.saveBTN.setEnabled(False)
+
         selected_row = self.main_window.employeeListTable.currentRow()
         if selected_row != -1:
             empID = self.main_window.employeeListTable.item(selected_row, 0).text()
             employee_data = self.fetch_employee_data(empID)
             if employee_data:
-                modal = personalModal()
                 self.populate_modal_with_employee_data(modal, employee_data)
                 self.set_fields_non_editable(modal)
                 modal.finished.connect(self.displayEmployees)
@@ -256,6 +259,7 @@ class ListFunction:
         self.main_window.employeeListTable.clearSelection()
         self.main_window.employeeListTable.selectionModel().clearCurrentIndex()
 
+        self.main_window.txtSearch.clear()
         self.main_window.txtEmployeeID.clear()
         self.main_window.txtLastName.clear()
         self.main_window.txtFirstName.clear()
