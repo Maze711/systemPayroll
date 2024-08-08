@@ -10,6 +10,7 @@ from time import *
 import time
 from functools import wraps
 import traceback
+import bcrypt
 
 from dotenv import load_dotenv
 
@@ -18,7 +19,7 @@ from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
-    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QFrame
+    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox
 )
 from PyQt5.uic import loadUi
 

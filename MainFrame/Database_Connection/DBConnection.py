@@ -64,6 +64,7 @@ def create_connection(db_key):
 file201_connection = create_connection('FILE201')
 timekeeping_connection = create_connection('TIMEKEEPING')
 listlogimport_connection = create_connection('LIST_LOG_IMPORT')
+systemAuthentication_connection = create_connection('SYSTEM_AUTHENTICATION')
 
 if file201_connection and file201_connection.is_connected():
     file201_connection.close()
@@ -76,3 +77,7 @@ if timekeeping_connection and timekeeping_connection.is_connected():
 if listlogimport_connection and listlogimport_connection.is_connected():
     listlogimport_connection.close()
     logging.info("List Log Import database connection closed")
+
+if systemAuthentication_connection and systemAuthentication_connection.is_connected():
+    systemAuthentication_connection.close()
+    logging.info("System Authentication database connection closed")
