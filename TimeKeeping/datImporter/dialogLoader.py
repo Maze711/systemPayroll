@@ -27,8 +27,8 @@ class FileProcessor(QObject):
             if not os.path.exists(self.temp_folder):
                 os.makedirs(self.temp_folder)
 
-            # Chunk data into date ranges and process each chunk
-            chunks = self.chunkDataByDateRange(15)
+            # Chunk data into months and process each chunk
+            chunks = self.chunkDataByMonth()
             total_chunks = len(chunks)
             for i, (chunk_name, chunk_data) in enumerate(chunks.items()):
                 chunk_file = os.path.join(self.temp_folder, f"{chunk_name}.csv")
@@ -70,22 +70,24 @@ class FileProcessor(QObject):
         else:
             return 'Unknown'
 
-    def chunkDataByDateRange(self, days):
-        """Chunks the data into date ranges specified by the number of days."""
+    def chunkDataByMonth(self):
+        """Chunks the data into months."""
         start_date = datetime.strptime(self.data['date'].min(), '%Y-%m-%d')
         end_date = datetime.strptime(self.data['date'].max(), '%Y-%m-%d')
-        current_start = start_date
 
         chunks = {}
+        current_start = start_date
+
         while current_start <= end_date:
-            current_end = current_start + timedelta(days=days - 1)
-            chunk_name = f"{current_start.strftime('%Y%m%d')}_to_{current_end.strftime('%Y%m%d')}"
+            year_month = current_start.strftime('%Y_%m')
+            next_month_start = (current_start + timedelta(days=31)).replace(day=1)
+            chunk_name = f"Table_{year_month}"
             chunk_data = self.data[
                 (self.data['date'] >= current_start.strftime('%Y-%m-%d')) &
-                (self.data['date'] <= current_end.strftime('%Y-%m-%d'))
+                (self.data['date'] < next_month_start.strftime('%Y-%m-%d'))
             ]
             chunks[chunk_name] = chunk_data
-            current_start = current_end + timedelta(days=1)
+            current_start = next_month_start
 
         return chunks
 
@@ -99,7 +101,7 @@ class FileProcessor(QObject):
         cursor = connection.cursor()
 
         # Create table name based on chunk name
-        table_name = f"FROM_{chunk_name.replace('-', '_')}"
+        table_name = chunk_name  # No need to replace '-' with '_'
 
         create_table_query = f"""
             CREATE TABLE IF NOT EXISTS {table_name} (
