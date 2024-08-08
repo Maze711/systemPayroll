@@ -18,7 +18,7 @@ from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
-    QDialog, QProgressBar, QLabel, QWidget, QTableWidget
+    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QFrame
 )
 from PyQt5.uic import loadUi
 

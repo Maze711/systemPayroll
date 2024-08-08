@@ -13,7 +13,8 @@ def fetch_personal_information():
         cursor = connection.cursor()
 
         # Fetch data from personal_information table
-        cursor.execute("SELECT * FROM personal_information")
+        # cursor.execute("SELECT * FROM personal_information")
+        cursor.execute("SELECT * FROM emp_info")
         personal_info_data = cursor.fetchall()
         personal_info_columns = [desc[0] for desc in cursor.description]
 
@@ -28,7 +29,8 @@ def fetch_personal_information():
         family_info_columns = [desc[0] for desc in cursor.description]
 
         # Fetch data from list_of_id table
-        cursor.execute("SELECT * FROM list_of_id")
+        # cursor.execute("SELECT * FROM list_of_id")
+        cursor.execute("SELECT * FROM emp_list_id")
         id_info_data = cursor.fetchall()
         id_info_columns = [desc[0] for desc in cursor.description]
 
