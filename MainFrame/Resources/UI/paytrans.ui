@@ -429,7 +429,21 @@ QTableWidget {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: white;</string>
+     <string notr="true">#widget{
+background-color: white;
+}
+
+#btnCheckSched, #btnFilter {
+	background-color: &quot;#344273&quot;;
+	color: white;
+	border-radius: 5px;
+}
+
+
+#btnPayTrans{
+border-radius: 5px;
+background-color: rgb(96, 206, 114);
+}</string>
     </property>
     <widget class="QFrame" name="searchBar">
      <property name="geometry">
@@ -604,6 +618,39 @@ QTableWidget {
      </property>
      <property name="text">
       <string>Date To:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPayTrans">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>10</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>EXPORT TO EXCEL</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
      </property>
     </widget>
    </widget>
