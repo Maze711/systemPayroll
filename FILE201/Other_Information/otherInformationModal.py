@@ -20,6 +20,7 @@ class personalModal(QDialog):
 
         self.addBTN.clicked.connect(self.functions.add_Employee)
         self.editBTN.clicked.connect(self.functions.edit_Employee)
+        self.editBTN.clicked.connect(self.enable_save_button)
         self.saveBTN.clicked.connect(self.functions.save_Employee)
         self.revertBTN.clicked.connect(self.functions.revert_Employee)
 
@@ -45,3 +46,6 @@ class personalModal(QDialog):
     def set_keyboard_shortcut(self):
         self.shortcut = QtWidgets.QShortcut(Qt.Key_Escape, self)
         self.shortcut.activated.connect(self.close)
+
+    def enable_save_button(self):
+        self.saveBTN.setEnabled(True)

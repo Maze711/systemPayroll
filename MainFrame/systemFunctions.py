@@ -7,7 +7,7 @@ class SingleFunctionLogger:
     def __init__(self, log_file='Mainframe\\file_import.log'):
         self.log_file = log_file
         self.logger = logging.getLogger('SingleFunctionLogger')
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.DEBUG)  # Capture all log levels
         self.file_handler = None
         self._setup_logger()
 
@@ -20,6 +20,11 @@ class SingleFunctionLogger:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.file_handler.setFormatter(formatter)
         self.logger.addHandler(self.file_handler)
+
+        # Remove all other handlers to prevent double logging
+        for handler in self.logger.handlers[:]:
+            if handler != self.file_handler:
+                self.logger.removeHandler(handler)
 
     def log_function(self, func):
         @wraps(func)
@@ -36,11 +41,16 @@ class SingleFunctionLogger:
             except Exception as e:
                 end_time = time.time()
                 duration = end_time - start_time
-                self.logger.error(
-                    f"Error in function {func.__name__}: {str(e)} (Execution time: {duration:.2f} seconds)")
+                error_message = f"Error in function {func.__name__}: {str(e)} (Execution time: {duration:.2f} seconds)"
+                self.logger.exception(error_message)  # logs the full traceback
                 raise
 
         return wrapper
+
+# Modify the root logger to use this file handler as well
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+root_logger.addHandler(SingleFunctionLogger().file_handler)
 
 
 single_function_logger = SingleFunctionLogger()
