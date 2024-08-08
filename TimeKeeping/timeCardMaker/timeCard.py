@@ -1,248 +1,168 @@
 from MainFrame.Resources.lib import *
-
-from TimeKeeping.schedValidator.checkSched import chkSched
-from TimeKeeping.timeSheet.timeSheet import TimeSheet
-from TimeKeeping.timeCardMaker.filter import filter
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.systemFunctions import globalFunction
+import re
 
 
 class timecard(QDialog):
-    def __init__(self, filtered_data, from_date_str, to_date_str):
+    def __init__(self):
         super().__init__()
-        self.setFixedSize(1345, 665)
+        self.setFixedSize(1442, 665)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\timecard.ui")
         loadUi(ui_file, self)
 
-        self.original_data = filtered_data.copy()
-        self.filtered_data = filtered_data
-
-        # Make the column headers fixed size
+        # Set up table
         self.TimeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.TimeListTable.horizontalHeader().setStretchLastSection(True)
 
-        self.lblFrom = self.findChild(QLabel, 'lblFrom')
-        self.lblTo = self.findChild(QLabel, 'lblTo')
-        self.lblFrom.setText(from_date_str)
-        self.lblTo.setText(to_date_str)
+        # Get UI elements
+        self.yearCC = self.findChild(QComboBox, 'yearCC')
+        self.dateFromCC = self.findChild(QComboBox, 'dateFromCC')
+        self.dateToCC = self.findChild(QComboBox, 'dateToCC')
 
-        self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
-        self.timeSheetButton.clicked.connect(self.createTimeSheet)
+        # Initialize the year combo box
+        self.populate_year_combo_box()
 
-        # Add search functionality
-        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
-        self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+        # Connect signals to slots
+        self.yearCC.currentTextChanged.connect(self.populate_date_combo_boxes)
+        self.dateFromCC.currentTextChanged.connect(self.populate_time_list_table)
+        self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
 
-        self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
-        self.btnCheckSched.clicked.connect(self.CheckSched)
+    def populate_year_combo_box(self):
+        """Populate the year combo box with available years from table names."""
+        connection = create_connection('LIST_LOG_IMPORT')
+        if not connection:
+            return
 
-        self.btnFilter = self.findChild(QPushButton, 'btnFilter')
-        self.btnFilter.clicked.connect(self.filterModal)
-
-        self.populateTimeList(self.filtered_data)
-
-    @single_function_logger.log_function
-    def populateTimeList(self, data):
-        self.TimeListTable.clearContents()
-        self.TimeListTable.setRowCount(len(data))
-        logging.info(f"Populating table with {len(data)} rows")
-
-        for row_index, row_data in enumerate(data):
-            for col_index, (key, value) in enumerate(row_data.items()):
-                item = QTableWidgetItem(str(value))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.TimeListTable.setItem(row_index, col_index, item)
-
-        logging.info("Table population complete")
-
-    @single_function_logger.log_function
-    def getTotalHoursWorked(self, time_start, time_end):
-        if time_start == 'Missing' or time_end == 'Missing':
-            return "Unknown"
-
-        timeIn = QTime.fromString(time_start, "HH:mm:ss")
-        timeOut = QTime.fromString(time_end, "HH:mm:ss")
-
-        # Converting time into seconds
-        seconds_in_a_day = 24 * 60 * 60
-        time_in_seconds = (timeIn.hour() * 3600) + (timeIn.minute() * 60) + timeIn.second()
-        time_out_seconds = (timeOut.hour() * 3600) + (timeOut.minute() * 60) + timeOut.second()
-
-        # Handle crossing midnight
-        if time_out_seconds < time_in_seconds:
-            time_out_seconds += seconds_in_a_day
-
-        time_difference = time_out_seconds - time_in_seconds
-
-        # Convert the difference to hours
-        work_duration_in_hours = time_difference / 3600
-
-        return round(work_duration_in_hours, 2)
-
-    @single_function_logger.log_function
-    def CheckSched(self, checked=False):
-        selected_row = self.TimeListTable.currentRow()
-
-        if selected_row != -1:
-            empNum = self.TimeListTable.item(selected_row, 0).text()
-            bioNum = self.TimeListTable.item(selected_row, 1).text()
-            empName = self.TimeListTable.item(selected_row, 2).text()
-            trans_date = self.TimeListTable.item(selected_row, 3).text()
-            checkIn = self.TimeListTable.item(selected_row, 5).text()
-            checkOut = self.TimeListTable.item(selected_row, 6).text()
-            sched = self.TimeListTable.item(selected_row, 7).text()
-
-            total_hours = self.getTotalHoursWorked(checkIn, checkOut)
-
-            data = (empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours)
-
-            dialog = chkSched(data)
-            dialog.exec_()
-        else:
-            QMessageBox.warning(
-                self,
-                "No Row Selected",
-                "Please select a row from the table first!"
-            )
-
-    @single_function_logger.log_function
-    def createTimeSheet(self, checked=False):
-        dataMerge = []
-        for item in self.filtered_data:
-            checkIn = item['Check_In']
-            checkOut = item['Check_Out']
-            trans_date = item['Trans_Date']
-            workHours = item['workHours'] if 'workHours' in item else 'N/A'
-            hoursWorked = self.getTotalHoursWorked(checkIn, checkOut)
-            difference = ''  # Initialize as empty string
-            regularOT = ''
-            specialOT = ''
-
-            # Check the type of the date
-            dateType = timekeepingFunction.getTypeOfDate(trans_date)
-            if dateType == "Ordinary Day" and workHours != 'N/A' and hoursWorked != 'Unknown':
-                try:
-                    workHours = round(float(workHours), 2)
-                    hoursWorked = round(float(hoursWorked), 2)
-                    difference = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
-                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
-                                 f"Difference: {difference:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating difference for BioNum: {item['BioNum']}")
-                    difference = 'N/A'
-
-            if dateType == "Regular Holiday" and workHours != 'N/A' and hoursWorked != 'Unknown':
-                try:
-                    workHours = round(float(workHours), 2)
-                    hoursWorked = round(float(hoursWorked), 2)
-                    regularOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
-                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
-                                 f"Regular Holiday Overtime: {regularOT:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating regular holiday for BioNum: {item['BioNum']}")
-                    regularOT = 'N/A'
-
-            if dateType == "Special Holiday" and workHours != 'N/A' and hoursWorked != 'Unknown':
-                try:
-                    workHours = round(float(workHours), 2)
-                    hoursWorked = round(float(hoursWorked), 2)
-                    specialOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {item['BioNum']}, EmpName: {item['EmpName']}, "
-                                 f"Work Hours: {workHours:.2f}, Hours Worked: {hoursWorked:.2f}, "
-                                 f"Special Holiday Overtime: {specialOT:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating special holiday for BioNum: {item['BioNum']}")
-                    specialOT = 'N/A'
-
-            dataMerge.append({
-                'BioNum': item['BioNum'],
-                'EmpName': item['EmpName'],
-                'MachCode': item['MachCode'],
-                'Check_In': checkIn,
-                'Check_Out': checkOut,
-                'Hours_Worked': str(hoursWorked),
-                'Difference': difference,
-                'Regular Holiday Overtime': regularOT,
-                'Special Holiday Overtime': specialOT
-            })
-
-        for data in dataMerge:
-            logging.info(data)
-
-        # Now pass the dataMerge into the TimeSheet dialog
         try:
-            dialog = TimeSheet(dataMerge)
-            dialog.exec_()
-        except Exception as e:
-            logging.error(f"Error opening TimeSheet dialog: {e}")
+            cursor = connection.cursor()
+            cursor.execute("SHOW TABLES")
+            tables = cursor.fetchall()
 
-    @single_function_logger.log_function
-    def apply_filter(self, filter_values):
+            # Extract years from table names
+            years = set()
+            year_pattern = re.compile(r'from_(\d{4})')
+
+            for (table_name,) in tables:
+                match = year_pattern.search(table_name)
+                if match:
+                    years.add(match.group(1))
+
+            # Add years to the combo box
+            self.yearCC.addItems(sorted(years))
+
+        except Exception as e:
+            print(f"Error populating year combo box: {e}")
+
+        finally:
+            cursor.close()
+            connection.close()
+
+    def populate_date_combo_boxes(self):
+        """Populate the date combo boxes based on the selected year."""
+        selected_year = self.yearCC.currentText()
+        if not selected_year:
+            return
+
+        connection = create_connection('LIST_LOG_IMPORT')
+        if not connection:
+            return
+
         try:
-            logging.info(f"Filter values received: {filter_values}")
-            logging.info(f"Total rows in original data: {len(self.original_data)}")
-            logging.info(f"Show missing flag: {filter_values['show_missing']}")
+            cursor = connection.cursor()
+            cursor.execute("SHOW TABLES")
+            tables = cursor.fetchall()
 
-            filtered = []
-            for row in self.original_data:
-                check_in_time = row['Check_In']
-                check_out_time = row['Check_Out']
+            # Extract dates from table names
+            date_from_set = set()
+            date_to_set = set()
 
-                logging.info(f"Processing row: Check-in {check_in_time}, Check-out {check_out_time}")
+            date_pattern = re.compile(
+                rf'from_{selected_year}(\d{{2}})(\d{{2}})_to_{selected_year}(\d{{2}})(\d{{2}})')
 
-                if filter_values['show_missing']:
-                    if check_in_time == 'Missing' or check_out_time == 'Missing':
-                        filtered.append(row)
-                        logging.info("Added missing entry to filtered data")
-                else:
-                    if check_in_time != 'Missing' and check_out_time != 'Missing':
-                        check_in_hour = int(check_in_time.split(':')[0])
-                        check_out_hour = int(check_out_time.split(':')[0])
+            for (table_name,) in tables:
+                match = date_pattern.search(table_name)
+                if match:
+                    from_date = f"{match.group(1)}-{match.group(2)}"
+                    to_date = f"{match.group(3)}-{match.group(4)}"
 
-                        check_in_matches = (filter_values['check_in_ampm'] == "AM/PM") or \
-                                           (filter_values['check_in_ampm'] == "AM" and check_in_hour < 12) or \
-                                           (filter_values['check_in_ampm'] == "PM" and check_in_hour >= 12)
+                    date_from_set.add(from_date)
+                    date_to_set.add(to_date)
 
-                        check_out_matches = (filter_values['check_out_ampm'] == "AM/PM") or \
-                                            (filter_values['check_out_ampm'] == "AM" and check_out_hour < 12) or \
-                                            (filter_values['check_out_ampm'] == "PM" and check_out_hour >= 12)
+            # Update date combo boxes
+            self.dateFromCC.addItems(sorted(date_from_set))
+            self.dateToCC.addItems(sorted(date_to_set))
 
-                        if check_in_matches and check_out_matches:
-                            filtered.append(row)
-
-            self.filtered_data = filtered
-            logging.info(f"Filtered data count: {len(filtered)}")
-            logging.info(f"First few filtered entries: {filtered[:5]}")
-            self.populateTimeList(self.filtered_data)
         except Exception as e:
-            logging.error(f"Error in apply_filter: {str(e)}")
-            logging.error(traceback.format_exc())
-            QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
+            print(f"Error populating date combo boxes: {e}")
 
-    @single_function_logger.log_function
-    def filterModal(self, checked=False):
+        finally:
+            cursor.close()
+            connection.close()
+
+    def populate_time_list_table(self):
+        """Populate the time list table with check-in and check-out times."""
+        selected_year = self.yearCC.currentText()
+        from_date = self.dateFromCC.currentText()
+        to_date = self.dateToCC.currentText()
+
+        if not selected_year or not from_date or not to_date:
+            return
+
+        # Format table name based on selected dates
+        table_name = f"from_{selected_year}{from_date.replace('-', '')}_to_{selected_year}{to_date.replace('-', '')}"
+        connection = create_connection('LIST_LOG_IMPORT')
+        if not connection:
+            return
+
         try:
-            filter_dialog = filter(self)
-            if filter_dialog.exec_() == QDialog.Accepted:
-                filter_values = filter_dialog.get_filter_values()
-                logging.info(f"Filter values received in timecard: {filter_values}")
-                self.apply_filter(filter_values)
+            cursor = connection.cursor()
+            cursor.execute(f"""
+                SELECT bioNum, date, time, sched
+                FROM `{table_name}`
+                ORDER BY bioNum, date, time
+            """)
+            records = cursor.fetchall()
+
+            # Clear existing rows in the table
+            self.TimeListTable.setRowCount(0)
+            time_data = {}
+
+            for bio_num, trans_date, trans_time, sched in records:
+                if bio_num not in time_data:
+                    time_data[bio_num] = {"Check_In": None, "Check_Out": None}
+
+                if sched == "Time IN":
+                    time_data[bio_num]["Check_In"] = (trans_date, str(trans_time))
+                elif sched == "Time OUT":
+                    time_data[bio_num]["Check_Out"] = (trans_date, str(trans_time))
+
+                # Add row to table if both check-in and check-out times are present
+                if time_data[bio_num]["Check_In"] or time_data[bio_num]["Check_Out"]:
+                    row_position = self.TimeListTable.rowCount()
+                    self.TimeListTable.insertRow(row_position)
+
+                    # Create QTableWidgetItem and set text alignment to center
+                    def create_centered_item(text):
+                        item = QTableWidgetItem(text)
+                        item.setTextAlignment(Qt.AlignCenter)
+                        return item
+
+                    check_in_time = time_data[bio_num]["Check_In"][1] if time_data[bio_num]["Check_In"] else "Missing"
+                    check_out_time = time_data[bio_num]["Check_Out"][1] if time_data[bio_num][
+                        "Check_Out"] else "Missing"
+
+                    self.TimeListTable.setItem(row_position, 0, create_centered_item(str(bio_num)))
+                    self.TimeListTable.setItem(row_position, 2, create_centered_item(str(trans_date)))
+                    self.TimeListTable.setItem(row_position, 4, create_centered_item(check_in_time))
+                    self.TimeListTable.setItem(row_position, 5, create_centered_item(check_out_time))
+
+                    # Reset data for this bio_num
+                    time_data[bio_num] = {"Check_In": None, "Check_Out": None}
+
         except Exception as e:
-            logging.error(f"Error in filterModal: {str(e)}")
-            logging.error(traceback.format_exc())
-            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+            print(f"Error populating time list table: {e}")
 
-    @single_function_logger.log_function
-    def clear_filter(self):
-        self.filtered_data = self.original_data.copy()
-        logging.info("Filter cleared, reset to original data")
-        self.populateTimeList(self.filtered_data)
-
-    @single_function_logger.log_function
-    def show_missing_entries(self):
-        missing_entries = [row for row in self.original_data if
-                           row['Check_In'] == 'Missing' or row['Check_Out'] == 'Missing']
-        self.filtered_data = missing_entries
-        logging.info(f"Showing {len(missing_entries)} missing entries")
-        self.populateTimeList(self.filtered_data)
+        finally:
+            cursor.close()
+            connection.close()

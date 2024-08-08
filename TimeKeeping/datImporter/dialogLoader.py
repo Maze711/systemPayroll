@@ -1,4 +1,6 @@
 from MainFrame.Resources.lib import *
+
+from TimeKeeping.timeCardMaker.timeCard import timecard
 from TimeKeeping.timeLogger.timeLog import timelogger
 from MainFrame.systemFunctions import globalFunction, single_function_logger
 from MainFrame.Database_Connection.DBConnection import create_connection
@@ -184,6 +186,7 @@ class dialogModal(QDialog):
         self.thread.quit()
         self.thread.wait()
         QMessageBox.information(self, "Success", message)
+        QTimer.singleShot(2, self.openTimeCard)
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
@@ -191,3 +194,7 @@ class dialogModal(QDialog):
         self.thread.quit()
         self.thread.wait()
         QMessageBox.critical(self, "Error", f"Failed to process file: {error}")
+
+    def openTimeCard(self):
+        self.timeCardDialog = timecard()
+        self.timeCardDialog.exec_()
