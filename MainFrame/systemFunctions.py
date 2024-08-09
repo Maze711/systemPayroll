@@ -67,6 +67,23 @@ class globalFunction():
             base_path = os.path.abspath(".")
         return os.path.join(base_path, relative_path)
 
+    @staticmethod
+    def export_to_excel(data, file_name):
+
+        try:
+            if isinstance(data, list) and len(data) > 0 and isinstance(data[0], dict):
+                df = pd.DataFrame(data)
+            elif isinstance(data, pd.DataFrame):
+                df = data
+            else:
+                raise ValueError("Data should be a list of dictionaries or a DataFrame")
+
+            df.to_excel(file_name, index=False, engine='openpyxl')
+            logging.info(f"Data successfully exported to {file_name}")
+        except Exception as e:
+            logging.error(f"Failed to export data to Excel: {e}")
+            raise
+
 
 class timekeepingFunction():
     def __init__(self):
