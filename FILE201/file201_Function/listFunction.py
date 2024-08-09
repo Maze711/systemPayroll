@@ -117,8 +117,8 @@ class ListFunction:
     @single_function_logger.log_function
     def fetch_employee_data(self, empID):
         query = """
-            SELECT p.empl_id, p.surname, p.firstname, p.mi, p.addr1,
-               p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex,
+            SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
+               p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex,
                f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
                f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
@@ -131,11 +131,11 @@ class ListFunction:
                e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                e.highschoolYear, e.elemYear
                FROM emp_info p
-               LEFT JOIN educ_information e on p.empl_id = e.empID
-               LEFT JOIN family_background f ON p.empl_id = f.empID
+               LEFT JOIN educ_information e on p.empl_id = e.empl_id
+               LEFT JOIN family_background f ON p.empl_id = f.empl_id
                LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
-               LEFT JOIN work_exp w ON p.empl_id = w.empID
-               LEFT JOIN tech_skills t ON p.empl_id = t.empID
+               LEFT JOIN work_exp w ON p.empl_id = w.empl_id
+               LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
                WHERE p.empl_id = %s
             """
         try:
@@ -163,7 +163,7 @@ class ListFunction:
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
-            (empl_id, surname, firstname, mi, addr1,
+            (empl_id, surname, firstname, mi, suffix, street, barangay, city, province, zipcode,
              mobile, height, weight, status, birthday, birthplace, sex,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
@@ -180,8 +180,12 @@ class ListFunction:
             modal.txtLastName.setText(surname)
             modal.txtFirstName.setText(firstname)
             modal.txtMiddleName.setText(mi)
-            modal.txtStreet.setText(addr1)
-            # txtbrgy, txtcity, txtprov, txtzip has been removed
+            modal.txtSuffix.setText(suffix)
+            modal.txtStreet.setText(street)
+            modal.txtBarangay.setText(barangay)
+            modal.txtCity.setText(city)
+            modal.txtProvince.setText(province)
+            modal.txtZip.setText(str(zipcode))
             modal.txtPhone.setText(mobile)
             modal.txtHeight.setText(str(height))
             modal.txtWeight.setText(str(weight))
@@ -204,10 +208,10 @@ class ListFunction:
             modal.txtBeneMiddle.setText(beneficiaryMiddleName)
             modal.txtDependent.setText(dependentsName)
 
-            modal.sssTextEdit.setText(sss)
-            modal.pagibigTextEdit.setText(pagibig)
-            modal.philHealthTextEdit.setText(philhealth)
-            modal.tinTextEdit.setText(tin)
+            modal.sssTextEdit.setText(str(sss))
+            modal.pagibigTextEdit.setText(str(pagibig))
+            modal.philHealthTextEdit.setText(str(philhealth))
+            modal.tinTextEdit.setText(str(tin))
 
             modal.dateStart_4.setDate(QDate.fromString(from_date, "MM-dd-yyyy"))
             modal.dateEnd_4.setDate(QDate.fromString(to_date, "MM-dd-yyyy"))
