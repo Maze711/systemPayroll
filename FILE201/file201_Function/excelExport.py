@@ -75,11 +75,22 @@ def fetch_personal_information():
             connection.close()
             logging.info("Database connection closed")
 
+
 def export_to_excel(data_dict, file_name):
     try:
+        combined_df = data_dict["Personal Information"].copy()
+
+        for sheet_name, df in data_dict.items():
+            if sheet_name != "Personal Information":
+                combined_df = pd.merge(combined_df, df, on='empl_id', how='left')
+
+                for col in df.columns:
+                    if col != 'empl_id':
+                        combined_df = combined_df.rename(columns={col: f"{sheet_name}_{col}"})
+
         with pd.ExcelWriter(file_name, engine='openpyxl') as writer:
-            for sheet_name, data in data_dict.items():
-                data.to_excel(writer, sheet_name=sheet_name, index=False)
+            combined_df.to_excel(writer, sheet_name="Employee Data", index=False)
+
         logging.info(f"Data successfully exported to {file_name}")
     except Exception as e:
         logging.error(f"Error exporting data to Excel: {e}")

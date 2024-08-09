@@ -44,7 +44,7 @@ class modalFunction:
                 ('Barangay', self.main_window.txtBarangay.text()),
                 ('City', self.main_window.txtCity.text()),
                 ('Province', self.main_window.txtProvince.text()),
-                ('ZIP', self.main_window.txtZip.text()),
+                ('zipcode', self.main_window.txtZip.text()),
                 ('Phone Number', self.main_window.txtPhone.text()),
 
                 ('Height', self.main_window.txtHeight.text()),
@@ -118,7 +118,7 @@ class modalFunction:
                 ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
             ]
 
-            not_required_fields = ['Suffix', 'ZIP', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
+            not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
                                    'Company', 'Company Address', 'Position',
                                    "Father's Last Name", "Father's First Name", "Father's Middle Name",
                                    "Mother's Last Name", "Mother's First Name", "Mother's Middle Name",
@@ -172,7 +172,7 @@ class modalFunction:
             'Barangay': self.main_window.txtBarangay.text(),
             'City': self.main_window.txtCity.text(),
             'Province': self.main_window.txtProvince.text(),
-            'ZIP': self.main_window.txtZip.text(),
+            'zipcode': self.main_window.txtZip.text(),
             'Phone Number': self.main_window.txtPhone.text(),
 
             'Height': self.main_window.txtHeight.text(),
@@ -246,13 +246,21 @@ class modalFunction:
         empID = self.main_window.idDisplay.text()
         data = self.gather_form_data()
 
-        success = save_employee(empID, data)
+        try:
+            success = save_employee(empID, data)
 
-        if success:
-            QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
-            self.main_window.close()  # Close the modal upon successful save
-        else:
-            QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")
+            if success:
+                QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
+                self.main_window.close()  # Close the modal upon successful save
+            else:
+                logging.error(f"Failed to save employee data for Employee ID: {empID}.")
+                QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")
+
+        except Exception as e:
+            logging.error(
+                f"An unexpected error occurred while saving employee data for Employee ID: {empID}. Error: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"An unexpected error occurred: {e}")
+
 
     def revert_Employee(self):
         print("Revert")

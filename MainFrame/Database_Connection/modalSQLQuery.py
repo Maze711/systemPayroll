@@ -16,9 +16,9 @@ def add_employee(data):
 
         # Insert into personal_information table
         insert_personal_information = """
-        INSERT INTO emp_info (surname, firstname, mi, suffix, addr1, mobile, height, weight, status, 
-                                          birthday, birthplace, sex)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO emp_info (surname, firstname, mi, suffix, street, barangay, city, province, zipcode, mobile, height, 
+                                weight, status, birthday, birthplace, sex)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         surname = data.get('Last Name', '')
         first_name = data.get('First Name', '')
@@ -28,8 +28,7 @@ def add_employee(data):
         barangay = data.get('Barangay', '')
         city = data.get('City', '')
         province = data.get('Province', '')
-        # zip_num = data.get('ZIP', '')
-        address = f"{street} {barangay} {city} {province}"
+        zipcode = data.get('zipcode', '')
         phone_num = data.get('Phone Number', '')
         height = data.get('Height', '')
         weight = data.get('Weight', '')
@@ -37,21 +36,21 @@ def add_employee(data):
         birthday = data.get('Date of Birth', '')
         place_of_birth = data.get('Place of Birth', '')
         gender = data.get('Gender', '')
-        cursor.execute(insert_personal_information, (surname, first_name, middle_name, suffix, address, phone_num,
+        cursor.execute(insert_personal_information, (surname, first_name, middle_name, suffix, street, barangay, city, province, zipcode, phone_num,
                                                      height, weight, civil_status, birthday, place_of_birth, gender))
 
         row_id = cursor.lastrowid # Retrieves the unformatted id of the new inserted employee
 
         # Inserting custom generated employee id to the database
         generated_id = get_generated_employee_id(row_id)
-        query = "UPDATE emp_info SET empl_id = %s WHERE empl_id = %s"
+        query = "UPDATE emp_info SET empl_id = %s WHERE empl_no = %s"
         cursor.execute(query, (generated_id, row_id))
 
-        #logger.info("Inserted into personal_information table")
+        logging.info("Inserted into personal_information table")
 
         # Insert into Family Background
         insert_family_background = """
-        INSERT INTO family_background (empID, fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, 
+        INSERT INTO family_background (empl_id, fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, 
                                        mothersFirstName, mothersMiddleName, spouseLastName, spouseFirstName, 
                                        spouseMiddleName, beneficiaryLastName, beneficiaryFirstName, 
                                        beneficiaryMiddleName, dependentsName)
@@ -74,7 +73,7 @@ def add_employee(data):
                                                   mothers_fname, mothers_mname, spouse_lname, spouse_fname,
                                                   spouse_mname, beneficiary_lname, beneficiary_fname, beneficiary_mname,
                                                   dependent_name))
-        #logger.info("Inserted into family_background table")
+        logging.info("Inserted into family_background table")
 
         # Insert into list_of_id table
         insert_list_of_id = """
@@ -86,11 +85,11 @@ def add_employee(data):
         philhealth_num = data.get('PhilHealth Number', '')
         tin_num = data.get('TIN Number', '')
         cursor.execute(insert_list_of_id, (generated_id, sss_num, tin_num, pagibig_num, philhealth_num))
-        #logger.info("Inserted into list_of_id table")
+        logging.info("Inserted into list_of_id table")
 
         # Insert into work_exp table
         insert_work_exp = """
-        INSERT INTO work_exp (empID, fromDate, toDate, companyName, companyAdd, empPosition)
+        INSERT INTO work_exp (empl_id, fromDate, toDate, companyName, companyAdd, empPosition)
         VALUES (%s, %s, %s, %s, %s, %s)
         """
         from_date = data.get('Date From', '')
@@ -99,11 +98,11 @@ def add_employee(data):
         company_add = data.get('Company Address', '')
         position = data.get('Position', '')
         cursor.execute(insert_work_exp, (generated_id, from_date, to_date, company_name, company_add, position))
-        #logger.info("Inserted into work_exp table")
+        logging.info("Inserted into work_exp table")
 
         # Insert into educ_information table
         insert_educ_information = """
-        INSERT INTO educ_information (empID, college, highSchool, elemSchool,
+        INSERT INTO educ_information (empl_id, college, highSchool, elemSchool,
                                       collegeAdd, highschoolAdd, elemAdd, collegeCourse, highschoolStrand, collegeYear,
                                       highschoolYear, elemYear)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -122,10 +121,10 @@ def add_employee(data):
         cursor.execute(insert_educ_information, (generated_id, college, high_school, elem_school, college_add,
                                                  highschool_add, elem_add, college_course, highschool_strand,
                                                  college_year, highschool_year, elem_year))
-        #logger.info("Inserted into educ_information table")
+        logging.info("Inserted into educ_information table")
 
         # Insert into tech_skills table
-        insert_tech_skills = """INSERT INTO tech_skills(empID, techSkill1, certificate1, validationDate1, techSkill2, 
+        insert_tech_skills = """INSERT INTO tech_skills(empl_id, techSkill1, certificate1, validationDate1, techSkill2, 
         certificate2, validationDate2, techSkill3, certificate3, validationDate3)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         tech_skill1 = data.get('Technical Skills #1', '')
@@ -140,12 +139,12 @@ def add_employee(data):
         cursor.execute(insert_tech_skills, (generated_id, tech_skill1, certificate_skill1, validation_date1,
                                             tech_skill2, certificate_skill2, validation_date2,
                                             tech_skill3, certificate_skill3, validation_date3))
-        #logger.info("Inserted into tech_skills table")
+        logging.info("Inserted into tech_skills table")
 
         # Commit changes to the database
         connection.commit()
 
-        #logger.info("Changes committed successfully")
+        logging.info("Changes committed successfully")
         return True
 
     except Error as e:
@@ -162,7 +161,7 @@ def add_employee(data):
             #logger.info("Database connection closed")
 
 @single_function_logger.log_function
-def save_employee(empID, data):
+def save_employee(empl_id, data):
     try:
         connection = create_connection('FILE201')
         if connection is None:
@@ -174,14 +173,15 @@ def save_employee(empID, data):
         # Update personal_information table
         update_personal_information = """
         UPDATE emp_info
-        SET surname = %s, firstname = %s, mi = %s, suffix = %s, addr1 = %s, mobile = %s, height = %s, weight = %s, 
-            status = %s, birthday = %s, birthplace = %s, sex = %s
+        SET surname = %s, firstname = %s, mi = %s, suffix = %s, street = %s, barangay = %s, city = %s, province = %s, 
+            zipcode = %s, mobile = %s, height = %s, weight = %s, status = %s, birthday = %s, birthplace = %s, sex = %s
         WHERE empl_id = %s
         """
         cursor.execute(update_personal_information, (data['lastName'], data['firstName'], data['middleName'], data['suffix'],
-                                                     data['Street'], data['Phone Number'], data['Height'], data['Weight'],
+                                                     data['Street'], data['Barangay'], data['City'], data['Province'],
+                                                     data['zipcode'], data['Phone Number'], data['Height'], data['Weight'],
                                                      data['Civil Status'], data['Date of Birth'], data['Place of Birth'],
-                                                     data['Gender'], empID))
+                                                     data['Gender'], empl_id))
 
         # Update family_background table
         update_family_background = """
@@ -190,13 +190,13 @@ def save_employee(empID, data):
             mothersFirstName = %s, mothersMiddleName = %s, spouseLastName = %s, spouseFirstName = %s, 
             spouseMiddleName = %s, beneficiaryLastName = %s, beneficiaryFirstName = %s, beneficiaryMiddleName = %s, 
             dependentsName = %s
-        WHERE empID = %s
+        WHERE empl_id = %s
         """
         cursor.execute(update_family_background, (data["Father's Last Name"], data["Father's First Name"], data["Father's Middle Name"],
                                                   data["Mother's Last Name"], data["Mother's First Name"], data["Mother's Middle Name"],
                                                   data["Spouse's Last Name"], data["Spouse's First Name"], data["Spouse's Middle Name"],
                                                   data["Beneficiary's Last Name"], data["Beneficiary's First Name"], data["Beneficiary's Middle Name"],
-                                                  data["Dependent's Name"], empID))
+                                                  data["Dependent's Name"], empl_id))
 
         # Update list_of_id table
         update_list_of_id = """
@@ -204,15 +204,15 @@ def save_employee(empID, data):
         SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
         WHERE empl_id = %s
         """
-        cursor.execute(update_list_of_id, (data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empID))
+        cursor.execute(update_list_of_id, (data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empl_id))
 
         # Update work_exp table
         update_work_exp = """
         UPDATE work_exp
         SET fromDate = %s, toDate = %s, companyName = %s, companyAdd = %s, empPosition = %s
-        WHERE empID = %s
+        WHERE empl_id = %s
         """
-        cursor.execute(update_work_exp, (data['Date From'], data['Date To'], data['Company'], data['Company Address'], data['Position'], empID))
+        cursor.execute(update_work_exp, (data['Date From'], data['Date To'], data['Company'], data['Company Address'], data['Position'], empl_id))
 
         # Update educ_information table
         update_educ_information = """
@@ -220,32 +220,32 @@ def save_employee(empID, data):
         SET college = %s, highSchool = %s, elemSchool = %s,
             collegeAdd = %s, highschoolAdd = %s, elemAdd = %s, collegeCourse = %s, highschoolStrand = %s, collegeYear = %s,
             highschoolYear = %s, elemYear = %s
-        WHERE empID = %s
+        WHERE empl_id = %s
         """
         cursor.execute(update_educ_information, (data['College'], data['High-School'], data['Elementary'],
                                                  data['College Address'], data['High-School Address'], data['Elementary Address'],
                                                  data['College Course'], data['High-School Strand'],
                                                  data['College Graduate Year'], data['High-School Graduate Year'], data['Elementary Graduate Year'],
-                                                 empID))
+                                                 empl_id))
         # Update tech_skills table
         update_tech_skills = """
         UPDATE tech_skills 
         SET techSkill1 = %s, certificate1 = %s, validationDate1 = %s, techSkill2 = %s, certificate2 = %s, 
             validationDate2 = %s, techSkill3 = %s, certificate3 = %s, validationDate3 = %s 
-        WHERE empID = %s
+        WHERE empl_id = %s
         """
         cursor.execute(update_tech_skills, (data['Technical Skills #1'], data['Certificate #1'], data['Validation Date #1'],
                                             data['Technical Skills #2'], data['Certificate #2'], data['Validation Date #2'],
                                             data['Technical Skills #3'], data['Certificate #3'], data['Validation Date #3'],
-                                            empID))
+                                            empl_id))
 
         # Commit changes to the database
         connection.commit()
-        #logger.info(f"Employee with ID {empID} updated successfully")
+        #logger.info(f"Employee with ID {empl_id} updated successfully")
         return True
 
     except Error as e:
-        #logger.error(f"Error updating employee with ID {empID}: {e}")
+        #logger.error(f"Error updating employee with ID {empl_id}: {e}")
         print(e)
         return False
 
