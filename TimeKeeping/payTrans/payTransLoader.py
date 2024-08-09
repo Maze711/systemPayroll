@@ -23,6 +23,7 @@ class PayTrans(QMainWindow):
             logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
         self.populatePayTransTable(self.data)
+        self.btnPayTrans.clicked.connect(self.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.sendToEmail)
 
     def populatePayTransTable(self, data):
@@ -55,6 +56,17 @@ class PayTrans(QMainWindow):
             self.paytransTable.setItem(i, 5, present_days_item)  # Present Days
             self.paytransTable.setItem(i, 6, ordinary_day_ot_item)  # OT Hours (add column index here)
             self.paytransTable.setItem(i, 14, ot_earn_item)  # OT Hours (add column index here)
+
+    @single_function_logger.log_function
+    def export_to_excel(self, checked=False):
+        # Define the file name where data will be saved
+        file_name = "paytrans_data.xlsx"
+        try:
+            globalFunction.export_to_excel(self.data, file_name)
+            QMessageBox.information(self, "Export Successful", f"Data has been successfully exported to {file_name}")
+        except Exception as e:
+            QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
+            logging.error(f"Export error: {e}")
 
     @single_function_logger.log_function
     def sendToEmail(self, checked=False):
