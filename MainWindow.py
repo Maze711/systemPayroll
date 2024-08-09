@@ -6,7 +6,7 @@ from TimeKeeping.datImporter.dialogLoader import dialogModal
 from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction, single_function_logger
-
+import bcrypt
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 # Setup logging for application load duration
