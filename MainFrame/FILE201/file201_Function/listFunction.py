@@ -2,7 +2,7 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeQuery
-from FILE201.Other_Information.otherInformationModal import personalModal
+from MainFrame.FILE201.Other_Information.otherInformationModal import personalModal
 
 from MainFrame.systemFunctions import single_function_logger
 

@@ -1,12 +1,10 @@
 from MainFrame.Resources.lib import *
-
-from FILE201.Employee_List.employeeList import EmployeeList
+from MainFrame.FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
-from TimeKeeping.datImporter.dialogLoader import dialogModal
-from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
-from TimeKeeping.dateChange.dateChange import DateChange
+from MainFrame.TimeKeeping.datImporter.dialogLoader import dialogModal
+from MainFrame.TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
+from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction, single_function_logger
-import bcrypt
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 # Setup logging for application load duration

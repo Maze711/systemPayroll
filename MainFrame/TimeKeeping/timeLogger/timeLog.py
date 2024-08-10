@@ -1,8 +1,8 @@
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from TimeKeeping.timeCardMaker.timeCard import timecard
-from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
+from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
+from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
 

@@ -1,6 +1,6 @@
 from MainFrame.Resources.lib import *
 
-from FILE201.file201_Function.modalFunction import modalFunction
+from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
 
 from MainFrame.systemFunctions import globalFunction
 
