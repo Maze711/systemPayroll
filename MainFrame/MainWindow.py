@@ -1,7 +1,6 @@
 from MainFrame.Resources.lib import *
 
 from FILE201.Employee_List.employeeList import EmployeeList
-from MainFrame.fontLoader import load_fonts
 from TimeKeeping.datImporter.dialogLoader import dialogModal
 from TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from TimeKeeping.dateChange.dateChange import DateChange
@@ -12,7 +11,7 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 # Setup logging for application load duration
 duration_logger = logging.getLogger('DurationLogger')
 duration_logger.setLevel(logging.DEBUG)
-duration_file_handler = logging.FileHandler('application_duration.log', mode='w')
+duration_file_handler = logging.FileHandler('../application_duration.log', mode='w')
 duration_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 duration_file_handler.setFormatter(duration_formatter)
 duration_logger.addHandler(duration_file_handler)
@@ -453,27 +452,3 @@ class MainWindow(QMainWindow):
         if self.payroll_window is None:
             self.payroll_window = PayrollDialog()
         self.payroll_window.show()
-
-def main():
-    start_time = time.time()
-    logging.debug("Starting application")
-
-    try:
-        app = QApplication(sys.argv)
-        load_fonts()
-        main_window = MainWindow()
-        main_window.show()
-    except Exception as e:
-        logging.error("Error occurred while loading application: %s", str(e))
-        print(f"Error occurred: {e}")
-        sys.exit(1)
-
-    end_time = time.time()
-    duration = end_time - start_time
-    duration_logger.info(f"Application loaded in {duration:.2f} seconds")
-    print(f"Application loaded in {duration:.2f} seconds")
-
-    app.exec_()
-
-if __name__ == "__main__":
-    main()
