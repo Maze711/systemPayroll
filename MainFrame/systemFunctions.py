@@ -1,13 +1,10 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 
 class SingleFunctionLogger:
-    def __init__(self, log_file='file_import.log'):
+    def __init__(self, log_file='Mainframe\\file_import.log'):
         self.log_file = log_file
         self.logger = logging.getLogger('SingleFunctionLogger')
         self.logger.setLevel(logging.DEBUG)  # Capture all log levels

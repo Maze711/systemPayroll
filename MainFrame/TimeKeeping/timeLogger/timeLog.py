@@ -1,11 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
-from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
+from TimeKeeping.timeCardMaker.timeCard import timecard
+from TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 
 

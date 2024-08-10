@@ -1,11 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeQuery
-from MainFrame.FILE201.Other_Information.otherInformationModal import personalModal
+from FILE201.Other_Information.otherInformationModal import personalModal
 
 from MainFrame.systemFunctions import single_function_logger
 
