@@ -1,3 +1,4 @@
+import logging
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -34,7 +35,8 @@ if os.path.exists(dotenv_path):
 
 def create_connection(db_key):
     try:
-        host = os.getenv(f'DB_HOST_{db_key}', '192.168.1.95')
+        # host = os.getenv(f'DB_HOST_{db_key}', '192.168.1.95')
+        host = os.getenv(f'DB_HOST_{db_key}', 'localhost')
         database = os.getenv(f'DB_DATABASE_{db_key}')
         user = os.getenv(f'DB_USER_{db_key}', 'root')
         password = os.getenv(f'DB_PASSWORD_{db_key}', '')
@@ -63,25 +65,26 @@ def create_connection(db_key):
         logging.error(f"Error while connecting to MySQL {database}: {e}")
         return None
 
+def test_databases_connection(window):
+    """Test Databases Connection (for Debugging)"""
+    file201_connection = create_connection('FILE201')
+    timekeeping_connection = create_connection('TIMEKEEPING')
+    listlogimport_connection = create_connection('LIST_LOG_IMPORT')
+    systemAuthentication_connection = create_connection('SYSTEM_AUTHENTICATION')
 
-# Test connections (for debugging)
-file201_connection = create_connection('FILE201')
-timekeeping_connection = create_connection('TIMEKEEPING')
-listlogimport_connection = create_connection('LIST_LOG_IMPORT')
-systemAuthentication_connection = create_connection('SYSTEM_AUTHENTICATION')
+    connections = {
+        'FILE201': file201_connection,
+        'TIMEKEEPING': timekeeping_connection,
+        'LIST_LOG_IMPORT': listlogimport_connection,
+        'SYSTEM_AUTHENTICATION': systemAuthentication_connection
+    }
 
-if file201_connection and file201_connection.is_connected():
-    file201_connection.close()
-    logging.info("FILE201 database connection closed")
+    for db_key, db_connection in connections.items():
+        if db_connection is None or not db_connection.is_connected():
+            QMessageBox.critical(window, "Database Connection Error", "Failed to connect to database"
+                                                                    "server. The application will exit.")
+            sys.exit(1)
 
-if timekeeping_connection and timekeeping_connection.is_connected():
-    timekeeping_connection.close()
-    logging.info("TIMEKEEPING database connection closed")
-
-if listlogimport_connection and listlogimport_connection.is_connected():
-    listlogimport_connection.close()
-    logging.info("List Log Import database connection closed")
-
-if systemAuthentication_connection and systemAuthentication_connection.is_connected():
-    systemAuthentication_connection.close()
-    logging.info("System Authentication database connection closed")
+        if db_connection.is_connected():
+            db_connection.close()
+            logging.info(f"{db_key} database connection closed")

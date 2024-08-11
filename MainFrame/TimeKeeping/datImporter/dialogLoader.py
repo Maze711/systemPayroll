@@ -201,4 +201,5 @@ class dialogModal(QDialog):
 
     def openTimeCard(self):
         self.timeCardDialog = timecard()
+        self.close()
         self.timeCardDialog.exec_()
