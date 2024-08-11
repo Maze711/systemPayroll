@@ -41,8 +41,9 @@ class FileProcessor(QObject):
 
 
 class PayrollDialog(QDialog):
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+        self.main_window = main_window
         self.setFixedSize(418, 392)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
@@ -110,6 +111,7 @@ class PayrollDialog(QDialog):
         self.thread.wait()
 
     def showData(self, content):
-        self.paytimesheet = PaytimeSheet(content)
+        self.paytimesheet = PaytimeSheet(self.main_window, content)
+        self.main_window.open_dialogs.append(self.paytimesheet)
         self.paytimesheet.show()
         self.close()

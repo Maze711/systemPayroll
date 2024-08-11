@@ -47,11 +47,13 @@ class PayComputation:
 
 
 class PaytimeSheet(QMainWindow):
-    def __init__(self, content):
+    def __init__(self, main_window, content):
         super(PaytimeSheet, self).__init__()
         self.setFixedSize(1700, 665)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytimesheet.ui")
         loadUi(ui_file, self)
+
+        self.main_window = main_window
 
         self.data = content
         self.original_data = content  # Store original data
@@ -173,6 +175,7 @@ class PaytimeSheet(QMainWindow):
 
         try:
             self.window = PayTrans(from_date, to_date, selected_data)
+            self.main_window.open_dialogs.append(self.window)
             self.window.show()
             self.close()
         except Exception as e:
