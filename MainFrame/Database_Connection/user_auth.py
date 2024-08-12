@@ -36,6 +36,7 @@ class UserAuthorization:
 class UserAuthentication(UserAuthorization):
     def __init__(self):
         self.verifiedUsername = None
+        self.user_id = None
 
     """LOG IN USER"""
     @single_function_logger.log_function
@@ -68,6 +69,9 @@ class UserAuthentication(UserAuthorization):
             instance.enableNavButton('btnTimeKeeping')
         elif user_role in ['Accountant', 'Pay Master 1', 'Pay Master 2', 'Pay Master 3']:
             instance.enableNavButton('btnPayRoll')
+
+        self.fetchUserID(username) # Retrieves the user id based on who succesfully logged in
+        print(self.getUserID())
 
         return
 
@@ -250,14 +254,52 @@ class UserAuthentication(UserAuthorization):
     def isUserAlreadyLoggedIn(self, instance, isLoggedIn):
         if isLoggedIn is False:
             instance.btnLogOut.setVisible(False)
+            instance.btnReportBug.setVisible(False)
             instance.disableAllNavButtons()
             instance.mainBody.setVisible(True)
         else:
             instance.btnLogOut.setVisible(True)
+            instance.btnReportBug.setVisible(True)
             instance.mainBody.setVisible(False)
 
+    @single_function_logger.log_function
     def getGeneratedHashPassword(self, password):
         salt = bcrypt.gensalt()
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), salt)
 
         return hashedPassword.decode('utf-8')
+
+    @single_function_logger.log_function
+    def fetchUserID(self, user_name):
+        try:
+            connection = create_connection('SYSTEM_AUTHENTICATION')
+            if connection is None:
+                logging.error("Error: Could not establish database connection.")
+                self.setUserID(None)
+                return
+
+            cursor = connection.cursor()
+            fetch_user_id_in_users_table = "SELECT user_id FROM users WHERE user_name = %s"
+            cursor.execute(fetch_user_id_in_users_table, (user_name,))
+            result = cursor.fetchone()
+
+            if result:
+                self.setUserID(result[0]) # Sets the fetched user id to setter
+                return
+
+        except Error as e:
+            logging.error(f"Error fetching user_id: {e}")
+            self.setUserID(None)
+            return
+
+        finally:
+            if 'connection' in locals() and connection.is_connected():
+                cursor.close()
+                connection.close()
+                logging.info("Database connection closed")
+
+    def setUserID(self, user_id):
+        self.user_id = user_id
+
+    def getUserID(self):
+        return self.user_id

@@ -7,6 +7,7 @@ from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.DBConnection import test_databases_connection
+from MainFrame.bugReport import BugReportModal
 
 # Setup logging for application load duration
 duration_logger = logging.getLogger('DurationLogger')
@@ -28,6 +29,8 @@ class MainWindow(QMainWindow):
         self.isLoggedIn = False
         self.btnLogOut = self.findChild(QPushButton, "btnLogOut")
 
+        self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
+
         self.authentication = UserAuthentication()
 
         self.functions = self
@@ -35,11 +38,13 @@ class MainWindow(QMainWindow):
         self.datechange = None
         self.timekeeping_window = None
         self.payroll_window = None
+        self.bugReportModal = None
 
         # Window Connections
         self.btnEmployeeList.clicked.connect(self.employeeWindow)
         self.btnPayRoll.clicked.connect(self.openPayRoll)
         self.btnTimeKeeping.installEventFilter(self)
+        self.btnReportBug.clicked.connect(self.openBugReportModal)
         self.additional_buttons_container = None
 
         # Routing Pages
@@ -82,7 +87,7 @@ class MainWindow(QMainWindow):
                 dialog.close()
 
         self.open_dialogs.clear() # Clears the list once closed
-
+        self.authentication.setUserID(None)
         self.switchPageAndResetInputs(self.loginPage)
         QMessageBox.information(self, "Log out", "You have been logged out.")
 
@@ -218,27 +223,24 @@ class MainWindow(QMainWindow):
             self.payroll_window = PayrollDialog(self)
         self.payroll_window.exec_()
 
-def main():
-    start_time = time.time()
-    logging.debug("Starting application")
+    def openBugReportModal(self):
+        if self.bugReportModal is None:
+            self.bugReportModal = BugReportModal()
+        self.bugReportModal.exec_()
 
+def main():
     try:
         app = QApplication(sys.argv)
+        test_databases_connection() # ensures database connection
         main_window = MainWindow()
-        test_databases_connection(main_window) # ensures database connection
         load_fonts()
         main_window.show()
+        app.exec_()
     except Exception as e:
         logging.error("Error occurred while loading application: %s", str(e))
         print(f"Error occurred: {e}")
         sys.exit(1)
 
-    end_time = time.time()
-    duration = end_time - start_time
-    duration_logger.info(f"Application loaded in {duration:.2f} seconds")
-    print(f"Application loaded in {duration:.2f} seconds")
-
-    app.exec_()
 
 if __name__ == "__main__":
     main()
