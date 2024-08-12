@@ -53,7 +53,8 @@ def create_connection(db_key):
             database=database,
             user=user,
             password=password,
-            port=port
+            port=port,
+            connect_timeout=2
         )
         if connection.is_connected():
             logging.info(f"Connection to {database} database was successful")
@@ -65,7 +66,7 @@ def create_connection(db_key):
         logging.error(f"Error while connecting to MySQL {database}: {e}")
         return None
 
-def test_databases_connection(window):
+def test_databases_connection():
     """Test Databases Connection (for Debugging)"""
     file201_connection = create_connection('FILE201')
     timekeeping_connection = create_connection('TIMEKEEPING')
@@ -81,7 +82,7 @@ def test_databases_connection(window):
 
     for db_key, db_connection in connections.items():
         if db_connection is None or not db_connection.is_connected():
-            QMessageBox.critical(window, "Database Connection Error", "Failed to connect to database"
+            QMessageBox.critical(None, "Database Connection Error", "Failed to connect to database "
                                                                     "server. The application will exit.")
             sys.exit(1)
 

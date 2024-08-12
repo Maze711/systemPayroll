@@ -41,6 +41,11 @@ background-color: white;
 	color: white;
 	border-radius: 5px;
 }
+
+#btnReportBug {
+	background-color: white;
+	border: none;
+}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -71,6 +76,41 @@ background-color: &quot;#DCE5FE&quot;;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
+    <widget class="QPushButton" name="btnReportBug">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>0</y>
+       <width>41</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Report a Bug</string>
+     </property>
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../Icons/alert-triangle.svg</normaloff>../Icons/alert-triangle.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>25</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="sideBar">
     <property name="geometry">
@@ -262,6 +302,9 @@ background-color: &quot;#DCE5FE&quot;;
       <height>491</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string/>
+    </property>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="geometry">
       <rect>
@@ -339,7 +382,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -424,7 +467,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -570,6 +613,9 @@ background-color: &quot;#DCE5FE&quot;;
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -597,6 +643,9 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">#btnSignUpHere {
@@ -673,7 +722,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -758,7 +807,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -846,7 +895,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -992,6 +1041,9 @@ background-color: &quot;#DCE5FE&quot;;
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -1065,7 +1117,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -1130,6 +1182,9 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
@@ -1266,7 +1321,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -1354,7 +1409,7 @@ background-color: &quot;#DCE5FE&quot;;
          </font>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::StrongFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">#txtSearch{
@@ -1482,6 +1537,9 @@ background-color: &quot;#DCE5FE&quot;;
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -1519,6 +1577,32 @@ background-color: &quot;#DCE5FE&quot;;
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>userNameBar</tabstop>
+  <tabstop>passwordBar</tabstop>
+  <tabstop>cbShowLogInPass</tabstop>
+  <tabstop>btnForgotPass</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnSignUpHere</tabstop>
+  <tabstop>userNameBarSignUp</tabstop>
+  <tabstop>passBar</tabstop>
+  <tabstop>passAgainBar</tabstop>
+  <tabstop>cbShowSignUpPass</tabstop>
+  <tabstop>btnSignUp</tabstop>
+  <tabstop>btnLoginHere</tabstop>
+  <tabstop>userNameBarForgot</tabstop>
+  <tabstop>btnContinue</tabstop>
+  <tabstop>btnBackToLogin</tabstop>
+  <tabstop>passBar_3</tabstop>
+  <tabstop>passAgainBar_3</tabstop>
+  <tabstop>cbShowForgotPass</tabstop>
+  <tabstop>btnResetPassword</tabstop>
+  <tabstop>btnBackToLogin_2</tabstop>
+  <tabstop>btnEmployeeList</tabstop>
+  <tabstop>btnTimeKeeping</tabstop>
+  <tabstop>btnPayRoll</tabstop>
+  <tabstop>btnLogOut</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
