@@ -162,7 +162,26 @@ class modalFunction:
             QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
 
     def edit_Employee(self):
-        set_fields_non_editable(self.main_window)
+        self.set_fields_editable()
+
+    def set_fields_editable(self):
+        activeStyle = "background-color: white; color: black;"
+
+        for widget in self.main_window.findChildren(QLineEdit):
+            widget.setReadOnly(False)
+            widget.setStyleSheet(activeStyle)
+
+        for widget in self.main_window.findChildren(QDateEdit):
+            widget.setReadOnly(False)
+            widget.setStyleSheet(activeStyle)
+
+        for widget in self.main_window.findChildren(QComboBox):
+            widget.setEnabled(True)
+            widget.setStyleSheet(activeStyle)
+
+        for widget in self.main_window.findChildren(QPlainTextEdit):
+            widget.setReadOnly(False)
+            widget.setStyleSheet(activeStyle)
 
     def gather_form_data(self):
         data = {
@@ -266,5 +285,5 @@ class modalFunction:
 
 
     def revert_Employee(self):
+        set_fields_non_editable(self.main_window)
         print("Revert")
-

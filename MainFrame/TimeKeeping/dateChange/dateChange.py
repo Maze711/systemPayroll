@@ -15,7 +15,7 @@ class DateChange(QDialog):
 
         self.connection = create_connection('TIMEKEEPING')
         self.cmbHoliday.currentIndexChanged.connect(self.fetch_holiday_data)
-        self.btnUpdate.clicked.connect(self.update_holiday_date)
+        self.btnUpdate.clicked.connect(self.update_or_cancel)
         self.btnAdd.clicked.connect(self.toggle_add_mode)
 
         self.cmbHoliday.setEditable(False)
@@ -28,6 +28,11 @@ class DateChange(QDialog):
 
         self.load_holidays()
         self.load_date_types()
+
+        self.reset_selection()
+
+        self.original_model = self.cmbHoliday.model()
+        self.empty_model = QStandardItemModel()
 
     @single_function_logger.log_function
     def load_holidays(self):
@@ -55,6 +60,11 @@ class DateChange(QDialog):
         except Error as e:
             logging.exception("Error while loading date types from MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to load date types")
+
+    def reset_selection(self):
+        self.cmbHoliday.setCurrentIndex(0)
+        self.dateEdit.setDate(QDate.currentDate())
+        self.cmbDateType.setCurrentIndex(1)
 
     @single_function_logger.log_function
     def fetch_holiday_data(self, index=None):
@@ -85,17 +95,34 @@ class DateChange(QDialog):
         self.add_mode = not self.add_mode
         if self.add_mode:
             self.cmbHoliday.setEditable(True)
+            self.cmbHoliday.clearEditText()
             self.dateEdit.setEnabled(True)
             self.cmbDateType.setEnabled(True)
-            self.btnUpdate.setEnabled(False)
+            self.btnUpdate.setText("Cancel")
+            self.btnUpdate.setEnabled(True)  # Enable the Cancel button
             self.btnAdd.setText("Save")
 
-            self.cmbHoliday.setCurrentIndex(0)
-
-            self.cmbDateType.setCurrentIndex(-1)
+            self.cmbDateType.setCurrentIndex(0)
             self.dateEdit.setDate(QDate.currentDate())
         else:
             self.save_new_holiday()
+
+    def update_or_cancel(self):
+        if self.add_mode:
+            self.cancel_add_mode()
+        else:
+            self.update_holiday_date()
+
+    def cancel_add_mode(self):
+        self.add_mode = False
+        self.cmbHoliday.setEditable(False)
+        self.cmbHoliday.setModel(self.original_model)
+        self.dateEdit.setEnabled(False)
+        self.cmbDateType.setEnabled(False)
+        self.btnAdd.setText("Add")
+        self.btnUpdate.setText("Update")
+        self.btnUpdate.setEnabled(False)
+        self.reset_selection()
 
     @single_function_logger.log_function
     def save_new_holiday(self):
@@ -118,11 +145,12 @@ class DateChange(QDialog):
             self.load_holidays()
             self.cmbHoliday.setCurrentText(holiday_name)
 
-            self.cmbHoliday.setEditable(False)
-            self.dateEdit.setEnabled(False)
-            self.cmbDateType.setEnabled(False)
-            self.btnAdd.setText("Add")
-            self.btnUpdate.setEnabled(True)
+            if not self.add_mode:
+                self.cmbHoliday.setEditable(False)
+                self.dateEdit.setEnabled(False)
+                self.cmbDateType.setEnabled(False)
+                self.btnAdd.setText("Add")
+                self.cancel_add_mode()
 
         except Error as e:
             logging.exception("Error while adding new holiday to MySQL: %s", e)
@@ -141,3 +169,7 @@ class DateChange(QDialog):
         except Error as e:
             logging.exception("Error while updating data in MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to update data")
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.reset_selection()

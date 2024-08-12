@@ -78,9 +78,7 @@ class ListFunction:
                 self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
 
     def open_otherInformationMODAL_view(self):
-        modal = personalModal()
-        modal.addBTN.setEnabled(False)
-        modal.saveBTN.setEnabled(False)
+        modal = personalModal(mode='view')
 
         selected_row = self.main_window.employeeListTable.currentRow()
         if selected_row != -1:
@@ -254,10 +252,7 @@ class ListFunction:
             print(f"Error: {e}")
 
     def open_otherInformationMODAL_add(self):
-        modal = personalModal()
-        modal.editBTN.setEnabled(False)
-        modal.saveBTN.setEnabled(False)
-        modal.revertBTN.setEnabled(False)
+        modal = personalModal(mode='add')
         modal.finished.connect(self.displayEmployees)  # Updates the employeeListTable upon closing
         modal.exec_()
 
