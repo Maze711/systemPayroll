@@ -83,8 +83,8 @@ class PaytimeSheet(QMainWindow):
             'Bio Num': 'empnumber',
             'Employee Name': 'empname',
             'CostCenter': 'costcenter',
-            'DaysWork': 'dayswork',
-            'DaysPresent': 'daypresent',
+            'DaysWork': 'actual days',
+            'DaysPresent': 'dayspresent',
             'RestDay': 'restday',
             'Holiday': 'holiday',
             'RestHoliday': 'rsthlyday',
@@ -106,7 +106,7 @@ class PaytimeSheet(QMainWindow):
         }
 
         # Extract column indices from the header row
-        headers = [col.lower() for col in data[0]]  # Convert headers to lowercase
+        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
         col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
 
         if not col_indices:
@@ -146,7 +146,7 @@ class PaytimeSheet(QMainWindow):
             ordinary_day_ot_item = self.paytimesheetTable.item(row, 13)
 
             if bio_num_item and bio_num_item.text():
-                bio_num = bio_num_item.text()[3:]
+                bio_num = bio_num_item.text()[2:]
             else:
                 bio_num = ""
 

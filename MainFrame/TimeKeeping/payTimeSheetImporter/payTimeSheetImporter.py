@@ -18,18 +18,19 @@ class FileProcessor(QObject):
 
     def process(self):
         try:
-            workbook = xlrd.open_workbook(self.fileName, encoding_override="cp1252")
-            sheet = workbook.sheet_by_index(0)
+            # Load the workbook and select the active sheet
+            workbook = openpyxl.load_workbook(self.fileName, data_only=True)
+            sheet = workbook.active
 
-            total_rows = sheet.nrows
+            total_rows = sheet.max_row
             content = []
 
             # Read the header row separately
-            headers = sheet.row_values(0)  # Read header row
+            headers = [cell.value for cell in sheet[1]]  # Read header row
             content.append(headers)  # Add header row to content
 
-            for row_idx in range(1, total_rows):  # Skip header row
-                row = sheet.row_values(row_idx)
+            for row_idx in range(2, total_rows + 1):  # Skip header row
+                row = [sheet.cell(row=row_idx, column=col_idx).value for col_idx in range(1, sheet.max_column + 1)]
                 content.append(row)
                 progress = int((row_idx / total_rows) * 100)
                 self.progressChanged.emit(progress)
@@ -37,7 +38,7 @@ class FileProcessor(QObject):
 
             self.finished.emit(content)
         except Exception as e:
-            self.error.emit(str(e))
+            self.error.emit(f"Failed to process .xlsx file: {e}")
 
 
 class PayrollDialog(QDialog):
@@ -87,15 +88,17 @@ class PayrollDialog(QDialog):
             headers = content[0]
             data = content[1:]
             required_columns = [
-                'bionum', 'empnumber', 'empname', 'costcenter', 'fromdate', 'todate', 'dayswork', 'restday',
+                'bionum', 'empnumber', 'empname', 'costcenter', 'fromdate', 'todate', 'dayspresent', 'restday',
                 'holiday', 'rsthlyday', 'orddaynite', 'rstdaynite', 'hlydaynite', 'rsthlydayn', 'orddayot',
                 'rstdayot', 'hlydayot', 'rsthlydayo', 'orddaynit2', 'rstdaynit2', 'hlydaynit2', 'rsthlyday2',
                 'late', 'undertime', 'absent', 'dateposted', 'remarks', 'rstshlyday', 'rstshlyda2', 'rstshlyda3',
                 'rstshlyda4', 'empcompany', 'legalholid'
             ]
 
-            missing_columns = [col for col in required_columns if
-                               col not in [header.strip().lower() for header in headers]]
+            # Check for None and safely strip and lower case headers
+            formatted_headers = [header.strip().lower() if header is not None else '' for header in headers]
+
+            missing_columns = [col for col in required_columns if col not in formatted_headers]
 
             if missing_columns:
                 error_message = f"Missing required columns: {', '.join(missing_columns)}"

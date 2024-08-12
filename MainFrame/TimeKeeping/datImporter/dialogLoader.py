@@ -110,10 +110,12 @@ class FileProcessor(QObject):
                 ID INT AUTO_INCREMENT PRIMARY KEY, 
                 bioNum INT,
                 date DATE,
+                machCode VARCHAR(225),
                 time TIME,
                 sched VARCHAR(225),
                 edited_by VARCHAR(225),
-                UNIQUE KEY unique_entry (bioNum, date, time)
+                edited_by_when DATETIME,
+                UNIQUE KEY unique_entry (bioNum, date, time, machCode)
             )
         """
         try:
@@ -129,11 +131,15 @@ class FileProcessor(QObject):
             chunk_data = pd.read_csv(chunk_file, sep='\t', header=None)
             for _, entry in chunk_data.iterrows():
                 insert_query = f"""
-                    INSERT INTO {table_name} (bioNum, date, time, sched)
-                    VALUES (%s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE sched = VALUES(sched)
+                    INSERT INTO {table_name} (bioNum, date, machCode, time, sched)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE 
+                        sched = VALUES(sched),
+                        machCode = VALUES(machCode),
+                        edited_by = 'system',  -- Replace with actual user/identity if available
+                        edited_by_when = NOW()
                 """
-                cursor.execute(insert_query, (entry[0], entry[6], entry[7], entry[8]))
+                cursor.execute(insert_query, (entry[0], entry[6], entry[2], entry[7], entry[8]))
                 connection.commit()
         except Error as e:
             logging.error(f"Error inserting data: {e}")
