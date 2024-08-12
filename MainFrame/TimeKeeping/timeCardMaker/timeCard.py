@@ -1,9 +1,12 @@
 import sys
 import os
+
+from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
 import re
 
 
@@ -22,6 +25,7 @@ class timecard(QDialog):
         self.yearCC = self.findChild(QComboBox, 'yearCC')
         self.dateFromCC = self.findChild(QComboBox, 'dateFromCC')
         self.dateToCC = self.findChild(QComboBox, 'dateToCC')
+        self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
 
         # Initialize the year combo box
         self.populate_year_combo_box()
@@ -30,6 +34,7 @@ class timecard(QDialog):
         self.yearCC.currentTextChanged.connect(self.populate_date_combo_boxes)
         self.dateFromCC.currentTextChanged.connect(self.populate_time_list_table)
         self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
+        self.timeSheetButton.clicked.connect(self.createTimeSheet)
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
@@ -189,3 +194,78 @@ class timecard(QDialog):
         finally:
             cursor.close()
             connection.close()
+
+    @single_function_logger.log_function
+    def createTimeSheet(self, checked=False):
+        dataMerge = []
+
+        for row in range(self.TimeListTable.rowCount()):
+            # Fetch data from the table for each row
+            bio_num = self.TimeListTable.item(row, 0).text()
+            trans_date = self.TimeListTable.item(row, 2).text()
+            check_in = self.TimeListTable.item(row, 4).text()
+            check_out = self.TimeListTable.item(row, 5).text()
+
+            # Calculate hours worked
+            try:
+                hoursWorked = self.getTotalHoursWorked(check_in, check_out)
+            except AttributeError as e:
+                logging.error(f"Error: {e} - Please make sure getTotalHoursWorked is defined.")
+                hoursWorked = 'Unknown'
+
+            workHours = 'N/A'
+            difference = ''
+            regularOT = ''
+            specialOT = ''
+
+            # Check the type of the date
+            dateType = timekeepingFunction.getTypeOfDate(trans_date)
+            if dateType == "Ordinary Day" and hoursWorked != 'Unknown':
+                try:
+                    workHours = round(float(workHours), 2)
+                    hoursWorked = round(float(hoursWorked), 2)
+                    difference = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                                 f"Hours Worked: {hoursWorked:.2f}, Difference: {difference:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating difference for BioNum: {bio_num}")
+                    difference = 'N/A'
+
+            if dateType == "Regular Holiday" and hoursWorked != 'Unknown':
+                try:
+                    regularOT = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                                 f"Hours Worked: {hoursWorked:.2f}, Regular Holiday Overtime: {regularOT:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating regular holiday for BioNum: {bio_num}")
+                    regularOT = 'N/A'
+
+            if dateType == "Special Holiday" and hoursWorked != 'Unknown':
+                try:
+                    specialOT = round(hoursWorked - workHours, 2)
+                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                                 f"Hours Worked: {hoursWorked:.2f}, Special Holiday Overtime: {specialOT:.2f}")
+                except ValueError:
+                    logging.error(f"Error calculating special holiday for BioNum: {bio_num}")
+                    specialOT = 'N/A'
+
+            # Append the data to the dataMerge list
+            dataMerge.append({
+                'BioNum': bio_num,
+                'Check_In': check_in,
+                'Check_Out': check_out,
+                'Hours_Worked': str(hoursWorked),
+                'Difference': difference,
+                'Regular Holiday Overtime': regularOT,
+                'Special Holiday Overtime': specialOT
+            })
+
+        for data in dataMerge:
+            logging.info(data)
+
+        # Now pass the dataMerge into the TimeSheet dialog
+        try:
+            dialog = TimeSheet(dataMerge)
+            dialog.exec_()
+        except Exception as e:
+            logging.error(f"Error opening TimeSheet dialog: {e}")

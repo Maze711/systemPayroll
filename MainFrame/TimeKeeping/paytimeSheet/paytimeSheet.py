@@ -158,7 +158,7 @@ class PaytimeSheet(QMainWindow):
                 'OrdinaryDayOT': ordinary_day_ot_item.text()
             })
 
-        bio_num_to_rate = self.readRatesFromExcel('Files Testers\\file201.xls')
+        bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\file201.xls')
 
         # Update selected_data with rate
         for item in selected_data:
