@@ -43,6 +43,10 @@ def split_empl_name(empl_name):
         return surname, firstname, mi
     return '', '', ''
 
+def remove_dashes_in_id(id_number):
+    id_number_without_dashes = id_number.replace("-", "")
+    return id_number_without_dashes
+
 
 # @single_function_logger.log_function
 # def importIntoDB(parent, display_employees_callback):
@@ -359,3 +363,179 @@ def compare_empl_id_with_excel(parent):
     except Exception as e:
         logging.error(f"An error occurred during comparison: {str(e)}", exc_info=True)
         QMessageBox.critical(parent, "Comparison Error", f"An error occurred while comparing data: {str(e)}")
+
+
+@single_function_logger.log_function
+def update_db_for_missing_row_columns(parent):
+    try:
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getOpenFileName(
+            parent, "Select Excel File", "", "Excel Files (*.xls *.xlsx)", options=options)
+        if not file_name:
+            return
+
+        workbook = xlrd.open_workbook(file_name, encoding_override="cp1252")
+        sheet = workbook.sheet_by_index(0)
+
+        with create_connection('FILE201') as connection:
+            if connection is None:
+                logging.error("Failed to connect to the FILE201 database.")
+                return
+            logging.debug("Database connection established successfully.")
+
+            cursor = connection.cursor()
+
+            # Define mappings and queries
+            emergency_list_mapping = {
+                'empl_id': 'empno', 'emer_name': 'emer_name'
+            }
+            emp_info_column_mapping = {
+                'empl_id': 'empno', 'empid': 'emp_id', 'status': 'civil_stat', 'sex': 'gender',
+                'height': 'height', 'weight': 'weight', 'mobile': 'mobile', 'blood_type': 'blood_type', 'email': 'email'
+            }
+            list_column_mapping = {
+                'empl_id': 'empno', 'sss': 'sssno',
+                'tin': 'tin', 'pagibig': 'pagibig', 'philhealth': 'philhealth', 'bank_code': 'bank_code'
+            }
+            posnsched_column_mapping = {
+                'empl_id': 'empno', 'pos_descr': 'pos_descr', 'dept_name': 'dept_name', 'sche_name': 'sche_name'
+            }
+            status_column_mapping = {
+                'empl_id': 'empno', 'position': 'pos_descr'
+            }
+            vacnsick_column_mapping = {
+                'empl_id': 'empno', 'max_vacn': 'max_vacn', 'max_sick': 'max_sick'
+            }
+
+            update_emergency_query = """
+                UPDATE emergency_list SET emer_name = %s WHERE empl_id = %s
+            """
+            update_personal_query = """
+                UPDATE emp_info SET empid = %s, status = %s, sex = %s, height = %s, weight = %s, mobile = %s, 
+                blood_type = %s, email = %s WHERE empl_id = %s
+            """
+            update_list_query = """
+                UPDATE emp_list_id SET sss = %s, tin = %s, pagibig = %s, philhealth = %s, bank_code = %s WHERE empl_id = %s
+            """
+            update_posnsched_query = """
+                UPDATE emp_posnsched SET pos_descr = %s, sched_in = %s, sched_out = %s, dept_name = %s WHERE empl_id = %s
+            """
+            update_status_query = """
+                UPDATE emp_status SET position = %s WHERE empl_id = %s
+            """
+            update_vacnsick_query = """
+                UPDATE vacn_sick_count SET max_vacn = %s, max_sick = %s WHERE empl_id = %s
+            """
+
+            # Collect rows for batch insertion
+            emergency_data, emp_info_data, list_data, posnsched_data, status_data, vacnsick_data = [], [], [], [], [], []
+
+            headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
+            empno_col = headers.index('empno')
+
+            # Fetch empl_ids from the database
+            db_empl_ids = get_empl_ids_from_db()
+            if not db_empl_ids:
+                logging.error("No empl_ids found in the database.")
+                return
+
+            matched_empl_ids = set()
+
+            for row_idx in range(1, sheet.nrows):
+                row = sheet.row_values(row_idx)
+                empno_str = str(row[empno_col]).strip()
+                try:
+                    empno = int(empno_str)  # Convert empno to int
+                    if empno in db_empl_ids:
+                        matched_empl_ids.add(empno)
+                except ValueError:
+                    logging.warning(f"Invalid empno value: {empno_str}. Skipping this row.")
+
+            list_of_matched_empl_ids = list(matched_empl_ids) # Convert set of matched_empl_id to list
+
+            for row_idx in range(1, sheet.nrows):
+                row = sheet.row_values(row_idx)
+                empno_str = str(row[headers.index('empno')]).strip()
+                empno = int(empno_str)  # Convert empno to int
+
+                if empno not in list_of_matched_empl_ids:
+                    continue  # Skip rows that don't match
+
+                # Emergency List
+                emergency_row = (
+                    str(row[headers.index(emergency_list_mapping['emer_name'])]),
+                    empno
+                )
+                emergency_data.append(emergency_row)
+
+                # Employee Info
+                info_row = (
+                    str(row[headers.index(emp_info_column_mapping['empid'])]),
+                    str(row[headers.index(emp_info_column_mapping['status'])]),
+                    str(row[headers.index(emp_info_column_mapping['sex'])]),
+                    str(row[headers.index(emp_info_column_mapping['height'])]),
+                    str(row[headers.index(emp_info_column_mapping['weight'])]),
+                    str(row[headers.index(emp_info_column_mapping['mobile'])]),
+                    str(row[headers.index(emp_info_column_mapping['blood_type'])]),
+                    str(row[headers.index(emp_info_column_mapping['email'])]),
+                    empno
+                )
+                emp_info_data.append(info_row)
+
+                # List Info
+                list_row = (
+                    remove_dashes_in_id(str(row[headers.index(list_column_mapping['sss'])])),
+                    remove_dashes_in_id(str(row[headers.index(list_column_mapping['tin'])])),
+                    remove_dashes_in_id(str(row[headers.index(list_column_mapping['pagibig'])])),
+                    remove_dashes_in_id(str(row[headers.index(list_column_mapping['philhealth'])])),
+                    row[headers.index(list_column_mapping['bank_code'])],
+                    empno
+                )
+                list_data.append(list_row)
+
+                # Position Schedule
+                sched_in, sched_out = split_schedule(str(row[headers.index(posnsched_column_mapping['sche_name'])]))
+                posnsched_row = (
+                    str(row[headers.index(posnsched_column_mapping['pos_descr'])]).upper(),
+                    sched_in,
+                    sched_out,
+                    str(row[headers.index(posnsched_column_mapping['dept_name'])]),
+                    empno
+                )
+                posnsched_data.append(posnsched_row)
+
+                # Status Info
+                status_row = (
+                    str(row[headers.index(status_column_mapping['position'])]).upper(),
+                    empno
+                )
+                status_data.append(status_row)
+
+                # Vacation & Sick Count
+                vacnsick_row = (
+                    str(row[headers.index(vacnsick_column_mapping['max_vacn'])]),
+                    str(row[headers.index(vacnsick_column_mapping['max_sick'])]),
+                    empno
+                )
+                vacnsick_data.append(vacnsick_row)
+
+            # Batch Insert Data
+            cursor.executemany(update_emergency_query, emergency_data)
+            cursor.executemany(update_personal_query, emp_info_data)
+            cursor.executemany(update_list_query, list_data)
+            cursor.executemany(update_posnsched_query, posnsched_data)
+            cursor.executemany(update_status_query, status_data)
+            cursor.executemany(update_vacnsick_query, vacnsick_data)
+
+            connection.commit()
+
+            QMessageBox.information(parent, "Updated Successful", "Updated Successfully")
+            logging.info("Data successfully updated into the database.")
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}", exc_info=True)
+        QMessageBox.critical(parent, "Updating import Error", f"An error occurred while updating data: {str(e)}")
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
