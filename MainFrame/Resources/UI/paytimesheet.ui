@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PayTimeSheet</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="paytimesheetTable">
@@ -385,7 +385,7 @@ background-color: rgb(96, 206, 114);
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../MainFrame/Resources/Icons/search.svg</pixmap>
+       <pixmap>../Icons/search.svg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
