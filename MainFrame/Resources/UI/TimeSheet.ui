@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: white;</string>
+    <string notr="true">background-color: &quot;#DCE5FE&quot;;</string>
    </property>
    <widget class="QFrame" name="searchBar">
     <property name="geometry">
@@ -41,6 +41,9 @@
      <string notr="true">#searchBar{
 	border: 1px solid &quot;#344273&quot;;
 	border-radius: 3px; 
+}
+*{
+background-color: white;
 }</string>
     </property>
     <property name="frameShape">

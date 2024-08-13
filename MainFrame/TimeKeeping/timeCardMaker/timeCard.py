@@ -1,6 +1,7 @@
 import sys
 import os
 
+from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,8 +40,15 @@ class timecard(QDialog):
         self.timeSheetButton.clicked.connect(self.createTimeSheet)
 
         self.searchBioNum.textChanged.connect(self.search_bio_num)
+        self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
+        self.btnCheckSched.clicked.connect(self.CheckSched)
+
+        self.btnFilter = self.findChild(QPushButton, 'btnFilter')
+        self.btnFilter.clicked.connect(self.filterModal)
 
         self.original_data = []
+        filtered_data = []  # Initialized properly
+        self.original_data = filtered_data.copy()
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
@@ -307,3 +315,115 @@ class timecard(QDialog):
                 item = QTableWidgetItem(str(value))
                 item.setTextAlignment(Qt.AlignCenter)
                 self.TimeListTable.setItem(row_position, col, item)
+
+    @single_function_logger.log_function
+    def getTotalHoursWorked(self, time_start, time_end):
+        if time_start == 'Missing' or time_end == 'Missing':
+            return "Unknown"
+
+        timeIn = QTime.fromString(time_start, "HH:mm:ss")
+        timeOut = QTime.fromString(time_end, "HH:mm:ss")
+
+        # Converting time into seconds
+        seconds_in_a_day = 24 * 60 * 60
+        time_in_seconds = (timeIn.hour() * 3600) + (timeIn.minute() * 60) + timeIn.second()
+        time_out_seconds = (timeOut.hour() * 3600) + (timeOut.minute() * 60) + timeOut.second()
+
+        # Handle crossing midnight
+        if time_out_seconds < time_in_seconds:
+            time_out_seconds += seconds_in_a_day
+
+        time_difference = time_out_seconds - time_in_seconds
+
+        # Convert the difference to hours
+        work_duration_in_hours = time_difference / 3600
+
+        return round(work_duration_in_hours, 2)
+
+    @single_function_logger.log_function
+    def CheckSched(self, checked=False):
+        selected_row = self.TimeListTable.currentRow()
+
+        if selected_row != -1:
+            bioNum = self.TimeListTable.item(selected_row, 0).text() if self.TimeListTable.item(selected_row,
+                                                                                                0) else "N/A"
+            empName = self.TimeListTable.item(selected_row, 1).text() if self.TimeListTable.item(selected_row,
+                                                                                                 1) else "N/A"
+            trans_date = self.TimeListTable.item(selected_row, 2).text() if self.TimeListTable.item(selected_row,
+                                                                                                    2) else "N/A"
+            checkIn = self.TimeListTable.item(selected_row, 4).text() if self.TimeListTable.item(selected_row,
+                                                                                                 4) else "Missing"
+            checkOut = self.TimeListTable.item(selected_row, 5).text() if self.TimeListTable.item(selected_row,
+                                                                                                  5) else "Missing"
+            sched = self.TimeListTable.item(selected_row, 6).text() if self.TimeListTable.item(selected_row,
+                                                                                               6) else "N/A"
+
+            total_hours = self.getTotalHoursWorked(checkIn, checkOut)
+
+            empNum = "DefaultEmpNum"
+            data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours]
+
+            if len(data) == 8:
+                dialog = chkSched(data)
+                dialog.exec_()
+            else:
+                QMessageBox.warning(
+                    self,
+                    "Data Error",
+                    "Insufficient data to process. Please check the row data."
+                )
+        else:
+            QMessageBox.warning(
+                self,
+                "No Row Selected",
+                "Please select a row from the table first!"
+            )
+
+    @single_function_logger.log_function
+    def apply_filter(self, filter_values):
+        try:
+            filtered = []
+            for row in self.original_data:
+                check_in_time = row[2]  # assuming index 2 for check-in
+                check_out_time = row[3]  # assuming index 3 for check-out
+
+                if filter_values['show_missing']:
+                    if check_in_time == 'Missing' or check_out_time == 'Missing':
+                        filtered.append(row)
+                else:
+                    if check_in_time != 'Missing' and check_out_time != 'Missing':
+                        # apply other filter logic...
+                        filtered.append(row)
+
+            self.filtered_data = filtered
+            self.populate_table_with_data(self.filtered_data)
+        except Exception as e:
+            logging.error(f"Error in apply_filter: {str(e)}")
+            QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
+
+    @single_function_logger.log_function
+    def filterModal(self, checked=False):
+        try:
+            filter_dialog = filter(self)
+            if filter_dialog.exec_() == QDialog.Accepted:
+                filter_values = filter_dialog.get_filter_values()
+                logging.info(f"Filter values received in timecard: {filter_values}")
+                self.apply_filter(filter_values)
+        except Exception as e:
+            logging.error(f"Error in filterModal: {str(e)}")
+            logging.error(traceback.format_exc())
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+    @single_function_logger.log_function
+    def clear_filter(self):
+        self.filtered_data = self.original_data.copy()
+        logging.info("Filter cleared, reset to original data")
+        self.populateTimeList(self.filtered_data)
+
+    @single_function_logger.log_function
+    def show_missing_entries(self):
+        missing_entries = [row for row in self.original_data if
+                           row['Check_In'] == 'Missing' or row['Check_Out'] == 'Missing']
+        self.filtered_data = missing_entries
+        logging.info(f"Showing {len(missing_entries)} missing entries")
+        self.populateTimeList(self.filtered_data)
