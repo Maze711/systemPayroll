@@ -7,6 +7,7 @@ from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.DBConnection import test_databases_connection
+from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 
 # Setup logging for application load duration
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow):
         self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
 
         self.authentication = UserAuthentication()
+        self.user_session = UserSession()
 
         self.functions = self
         self.employee_list_window = None
@@ -87,7 +89,7 @@ class MainWindow(QMainWindow):
                 dialog.close()
 
         self.open_dialogs.clear() # Clears the list once closed
-        self.authentication.setUserID(None)
+        self.user_session.clearSession() # Clears the user session data
         self.switchPageAndResetInputs(self.loginPage)
         QMessageBox.information(self, "Log out", "You have been logged out.")
 
