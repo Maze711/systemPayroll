@@ -27,6 +27,8 @@ class timecard(QDialog):
         self.dateToCC = self.findChild(QComboBox, 'dateToCC')
         self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
 
+        self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
+
         # Initialize the year combo box
         self.populate_year_combo_box()
 
@@ -35,6 +37,10 @@ class timecard(QDialog):
         self.dateFromCC.currentTextChanged.connect(self.populate_time_list_table)
         self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
         self.timeSheetButton.clicked.connect(self.createTimeSheet)
+
+        self.searchBioNum.textChanged.connect(self.search_bio_num)
+
+        self.original_data = []
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
@@ -192,6 +198,7 @@ class timecard(QDialog):
             print(f"Error populating time list table: {e}")
 
         finally:
+            self.original_data = self.get_table_data()
             cursor.close()
             connection.close()
 
@@ -269,3 +276,34 @@ class timecard(QDialog):
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
+
+    def get_table_data(self):
+        data = []
+        for row in range(self.TimeListTable.rowCount()):
+            row_data = []
+            for col in range(self.TimeListTable.columnCount()):
+                item = self.TimeListTable.item(row, col)
+                row_data.append(item.text() if item else "")
+            data.append(row_data)
+        return data
+
+    def search_bio_num(self):
+        search_text = self.searchBioNum.text().strip().lower()
+
+        if not search_text:
+            # Restore original data
+            self.populate_table_with_data(self.original_data)
+            return
+
+        filtered_data = [row for row in self.original_data if search_text in row[0].lower()]
+        self.populate_table_with_data(filtered_data)
+
+    def populate_table_with_data(self, data):
+        self.TimeListTable.setRowCount(0)
+        for row_data in data:
+            row_position = self.TimeListTable.rowCount()
+            self.TimeListTable.insertRow(row_position)
+            for col, value in enumerate(row_data):
+                item = QTableWidgetItem(str(value))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.TimeListTable.setItem(row_position, col, item)
