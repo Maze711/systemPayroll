@@ -6,6 +6,7 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.systemFunctions import single_function_logger
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.Database_Connection.user_session import UserSession
 
 
 class UserAuthorization:
@@ -37,6 +38,7 @@ class UserAuthentication(UserAuthorization):
     def __init__(self):
         self.verifiedUsername = None
         self.user_id = None
+        self.user_session = UserSession()
 
     """LOG IN USER"""
     @single_function_logger.log_function
@@ -70,9 +72,7 @@ class UserAuthentication(UserAuthorization):
         elif user_role in ['Accountant', 'Pay Master 1', 'Pay Master 2', 'Pay Master 3']:
             instance.enableNavButton('btnPayRoll')
 
-        self.fetchUserID(username) # Retrieves the user id based on who succesfully logged in
-        print(self.getUserID())
-
+        self.fetchLoggedInUserInfo(username) # Retrieves all user info to store in session
         return
 
     """SIGN UP USER"""
@@ -270,26 +270,31 @@ class UserAuthentication(UserAuthorization):
         return hashedPassword.decode('utf-8')
 
     @single_function_logger.log_function
-    def fetchUserID(self, user_name):
+    def fetchLoggedInUserInfo(self, user_name):
         try:
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
                 logging.error("Error: Could not establish database connection.")
-                self.setUserID(None)
                 return
 
             cursor = connection.cursor()
-            fetch_user_id_in_users_table = "SELECT user_id FROM users WHERE user_name = %s"
+            fetch_user_id_in_users_table = """
+            SELECT user_id, user_name, user_email, user_email_password, user_role FROM users WHERE user_name = %s
+            """
             cursor.execute(fetch_user_id_in_users_table, (user_name,))
             result = cursor.fetchone()
 
             if result:
-                self.setUserID(result[0]) # Sets the fetched user id to setter
+                # Set values to session
+                self.user_session["user_id"] = result[0]
+                self.user_session["user_name"] = result[1]
+                self.user_session["user_email"] = result[2]
+                self.user_session["user_email_password"] = result[3]
+                self.user_session["user_role"] = result[4]
                 return
 
         except Error as e:
             logging.error(f"Error fetching user_id: {e}")
-            self.setUserID(None)
             return
 
         finally:
@@ -297,9 +302,3 @@ class UserAuthentication(UserAuthorization):
                 cursor.close()
                 connection.close()
                 logging.info("Database connection closed")
-
-    def setUserID(self, user_id):
-        self.user_id = user_id
-
-    def getUserID(self):
-        return self.user_id
