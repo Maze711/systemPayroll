@@ -136,7 +136,7 @@ class FileProcessor(QObject):
                     ON DUPLICATE KEY UPDATE 
                         sched = VALUES(sched),
                         machCode = VALUES(machCode),
-                        edited_by = 'system',  -- Replace with actual user/identity if available
+                        edited_by = '',
                         edited_by_when = NOW()
                 """
                 cursor.execute(insert_query, (entry[0], entry[6], entry[2], entry[7], entry[8]))
