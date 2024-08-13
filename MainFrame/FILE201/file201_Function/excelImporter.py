@@ -44,8 +44,281 @@ def split_empl_name(empl_name):
     return '', '', ''
 
 
+# @single_function_logger.log_function
+# def importIntoDB(parent, display_employees_callback):
+#     try:
+#         options = QFileDialog.Options()
+#         file_name, _ = QFileDialog.getOpenFileName(
+#             parent, "Select Excel File", "", "Excel Files (*.xls *.xlsx)", options=options)
+#         if not file_name:
+#             return
+#
+#         workbook = xlrd.open_workbook(file_name, encoding_override="cp1252")
+#         sheet = workbook.sheet_by_index(0)
+#
+#         required_columns = {
+#             'personal': [
+#                 'empl_no', 'empl_id', 'idnum', 'empl_name', 'street', 'city', 'zipcode', 'birthday', 'birthplace',
+#                 'religion', 'civil_stat', 'sex', 'height', 'weight', 'telephone', 'blood_type', 'email'
+#             ],
+#             'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
+#             'list': ['empl_no', 'empl_id', 'idnum', 'txcode', 'sss', 'tin', 'pagibig', 'philhealth', 'bank_code', 'cola'],
+#             'posnsched': ['empl_no', 'empl_id', 'idnum', 'pos_descr', 'sche_name', 'dept_name'],
+#             'rate': ['empl_no', 'empl_id', 'idnum', 'rph', 'rate', 'mth_salary', 'dailyallow', 'mntlyallow'],
+#             'status': ['empl_no', 'empl_id', 'idnum', 'compcode', 'dept_code', 'position', 'emp_stat', 'date_hired', 'resigned', 'dtresign'],
+#             'vacnsick': ['empl_no', 'empl_id', 'idnum', 'max_vacn', 'max_sick']
+#         }
+#
+#         headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
+#         missing_columns = [col for section in required_columns.values() for col in section if col not in headers]
+#
+#         if missing_columns:
+#             error_message = f"Missing required columns: {', '.join(missing_columns)}"
+#             QMessageBox.warning(parent, "Missing Columns", error_message)
+#             return
+#
+#         with create_connection('FILE201') as connection:
+#             if connection is None:
+#                 logging.error("Failed to connect to the FILE201 database.")
+#                 return
+#             logging.debug("Database connection established successfully.")
+#
+#             cursor = connection.cursor()
+#
+#             # Define mappings and queries
+#             emergency_list_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'emer_name': 'emer_name'
+#             }
+#             emp_info_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'empl_name': 'empl_name',
+#                 'street': 'street', 'city': 'city', 'zipcode': 'zipcode', 'birthday': 'birthday',
+#                 'birthplace': 'birthplace', 'religion': 'religion', 'status': 'civil_stat', 'sex': 'sex',
+#                 'height': 'height', 'weight': 'weight', 'mobile': 'telephone', 'blood_type': 'blood_type', 'email': 'email'
+#             }
+#             list_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'taxstat': 'txcode', 'sss': 'sss',
+#                 'tin': 'tin', 'pagibig': 'pagibig', 'philhealth': 'philhealth', 'bank_code': 'bank_code', 'cola': 'cola'
+#             }
+#             posnsched_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'pos_descr': 'pos_descr', 'sche_name': 'sche_name',
+#                 'dept_name': 'dept_name'
+#             }
+#             rate_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'rph': 'rph', 'rate': 'rate', 'mth_salary': 'mth_salary',
+#                 'dailyallow': 'dailyallow', 'mntlyallow': 'mntlyallow'
+#             }
+#             status_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'compcode': 'compcode', 'dept_code': 'dept_code',
+#                 'position': 'position', 'emp_stat': 'emp_stat', 'date_hired': 'date_hired', 'resigned': 'resigned', 'dtresign': 'dtresign'
+#             }
+#             vacnsick_column_mapping = {
+#                 'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'max_vacn': 'max_vacn', 'max_sick': 'max_sick'
+#             }
+#
+#             insert_emergency_query = """
+#                 INSERT INTO emergency_list (empl_no, empl_id, idnum, emer_name)
+#                 VALUES (%s, %s, %s, %s)
+#             """
+#             insert_personal_query = """
+#                 INSERT INTO emp_info (empl_no, empl_id, idnum, surname, firstname, mi, street, city, zipcode, birthday,
+#                 birthplace, religion, status, sex, height, weight, mobile, blood_type, email)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             insert_list_query = """
+#                 INSERT INTO emp_list_id (empl_no, empl_id, idnum, taxstat, sss, tin, pagibig, philhealth, bank_code, cola)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             insert_posnsched_query = """
+#                 INSERT INTO emp_posnsched (empl_no, empl_id, idnum, pos_descr, dept_name, sched_in, sched_out)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s)
+#             """
+#             insert_rate_query = """
+#                 INSERT INTO emp_rate (empl_no, empl_id, idnum, rph, rate, mth_salary, dailyallow, mntlyallow)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             insert_status_query = """
+#                 INSERT INTO emp_status (empl_no, empl_id, idnum, compcode, dept_code, position, emp_stat, date_hired, resigned, dtresign)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             insert_vacnsick_query = """
+#                 INSERT INTO vacn_sick_count (empl_no, empl_id, idnum, max_vacn, max_sick)
+#                 VALUES (%s, %s, %s, %s, %s)
+#             """
+#
+#             # Collect rows for batch insertion
+#             emergency_data, personal_data, list_data, posnsched_data, rate_data, status_data, vacnsick_data = [], [], [], [], [], [], []
+#
+#             for row_idx in range(1, sheet.nrows):
+#                 row = sheet.row_values(row_idx)
+#                 empl_no = str(row[headers.index('empl_no')]).strip()
+#
+#                 if not empl_no:
+#                     continue  # Skip rows without an employee number
+#
+#                 # Emergency List
+#                 emergency_row = (
+#                     empl_no,
+#                     str(row[headers.index(emergency_list_mapping['empl_id'])]),
+#                     str(row[headers.index(emergency_list_mapping['idnum'])]),
+#                     str(row[headers.index(emergency_list_mapping['emer_name'])])
+#                 )
+#
+#                 # Personal Info
+#                 surname, firstname, mi = split_empl_name(str(row[headers.index(emp_info_column_mapping['empl_name'])]))
+#                 personal_row = (
+#                     empl_no,
+#                     str(row[headers.index(emp_info_column_mapping['empl_id'])]),
+#                     str(row[headers.index(emp_info_column_mapping['idnum'])]),
+#                     surname, firstname, mi,
+#                     str(row[headers.index(emp_info_column_mapping['street'])]),
+#                     str(row[headers.index(emp_info_column_mapping['city'])]),
+#                     str(row[headers.index(emp_info_column_mapping['zipcode'])]),
+#                     str(row[headers.index(emp_info_column_mapping['birthday'])]),
+#                     str(row[headers.index(emp_info_column_mapping['birthplace'])]),
+#                     str(row[headers.index(emp_info_column_mapping['religion'])]),
+#                     str(row[headers.index(emp_info_column_mapping['status'])]),
+#                     str(row[headers.index(emp_info_column_mapping['sex'])]),
+#                     str(row[headers.index(emp_info_column_mapping['height'])]),
+#                     str(row[headers.index(emp_info_column_mapping['weight'])]),
+#                     str(row[headers.index(emp_info_column_mapping['mobile'])]),
+#                     str(row[headers.index(emp_info_column_mapping['blood_type'])]),
+#                     str(row[headers.index(emp_info_column_mapping['email'])])
+#                 )
+#
+#                 # List Info
+#                 list_row = (
+#                     empl_no,
+#                     str(row[headers.index(list_column_mapping['empl_id'])]),
+#                     str(row[headers.index(list_column_mapping['idnum'])]),
+#                     str(row[headers.index(list_column_mapping['taxstat'])]),
+#                     str(row[headers.index(list_column_mapping['sss'])]),
+#                     str(row[headers.index(list_column_mapping['tin'])]),
+#                     str(row[headers.index(list_column_mapping['pagibig'])]),
+#                     str(row[headers.index(list_column_mapping['philhealth'])]),
+#                     str(row[headers.index(list_column_mapping['bank_code'])]),
+#                     str(row[headers.index(list_column_mapping['cola'])])
+#                 )
+#
+#                 # Position Schedule
+#                 sched_in, sched_out = split_schedule(str(row[headers.index(posnsched_column_mapping['sche_name'])]))
+#                 posnsched_row = (
+#                     empl_no,
+#                     str(row[headers.index(posnsched_column_mapping['empl_id'])]),
+#                     str(row[headers.index(posnsched_column_mapping['idnum'])]),
+#                     str(row[headers.index(posnsched_column_mapping['pos_descr'])]),
+#                     str(row[headers.index(posnsched_column_mapping['dept_name'])]),
+#                     sched_in, sched_out
+#                 )
+#
+#                 # Rate Info
+#                 rate_row = (
+#                     empl_no,
+#                     str(row[headers.index(rate_column_mapping['empl_id'])]),
+#                     str(row[headers.index(rate_column_mapping['idnum'])]),
+#                     str(row[headers.index(rate_column_mapping['rph'])]),
+#                     str(row[headers.index(rate_column_mapping['rate'])]),
+#                     str(row[headers.index(rate_column_mapping['mth_salary'])]),
+#                     str(row[headers.index(rate_column_mapping['dailyallow'])]),
+#                     str(row[headers.index(rate_column_mapping['mntlyallow'])])
+#                 )
+#
+#                 # Status Info
+#                 status_row = (
+#                     empl_no,
+#                     str(row[headers.index(status_column_mapping['empl_id'])]),
+#                     str(row[headers.index(status_column_mapping['idnum'])]),
+#                     str(row[headers.index(status_column_mapping['compcode'])]),
+#                     str(row[headers.index(status_column_mapping['dept_code'])]),
+#                     str(row[headers.index(status_column_mapping['position'])]),
+#                     str(row[headers.index(status_column_mapping['emp_stat'])]),
+#                     str(row[headers.index(status_column_mapping['date_hired'])]),
+#                     str(row[headers.index(status_column_mapping['resigned'])]),
+#                     str(row[headers.index(status_column_mapping['dtresign'])])
+#                 )
+#
+#                 # Vacation & Sick Count
+#                 vacnsick_row = (
+#                     empl_no,
+#                     str(row[headers.index(vacnsick_column_mapping['empl_id'])]),
+#                     str(row[headers.index(vacnsick_column_mapping['idnum'])]),
+#                     str(row[headers.index(vacnsick_column_mapping['max_vacn'])]),
+#                     str(row[headers.index(vacnsick_column_mapping['max_sick'])])
+#                 )
+#
+#                 # Append data to respective lists
+#                 emergency_data.append(emergency_row)
+#                 personal_data.append(personal_row)
+#                 list_data.append(list_row)
+#                 posnsched_data.append(posnsched_row)
+#                 rate_data.append(rate_row)
+#                 status_data.append(status_row)
+#                 vacnsick_data.append(vacnsick_row)
+#
+#             # Batch Insert Data
+#             cursor.executemany(insert_emergency_query, emergency_data)
+#             cursor.executemany(insert_personal_query, personal_data)
+#             cursor.executemany(insert_list_query, list_data)
+#             cursor.executemany(insert_posnsched_query, posnsched_data)
+#             cursor.executemany(insert_rate_query, rate_data)
+#             cursor.executemany(insert_status_query, status_data)
+#             cursor.executemany(insert_vacnsick_query, vacnsick_data)
+#
+#             connection.commit()
+#             logging.info("Data successfully imported into the database.")
+#
+#             display_employees_callback()
+#
+#     except Exception as e:
+#         logging.error(f"An error occurred: {str(e)}", exc_info=True)
+#         QMessageBox.critical(parent, "Import Error", f"An error occurred while importing data: {str(e)}")
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if connection:
+#             connection.close()
+
+
 @single_function_logger.log_function
-def importIntoDB(parent, display_employees_callback):
+def get_empl_ids_from_db():
+    """
+    Fetch `empl_id` values from the database tables and return as a set of integers.
+    """
+    try:
+        with create_connection('FILE201') as connection:
+            if connection is None:
+                logging.error("Failed to connect to the FILE201 database.")
+                return set()
+
+            cursor = connection.cursor()
+
+            # Query to fetch empl_id from all relevant tables
+            queries = [
+                "SELECT empl_id FROM emp_info",
+                "SELECT empl_id FROM emp_list_id",
+                "SELECT empl_id FROM emp_posnsched",
+                "SELECT empl_id FROM emp_rate",
+                "SELECT empl_id FROM emp_status",
+                "SELECT empl_id FROM vacn_sick_count"
+            ]
+
+            empl_ids = set()
+            for query in queries:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                for row in rows:
+                    empl_ids.add(int(row[0]))  # Convert empl_id to int and add to the set
+
+            return empl_ids
+
+    except Exception as e:
+        logging.error(f"An error occurred while fetching empl_ids: {str(e)}", exc_info=True)
+        return set()
+
+@single_function_logger.log_function
+def compare_empl_id_with_excel(parent):
+    """
+    Compare `empl_id` from database with `empno` from the Excel file and print matches.
+    """
     try:
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(
@@ -56,223 +329,33 @@ def importIntoDB(parent, display_employees_callback):
         workbook = xlrd.open_workbook(file_name, encoding_override="cp1252")
         sheet = workbook.sheet_by_index(0)
 
-        required_columns = {
-            'personal': [
-                'empl_no', 'empl_id', 'idnum', 'empl_name', 'street', 'city', 'zipcode', 'birthday', 'birthplace',
-                'religion', 'civil_stat', 'sex', 'height', 'weight', 'telephone', 'blood_type', 'email'
-            ],
-            'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
-            'list': ['empl_no', 'empl_id', 'idnum', 'txcode', 'sss', 'tin', 'pagibig', 'philhealth', 'bank_code', 'cola'],
-            'posnsched': ['empl_no', 'empl_id', 'idnum', 'pos_descr', 'sche_name', 'dept_name'],
-            'rate': ['empl_no', 'empl_id', 'idnum', 'rph', 'rate', 'mth_salary', 'dailyallow', 'mntlyallow'],
-            'status': ['empl_no', 'empl_id', 'idnum', 'compcode', 'dept_code', 'position', 'emp_stat', 'date_hired', 'resigned', 'dtresign'],
-            'vacnsick': ['empl_no', 'empl_id', 'idnum', 'max_vacn', 'max_sick']
-        }
-
-        headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
-        missing_columns = [col for section in required_columns.values() for col in section if col not in headers]
-
-        if missing_columns:
-            error_message = f"Missing required columns: {', '.join(missing_columns)}"
-            QMessageBox.warning(parent, "Missing Columns", error_message)
+        # Fetch empl_ids from the database
+        db_empl_ids = get_empl_ids_from_db()
+        if not db_empl_ids:
+            logging.error("No empl_ids found in the database.")
             return
 
-        with create_connection('FILE201') as connection:
-            if connection is None:
-                logging.error("Failed to connect to the FILE201 database.")
-                return
-            logging.debug("Database connection established successfully.")
+        matched_empl_ids = set()
 
-            cursor = connection.cursor()
+        # Iterate over rows in the Excel file
+        headers = [sheet.cell_value(0, col) for col in range(sheet.ncols)]
+        empno_col = headers.index('empno')
 
-            # Define mappings and queries
-            emergency_list_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'emer_name': 'emer_name'
-            }
-            emp_info_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'empl_name': 'empl_name',
-                'street': 'street', 'city': 'city', 'zipcode': 'zipcode', 'birthday': 'birthday',
-                'birthplace': 'birthplace', 'religion': 'religion', 'status': 'civil_stat', 'sex': 'sex',
-                'height': 'height', 'weight': 'weight', 'mobile': 'telephone', 'blood_type': 'blood_type', 'email': 'email'
-            }
-            list_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'taxstat': 'txcode', 'sss': 'sss',
-                'tin': 'tin', 'pagibig': 'pagibig', 'philhealth': 'philhealth', 'bank_code': 'bank_code', 'cola': 'cola'
-            }
-            posnsched_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'pos_descr': 'pos_descr', 'sche_name': 'sche_name',
-                'dept_name': 'dept_name'
-            }
-            rate_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'rph': 'rph', 'rate': 'rate', 'mth_salary': 'mth_salary',
-                'dailyallow': 'dailyallow', 'mntlyallow': 'mntlyallow'
-            }
-            status_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'compcode': 'compcode', 'dept_code': 'dept_code',
-                'position': 'position', 'emp_stat': 'emp_stat', 'date_hired': 'date_hired', 'resigned': 'resigned', 'dtresign': 'dtresign'
-            }
-            vacnsick_column_mapping = {
-                'empl_no': 'empl_no', 'empl_id': 'empl_id', 'idnum': 'idnum', 'max_vacn': 'max_vacn', 'max_sick': 'max_sick'
-            }
+        for row_idx in range(1, sheet.nrows):
+            row = sheet.row_values(row_idx)
+            empno_str = str(row[empno_col]).strip()
+            try:
+                empno = int(empno_str)  # Convert empno to int
+                if empno in db_empl_ids:
+                    matched_empl_ids.add(empno)
+            except ValueError:
+                logging.warning(f"Invalid empno value: {empno_str}. Skipping this row.")
 
-            insert_emergency_query = """
-                INSERT INTO emergency_list (empl_no, empl_id, idnum, emer_name)
-                VALUES (%s, %s, %s, %s)
-            """
-            insert_personal_query = """
-                INSERT INTO emp_info (empl_no, empl_id, idnum, surname, firstname, mi, street, city, zipcode, birthday, 
-                birthplace, religion, status, sex, height, weight, mobile, blood_type, email)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_list_query = """
-                INSERT INTO emp_list_id (empl_no, empl_id, idnum, taxstat, sss, tin, pagibig, philhealth, bank_code, cola)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_posnsched_query = """
-                INSERT INTO emp_posnsched (empl_no, empl_id, idnum, pos_descr, dept_name, sched_in, sched_out)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_rate_query = """
-                INSERT INTO emp_rate (empl_no, empl_id, idnum, rph, rate, mth_salary, dailyallow, mntlyallow)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_status_query = """
-                INSERT INTO emp_status (empl_no, empl_id, idnum, compcode, dept_code, position, emp_stat, date_hired, resigned, dtresign)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            insert_vacnsick_query = """
-                INSERT INTO vacn_sick_count (empl_no, empl_id, idnum, max_vacn, max_sick)
-                VALUES (%s, %s, %s, %s, %s)
-            """
-
-            # Collect rows for batch insertion
-            emergency_data, personal_data, list_data, posnsched_data, rate_data, status_data, vacnsick_data = [], [], [], [], [], [], []
-
-            for row_idx in range(1, sheet.nrows):
-                row = sheet.row_values(row_idx)
-                empl_no = str(row[headers.index('empl_no')]).strip()
-
-                if not empl_no:
-                    continue  # Skip rows without an employee number
-
-                # Emergency List
-                emergency_row = (
-                    empl_no,
-                    str(row[headers.index(emergency_list_mapping['empl_id'])]),
-                    str(row[headers.index(emergency_list_mapping['idnum'])]),
-                    str(row[headers.index(emergency_list_mapping['emer_name'])])
-                )
-
-                # Personal Info
-                surname, firstname, mi = split_empl_name(str(row[headers.index(emp_info_column_mapping['empl_name'])]))
-                personal_row = (
-                    empl_no,
-                    str(row[headers.index(emp_info_column_mapping['empl_id'])]),
-                    str(row[headers.index(emp_info_column_mapping['idnum'])]),
-                    surname, firstname, mi,
-                    str(row[headers.index(emp_info_column_mapping['street'])]),
-                    str(row[headers.index(emp_info_column_mapping['city'])]),
-                    str(row[headers.index(emp_info_column_mapping['zipcode'])]),
-                    str(row[headers.index(emp_info_column_mapping['birthday'])]),
-                    str(row[headers.index(emp_info_column_mapping['birthplace'])]),
-                    str(row[headers.index(emp_info_column_mapping['religion'])]),
-                    str(row[headers.index(emp_info_column_mapping['status'])]),
-                    str(row[headers.index(emp_info_column_mapping['sex'])]),
-                    str(row[headers.index(emp_info_column_mapping['height'])]),
-                    str(row[headers.index(emp_info_column_mapping['weight'])]),
-                    str(row[headers.index(emp_info_column_mapping['mobile'])]),
-                    str(row[headers.index(emp_info_column_mapping['blood_type'])]),
-                    str(row[headers.index(emp_info_column_mapping['email'])])
-                )
-
-                # List Info
-                list_row = (
-                    empl_no,
-                    str(row[headers.index(list_column_mapping['empl_id'])]),
-                    str(row[headers.index(list_column_mapping['idnum'])]),
-                    str(row[headers.index(list_column_mapping['taxstat'])]),
-                    str(row[headers.index(list_column_mapping['sss'])]),
-                    str(row[headers.index(list_column_mapping['tin'])]),
-                    str(row[headers.index(list_column_mapping['pagibig'])]),
-                    str(row[headers.index(list_column_mapping['philhealth'])]),
-                    str(row[headers.index(list_column_mapping['bank_code'])]),
-                    str(row[headers.index(list_column_mapping['cola'])])
-                )
-
-                # Position Schedule
-                sched_in, sched_out = split_schedule(str(row[headers.index(posnsched_column_mapping['sche_name'])]))
-                posnsched_row = (
-                    empl_no,
-                    str(row[headers.index(posnsched_column_mapping['empl_id'])]),
-                    str(row[headers.index(posnsched_column_mapping['idnum'])]),
-                    str(row[headers.index(posnsched_column_mapping['pos_descr'])]),
-                    str(row[headers.index(posnsched_column_mapping['dept_name'])]),
-                    sched_in, sched_out
-                )
-
-                # Rate Info
-                rate_row = (
-                    empl_no,
-                    str(row[headers.index(rate_column_mapping['empl_id'])]),
-                    str(row[headers.index(rate_column_mapping['idnum'])]),
-                    str(row[headers.index(rate_column_mapping['rph'])]),
-                    str(row[headers.index(rate_column_mapping['rate'])]),
-                    str(row[headers.index(rate_column_mapping['mth_salary'])]),
-                    str(row[headers.index(rate_column_mapping['dailyallow'])]),
-                    str(row[headers.index(rate_column_mapping['mntlyallow'])])
-                )
-
-                # Status Info
-                status_row = (
-                    empl_no,
-                    str(row[headers.index(status_column_mapping['empl_id'])]),
-                    str(row[headers.index(status_column_mapping['idnum'])]),
-                    str(row[headers.index(status_column_mapping['compcode'])]),
-                    str(row[headers.index(status_column_mapping['dept_code'])]),
-                    str(row[headers.index(status_column_mapping['position'])]),
-                    str(row[headers.index(status_column_mapping['emp_stat'])]),
-                    str(row[headers.index(status_column_mapping['date_hired'])]),
-                    str(row[headers.index(status_column_mapping['resigned'])]),
-                    str(row[headers.index(status_column_mapping['dtresign'])])
-                )
-
-                # Vacation & Sick Count
-                vacnsick_row = (
-                    empl_no,
-                    str(row[headers.index(vacnsick_column_mapping['empl_id'])]),
-                    str(row[headers.index(vacnsick_column_mapping['idnum'])]),
-                    str(row[headers.index(vacnsick_column_mapping['max_vacn'])]),
-                    str(row[headers.index(vacnsick_column_mapping['max_sick'])])
-                )
-
-                # Append data to respective lists
-                emergency_data.append(emergency_row)
-                personal_data.append(personal_row)
-                list_data.append(list_row)
-                posnsched_data.append(posnsched_row)
-                rate_data.append(rate_row)
-                status_data.append(status_row)
-                vacnsick_data.append(vacnsick_row)
-
-            # Batch Insert Data
-            cursor.executemany(insert_emergency_query, emergency_data)
-            cursor.executemany(insert_personal_query, personal_data)
-            cursor.executemany(insert_list_query, list_data)
-            cursor.executemany(insert_posnsched_query, posnsched_data)
-            cursor.executemany(insert_rate_query, rate_data)
-            cursor.executemany(insert_status_query, status_data)
-            cursor.executemany(insert_vacnsick_query, vacnsick_data)
-
-            connection.commit()
-            logging.info("Data successfully imported into the database.")
-
-            display_employees_callback()
+        # Print the number of matches
+        num_matches = len(matched_empl_ids)
+        logging.info(f"Number of matched empno values: {num_matches}")
+        QMessageBox.information(parent, "Comparison Result", f"Number of matched empno values: {num_matches}")
 
     except Exception as e:
-        logging.error(f"An error occurred: {str(e)}", exc_info=True)
-        QMessageBox.critical(parent, "Import Error", f"An error occurred while importing data: {str(e)}")
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+        logging.error(f"An error occurred during comparison: {str(e)}", exc_info=True)
+        QMessageBox.critical(parent, "Comparison Error", f"An error occurred while comparing data: {str(e)}")
