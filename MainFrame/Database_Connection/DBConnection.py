@@ -1,4 +1,3 @@
-import logging
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -53,8 +52,7 @@ def create_connection(db_key):
             database=database,
             user=user,
             password=password,
-            port=port,
-            connect_timeout=2
+            port=port
         )
         if connection.is_connected():
             logging.info(f"Connection to {database} database was successful")
@@ -82,8 +80,13 @@ def test_databases_connection():
 
     for db_key, db_connection in connections.items():
         if db_connection is None or not db_connection.is_connected():
-            QMessageBox.critical(None, "Database Connection Error", "Failed to connect to database "
-                                                                    "server. The application will exit.")
+            msg = QMessageBox(None)
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Failed to connect to database server. The application will exit.")
+            msg.setWindowTitle("Database Connection Error")
+            msg.setWindowFlag(Qt.WindowStaysOnTopHint) # Ensures the message box stays on top
+            msg.exec_()
+
             sys.exit(1)
 
         if db_connection.is_connected():
