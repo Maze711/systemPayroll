@@ -136,10 +136,12 @@ class MainWindow(QMainWindow):
 
     def disableAllNavButtons(self):
         buttons = ['btnEmployeeList', 'btnPayRoll', 'btnTimeKeeping']
+        disableStyle = 'background-color: "#f1f1f1"; color: gray;'
+
         for buttonName in buttons:
             button = self.findChild(QPushButton, buttonName)
             button.setEnabled(False)
-            button.setStyleSheet(get_button_stylesheet(False))
+            button.setStyleSheet(disableStyle)
             if buttonName == 'btnTimeKeeping':
                 button.removeEventFilter(self)
 

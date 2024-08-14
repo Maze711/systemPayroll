@@ -22,6 +22,11 @@ border: 1px solid black;
 border-radius: 5px;
 background-color: rgb(96, 206, 114);
 }
+
+#importBTN:hover{
+border-radius: 5px;
+background-color: #51ad61;
+}
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
