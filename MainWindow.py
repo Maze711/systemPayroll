@@ -1,3 +1,7 @@
+import functools
+import logging
+
+# Import classes
 from MainFrame.Resources.lib import *
 from MainFrame.FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
@@ -6,7 +10,6 @@ from MainFrame.TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import Payr
 from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
-from MainFrame.Database_Connection.DBConnection import test_databases_connection
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 
@@ -18,38 +21,70 @@ duration_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)
 duration_file_handler.setFormatter(duration_formatter)
 duration_logger.addHandler(duration_file_handler)
 
+logging.basicConfig(
+    filename='application_duration.log',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+duration_logger = logging.getLogger('DurationLogger')
+
+@functools.cache
+def get_button_stylesheet(enabled=True):
+    return '''
+        QPushButton {
+            background-color: white;
+            color: black;
+        }
+        QPushButton:hover {
+            background-color: #485994;
+            color: white;
+            border: 2px solid white;
+        }
+    '''
+
 class MainWindow(QMainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\Main.ui")
+        super().__init__()
+        ui_file = globalFunction.resource_path("MainFrame/Resources/UI/Main.ui")
         loadUi(ui_file, self)
         self.setFixedSize(800, 600)
+        self.initialize_widgets()
+        self.setup_connections()
+        self.setup_page_buttons()
+        load_fonts()  # Ensure fonts are loaded
 
-        self.open_dialogs = [] # Tracks the open dialog
-
+    def initialize_widgets(self):
+        self.open_dialogs = []
         self.isLoggedIn = False
-        self.btnLogOut = self.findChild(QPushButton, "btnLogOut")
-
-        self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
-
         self.authentication = UserAuthentication()
         self.user_session = UserSession()
-
-        self.functions = self
         self.employee_list_window = None
         self.datechange = None
         self.timekeeping_window = None
         self.payroll_window = None
         self.bugReportModal = None
+        self.additional_buttons_container = None
 
-        # Window Connections
+        # Cache the button widgets
+        self.btnLogOut = self.findChild(QPushButton, "btnLogOut")
+        self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
+
+    def setup_connections(self):
         self.btnEmployeeList.clicked.connect(self.employeeWindow)
         self.btnPayRoll.clicked.connect(self.openPayRoll)
         self.btnTimeKeeping.installEventFilter(self)
         self.btnReportBug.clicked.connect(self.openBugReportModal)
-        self.additional_buttons_container = None
+        self.cbShowLogInPass.stateChanged.connect(lambda state: self.showPassword(state, 'login'))
+        self.cbShowSignUpPass.stateChanged.connect(lambda state: self.showPassword(state, 'signup'))
+        self.cbShowForgotPass.stateChanged.connect(lambda state: self.showPassword(state, 'forgot'))
+        self.btnSignUp.clicked.connect(lambda: self.authentication.signUpUser(self))
+        self.btnLogin.clicked.connect(lambda: self.authentication.logInUser(self))
+        self.btnContinue.clicked.connect(lambda: self.authentication.verifyExistingUser(self))
+        self.btnResetPassword.clicked.connect(lambda: self.authentication.resetUserPassword(self))
+        self.btnLogOut.clicked.connect(self.loggedOut)
+        self.authentication.isUserAlreadyLoggedIn(self, self.isLoggedIn)
 
-        # Routing Pages
+    def setup_page_buttons(self):
         page_buttons = {
             self.btnSignUpHere: self.signUpPage,
             self.btnLoginHere: self.loginPage,
@@ -57,39 +92,23 @@ class MainWindow(QMainWindow):
             self.btnBackToLogin: self.loginPage,
             self.btnBackToLogin_2: self.loginPage
         }
-
         for button, targetPage in page_buttons.items():
             button.clicked.connect(lambda _, page=targetPage: self.switchPageAndResetInputs(page))
 
-        self.cbShowLogInPass.stateChanged.connect(lambda state: self.showPassword(state, 'login'))
-        self.cbShowSignUpPass.stateChanged.connect(lambda state: self.showPassword(state, 'signup'))
-        self.cbShowForgotPass.stateChanged.connect(lambda state: self.showPassword(state, 'forgot'))
-
-        self.btnSignUp.clicked.connect(lambda: self.authentication.signUpUser(self))
-        self.btnLogin.clicked.connect(lambda: self.authentication.logInUser(self))
-        self.btnContinue.clicked.connect(lambda: self.authentication.verifyExistingUser(self))
-        self.btnResetPassword.clicked.connect(lambda: self.authentication.resetUserPassword(self))
-        self.btnLogOut.clicked.connect(self.loggedOut)
-
-        self.authentication.isUserAlreadyLoggedIn(self, self.isLoggedIn)
-
     def loggedOut(self):
         message = QMessageBox.question(self, "Log out", "Are you sure you want to log out?",
-                             QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
+                                       QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
         if message == QMessageBox.Yes:
             QTimer.singleShot(1000, self.loggedOutSuccessfully)
 
     def loggedOutSuccessfully(self):
         self.isLoggedIn = False
         self.authentication.isUserAlreadyLoggedIn(self, self.isLoggedIn)
-
-        # Close all open dialogs
         for dialog in self.open_dialogs:
             if dialog.isVisible():
                 dialog.close()
-
-        self.open_dialogs.clear() # Clears the list once closed
-        self.user_session.clearSession() # Clears the user session data
+        self.open_dialogs.clear()
+        self.user_session.clearSession()
         self.switchPageAndResetInputs(self.loginPage)
         QMessageBox.information(self, "Log out", "You have been logged out.")
 
@@ -99,26 +118,17 @@ class MainWindow(QMainWindow):
             'signup': ['txtPrePassword', 'txtSignUpPassword'],
             'forgot': ['txtPreNewPassword', 'txtNewPassword']
         }
-
         fields = passwordFields.get(page, [])
-
         for widgetName in fields:
             passwordField = self.findChild(QLineEdit, widgetName)
             if passwordField:
-                if state == Qt.Checked:
-                    passwordField.setEchoMode(QLineEdit.Normal)
-                else:
-                    passwordField.setEchoMode(QLineEdit.Password)
+                passwordField.setEchoMode(QLineEdit.Normal if state == Qt.Checked else QLineEdit.Password)
 
     def switchPageAndResetInputs(self, targetPage):
-        # Clears all QLineEdit upon page switching
         for widget in self.currentPage().findChildren(QLineEdit):
             widget.setText("")
-
-        # Unchecks all QCheckBox upon page switching
         for widget in self.findChildren(QCheckBox):
             widget.setCheckState(Qt.Unchecked)
-
         self.stackedWidget.setCurrentWidget(targetPage)
 
     def currentPage(self):
@@ -126,39 +136,24 @@ class MainWindow(QMainWindow):
 
     def disableAllNavButtons(self):
         buttons = ['btnEmployeeList', 'btnPayRoll', 'btnTimeKeeping']
-        disableStyle = 'background-color: "#f1f1f1"; color: gray;'
-
         for buttonName in buttons:
             button = self.findChild(QPushButton, buttonName)
             button.setEnabled(False)
-            button.setStyleSheet(disableStyle)
+            button.setStyleSheet(get_button_stylesheet(False))
             if buttonName == 'btnTimeKeeping':
                 button.removeEventFilter(self)
 
     def enableNavButton(self, buttonName):
         button = self.findChild(QPushButton, buttonName)
-        enableStyle = '''
-                QPushButton {
-                    background-color: white;
-                    color: black;
-                }
-                QPushButton:hover {
-                    background-color: "#485994";
-                    color: white;
-                    border: 2px solid white;
-                }
-            '''
         if button:
             button.setEnabled(True)
-            button.setStyleSheet(enableStyle)
+            button.setStyleSheet(get_button_stylesheet(True))
             if buttonName == 'btnTimeKeeping':
                 button.installEventFilter(self)
-
 
     def eventFilter(self, source, event):
         if source == self.btnTimeKeeping and not source.isEnabled():
             return False
-
         if source == self.btnTimeKeeping:
             if event.type() == QEvent.Enter:
                 self.showAdditionalButtons()
@@ -173,11 +168,10 @@ class MainWindow(QMainWindow):
                 return True
             elif event.type() == QEvent.Leave:
                 QTimer.singleShot(200, self.checkAndHideAdditionalButtons)
-        return super(MainWindow, self).eventFilter(source, event)
+        return super().eventFilter(source, event)
 
     def showAdditionalButtons(self):
         self.hideAdditionalButtons()
-
         button_width = 150
         button_height = 40
         frame_width = button_width + 20
@@ -185,23 +179,27 @@ class MainWindow(QMainWindow):
         left_offset = self.btnTimeKeeping.geometry().right() + 5
         top_offset = self.btnTimeKeeping.geometry().top()
 
-        self.additional_buttons_container = QWidget(self)
-        self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
-        self.additional_buttons_container.setStyleSheet("background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
+        if not self.additional_buttons_container:
+            self.additional_buttons_container = QWidget(self)
+            self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
+            self.additional_buttons_container.setStyleSheet("background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
 
-        additional_button_texts = ["Date Change", "Time Logger"]
-        for i, text in enumerate(additional_button_texts):
-            button = QPushButton(text, self.additional_buttons_container)
-            button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
-            button.setStyleSheet("background-color: white;")
-            button.installEventFilter(self)
+            additional_button_texts = ["Date Change", "Time Logger"]
+            for i, text in enumerate(additional_button_texts):
+                button = QPushButton(text, self.additional_buttons_container)
+                button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
+                button.setStyleSheet("background-color: white;")
+                button.installEventFilter(self)
+                button.clicked.connect(self.open_dialog(text))
 
-            if text == "Date Change":
-                button.clicked.connect(self.openDateChange)
-            elif text == "Time Logger":
-                button.clicked.connect(self.openTimeLogger)
+            self.additional_buttons_container.show()
 
-        self.additional_buttons_container.show()
+    def open_dialog(self, dialog_type):
+        dialogs = {
+            'Date Change': self.openDateChange,
+            'Time Logger': self.openTimeLogger
+        }
+        return dialogs.get(dialog_type, lambda: None)
 
     def checkAndHideAdditionalButtons(self):
         if not (self.btnTimeKeeping.underMouse() or (self.additional_buttons_container and any(button.underMouse() for button in self.additional_buttons_container.children()))):
@@ -219,39 +217,34 @@ class MainWindow(QMainWindow):
             self.open_dialogs.append(self.employee_list_window)
         self.employee_list_window.show()
 
-    def openDateChange(self):
-        if self.datechange is None:
-            self.datechange = DateChange()
-        self.datechange.exec_()
+    def openPayRoll(self):
+        if self.payroll_window is None:
+            self.payroll_window = PayrollDialog()
+            self.open_dialogs.append(self.payroll_window)
+        self.payroll_window.show()
 
     def openTimeLogger(self):
         if self.timekeeping_window is None:
             self.timekeeping_window = dialogModal()
-        self.timekeeping_window.exec_()
+            self.open_dialogs.append(self.timekeeping_window)
+        self.timekeeping_window.show()
 
-    def openPayRoll(self):
-        if self.payroll_window is None:
-            self.payroll_window = PayrollDialog(self)
-        self.payroll_window.exec_()
+    def openDateChange(self):
+        if self.datechange is None:
+            self.datechange = DateChange()
+            self.open_dialogs.append(self.datechange)
+        self.datechange.show()
 
     def openBugReportModal(self):
         if self.bugReportModal is None:
             self.bugReportModal = BugReportModal()
-        self.bugReportModal.exec_()
-
-def main():
-    try:
-        app = QApplication(sys.argv)
-        test_databases_connection() # ensures database connection
-        main_window = MainWindow()
-        load_fonts()
-        main_window.show()
-        app.exec_()
-    except Exception as e:
-        logging.error("Error occurred while loading application: %s", str(e))
-        print(f"Error occurred: {e}")
-        sys.exit(1)
-
+            self.open_dialogs.append(self.bugReportModal)
+        self.bugReportModal.show()
 
 if __name__ == "__main__":
-    main()
+    start_time = time.time()
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    duration_logger.info(f"Application initialized in {time.time() - start_time:.2f} seconds.")
+    sys.exit(app.exec_())
