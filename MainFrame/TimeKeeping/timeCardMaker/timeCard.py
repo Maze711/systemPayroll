@@ -39,7 +39,7 @@ class timecard(QDialog):
         self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
         self.timeSheetButton.clicked.connect(self.createTimeSheet)
 
-        self.searchBioNum.textChanged.connect(self.search_bio_num)
+        self.searchBioNum.textChanged.connect(self.search_bioNum)
         self.btnCheckSched = self.findChild(QPushButton, 'btnCheckSched')
         self.btnCheckSched.clicked.connect(self.CheckSched)
 
@@ -75,7 +75,7 @@ class timecard(QDialog):
             self.yearCC.addItems(sorted(year_months))
 
         except Exception as e:
-            print(f"Error populating year combo box: {e}")
+            logging.error(f"Error populating year combo box: {e}")
 
         finally:
             cursor.close()
@@ -121,14 +121,16 @@ class timecard(QDialog):
             self.dateToCC.addItems(sorted(days_to_set))
 
         except Exception as e:
-            print(f"Error populating date combo boxes: {e}")
+            logging.error(f"Error populating date combo boxes: {e}")
 
         finally:
             cursor.close()
             connection.close()
 
-    def populate_time_list_table(self):
-        """Populate the time list table with check-in and check-out times."""
+
+    @single_function_logger.log_function
+    def populate_time_list_table(self, checked=False):
+        """Populate the time list table with check-in and check-out times and additional employee data."""
         selected_year_month = self.yearCC.currentText()
         from_day = self.dateFromCC.currentText()
         to_day = self.dateToCC.currentText()
@@ -136,79 +138,116 @@ class timecard(QDialog):
         if not selected_year_month or not from_day or not to_day:
             return
 
+        logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
+
         # Construct full dates
-        from_date = f"{selected_year_month}_{from_day.zfill(2)}"
-        to_date = f"{selected_year_month}_{to_day.zfill(2)}"
+        from_date = f"{selected_year_month}-{from_day.zfill(2)}"
+        to_date = f"{selected_year_month}-{to_day.zfill(2)}"
 
         # Construct table name
-        table_name = f"table_{selected_year_month}"
+        table_name = f"table_{selected_year_month.replace('-', '_')}"
 
         connection = create_connection('LIST_LOG_IMPORT')
-        if not connection:
+        employee_connection = create_connection('FILE201')
+        if not connection or not employee_connection:
             return
 
         try:
             cursor = connection.cursor()
+            employee_cursor = employee_connection.cursor()
 
             # Check if the table exists
             cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
             if not cursor.fetchone():
-                print(f"Error: Table does not exist: {table_name}")
+                logging.error(f"Error: Table does not exist: {table_name}")
                 return
 
-            # Query data within the selected date range
             query = f"""
                 SELECT bioNum, date, time, sched
                 FROM `{table_name}`
-                WHERE DATE_FORMAT(date, '%Y_%m_%d') BETWEEN '{from_date}' AND '{to_date}'
+                WHERE date BETWEEN '{from_date}' AND '{to_date}'
                 ORDER BY bioNum, date, time
             """
             cursor.execute(query)
             records = cursor.fetchall()
 
-            # Clear existing rows in the table
             self.TimeListTable.setRowCount(0)
             time_data = {}
 
-            for bio_num, trans_date, trans_time, sched in records:
-                if bio_num not in time_data:
-                    time_data[bio_num] = {"Check_In": None, "Check_Out": None}
+            for bioNum, trans_date, trans_time, sched in records:
+                if bioNum not in time_data:
+                    time_data[bioNum] = {"Check_In": None, "Check_Out": None}
 
                 if sched == "Time IN":
-                    time_data[bio_num]["Check_In"] = (trans_date, str(trans_time))
+                    time_data[bioNum]["Check_In"] = (trans_date, str(trans_time))
                 elif sched == "Time OUT":
-                    time_data[bio_num]["Check_Out"] = (trans_date, str(trans_time))
+                    time_data[bioNum]["Check_Out"] = (trans_date, str(trans_time))
 
-                # Add row to table if both check-in and check-out times are present
-                if time_data[bio_num]["Check_In"] or time_data[bio_num]["Check_Out"]:
+                employee_query = "SELECT ep.sched_in, ep.sched_out, pi.surname, pi.firstname, pi.mi " \
+                                 "FROM emp_info pi " \
+                                 "JOIN emp_posnsched ep ON pi.empid = ep.empl_id " \
+                                 f"WHERE pi.empid = {bioNum}"
+
+                logging.error(f"Executing query for bioNum: {bioNum}")
+                logging.error(f"Query: {employee_query}")
+                try:
+                    employee_cursor.execute(employee_query)
+                    employee_data = employee_cursor.fetchone()
+                    if employee_data:
+                        emp_name = f"{employee_data[3]}, {employee_data[4]} {employee_data[2]}"  # Adjusted indexes for name
+                        schedule = f"{employee_data[0]} - {employee_data[1]}"  # Adjusted indexes for schedule
+                        logging.error(f"Found data for bioNum {bioNum}: {emp_name}, {schedule}")
+                    else:
+                        logging.error(f"No data found for bioNum {bioNum}")
+                        emp_name = "Unknown"
+                        schedule = "Unknown"
+                except Exception as e:
+                    logging.error(f"Error fetching employee data for bioNum {bioNum}: {e}")
+                    emp_name = "Error"
+                    schedule = "Error"
+
+                if time_data[bioNum]["Check_In"] or time_data[bioNum]["Check_Out"]:
                     row_position = self.TimeListTable.rowCount()
                     self.TimeListTable.insertRow(row_position)
 
-                    # Create QTableWidgetItem and set text alignment to center
                     def create_centered_item(text):
-                        item = QTableWidgetItem(text)
+                        item = QTableWidgetItem(str(text))
                         item.setTextAlignment(Qt.AlignCenter)
                         return item
 
-                    check_in_time = time_data[bio_num]["Check_In"][1] if time_data[bio_num]["Check_In"] else "Missing"
-                    check_out_time = time_data[bio_num]["Check_Out"][1] if time_data[bio_num][
+                    check_in_time = time_data[bioNum]["Check_In"][1] if time_data[bioNum]["Check_In"] else "Missing"
+                    check_out_time = time_data[bioNum]["Check_Out"][1] if time_data[bioNum][
                         "Check_Out"] else "Missing"
 
-                    self.TimeListTable.setItem(row_position, 0, create_centered_item(str(bio_num)))
+                    self.TimeListTable.setItem(row_position, 0, create_centered_item(str(bioNum)))
                     self.TimeListTable.setItem(row_position, 2, create_centered_item(str(trans_date)))
                     self.TimeListTable.setItem(row_position, 4, create_centered_item(check_in_time))
                     self.TimeListTable.setItem(row_position, 5, create_centered_item(check_out_time))
 
-                    # Reset data for this bio_num
-                    time_data[bio_num] = {"Check_In": None, "Check_Out": None}
+                    if employee_data:
+                        emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
+                        schedule = f"{employee_data[3]} - {employee_data[4]}"
+                        self.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
+                        self.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
+                    else:
+                        self.TimeListTable.setItem(row_position, 1, create_centered_item("Unknown"))
+                        self.TimeListTable.setItem(row_position, 6, create_centered_item("Unknown"))
+
+                    self.TimeListTable.setItem(row_position, 3, create_centered_item(""))
+
+                    time_data[bioNum] = {"Check_In": None, "Check_Out": None}
+
+            logging.info("Time list table populated successfully.")
 
         except Exception as e:
-            print(f"Error populating time list table: {e}")
+            logging.error(f"Error populating time list table: {e}")
 
         finally:
             self.original_data = self.get_table_data()
             cursor.close()
+            employee_cursor.close()
             connection.close()
+            employee_connection.close()
 
     @single_function_logger.log_function
     def createTimeSheet(self, checked=False):
@@ -216,7 +255,7 @@ class timecard(QDialog):
 
         for row in range(self.TimeListTable.rowCount()):
             # Fetch data from the table for each row
-            bio_num = self.TimeListTable.item(row, 0).text()
+            bioNum = self.TimeListTable.item(row, 0).text()
             trans_date = self.TimeListTable.item(row, 2).text()
             check_in = self.TimeListTable.item(row, 4).text()
             check_out = self.TimeListTable.item(row, 5).text()
@@ -240,33 +279,33 @@ class timecard(QDialog):
                     workHours = round(float(workHours), 2)
                     hoursWorked = round(float(hoursWorked), 2)
                     difference = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
                                  f"Hours Worked: {hoursWorked:.2f}, Difference: {difference:.2f}")
                 except ValueError:
-                    logging.error(f"Error calculating difference for BioNum: {bio_num}")
+                    logging.error(f"Error calculating difference for BioNum: {bioNum}")
                     difference = 'N/A'
 
             if dateType == "Regular Holiday" and hoursWorked != 'Unknown':
                 try:
                     regularOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
                                  f"Hours Worked: {hoursWorked:.2f}, Regular Holiday Overtime: {regularOT:.2f}")
                 except ValueError:
-                    logging.error(f"Error calculating regular holiday for BioNum: {bio_num}")
+                    logging.error(f"Error calculating regular holiday for BioNum: {bioNum}")
                     regularOT = 'N/A'
 
             if dateType == "Special Holiday" and hoursWorked != 'Unknown':
                 try:
                     specialOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bio_num}, Work Hours: {workHours:.2f}, "
+                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
                                  f"Hours Worked: {hoursWorked:.2f}, Special Holiday Overtime: {specialOT:.2f}")
                 except ValueError:
-                    logging.error(f"Error calculating special holiday for BioNum: {bio_num}")
+                    logging.error(f"Error calculating special holiday for BioNum: {bioNum}")
                     specialOT = 'N/A'
 
             # Append the data to the dataMerge list
             dataMerge.append({
-                'BioNum': bio_num,
+                'BioNum': bioNum,
                 'Check_In': check_in,
                 'Check_Out': check_out,
                 'Hours_Worked': str(hoursWorked),
@@ -295,7 +334,7 @@ class timecard(QDialog):
             data.append(row_data)
         return data
 
-    def search_bio_num(self):
+    def search_bioNum(self):
         search_text = self.searchBioNum.text().strip().lower()
 
         if not search_text:
