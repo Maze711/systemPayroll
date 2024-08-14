@@ -47,7 +47,7 @@ class filter(QDialog):
         logging.info("Filter cleared")
 
     @single_function_logger.log_function
-    def show_missing(self):
+    def show_missing(self, checked=False):
         if self.parent():
             filter_values = {
                 'check_in_ampm': "AM/PM",
