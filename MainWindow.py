@@ -137,8 +137,17 @@ class MainWindow(QMainWindow):
 
     def enableNavButton(self, buttonName):
         button = self.findChild(QPushButton, buttonName)
-        enableStyle = 'background-color: white; color: black;'
-
+        enableStyle = '''
+                QPushButton {
+                    background-color: white;
+                    color: black;
+                }
+                QPushButton:hover {
+                    background-color: "#485994";
+                    color: white;
+                    border: 2px solid white;
+                }
+            '''
         if button:
             button.setEnabled(True)
             button.setStyleSheet(enableStyle)

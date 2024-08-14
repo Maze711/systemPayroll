@@ -37,13 +37,13 @@ class personalModal(QDialog):
 
     def setup_initial_state(self):
         if self.mode == 'view':
-            self.addBTN.setVisible(False)
+            self.addBTN.setEnabled(False)
             self.editBTN.setEnabled(True)
             self.saveBTN.setEnabled(False)
             self.revertBTN.setEnabled(False)
         elif self.mode == 'add':
             self.addBTN.setVisible(True)
-            self.editBTN.setVisible(False)
+            self.editBTN.setEnabled(False)
             self.saveBTN.setEnabled(False)
             self.revertBTN.setEnabled(False)
 
@@ -76,8 +76,24 @@ class personalModal(QDialog):
             self.cancel_edit()
 
     def set_button_styles(self):
-        enabled_style = "background-color:  rgba(52, 66, 115, 1); color: white;"
-        disabled_style = "background-color: #cccccc; color: #666666;"
+        enabled_style = '''
+        QPushButton {
+        background-color:  rgba(52, 66, 115, 1); 
+        color: white;
+        }
+        QPushButton:hover {
+            background-color: "#485994";
+        }
+        '''
+        disabled_style = '''
+        QPushButton {
+        background-color: #cccccc; 
+        color: #666666;
+        }
+        QPushButton:hover {
+            background-color: "#485994";
+        }
+        '''
 
         self.addBTN.setStyleSheet(enabled_style if self.mode == 'add' else disabled_style)
         self.editBTN.setStyleSheet(enabled_style if self.mode == 'view' else disabled_style)

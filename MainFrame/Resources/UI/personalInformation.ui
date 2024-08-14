@@ -59,6 +59,10 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
 #frmInfo, #groupIdNum, #groupHRNote, #groupEduInfo, #scrollWorkExpArea, #groupCompany {
 background-color: #DCE5FE
 }
+
+#btnAdd:hover, #btnEdit:hover, #btnSave:hover, #btnRevert:hover, #btnAddDependent:hover {
+	background-color:&quot;#485994&quot;;
+}
 </string>
   </property>
   <widget class="QWidget" name="widgetBTN" native="true">
@@ -112,6 +116,9 @@ border: 1px solid black;
       <bold>true</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="text">
      <string>ADD</string>
     </property>
@@ -132,6 +139,9 @@ border: 1px solid black;
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="text">
      <string>EDIT</string>
@@ -154,6 +164,9 @@ border: 1px solid black;
       <bold>true</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
     <property name="text">
      <string>SAVE</string>
     </property>
@@ -174,6 +187,9 @@ border: 1px solid black;
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="text">
      <string>REVERT</string>

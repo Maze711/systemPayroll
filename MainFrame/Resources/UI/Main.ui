@@ -54,6 +54,10 @@ background-color: white;
 	background-color: &quot;#344273&quot;;
 	color: white;
 	border-radius: 5px;
+}
+
+#btnLogin:hover, #btnPayRoll:hover,  #btnTimeKeeping:hover, #btnEmployeeList:hover {
+	background-color:&quot;#485994&quot;;
 }</string>
    </property>
    <widget class="QFrame" name="header">
