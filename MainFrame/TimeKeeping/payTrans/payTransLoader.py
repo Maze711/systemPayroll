@@ -19,7 +19,7 @@ class PayTrans(QMainWindow):
         self.paytransTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.paytransTable.horizontalHeader().setStretchLastSection(True)
 
-        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
+        self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
         if self.searchBioNum is not None:
             self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
         else:

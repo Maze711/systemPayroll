@@ -221,9 +221,9 @@ class MainWindow(QMainWindow):
 
     def openPayRoll(self):
         if self.payroll_window is None:
-            self.payroll_window = PayrollDialog()
+            self.payroll_window = PayrollDialog(self)
             self.open_dialogs.append(self.payroll_window)
-        self.payroll_window.show()
+        self.payroll_window.exec()
 
     def openTimeLogger(self):
         if self.timekeeping_window is None:

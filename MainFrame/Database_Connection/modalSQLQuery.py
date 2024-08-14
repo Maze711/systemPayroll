@@ -262,24 +262,29 @@ def revert_employee():
     pass
 
 def get_generated_employee_id(employee_id):
-    # Converts the row_id into string
-    str_employee_id = str(employee_id)
+    # Convert the employee_id to a string and pad with zeros if necessary
+    str_employee_id = str(employee_id).zfill(8)
 
-    # slicing the employee_id
+    # Extract year and id_number
     year = str_employee_id[:4]
     id_number = str_employee_id[4:]
 
-    current_year = datetime.now().year
+    current_year = str(2024)
 
-    # Validates the format of the employee ID
-    if str_employee_id == "1":
-        generated_employee_id = int(f"{current_year}{int(str_employee_id):04}")
-        return generated_employee_id
-    elif str(current_year) != year:
-        generated_employee_id = int(f"{current_year}{int(id_number):04}")
-        return generated_employee_id
-    else:
+    # Validate the format of the employee ID
+    if len(str_employee_id) < 8:
+        raise ValueError("employee_id must be an integer with at least 4 digits.")
+
+    if year == current_year:
+        # If the year matches the current year, return the original ID
         return employee_id
+    else:
+        # Otherwise, generate a new ID with the current year and padded id_number
+        try:
+            generated_employee_id = int(f"{current_year}{int(id_number):04}")
+            return generated_employee_id
+        except ValueError:
+            raise ValueError("Invalid id_number format.")
 
 @single_function_logger.log_function
 def executeQuery(query, *args):
