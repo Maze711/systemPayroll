@@ -1,12 +1,16 @@
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from MainFrame.Resources.lib import *
 
+
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from MainFrame.Resources.lib import *
+from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
 from MainFrame.systemFunctions import globalFunction, single_function_logger
 from MainFrame.Database_Connection.DBConnection import create_connection
-
+from MainFrame.notificationMaker import notificationLoader
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -158,16 +162,25 @@ class FileProcessor(QObject):
                 logging.error(f"Error deleting chunk file: {chunk_file}, {e}")
 
 
+@single_function_logger.log_function
 class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
+        logging.info("Initializing dialogModal...")
         self.setFixedSize(418, 392)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
+        logging.info("UI loaded successfully.")
+
+        self.user_session = UserSession().getALLSessionData()
 
         self.importBTN.clicked.connect(self.importTxt)
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
+
+        self.current_time_set = datetime.now().strftime('%H:%M:%S')
+        self.user_name_set = str(self.user_session.get("user_name", ""))
+        self.user_role_set = str(self.user_session.get("user_role", ""))
 
     @single_function_logger.log_function
     def importTxt(self, *args):
@@ -195,15 +208,58 @@ class dialogModal(QDialog):
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
+
+        # Insert notification into the database
+        self.insertNotification(f"File processed successfully: {os.path.basename(self.worker.fileName)}")
+
         QMessageBox.information(self, "Success", message)
-        QTimer.singleShot(2, self.openTimeCard)
+
+        # Open notificationLoader dialog
+        self.openNotificationLoader()
+
+        QTimer.singleShot(2000, self.openTimeCard)  # Delay to ensure dialog is visible
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
+
+        # Insert error notification into the database
+        self.insertNotification(f"Failed to process file: {os.path.basename(self.worker.fileName)}")
+
         QMessageBox.critical(self, "Error", f"Failed to process file: {error}")
+
+    def insertNotification(self, message):
+        """Inserts a notification into the send_notification table."""
+        connection = create_connection('SYSTEM_NOTIFICATION')
+        if connection is None:
+            logging.error("Failed to connect to system_notification database.")
+            return
+
+        cursor = connection.cursor()
+        try:
+            insert_query = """
+                INSERT INTO send_notification (time, message, user_name, from_role)
+                VALUES (%s, %s, %s, %s)
+            """
+            cursor.execute(insert_query, (self.current_time_set, message, self.user_name_set, self.user_role_set))
+            connection.commit()
+            logging.info("Notification inserted successfully.")
+        except Error as e:
+            logging.error(f"Error inserting notification: {e}")
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
+
+    def openNotificationLoader(self):
+        """Opens the notificationLoader dialog."""
+        try:
+            self.notificationLoaderDialog = notificationLoader()
+            self.notificationLoaderDialog.exec_()
+        except Exception as e:
+            logging.error(f"Failed to open notificationLoader dialog: {e}")
 
     def openTimeCard(self):
         self.timeCardDialog = timecard()
