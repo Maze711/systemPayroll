@@ -46,7 +46,7 @@ def add_employee(data):
 
         # Inserting custom generated employee id to the database
         generated_id = get_generated_employee_id(row_id)
-        query = "UPDATE emp_info SET empl_id = %s WHERE empl_no = %s"
+        query = "UPDATE emp_info SET empl_id = %s WHERE ID = %s"
         cursor.execute(query, (generated_id, row_id))
 
         logging.info("Inserted into personal_information table")
