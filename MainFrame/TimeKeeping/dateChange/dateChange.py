@@ -32,6 +32,7 @@ class DateChange(QDialog):
         self.reset_selection()
 
         self.original_items = [self.cmbHoliday.itemText(i) for i in range(self.cmbHoliday.count())]
+
     @single_function_logger.log_function
     def load_holidays(self):
         try:
@@ -87,6 +88,7 @@ class DateChange(QDialog):
 
                     self.dateEdit.setEnabled(holiday_is_movable == 1)
                     self.btnUpdate.setEnabled(holiday_is_movable == 1)
+
             except Error as e:
                 logging.exception("Error while fetching data from MySQL: %s", e)
                 QMessageBox.critical(self, "Error", "Failed to load data")
@@ -102,6 +104,8 @@ class DateChange(QDialog):
             self.btnUpdate.setText("Cancel")
             self.btnUpdate.setEnabled(True)
             self.btnAdd.setText("Save")
+
+            self.cmbDateType.setCurrentIndex(-1)
         else:
             self.cancel_add_mode()
 

@@ -237,10 +237,19 @@ border-radius: 5px;</string>
      <bold>true</bold>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
-    <string notr="true">	background-color: &quot;#344273&quot;;
-	color: white;
-border-radius: 5px;</string>
+    <string notr="true">*{
+background-color: &quot;#344273&quot;;
+color: white;
+border-radius: 5px;
+}
+
+*:hover{
+background-color: &quot;#485994&quot;;
+}</string>
    </property>
    <property name="text">
     <string> Update</string>
@@ -380,10 +389,19 @@ background-color: transparent;
      <bold>true</bold>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
-    <string notr="true">	background-color: &quot;#344273&quot;;
-	color: white;
-border-radius: 5px;</string>
+    <string notr="true">*{
+background-color: &quot;#344273&quot;;
+color: white;
+border-radius: 5px;
+}
+
+*:hover{
+background-color: &quot;#485994&quot;;
+}</string>
    </property>
    <property name="text">
     <string>Add</string>

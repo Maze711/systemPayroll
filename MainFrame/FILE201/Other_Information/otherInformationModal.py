@@ -10,7 +10,6 @@ from MainFrame.systemFunctions import globalFunction
 class personalModal(QDialog):
     def __init__(self, mode='view'):
         super(personalModal, self).__init__()
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setFixedSize(1153, 665)
         #ui_file = os.path.join(os.path.dirname(__file__), 'personalInformation.ui')
         ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\personalInformation.ui"))

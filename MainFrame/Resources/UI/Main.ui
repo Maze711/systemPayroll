@@ -42,6 +42,10 @@ background-color: white;
 	border-radius: 5px;
 }
 
+#btnLogin:hover, #btnSignUp:hover, #btnResetPassword:hover, #btnContinue:hover {
+    background-color: &quot;#485994&quot;;
+}
+
 #btnReportBug {
 	background-color: white;
 	border: none;
