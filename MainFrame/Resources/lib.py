@@ -20,8 +20,8 @@ import smtplib
 
 from dotenv import load_dotenv
 
-from PyQt5.QtCore import QTimer, QDate, Qt, QEvent, QTime, QObject, pyqtSignal, QThread
-from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator, QStandardItemModel
+from PyQt5.QtCore import QTimer, QDate, Qt, QEvent, QTime, QObject, pyqtSignal, QThread, QRect
+from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator, QStandardItemModel, QScreen
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
