@@ -85,11 +85,10 @@ def export_to_excel(data_dict, file_name):
 
         for sheet_name, df in data_dict.items():
             if sheet_name != "Personal Information":
-                combined_df = pd.merge(combined_df, df, on='empl_id', how='left')
+                # Identify columns that are not in the combined_df or are 'empl_id'
+                new_columns = [col for col in df.columns if col not in combined_df.columns or col == 'empl_id']
 
-                for col in df.columns:
-                    if col != 'empl_id':
-                        combined_df = combined_df.rename(columns={col: f"{sheet_name}_{col}"})
+                combined_df = pd.merge(combined_df, df[new_columns], on='empl_id', how='left')
 
         with pd.ExcelWriter(file_name, engine='openpyxl') as writer:
             combined_df.to_excel(writer, sheet_name="Employee Data", index=False)
