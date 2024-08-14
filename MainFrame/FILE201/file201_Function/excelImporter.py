@@ -50,14 +50,16 @@ def remove_dashes_in_id(id_number):
 
 
 @single_function_logger.log_function
-@single_function_logger.log_function
 def importIntoDB(parent, display_employees_callback):
+    cursor = None
+    connection = None
+
     try:
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(
             parent, "Select Excel File", "", "Excel Files (*.xlsx)", options=options)
         if not file_name:
-            print("Bok")
+            QMessageBox.information(parent, "No File Selected", "Please select an Excel file to import.")
             return
 
         # Read the entire Excel file

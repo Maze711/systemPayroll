@@ -37,7 +37,7 @@
 
 /* Styles for Hovering Buttons */
 
-#btnAddEmployee:hover, #btnExport:hover, #btnViewInfo:hover, #btnExport:hover{
+#btnAddEmployee:hover, #btnExport:hover, #btnViewInfo:hover, #btnExport:hover, #btnImport:hover {
 	background-color:&quot;#485994&quot;;
 }
 
@@ -864,7 +864,11 @@ QTableWidget {
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>Import</string>
+     <string>  Import</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../Icons/import.svg</normaloff>../Icons/import.svg</iconset>
     </property>
     <property name="iconSize">
      <size>
