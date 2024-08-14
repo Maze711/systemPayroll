@@ -129,8 +129,9 @@ class timecard(QDialog):
             connection.close()
 
     @single_function_logger.log_function
+    @single_function_logger.log_function
     def populate_time_list_table(self, checked=False):
-        """Populate the time list table with check-in and check-out times and additional employee data."""
+        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
         selected_year_month = self.yearCC.currentText()
         from_day = self.dateFromCC.currentText()
         to_day = self.dateToCC.currentText()
@@ -147,46 +148,48 @@ class timecard(QDialog):
         # Construct table name
         table_name = f"table_{selected_year_month.replace('-', '_')}"
 
-        connection = create_connection('LIST_LOG_IMPORT')
-        employee_connection = create_connection('FILE201')
-        if not connection or not employee_connection:
+        connection_list_log = create_connection('LIST_LOG_IMPORT')
+        connection_file201 = create_connection('FILE201')
+        if not connection_list_log or not connection_file201:
             return
 
         try:
-            cursor = connection.cursor()
-            employee_cursor = employee_connection.cursor()
+            cursor_list_log = connection_list_log.cursor()
+            cursor_file201 = connection_file201.cursor()
 
             # Check if the table exists
-            cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-            if not cursor.fetchone():
+            cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
+            if not cursor_list_log.fetchone():
                 logging.error(f"Error: Table does not exist: {table_name}")
                 return
 
-            query = f"""
-                SELECT bioNum, date, time, sched
+            # Query to fetch time records including machCode from LIST_LOG_IMPORT
+            query_list_log = f"""
+                SELECT bioNum, date, time_in, time_out, machCode
                 FROM `{table_name}`
                 WHERE date BETWEEN '{from_date}' AND '{to_date}'
-                ORDER BY bioNum, date, time
+                ORDER BY bioNum, date, time_in
             """
-            cursor.execute(query)
-            records = cursor.fetchall()
+            cursor_list_log.execute(query_list_log)
+            records = cursor_list_log.fetchall()
 
             self.TimeListTable.setRowCount(0)
             time_data = {}
 
-            for bioNum, trans_date, trans_time, sched in records:
+            for bioNum, trans_date, time_in, time_out, mach_code in records:
                 if bioNum not in time_data:
                     time_data[bioNum] = {"Check_In": None, "Check_Out": None}
 
-                if sched == "Time IN":
-                    time_data[bioNum]["Check_In"] = (trans_date, str(trans_time))
-                elif sched == "Time OUT":
-                    time_data[bioNum]["Check_Out"] = (trans_date, str(trans_time))
+                if time_in:  # Consider `time_in` as Check_In
+                    time_data[bioNum]["Check_In"] = (trans_date, str(time_in))
+                if time_out:  # Consider `time_out` as Check_Out
+                    time_data[bioNum]["Check_Out"] = (trans_date, str(time_out))
 
-                # Updated employee query to remove the join and relate bioNum to empid
+                # Query to get employee information and schedule from FILE201
                 employee_query = (
-                    "SELECT pi.surname, pi.firstname, pi.mi "
+                    "SELECT pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out "
                     "FROM emp_info pi "
+                    "JOIN emp_posnsched ps ON pi.empid = ps.empl_id "
                     f"WHERE pi.empid = {bioNum}"
                 )
 
@@ -194,19 +197,24 @@ class timecard(QDialog):
                 logging.error(f"Query: {employee_query}")
 
                 try:
-                    employee_cursor.execute(employee_query)
-                    employee_data = employee_cursor.fetchone()
+                    # Fetch employee data and schedule info
+                    cursor_file201.execute(employee_query)
+                    employee_data = cursor_file201.fetchone()
                     if employee_data:
-                        # Adjusted indexes for name: [0] for surname, [1] for firstname, [2] for mi
                         emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                        logging.error(f"Found data for bioNum {bioNum}: {emp_name}")
+                        sched_in = employee_data[3]
+                        sched_out = employee_data[4]
+                        schedule = f"{sched_in} - {sched_out}" if sched_in and sched_out else "N/A"
+                        logging.error(
+                            f"Found data for bioNum {bioNum}: {emp_name}, MachCode: {mach_code}, Schedule: {schedule}")
                     else:
                         logging.error(f"No data found for bioNum {bioNum}")
                         emp_name = "Unknown"
-                    schedule = "N/A"  # Since sched_in and sched_out are no longer fetched
+                        schedule = "N/A"
                 except Exception as e:
                     logging.error(f"Error fetching employee data for bioNum {bioNum}: {e}")
                     emp_name = "Error"
+                    mach_code = "Error"
                     schedule = "Error"
 
                 if time_data[bioNum]["Check_In"] or time_data[bioNum]["Check_Out"]:
@@ -223,14 +231,12 @@ class timecard(QDialog):
                         "Check_Out"] else "Missing"
 
                     self.TimeListTable.setItem(row_position, 0, create_centered_item(str(bioNum)))
+                    self.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
                     self.TimeListTable.setItem(row_position, 2, create_centered_item(str(trans_date)))
+                    self.TimeListTable.setItem(row_position, 3, create_centered_item(mach_code))  # Set machCode
                     self.TimeListTable.setItem(row_position, 4, create_centered_item(check_in_time))
                     self.TimeListTable.setItem(row_position, 5, create_centered_item(check_out_time))
-
-                    self.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
                     self.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
-
-                    self.TimeListTable.setItem(row_position, 3, create_centered_item(""))
 
                     time_data[bioNum] = {"Check_In": None, "Check_Out": None}
 
@@ -241,10 +247,10 @@ class timecard(QDialog):
 
         finally:
             self.original_data = self.get_table_data()
-            cursor.close()
-            employee_cursor.close()
-            connection.close()
-            employee_connection.close()
+            cursor_list_log.close()
+            cursor_file201.close()
+            connection_list_log.close()
+            connection_file201.close()
 
     @single_function_logger.log_function
     def createTimeSheet(self, checked=False):

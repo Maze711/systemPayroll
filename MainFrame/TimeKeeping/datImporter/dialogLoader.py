@@ -63,6 +63,7 @@ class FileProcessor(QObject):
             self.data['sched'] = self.data.apply(
                 lambda row: self.determine_schedule(str(row['code_1']), str(row['code_2']), str(row['code_3'])), axis=1
             )
+            self.data = self.combineTimeInOut()  # Combine Time IN and Time OUT
         except Exception as e:
             logging.error(f"Error processing content: {e}")
             self.error.emit(f"Error processing content: {e}")
@@ -71,10 +72,37 @@ class FileProcessor(QObject):
         """Determines the schedule type based on code values."""
         if code_1 == '0' and code_2 == '1' and code_3 == '0':
             return 'Time IN'
-        elif code_1 == '1' and code_2 == '1' and code_3 == '0':
+        elif code_1 in ['1', '5'] and code_2 == '1' and code_3 == '0':
             return 'Time OUT'
         else:
             return 'Unknown'
+
+    def combineTimeInOut(self):
+        """Combines Time IN and Time OUT into a single DataFrame."""
+        # Separate Time IN and Time OUT entries
+        time_in_data = self.data[self.data['sched'] == 'Time IN']
+        time_out_data = self.data[self.data['sched'] == 'Time OUT']
+
+        # Merge Time IN with the latest Time OUT on the same date
+        combined_data = []
+        for _, time_in_row in time_in_data.iterrows():
+            matching_out = time_out_data[
+                (time_out_data['bio_no'] == time_in_row['bio_no']) &
+                (time_out_data['date'] == time_in_row['date'])
+            ]
+            if not matching_out.empty:
+                # Take the last Time OUT entry
+                last_out_row = matching_out.sort_values(by='time', ascending=False).iloc[0]
+                combined_data.append([
+                    time_in_row['bio_no'],
+                    time_in_row['date'],
+                    time_in_row['mach_code'],
+                    time_in_row['time'],
+                    last_out_row['time']
+                ])
+
+        combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
+        return combined_df
 
     def chunkDataByMonth(self):
         """Chunks the data into months."""
@@ -115,11 +143,11 @@ class FileProcessor(QObject):
                 bioNum INT,
                 date DATE,
                 machCode VARCHAR(225),
-                time TIME,
-                sched VARCHAR(225),
+                time_in TIME,
+                time_out TIME,
                 edited_by VARCHAR(225),
                 edited_by_when DATETIME,
-                UNIQUE KEY unique_entry (bioNum, date, time, machCode)
+                UNIQUE KEY unique_entry (bioNum, date, machCode)
             )
         """
         try:
@@ -135,15 +163,16 @@ class FileProcessor(QObject):
             chunk_data = pd.read_csv(chunk_file, sep='\t', header=None)
             for _, entry in chunk_data.iterrows():
                 insert_query = f"""
-                    INSERT INTO {table_name} (bioNum, date, machCode, time, sched)
+                    INSERT INTO {table_name} (bioNum, date, machCode, time_in, time_out)
                     VALUES (%s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE 
-                        sched = VALUES(sched),
+                        time_in = VALUES(time_in),
+                        time_out = VALUES(time_out),
                         machCode = VALUES(machCode),
                         edited_by = '',
                         edited_by_when = NOW()
                 """
-                cursor.execute(insert_query, (entry[0], entry[6], entry[2], entry[7], entry[8]))
+                cursor.execute(insert_query, (entry[0], entry[1], entry[2], entry[3], entry[4]))
                 connection.commit()
         except Error as e:
             logging.error(f"Error inserting data: {e}")
@@ -160,6 +189,7 @@ class FileProcessor(QObject):
                 logging.info(f"Chunk file {chunk_file} deleted successfully.")
             except OSError as e:
                 logging.error(f"Error deleting chunk file: {chunk_file}, {e}")
+
 
 
 @single_function_logger.log_function
