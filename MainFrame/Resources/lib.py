@@ -1,5 +1,6 @@
 # lib.py
 
+from logging.handlers import RotatingFileHandler
 import sys
 import os
 import mysql.connector
@@ -25,7 +26,7 @@ from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator, QStandardItemModel,
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
-    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox
+    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox, QStackedWidget
 )
 from PyQt5.uic import loadUi
 
