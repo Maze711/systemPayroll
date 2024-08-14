@@ -127,7 +127,6 @@ class timecard(QDialog):
             cursor.close()
             connection.close()
 
-
     @single_function_logger.log_function
     def populate_time_list_table(self, checked=False):
         """Populate the time list table with check-in and check-out times and additional employee data."""
@@ -183,24 +182,27 @@ class timecard(QDialog):
                 elif sched == "Time OUT":
                     time_data[bioNum]["Check_Out"] = (trans_date, str(trans_time))
 
-                employee_query = "SELECT ep.sched_in, ep.sched_out, pi.surname, pi.firstname, pi.mi " \
-                                 "FROM emp_info pi " \
-                                 "JOIN emp_posnsched ep ON pi.empid = ep.empl_id " \
-                                 f"WHERE pi.empid = {bioNum}"
+                # Updated employee query to remove the join and relate bioNum to empid
+                employee_query = (
+                    "SELECT pi.surname, pi.firstname, pi.mi "
+                    "FROM emp_info pi "
+                    f"WHERE pi.empid = {bioNum}"
+                )
 
                 logging.error(f"Executing query for bioNum: {bioNum}")
                 logging.error(f"Query: {employee_query}")
+
                 try:
                     employee_cursor.execute(employee_query)
                     employee_data = employee_cursor.fetchone()
                     if employee_data:
-                        emp_name = f"{employee_data[3]}, {employee_data[4]} {employee_data[2]}"  # Adjusted indexes for name
-                        schedule = f"{employee_data[0]} - {employee_data[1]}"  # Adjusted indexes for schedule
-                        logging.error(f"Found data for bioNum {bioNum}: {emp_name}, {schedule}")
+                        # Adjusted indexes for name: [0] for surname, [1] for firstname, [2] for mi
+                        emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
+                        logging.error(f"Found data for bioNum {bioNum}: {emp_name}")
                     else:
                         logging.error(f"No data found for bioNum {bioNum}")
                         emp_name = "Unknown"
-                        schedule = "Unknown"
+                    schedule = "N/A"  # Since sched_in and sched_out are no longer fetched
                 except Exception as e:
                     logging.error(f"Error fetching employee data for bioNum {bioNum}: {e}")
                     emp_name = "Error"
@@ -224,14 +226,8 @@ class timecard(QDialog):
                     self.TimeListTable.setItem(row_position, 4, create_centered_item(check_in_time))
                     self.TimeListTable.setItem(row_position, 5, create_centered_item(check_out_time))
 
-                    if employee_data:
-                        emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                        schedule = f"{employee_data[3]} - {employee_data[4]}"
-                        self.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
-                        self.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
-                    else:
-                        self.TimeListTable.setItem(row_position, 1, create_centered_item("Unknown"))
-                        self.TimeListTable.setItem(row_position, 6, create_centered_item("Unknown"))
+                    self.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
+                    self.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
 
                     self.TimeListTable.setItem(row_position, 3, create_centered_item(""))
 
