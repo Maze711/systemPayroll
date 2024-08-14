@@ -3,6 +3,7 @@ import os
 
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
+from MainFrame.TimeKeeping.timeCardMaker.filter import filter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
