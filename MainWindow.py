@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         # Cache the button widgets
         self.btnLogOut = self.findChild(QPushButton, "btnLogOut")
         self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
+        self.btnLogin = self.findChild(QPushButton, "btnLogin")
 
     def setup_connections(self):
         self.btnEmployeeList.clicked.connect(self.employeeWindow)
@@ -83,6 +84,12 @@ class MainWindow(QMainWindow):
         self.btnResetPassword.clicked.connect(lambda: self.authentication.resetUserPassword(self))
         self.btnLogOut.clicked.connect(self.loggedOut)
         self.authentication.isUserAlreadyLoggedIn(self, self.isLoggedIn)
+
+    def keyPressEvent(self, event):
+        if self.btnLogin.isEnabled() and event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            self.btnLogin.click()
+        else:
+            super().keyPressEvent(event)
 
     def setup_page_buttons(self):
         page_buttons = {
@@ -111,6 +118,7 @@ class MainWindow(QMainWindow):
         self.user_session.clearSession()
         self.switchPageAndResetInputs(self.loginPage)
         QMessageBox.information(self, "Log out", "You have been logged out.")
+        self.btnLogin.setEnabled(True)  # Enable the btnLogin button
 
     def showPassword(self, state, page):
         passwordFields = {

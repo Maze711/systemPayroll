@@ -426,15 +426,26 @@ class timecard(QDialog):
         try:
             filtered = []
             for row in self.original_data:
-                check_in_time = row[2]  # assuming index 2 for check-in
-                check_out_time = row[3]  # assuming index 3 for check-out
+                check_in_time = row[4]
+                check_out_time = row[5]
 
                 if filter_values['show_missing']:
                     if check_in_time == 'Missing' or check_out_time == 'Missing':
                         filtered.append(row)
                 else:
                     if check_in_time != 'Missing' and check_out_time != 'Missing':
-                        # apply other filter logic...
+                        check_in_hour = int(check_in_time.split(':')[0])
+                        check_out_hour = int(check_out_time.split(':')[0])
+
+                        if filter_values['check_in_ampm'] == 'AM' and (check_in_hour < 0 or check_in_hour >= 12):
+                            continue
+                        if filter_values['check_in_ampm'] == 'PM' and (check_in_hour < 12 or check_in_hour >= 24):
+                            continue
+                        if filter_values['check_out_ampm'] == 'AM' and (check_out_hour < 0 or check_out_hour >= 12):
+                            continue
+                        if filter_values['check_out_ampm'] == 'PM' and (check_out_hour < 12 or check_out_hour >= 24):
+                            continue
+
                         filtered.append(row)
 
             self.filtered_data = filtered
@@ -446,8 +457,15 @@ class timecard(QDialog):
     @single_function_logger.log_function
     def filterModal(self, checked=False):
         try:
+            # Check if the filter dialog is open already
+            for child in QApplication.instance().topLevelWidgets():
+                if isinstance(child, filter) and child.isVisible():
+                    child.raise_()
+                    return
+
             filter_dialog = filter(self)
             if filter_dialog.exec_() == QDialog.Accepted:
+                # Get the selected filter values
                 filter_values = filter_dialog.get_filter_values()
                 logging.info(f"Filter values received in timecard: {filter_values}")
                 self.apply_filter(filter_values)
@@ -458,14 +476,21 @@ class timecard(QDialog):
 
     @single_function_logger.log_function
     def clear_filter(self):
-        self.filtered_data = self.original_data.copy()
-        logging.info("Filter cleared, reset to original data")
-        self.populateTimeList(self.filtered_data)
+        try:
+            self.filter.cmbCheckIn.setCurrentIndex(0)
+            self.filter.cmbCheckOut.setCurrentIndex(0)
+            logging.info("Filter cleared")
+        except Exception as e:
+            logging.error(f"Error in clear_filter: {str(e)}")
+            logging.error(traceback.format_exc())
 
     @single_function_logger.log_function
-    def show_missing_entries(self):
-        missing_entries = [row for row in self.original_data if
-                           row['Check_In'] == 'Missing' or row['Check_Out'] == 'Missing']
-        self.filtered_data = missing_entries
-        logging.info(f"Showing {len(missing_entries)} missing entries")
-        self.populateTimeList(self.filtered_data)
+    def show_missing(self):
+        try:
+            filter_values = self.filter.get_filter_values()
+            filter_values['show_missing'] = True
+            logging.info("Showing missing entries with filter values: %s", filter_values)
+            self.apply_filter(filter_values)
+        except Exception as e:
+            logging.error(f"Error in show_missing: {str(e)}")
+            logging.error(traceback.format_exc())
