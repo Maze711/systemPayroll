@@ -1,5 +1,6 @@
 import functools
 import logging
+import psutil
 
 # Import classes
 from MainFrame.Resources.lib import *
@@ -13,16 +14,16 @@ from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 
-# Setup logging for application load duration
+# Setup logging for application load duration and memory usage
 duration_logger = logging.getLogger('DurationLogger')
 duration_logger.setLevel(logging.DEBUG)
-duration_file_handler = logging.FileHandler('application_duration.log', mode='w')
+duration_file_handler = logging.FileHandler('application_performance.log', mode='w')
 duration_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 duration_file_handler.setFormatter(duration_formatter)
 duration_logger.addHandler(duration_file_handler)
 
 logging.basicConfig(
-    filename='application_duration.log',
+    filename='application_performance.log',
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
@@ -42,16 +43,35 @@ def get_button_stylesheet(enabled=True):
         }
     '''
 
+def log_memory_usage(stage):
+    process = psutil.Process()
+    mem_info = process.memory_info()
+    duration_logger.info(f"Memory usage at {stage}: {mem_info.rss / (1024 * 1024):.2f} MB")
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        start_time = time.time()
+
+        # Log initial memory usage before UI loads
+        log_memory_usage("Before UI load")
+
         ui_file = globalFunction.resource_path("MainFrame/Resources/UI/Main.ui")
         loadUi(ui_file, self)
+
+        # Log memory usage after UI loads
+        log_memory_usage("After UI load")
+
         self.setFixedSize(800, 600)
         self.initialize_widgets()
         self.setup_connections()
         self.setup_page_buttons()
         load_fonts()  # Ensure fonts are loaded
+
+        # Log memory usage after all initialization
+        log_memory_usage("After initialization")
+
+        duration_logger.info(f"Application initialized in {time.time() - start_time:.2f} seconds.")
 
     def initialize_widgets(self):
         self.open_dialogs = []
@@ -85,12 +105,6 @@ class MainWindow(QMainWindow):
         self.btnLogOut.clicked.connect(self.loggedOut)
         self.authentication.isUserAlreadyLoggedIn(self, self.isLoggedIn)
 
-    def keyPressEvent(self, event):
-        if self.btnLogin.isEnabled() and event.key() in (Qt.Key_Return, Qt.Key_Enter):
-            self.btnLogin.click()
-        else:
-            super().keyPressEvent(event)
-
     def setup_page_buttons(self):
         page_buttons = {
             self.btnSignUpHere: self.signUpPage,
@@ -101,6 +115,12 @@ class MainWindow(QMainWindow):
         }
         for button, targetPage in page_buttons.items():
             button.clicked.connect(lambda _, page=targetPage: self.switchPageAndResetInputs(page))
+
+    def keyPressEvent(self, event):
+        if self.btnLogin.isEnabled() and event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            self.btnLogin.click()
+        else:
+            super().keyPressEvent(event)
 
     def loggedOut(self):
         message = QMessageBox.question(self, "Log out", "Are you sure you want to log out?",
@@ -209,10 +229,12 @@ class MainWindow(QMainWindow):
             'Date Change': self.openDateChange,
             'Time Logger': self.openTimeLogger
         }
-        return dialogs.get(dialog_type, lambda: None)
+        return dialogs.get(dialog_type)
 
     def checkAndHideAdditionalButtons(self):
-        if not (self.btnTimeKeeping.underMouse() or (self.additional_buttons_container and any(button.underMouse() for button in self.additional_buttons_container.children()))):
+        cursor_pos = self.mapFromGlobal(QCursor.pos())
+        button_rect = self.btnTimeKeeping.geometry()
+        if not button_rect.contains(cursor_pos) and not self.additional_buttons_container.geometry().contains(cursor_pos):
             self.hideAdditionalButtons()
 
     def hideAdditionalButtons(self):
@@ -225,13 +247,10 @@ class MainWindow(QMainWindow):
         if self.employee_list_window is None:
             self.employee_list_window = EmployeeList()
             self.open_dialogs.append(self.employee_list_window)
-        self.employee_list_window.show()
-
-    def openPayRoll(self):
-        if self.payroll_window is None:
-            self.payroll_window = PayrollDialog(self)
-            self.open_dialogs.append(self.payroll_window)
-        self.payroll_window.exec()
+        if self.employee_list_window.isVisible():
+            self.employee_list_window.activateWindow()
+        else:
+            self.employee_list_window.show()
 
     def openTimeLogger(self):
         if self.timekeeping_window is None:
@@ -245,11 +264,24 @@ class MainWindow(QMainWindow):
             self.open_dialogs.append(self.datechange)
         self.datechange.show()
 
+    def openPayRoll(self):
+        if self.payroll_window is None:
+            self.payroll_window = PayrollDialog(self)
+            self.open_dialogs.append(self.payroll_window)
+        if self.payroll_window.isVisible():
+            self.payroll_window.activateWindow()
+        else:
+            self.payroll_window.show()
+
+
     def openBugReportModal(self):
         if self.bugReportModal is None:
-            self.bugReportModal = BugReportModal()
+            self.bugReportModal = BugReportModal(self)
             self.open_dialogs.append(self.bugReportModal)
-        self.bugReportModal.show()
+        if self.bugReportModal.isVisible():
+            self.bugReportModal.activateWindow()
+        else:
+            self.bugReportModal.show()
 
 if __name__ == "__main__":
     start_time = time.time()
