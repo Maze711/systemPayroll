@@ -173,6 +173,8 @@ class DateChange(QDialog):
     def showEvent(self, event):
         super().showEvent(event)
         self.reset_selection()
+        if self.add_mode:
+            self.cancel_add_mode()
 
     def add_or_save_holiday(self):
         if self.add_mode:

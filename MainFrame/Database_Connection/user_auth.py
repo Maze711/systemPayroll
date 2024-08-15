@@ -73,6 +73,7 @@ class UserAuthentication(UserAuthorization):
             instance.enableNavButton('btnPayRoll')
 
         self.fetchLoggedInUserInfo(username) # Retrieves all user info to store in session
+        instance.btnLogin.setEnabled(False)  # Disable the btnLogin button
         return
 
     """SIGN UP USER"""

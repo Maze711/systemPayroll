@@ -32,13 +32,17 @@ class filter(QDialog):
                 if combo.itemText(0) != "AM/PM":
                     combo.insertItem(0, "AM/PM")
 
+            # Store the selected values when the filter modal is closed
+            self.selected_check_in = "AM/PM"
+            self.selected_check_out = "AM/PM"
+
         except Exception as e:
             logging.error(f"Error initializing filter dialog: {str(e)}")
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred while initializing the filter dialog: {str(e)}")
 
     @single_function_logger.log_function
-    def clear_filter(self):
+    def clear_filter(self, checked=False):
         self.cmbCheckIn.setCurrentIndex(0)
         self.cmbCheckOut.setCurrentIndex(0)
         if self.parent():
@@ -67,3 +71,10 @@ class filter(QDialog):
         }
         logging.info(f"Filter values: {values}")
         return values
+
+    @single_function_logger.log_function
+    def closeEvent(self, event):
+        # Store the selected values before closing
+        self.selected_check_in = self.cmbCheckIn.currentText()
+        self.selected_check_out = self.cmbCheckOut.currentText()
+        super().closeEvent(event)
