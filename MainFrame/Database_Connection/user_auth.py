@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 
-from MainFrame.systemFunctions import single_function_logger
+from MainFrame.systemFunctions import single_function_logger, DatabaseConnectionError
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.user_session import UserSession
 
@@ -12,11 +12,14 @@ from MainFrame.Database_Connection.user_session import UserSession
 class UserAuthorization:
     @single_function_logger.log_function
     def getUserRole(self, username):
+        connection = None
+        cursor = None
+
         try:
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
+
             cursor = connection.cursor()
             fetch_user_role_in_users_table = "SELECT user_role FROM users WHERE user_name = %s"
             cursor.execute(fetch_user_role_in_users_table, (username,))
@@ -28,8 +31,10 @@ class UserAuthorization:
             logging.error(f"Error fetching user role: {e}")
 
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
@@ -43,62 +48,70 @@ class UserAuthentication(UserAuthorization):
     """LOG IN USER"""
     @single_function_logger.log_function
     def logInUser(self, instance):
-        username = instance.txtUsername.text()
-        password = instance.txtPassword.text()
+        try:
+            username = instance.txtUsername.text()
+            password = instance.txtPassword.text()
 
-        # Input Validations
-        if not username.strip() or not password.strip():
-            QMessageBox.warning(instance, "Input Error", "Please input all fields!")
+            # Input Validations
+            if not username.strip() or not password.strip():
+                QMessageBox.warning(instance, "Input Error", "Please input all fields!")
+                return
+            elif self.isUsernameNotExist(username):
+                QMessageBox.warning(instance, "Username does not exist",
+                                    "Username does not exist, please sign up first!")
+                return
+            elif not self.isCorrectPassword(username, password):
+                QMessageBox.warning(instance, "Incorrect Password",
+                                    "The password you entered is incorrect. Please try again!")
+                return
+
+            QMessageBox.information(instance, "Success", "Login Successful")
+
+            self.isUserAlreadyLoggedIn(instance, True)
+
+            # Enable navigation buttons based on the user's role
+            user_role = self.getUserRole(username)
+            if user_role == 'HR':
+                instance.enableNavButton('btnEmployeeList')
+            elif user_role == 'TimeKeeper':
+                instance.enableNavButton('btnTimeKeeping')
+            elif user_role in ['Accountant', 'Pay Master 1', 'Pay Master 2', 'Pay Master 3']:
+                instance.enableNavButton('btnPayRoll')
+
+            self.fetchLoggedInUserInfo(username) # Retrieves all user info to store in session
+            instance.btnLogin.setEnabled(False)  # Disable the btnLogin button
             return
-        elif self.isUsernameNotExist(username):
-            QMessageBox.warning(instance, "Username does not exist",
-                                "Username does not exist, please sign up first!")
-            return
-        elif not self.isCorrectPassword(username, password):
-            QMessageBox.warning(instance, "Incorrect Password",
-                                "The password you entered is incorrect. Please try again!")
-            return
-
-        QMessageBox.information(instance, "Success", "Login Successful")
-
-        self.isUserAlreadyLoggedIn(instance, True)
-
-        # Enable navigation buttons based on the user's role
-        user_role = self.getUserRole(username)
-        if user_role == 'HR':
-            instance.enableNavButton('btnEmployeeList')
-        elif user_role == 'TimeKeeper':
-            instance.enableNavButton('btnTimeKeeping')
-        elif user_role in ['Accountant', 'Pay Master 1', 'Pay Master 2', 'Pay Master 3']:
-            instance.enableNavButton('btnPayRoll')
-
-        self.fetchLoggedInUserInfo(username) # Retrieves all user info to store in session
-        instance.btnLogin.setEnabled(False)  # Disable the btnLogin button
-        return
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(instance, "Database Connection Error",
+                                 "Please check your network connection or contact the system administrator.")
 
     """SIGN UP USER"""
     @single_function_logger.log_function
     def signUpUser(self, instance):
-        username = instance.txtUsernameSignUp.text()
-        pre_password = instance.txtPrePassword.text()
-        password = instance.txtSignUpPassword.text()
-
-        # Input Validations
-        if not username.strip() or not pre_password.strip() or not password.strip():
-            QMessageBox.warning(instance, "Input Error", "Please input all fields!")
-            return
-        elif not self.isUsernameNotExist(username):
-            QMessageBox.warning(instance, "Input Error", "Username already exist!")
-            return
-        elif not self.isPasswordMatch(pre_password, password):
-            QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
-            return
+        connection = None
+        cursor = None
 
         try:
-            connection = create_connection('SYSTEM_AUTHENTICATION')
-            if connection is None:
-                logging.error("Error: Could not establish database connection.")
+            username = instance.txtUsernameSignUp.text()
+            pre_password = instance.txtPrePassword.text()
+            password = instance.txtSignUpPassword.text()
+
+            # Input Validations
+            if not username.strip() or not pre_password.strip() or not password.strip():
+                QMessageBox.warning(instance, "Input Error", "Please input all fields!")
                 return
+            elif not self.isUsernameNotExist(username):
+                QMessageBox.warning(instance, "Input Error", "Username already exist!")
+                return
+            elif not self.isPasswordMatch(pre_password, password):
+                QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
+                return
+
+            connection = create_connection('SYSTEM_AUTHENTICATION')
+
+            if connection is None:
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
             insert_user_in_users_table = "INSERT INTO users (user_name, user_password) VALUES (%s, %s)"
@@ -115,47 +128,61 @@ class UserAuthentication(UserAuthorization):
         except Error as e:
             logging.error(f"Error Signing Up/Inserting User: {e}")
             return
-
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(instance, "Database Connection Error",
+                                 "Please check your network connection or contact the system administrator.")
+            return
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
     """RESET USER PASSWORD"""
     def verifyExistingUser(self, instance):
-        username = instance.txtUsernameForgot.text()
+        try:
+            username = instance.txtUsernameForgot.text()
 
-        # Input Validations
-        if not username.strip():
-            QMessageBox.warning(instance, "Input Error", "Please enter your username!")
-            return
-        elif self.isUsernameNotExist(username):
-            QMessageBox.warning(instance, "Input Error", "Username does not exist!")
-            return
+            # Input Validations
+            if not username.strip():
+                QMessageBox.warning(instance, "Input Error", "Please enter your username!")
+                return
+            elif self.isUsernameNotExist(username):
+                QMessageBox.warning(instance, "Input Error", "Username does not exist!")
+                return
 
-        QMessageBox.information(instance, "Success", "Your account has been verfied!")
-        instance.switchPageAndResetInputs(instance.resetPassPage)
-        self.setVerifiedUserName(username)
+            QMessageBox.information(instance, "Success", "Your account has been verfied!")
+            instance.switchPageAndResetInputs(instance.resetPassPage)
+            self.setVerifiedUserName(username)
+
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(instance, "Database Connection Error",
+                                 "Please check your network connection or contact the system administrator.")
 
     @single_function_logger.log_function
     def resetUserPassword(self, instance):
-        pre_new_password = instance.txtPreNewPassword.text()
-        new_password = instance.txtNewPassword.text()
-
-        # Input Validations
-        if not pre_new_password.strip() or not new_password.strip():
-            QMessageBox.warning(instance, "Input Error", "Please input all fields!")
-            return
-        elif not self.isPasswordMatch(pre_new_password, new_password):
-            QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
-            return
+        connection = None
+        cursor = None
 
         try:
+            pre_new_password = instance.txtPreNewPassword.text()
+            new_password = instance.txtNewPassword.text()
+
+            # Input Validations
+            if not pre_new_password.strip() or not new_password.strip():
+                QMessageBox.warning(instance, "Input Error", "Please input all fields!")
+                return
+            elif not self.isPasswordMatch(pre_new_password, new_password):
+                QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
+                return
+
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
             update_user_password_in_users_table = "UPDATE users SET user_password = %s WHERE user_name = %s"
@@ -173,10 +200,15 @@ class UserAuthentication(UserAuthorization):
         except Error as e:
             logging.error(f"Error Resetting user password: {e}")
             return
-
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(instance, "Database Connection Error",
+                                 "Please check your network connection or contact the system administrator.")
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
@@ -190,11 +222,13 @@ class UserAuthentication(UserAuthorization):
     """Validation Functions"""
     @single_function_logger.log_function
     def isUsernameNotExist(self, username):
+        connection = None
+        cursor = None
+
         try:
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return False
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
             fetch_username_in_users_table = "SELECT user_name FROM users WHERE user_name = %s"
@@ -211,18 +245,23 @@ class UserAuthentication(UserAuthorization):
             return False
 
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
     @single_function_logger.log_function
     def isCorrectPassword(self, username, password):
+        connection = None
+        cursor = None
+
         try:
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
+
             cursor = connection.cursor()
             fetch_password_in_users_table = "SELECT user_password FROM users WHERE user_name = %s"
             cursor.execute(fetch_password_in_users_table, (username, ))
@@ -241,8 +280,10 @@ class UserAuthentication(UserAuthorization):
             logging.error(f"Error fetching user password: {e}")
 
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
@@ -272,11 +313,13 @@ class UserAuthentication(UserAuthorization):
 
     @single_function_logger.log_function
     def fetchLoggedInUserInfo(self, user_name):
+        connection = None
+        cursor = None
+
         try:
             connection = create_connection('SYSTEM_AUTHENTICATION')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
             fetch_user_id_in_users_table = """
@@ -299,7 +342,9 @@ class UserAuthentication(UserAuthorization):
             return
 
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
