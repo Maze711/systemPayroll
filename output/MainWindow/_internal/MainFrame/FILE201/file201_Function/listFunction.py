@@ -115,7 +115,7 @@ class ListFunction:
             widget.setReadOnly(True)
             widget.setStyleSheet(disableStyle)
 
-    @single_function_logger.log_function
+    #@single_function_logger.log_function
     def fetch_employee_data(self, empID):
         query = """
             SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,

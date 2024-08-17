@@ -77,7 +77,7 @@ class PayrollDialog(QDialog):
             self.progressBar.setFormat("Finishing Up..")
         QApplication.processEvents()
 
-    @single_function_logger.log_function
+    # @single_function_logger.log_function
     def fileProcessingFinished(self, content):
         self.progressBar.setVisible(False)
         self.thread.quit()

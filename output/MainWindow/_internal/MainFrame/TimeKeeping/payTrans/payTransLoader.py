@@ -60,7 +60,7 @@ class PayTrans(QMainWindow):
             self.paytransTable.setItem(i, 6, ordinary_day_ot_item)  # OT Hours (add column index here)
             self.paytransTable.setItem(i, 14, ot_earn_item)  # OT Hours (add column index here)
 
-    @single_function_logger.log_function
+    # @single_function_logger.log_function
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved
         file_name = "paytrans_data.xlsx"
@@ -71,7 +71,7 @@ class PayTrans(QMainWindow):
             QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
             logging.error(f"Export error: {e}")
 
-    @single_function_logger.log_function
+#     @single_function_logger.log_function
     def sendToEmail(self, checked=False):
         message = QMessageBox.question(self, "Sending Email", "Are you sure you want to send an email?",
                                        QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
@@ -153,7 +153,7 @@ class PayTrans(QMainWindow):
 
         return body
 
-    @single_function_logger.log_function
+    # @single_function_logger.log_function
     def send_email(self, em, smtp):
         # Sends email to each receiver
         try:
