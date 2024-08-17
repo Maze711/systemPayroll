@@ -7,7 +7,7 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 
 from MainFrame.systemFunctions import single_function_logger
 
-@single_function_logger.log_function
+# @single_function_logger.log_function
 def add_employee(data):
     try:
         connection = create_connection('FILE201')
@@ -163,7 +163,7 @@ def add_employee(data):
             connection.close()
             #logger.info("Database connection closed")
 
-@single_function_logger.log_function
+# @single_function_logger.log_function
 def save_employee(empl_id, data):
     try:
         connection = create_connection('FILE201')
@@ -286,7 +286,7 @@ def get_generated_employee_id(employee_id):
         except ValueError:
             raise ValueError("Invalid id_number format.")
 
-@single_function_logger.log_function
+# @single_function_logger.log_function
 def executeQuery(query, *args):
     try:
         connection = create_connection('FILE201')

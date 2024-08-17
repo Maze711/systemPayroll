@@ -1,0 +1,12 @@
+2024-08-13 22:51:46,531 - DEBUG - uiname is Dialog
+2024-08-13 22:51:46,532 - DEBUG - toplevel widget is BottomRightDialog
+2024-08-13 22:51:46,532 - DEBUG - setting property geometry
+2024-08-13 22:51:46,532 - DEBUG - setting property windowTitle
+2024-08-13 22:51:46,532 - DEBUG - push BottomRightDialog Dialog
+2024-08-13 22:51:46,532 - DEBUG - setting property geometry
+2024-08-13 22:51:46,532 - DEBUG - setting property text
+2024-08-13 22:51:46,533 - DEBUG - push QLabel label
+2024-08-13 22:51:46,533 - DEBUG - pop widget QLabel label
+2024-08-13 22:51:46,533 - DEBUG - new topwidget <__main__.BottomRightDialog object at 0x000001DD1C83D160>
+2024-08-13 22:51:46,533 - DEBUG - pop widget BottomRightDialog Dialog
+2024-08-13 22:51:46,533 - DEBUG - new topwidget None

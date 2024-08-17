@@ -40,7 +40,7 @@ class timelogger(QMainWindow):
         self.employeeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.employeeListTable.horizontalHeader().setStretchLastSection(True)
 
-    @single_function_logger.log_function
+    # @single_function_logger.log_function
     def processContent(self):
 
         rows = self.content.strip().split('\n')
@@ -75,7 +75,7 @@ class timelogger(QMainWindow):
             })
 
 
-    @single_function_logger.log_function
+#     @single_function_logger.log_function
     def loadData(self):
 
         try:

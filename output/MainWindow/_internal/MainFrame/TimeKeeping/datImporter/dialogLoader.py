@@ -23,7 +23,7 @@ class FileProcessor(QObject):
         self.data = pd.DataFrame()  # Initialize as an empty DataFrame
         self.temp_folder = os.path.join(os.path.dirname(self.fileName), "temp_chunks")
 
-    @single_function_logger.log_function
+    # @single_function_logger.log_function
     def process(self):
         """Main processing method that handles the entire workflow."""
         try:
@@ -192,7 +192,7 @@ class FileProcessor(QObject):
 
 
 
-@single_function_logger.log_function
+# @single_function_logger.log_function
 class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
@@ -212,7 +212,7 @@ class dialogModal(QDialog):
         self.user_name_set = str(self.user_session.get("user_name", ""))
         self.user_role_set = str(self.user_session.get("user_role", ""))
 
-    @single_function_logger.log_function
+# #     @single_function_logger.log_function
     def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Text or DAT File", "",
                                                   "Text Files (*.txt);;DAT Files (*.DAT);;All Files (*)")
