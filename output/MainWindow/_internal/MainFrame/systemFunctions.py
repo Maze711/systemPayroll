@@ -87,6 +87,9 @@ class globalFunction():
             logging.error(f"Failed to export data to Excel: {e}")
             raise
 
+class DatabaseConnectionError(Exception):
+    """Custom Exception Handler for Database Connection Errors"""
+    pass
 
 class timekeepingFunction():
     def __init__(self):
