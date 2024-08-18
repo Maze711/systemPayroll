@@ -35,7 +35,44 @@ background-color: rgb(255, 110, 112);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btnProcessTimeCard">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Process Time Card</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../MainFrame/Resources/Icons/import.svg</normaloff>../../MainFrame/Resources/Icons/import.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>30</width>
+       <height>30</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QPushButton" name="importBTN">
      <property name="minimumSize">
       <size>
@@ -74,40 +111,10 @@ background-color: rgb(255, 110, 112);
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="btnProcessTimeCard">
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>80</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>18</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Process Time Card</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../../MainFrame/Resources/Icons/import.svg</normaloff>../../MainFrame/Resources/Icons/import.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>30</width>
-       <height>30</height>
-      </size>
+   <item row="0" column="0">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
+      <number>0</number>
      </property>
     </widget>
    </item>

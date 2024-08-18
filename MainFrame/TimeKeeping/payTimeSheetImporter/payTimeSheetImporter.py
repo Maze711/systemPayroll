@@ -45,11 +45,17 @@ class PayrollDialog(QDialog):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
-        self.setFixedSize(418, 392)
+        self.setFixedSize(418, 200)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
 
         self.importBTN.clicked.connect(self.importTxt)
+        self.importBTN.setText("Import Excel")
+
+        # Disable the btnProcessTimeCard button
+        if hasattr(self, 'btnProcessTimeCard'):
+            self.btnProcessTimeCard.setVisible(False)
+
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
 
@@ -57,6 +63,7 @@ class PayrollDialog(QDialog):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
 
         if not fileName:
+            QMessageBox.information(self, "No File Selected", "Please select an Excel file to import.")
             return
 
         # Use FileProcessor to handle the file reading
