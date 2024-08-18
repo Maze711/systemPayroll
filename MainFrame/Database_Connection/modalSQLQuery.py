@@ -5,14 +5,10 @@ from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
 
-from MainFrame.systemFunctions import single_function_logger
-
-# @single_function_logger.log_function
 def add_employee(data):
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            #logger.error("Error: Could not establish database connection.")
             return False
 
         cursor = connection.cursor()
@@ -161,9 +157,7 @@ def add_employee(data):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            #logger.info("Database connection closed")
 
-# @single_function_logger.log_function
 def save_employee(empl_id, data):
     try:
         connection = create_connection('FILE201')
@@ -244,11 +238,9 @@ def save_employee(empl_id, data):
 
         # Commit changes to the database
         connection.commit()
-        #logger.info(f"Employee with ID {empl_id} updated successfully")
         return True
 
     except Error as e:
-        #logger.error(f"Error updating employee with ID {empl_id}: {e}")
         print(e)
         return False
 
@@ -256,7 +248,6 @@ def save_employee(empl_id, data):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            #logger.info("Database connection closed")
 
 def revert_employee():
     pass
@@ -286,7 +277,6 @@ def get_generated_employee_id(employee_id):
         except ValueError:
             raise ValueError("Invalid id_number format.")
 
-# @single_function_logger.log_function
 def executeQuery(query, *args):
     try:
         connection = create_connection('FILE201')
@@ -308,4 +298,3 @@ def executeQuery(query, *args):
         if 'connection' in locals() and connection.is_connected():
             cursor.close()
             connection.close()
-            #logger.info("Database connection closed")

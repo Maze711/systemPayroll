@@ -96,7 +96,6 @@ class timekeepingFunction():
     def __init__(self):
         super(timekeepingFunction, self).__init__()
 
-    #@single_function_logger.log_function
     def getTypeOfDate(trans_date):
         logger = logging.getLogger('SingleFunctionLogger')
         try:

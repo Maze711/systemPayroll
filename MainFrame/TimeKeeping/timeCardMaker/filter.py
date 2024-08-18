@@ -3,10 +3,12 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
-from MainFrame.systemFunctions import globalFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class filter(QDialog):
-    # @single_function_logger.log_function
     def __init__(self, parent=None):
         try:
             super().__init__(parent)
@@ -41,7 +43,6 @@ class filter(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred while initializing the filter dialog: {str(e)}")
 
-#     @single_function_logger.log_function
     def clear_filter(self, checked=False):
         self.cmbCheckIn.setCurrentIndex(0)
         self.cmbCheckOut.setCurrentIndex(0)
@@ -50,7 +51,6 @@ class filter(QDialog):
         self.accept()
         logging.info("Filter cleared")
 
-    # @single_function_logger.log_function
     def show_missing(self, checked=False):
         if self.parent():
             filter_values = {
@@ -62,7 +62,6 @@ class filter(QDialog):
             self.parent().apply_filter(filter_values)
         self.accept()
 
-    # @single_function_logger.log_function
     def get_filter_values(self):
         values = {
             'check_in_ampm': self.cmbCheckIn.currentText(),
@@ -72,7 +71,6 @@ class filter(QDialog):
         logging.info(f"Filter values: {values}")
         return values
 
-#     @single_function_logger.log_function
     def closeEvent(self, event):
         # Store the selected values before closing
         self.selected_check_in = self.cmbCheckIn.currentText()

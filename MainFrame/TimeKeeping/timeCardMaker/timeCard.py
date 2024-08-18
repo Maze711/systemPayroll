@@ -8,7 +8,7 @@ from MainFrame.TimeKeeping.timeCardMaker.filter import filter
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 import re
 
 
@@ -128,7 +128,6 @@ class timecard(QDialog):
             cursor.close()
             connection.close()
 
-    # @single_function_logger.log_function
     def populate_time_list_table(self, checked=False):
         """Populate the time list table with check-in and check-out times, machCode, and employee data."""
         selected_year_month = self.yearCC.currentText()
@@ -251,7 +250,6 @@ class timecard(QDialog):
             connection_list_log.close()
             connection_file201.close()
 
-#     @single_function_logger.log_function
     def createTimeSheet(self, checked=False):
         dataMerge = []
 
@@ -357,7 +355,6 @@ class timecard(QDialog):
                 item.setTextAlignment(Qt.AlignCenter)
                 self.TimeListTable.setItem(row_position, col, item)
 
-    # @single_function_logger.log_function
     def getTotalHoursWorked(self, time_start, time_end):
         if time_start == 'Missing' or time_end == 'Missing':
             return "Unknown"
@@ -381,7 +378,6 @@ class timecard(QDialog):
 
         return round(work_duration_in_hours, 2)
 
-#     @single_function_logger.log_function
     def CheckSched(self, checked=False):
         selected_row = self.TimeListTable.currentRow()
 
@@ -420,7 +416,6 @@ class timecard(QDialog):
                 "Please select a row from the table first!"
             )
 
-    # @single_function_logger.log_function
     def apply_filter(self, filter_values):
         try:
             filtered = []
@@ -453,7 +448,6 @@ class timecard(QDialog):
             logging.error(f"Error in apply_filter: {str(e)}")
             QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
 
-#     @single_function_logger.log_function
     def filterModal(self, checked=False):
         try:
             # Check if the filter dialog is open already
@@ -473,7 +467,6 @@ class timecard(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
 
-    # @single_function_logger.log_function
     def clear_filter(self):
         try:
             self.filter.cmbCheckIn.setCurrentIndex(0)
@@ -483,7 +476,6 @@ class timecard(QDialog):
             logging.error(f"Error in clear_filter: {str(e)}")
             logging.error(traceback.format_exc())
 
-#     @single_function_logger.log_function
     def show_missing(self):
         try:
             filter_values = self.filter.get_filter_values()

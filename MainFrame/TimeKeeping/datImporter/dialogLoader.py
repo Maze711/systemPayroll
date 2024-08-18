@@ -1,16 +1,17 @@
 import sys
 import os
 
-
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
-from MainFrame.systemFunctions import globalFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.notificationMaker import notificationLoader
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -178,7 +179,7 @@ class FileProcessor(QObject):
             except OSError as e:
                 logging.error(f"Error deleting chunk file: {chunk_file}, {e}")
 
-# @single_function_logger.log_function
+
 class dialogModal(QDialog):
     def __init__(self):
         super().__init__()
@@ -198,7 +199,6 @@ class dialogModal(QDialog):
         self.user_name_set = str(self.user_session.get("user_name", ""))
         self.user_role_set = str(self.user_session.get("user_role", ""))
 
-# #     @single_function_logger.log_function
     def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Text or DAT File", "",
                                                   "Text Files (*.txt);;DAT Files (*.DAT);;All Files (*)")

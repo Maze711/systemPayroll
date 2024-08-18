@@ -2,8 +2,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.Database_Connection.modalSQLQuery import add_employee, save_employee
+
 
 def set_fields_non_editable(modal):
     activeStyle = "background-color: white; color: black;"
@@ -143,14 +143,9 @@ class modalFunction:
             # Create a dictionary with field names as keys and values as GUI input values
             data = {name: value for name, value in required_fields}
 
-            # Log data
-            #for key, value in data.items():
-                #logger.info(f"{key}: {value}")
-
             # Call function to add employee data to the database
             success = add_employee(data)
             message = "Employee data added successfully." if success else "Failed to add employee data."
-            #logger.info(message)
             if success:
                 QMessageBox.information(self.main_window, "Success", message)
                 self.main_window.close()  # Closes the modal
@@ -158,7 +153,6 @@ class modalFunction:
                 QMessageBox.critical(self.main_window, "Error", message)
 
         except Exception as e:
-            #logger.error(f"Error in add_Employee: {e}")
             QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
 
     def edit_Employee(self):

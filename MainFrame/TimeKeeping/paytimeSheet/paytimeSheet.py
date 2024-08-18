@@ -3,7 +3,9 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.payTrans.payTransLoader import PayTrans
-from MainFrame.systemFunctions import globalFunction, single_function_logger, timekeepingFunction
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
 class PayComputation:
@@ -72,7 +74,6 @@ class PaytimeSheet(QMainWindow):
 
         self.populatePaytimeSheetTable(self.data)
 
-    # @single_function_logger.log_function
     def populatePaytimeSheetTable(self, data):
         for row in range(self.paytimesheetTable.rowCount()):
             self.paytimesheetTable.setRowHidden(row, False)
@@ -131,7 +132,6 @@ class PaytimeSheet(QMainWindow):
             # Logging the row data being added
             logging.info(f"Adding row {i}: {row}")
 
-#     @single_function_logger.log_function
     def createPayTrans(self, checked=False):
         from_date = self.lblFrom.text()
         to_date = self.lblTo.text()

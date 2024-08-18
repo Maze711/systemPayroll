@@ -1,5 +1,4 @@
 import functools
-import logging
 import psutil
 
 # Import classes
@@ -14,20 +13,6 @@ from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 
-# # Setup logging for application load duration and memory usage
-# duration_logger = logging.getLogger('DurationLogger')
-# duration_logger.setLevel(logging.DEBUG)
-# duration_file_handler = logging.FileHandler('application_performance.log', mode='w')
-# duration_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-# duration_file_handler.setFormatter(duration_formatter)
-# duration_logger.addHandler(duration_file_handler)
-#
-# logging.basicConfig(
-#     filename='application_performance.log',
-#     level=logging.DEBUG,
-#     format='%(asctime)s - %(levelname)s - %(message)s'
-# )
-# duration_logger = logging.getLogger('DurationLogger')
 
 @functools.cache
 def get_button_stylesheet(enabled=True):
@@ -46,7 +31,6 @@ def get_button_stylesheet(enabled=True):
 def log_memory_usage(stage):
     process = psutil.Process()
     mem_info = process.memory_info()
-    # duration_logger.info(f"Memory usage at {stage}: {mem_info.rss / (1024 * 1024):.2f} MB")
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -70,8 +54,6 @@ class MainWindow(QMainWindow):
 
         # Log memory usage after all initialization
         log_memory_usage("After initialization")
-
-        # duration_logger.info(f"Application initialized in {time.time() - start_time:.2f} seconds.")
 
     def initialize_widgets(self):
         self.open_dialogs = []
@@ -288,5 +270,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    # duration_logger.info(f"Application initialized in {time.time() - start_time:.2f} seconds.")
     sys.exit(app.exec_())
