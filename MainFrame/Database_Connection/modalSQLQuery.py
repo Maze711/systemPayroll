@@ -4,12 +4,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.systemFunctions import DatabaseConnectionError
 
 def add_employee(data):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            return False
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
 
@@ -154,16 +158,21 @@ def add_employee(data):
         logging.error(f"Error adding employee: {ex}")
         return False
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
+            logging.info("Database connection closed")
 
 def save_employee(empl_id, data):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            logging.error("Error: Could not establish database connection.")
-            return False
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
 
@@ -245,9 +254,12 @@ def save_employee(empl_id, data):
         return False
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
+            logging.info("Database connection closed")
 
 def revert_employee():
     pass
@@ -278,11 +290,13 @@ def get_generated_employee_id(employee_id):
             raise ValueError("Invalid id_number format.")
 
 def executeQuery(query, *args):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            logging.error("Error: Could not establish database connection.")
-            return []
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
         values = args
@@ -295,6 +309,9 @@ def executeQuery(query, *args):
         return []
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
+            logging.info("Database connection closed")

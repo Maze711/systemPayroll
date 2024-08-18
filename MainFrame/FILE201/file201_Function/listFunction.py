@@ -6,6 +6,7 @@ from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeQuery
 from MainFrame.FILE201.Other_Information.otherInformationModal import personalModal
+from MainFrame.systemFunctions import DatabaseConnectionError
 
 
 class ListFunction:
@@ -22,22 +23,29 @@ class ListFunction:
 
     # Displays all employees in the table
     def displayEmployees(self):
-        # Clears/Resets the rows in the table
-        self.main_window.employeeListTable.setRowCount(0)
+        try:
+            # Clears/Resets the rows in the table
+            self.main_window.employeeListTable.setRowCount(0)
 
-        # Select only the required columns and order by surname
-        query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY surname"
-        employees = executeQuery(query)
+            # Select only the required columns and order by surname
+            query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY surname"
+            employees = executeQuery(query)
 
-        if employees is None:
-            print("There are no current employees")
-            return
+            if employees is None:
+                print("There are no current employees")
+                return
 
-        for rowNum, eachRow in enumerate(employees):
-            self.main_window.employeeListTable.insertRow(rowNum)
-            # Assuming eachRow contains (empl_id, surname, firstname, mi)
-            for column, data in enumerate(eachRow):
-                self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+            for rowNum, eachRow in enumerate(employees):
+                self.main_window.employeeListTable.insertRow(rowNum)
+                # Assuming eachRow contains (empl_id, surname, firstname, mi)
+                for column, data in enumerate(eachRow):
+                    self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(self.main_window, "Database Connection Error",
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
+
 
     # Retrieves selected row in the employeeListTable
     def getSelectedRow(self):
@@ -56,43 +64,57 @@ class ListFunction:
             self.main_window.txtMiddleName.setText(middleName)
 
     def searchAndDisplay(self, searchText):
-        self.main_window.employeeListTable.setRowCount(0)
+        try:
+            self.main_window.employeeListTable.setRowCount(0)
 
-        query = """
-            SELECT empl_id, surname, firstname, mi FROM emp_info 
-            WHERE empl_id LIKE %s OR surname LIKE %s OR firstname LIKE %s OR mi LIKE %s
-            ORDER BY surname
-        """
-        searchText = f"%{searchText}%"
-        employees = executeQuery(query, searchText, searchText, searchText, searchText)
+            query = """
+                SELECT empl_id, surname, firstname, mi FROM emp_info 
+                WHERE empl_id LIKE %s OR surname LIKE %s OR firstname LIKE %s OR mi LIKE %s
+                ORDER BY surname
+            """
+            searchText = f"%{searchText}%"
+            employees = executeQuery(query, searchText, searchText, searchText, searchText)
 
-        if employees is None:
-            print("No employees match the search criteria")
-            return
+            if employees is None:
+                print("No employees match the search criteria")
+                return
 
-        for rowNum, eachRow in enumerate(employees):
-            self.main_window.employeeListTable.insertRow(rowNum)
-            for column, data in enumerate(eachRow):
-                self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+            for rowNum, eachRow in enumerate(employees):
+                self.main_window.employeeListTable.insertRow(rowNum)
+                for column, data in enumerate(eachRow):
+                    self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(self.main_window, "Database Connection Error",
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
 
     def open_otherInformationMODAL_view(self):
-        modal = personalModal(mode='view')
+        try:
+            modal = personalModal(mode='view')
 
-        selected_row = self.main_window.employeeListTable.currentRow()
-        if selected_row != -1:
-            empID = self.main_window.employeeListTable.item(selected_row, 0).text()
-            employee_data = self.fetch_employee_data(empID)
-            if employee_data:
-                self.populate_modal_with_employee_data(modal, employee_data)
-                self.set_fields_non_editable(modal)
-                modal.finished.connect(self.displayEmployees)
-                modal.exec_()
-        else:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Warning)
-            msg.setText("Please select a row from the table")
-            msg.setWindowTitle("No Row Selected")
-            msg.exec_()
+            selected_row_id = self.main_window.txtEmployeeID.text()
+            if selected_row_id != "":
+                empID = selected_row_id
+                employee_data = self.fetch_employee_data(empID)
+                if employee_data:
+                    self.populate_modal_with_employee_data(modal, employee_data)
+                    self.set_fields_non_editable(modal)
+                    modal.finished.connect(self.displayEmployees)
+                    modal.exec_()
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Warning)
+                msg.setText("Please select a row from the table")
+                msg.setWindowTitle("No Row Selected")
+                msg.exec_()
+
+        except DatabaseConnectionError as dce:
+            logging.error(f"Database Connection Error: {dce}")
+            QMessageBox.critical(self.main_window, "Database Connection Error",
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
 
     def set_fields_non_editable(self, modal):
         disableStyle = "background-color: lightgray; color: gray;"
@@ -114,6 +136,9 @@ class ListFunction:
             widget.setStyleSheet(disableStyle)
 
     def fetch_employee_data(self, empID):
+        connection = None
+        cursor = None
+
         query = """
             SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
                p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex,
@@ -139,8 +164,7 @@ class ListFunction:
         try:
             connection = create_connection('FILE201')
             if connection is None:
-                logging.error("Error: Could not establish database connection.")
-                return None
+                raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
             cursor.execute(query, (empID,))
@@ -154,8 +178,10 @@ class ListFunction:
             return None
 
         finally:
-            if 'connection' in locals() and connection.is_connected():
+            if cursor is not None:
                 cursor.close()
+            # Ensure the connection is closed if it was established
+            if connection is not None and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 

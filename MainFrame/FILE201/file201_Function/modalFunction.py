@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.modalSQLQuery import add_employee, save_employee
+from MainFrame.systemFunctions import DatabaseConnectionError
 
 
 def set_fields_non_editable(modal):
@@ -150,10 +151,11 @@ class modalFunction:
                 QMessageBox.information(self.main_window, "Success", message)
                 self.main_window.close()  # Closes the modal
             else:
-                QMessageBox.critical(self.main_window, "Error", message)
-
+                QMessageBox.critical(self.main_window, "Adding Employee Error", f"{message} "
+                                                                f"Please check your network connection or contact the "
+                                                                f"system administrator.")
         except Exception as e:
-            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {e}")
+            QMessageBox.critical(self.main_window, "Adding Employee Error", f"An error occurred: {e}")
 
     def edit_Employee(self):
         self.set_fields_editable()
@@ -259,23 +261,28 @@ class modalFunction:
         return data
 
     def save_Employee(self):
-        empID = self.main_window.idDisplay.text()
-        data = self.gather_form_data()
+        message = QMessageBox.question(self.main_window, "Save Employee", "Are you sure you want to save changes?",
+                                       QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
+        if message == QMessageBox.Yes:
+            empID = self.main_window.idDisplay.text()
+            data = self.gather_form_data()
 
-        try:
-            success = save_employee(empID, data)
+            try:
+                success = save_employee(empID, data)
 
-            if success:
-                QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
-                self.main_window.close()  # Close the modal upon successful save
-            else:
-                logging.error(f"Failed to save employee data for Employee ID: {empID}.")
-                QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")
+                if success:
+                    QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
+                    self.main_window.close()  # Close the modal upon successful save
+                else:
+                    logging.error(f"Failed to save employee data for Employee ID: {empID}.")
+                    QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")
 
-        except Exception as e:
-            logging.error(
-                f"An unexpected error occurred while saving employee data for Employee ID: {empID}. Error: {e}")
-            QMessageBox.critical(self.main_window, "Error", f"An unexpected error occurred: {e}")
+            except DatabaseConnectionError as dce:
+                logging.error(f"Database Connection Error: {dce}")
+                QMessageBox.critical(self.main_window, "Saving Employee Data Error",
+                                        f"Failed to save employee data "
+                                     "An unexpected disconnection has occurred. Please check your network connection or "
+                                     "contact the system administrator.")
 
 
     def revert_Employee(self):
