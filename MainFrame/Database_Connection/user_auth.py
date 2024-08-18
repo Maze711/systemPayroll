@@ -82,7 +82,8 @@ class UserAuthentication(UserAuthorization):
         except DatabaseConnectionError as dce:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(instance, "Database Connection Error",
-                                 "Please check your network connection or contact the system administrator.")
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
 
     """SIGN UP USER"""
     def signUpUser(self, instance):
@@ -128,7 +129,8 @@ class UserAuthentication(UserAuthorization):
         except DatabaseConnectionError as dce:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(instance, "Database Connection Error",
-                                 "Please check your network connection or contact the system administrator.")
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
             return
         finally:
             if cursor is not None:
@@ -158,7 +160,8 @@ class UserAuthentication(UserAuthorization):
         except DatabaseConnectionError as dce:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(instance, "Database Connection Error",
-                                 "Please check your network connection or contact the system administrator.")
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
 
     def resetUserPassword(self, instance):
         connection = None
@@ -199,7 +202,8 @@ class UserAuthentication(UserAuthorization):
         except DatabaseConnectionError as dce:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(instance, "Database Connection Error",
-                                 "Please check your network connection or contact the system administrator.")
+                                 "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
         finally:
             if cursor is not None:
                 cursor.close()

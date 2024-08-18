@@ -12,6 +12,7 @@ from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
+from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 
 
 @functools.cache
@@ -229,6 +230,11 @@ class MainWindow(QMainWindow):
         if self.employee_list_window is None:
             self.employee_list_window = EmployeeList()
             self.open_dialogs.append(self.employee_list_window)
+
+        if not self.employee_list_window.isVisible():
+            # Clears the Employee Basic Info upon closing
+            ListFunction(self.employee_list_window).clearFunction()
+
         if self.employee_list_window.isVisible():
             self.employee_list_window.activateWindow()
         else:
