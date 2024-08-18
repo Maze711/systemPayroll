@@ -304,7 +304,8 @@ def update_db_for_missing_row_columns(parent):
                 'tin': 'tin', 'pagibig': 'pagibig', 'philhealth': 'philhealth', 'bank_code': 'bank_code'
             }
             posnsched_column_mapping = {
-                'empl_id': 'empno', 'pos_descr': 'pos_descr', 'dept_name': 'dept_name', 'sche_name': 'sche_name'
+                'empl_id': 'empno', 'pos_descr': 'pos_descr', 'dept_name': 'dept_name', 'sche_name': 'sche_name',
+                'empid': 'emp_id'
             }
             status_column_mapping = {
                 'empl_id': 'empno', 'position': 'pos_descr'
@@ -324,7 +325,7 @@ def update_db_for_missing_row_columns(parent):
                 UPDATE emp_list_id SET sss = %s, tin = %s, pagibig = %s, philhealth = %s, bank_code = %s WHERE empl_id = %s
             """
             update_posnsched_query = """
-                UPDATE emp_posnsched SET pos_descr = %s, sched_in = %s, sched_out = %s, dept_name = %s WHERE empl_id = %s
+                UPDATE emp_posnsched SET empid = %s, pos_descr = %s, sched_in = %s, sched_out = %s, dept_name = %s WHERE empl_id = %s
             """
             update_status_query = """
                 UPDATE emp_status SET position = %s WHERE empl_id = %s
@@ -402,11 +403,13 @@ def update_db_for_missing_row_columns(parent):
                 # Position Schedule
                 sched_in, sched_out = split_schedule(str(row[headers.index(posnsched_column_mapping['sche_name'])]))
                 posnsched_row = (
+                    row[headers.index(posnsched_column_mapping['empid'])],
                     str(row[headers.index(posnsched_column_mapping['pos_descr'])]).upper(),
                     sched_in,
                     sched_out,
                     str(row[headers.index(posnsched_column_mapping['dept_name'])]),
                     empno
+
                 )
                 posnsched_data.append(posnsched_row)
 

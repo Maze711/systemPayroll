@@ -7,7 +7,7 @@ from MainFrame.FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
 from MainFrame.FILE201.file201_Function.excelExport import fetch_personal_information, export_to_excel
-from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB
+from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB, update_db_for_missing_row_columns
 
 from MainFrame.systemFunctions import globalFunction
 
@@ -45,7 +45,8 @@ class EmployeeList(QMainWindow):
         self.txtSearch.textChanged.connect(self.functions.searchEmployees)
         self.btnExport.clicked.connect(self.export_to_excel)
         self.btnImport = self.findChild(QPushButton, 'btnImport')
-        self.btnImport.clicked.connect(lambda: importIntoDB(self, self.functions.displayEmployees))
+        #self.btnImport.clicked.connect(lambda: importIntoDB(self, self.functions.displayEmployees))
+        self.btnImport.clicked.connect(lambda: update_db_for_missing_row_columns(self))
 
     def export_to_excel(self):
         data_dict = fetch_personal_information()
