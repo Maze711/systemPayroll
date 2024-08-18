@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
-
+from MainFrame.Database_Connection.user_session import UserSession
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -13,6 +13,8 @@ class PayTrans(QMainWindow):
         self.setFixedSize(1700, 665)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytrans.ui")
         loadUi(ui_file, self)
+
+        self.user_session = UserSession().getALLSessionData()
 
         self.data = data
         self.original_data = data  # Store original data
@@ -78,9 +80,9 @@ class PayTrans(QMainWindow):
                                        QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
         if message == QMessageBox.Yes:
             try:
-                # Replace your email credentials here for testing
-                email_sender = '' # Place your email here
-                email_password = '' # Place your generated google password here
+                sender_name = str(self.user_session["user_name"])
+                email_sender = str(self.user_session['user_email'])
+                email_password = str(self.user_session['user_email_password'])
 
                 # Tentative Email Receiver
                 email_receiver = ['rodelcuyag123@gmail.com', 'badlonmazeclarion@gmail.com', 'jhayemcalleja011@gmail.com']
@@ -97,10 +99,10 @@ class PayTrans(QMainWindow):
                         body = self.prepare_email_body(row, date_sent)
 
                         em = EmailMessage()
-                        em['From'] = email_sender
+                        em['From'] = formataddr((f"{sender_name}", f"{email_sender}"))
                         em['To'] = email_receiver[i]
                         em['Subject'] = subject
-                        em.set_content(body)
+                        em.add_alternative(body, subtype='html')
 
                         if self.send_email(em, smtp):
                             logging.info(f"Email sent successfully to {email_receiver[i]}")
@@ -118,7 +120,7 @@ class PayTrans(QMainWindow):
                 logging.error(f"Unexpected error: {e}")
 
     def prepare_email_body(self, row, date_sent):
-        # Prepares the content/body of an email
+        """ Prepares the content/body of an email"""
         employee_number = row['EmpNo']
         biometrics_number = row['BioNum']
         employee_name = row['EmpName']
@@ -128,29 +130,296 @@ class PayTrans(QMainWindow):
         ordinary_day_overtime = row.get('OrdinaryDayOT', 'N/A')
         overtime_earnings = row['OT_Earn']
 
-        body = f"""
-        Dear {employee_name},
 
-            Below are your payroll details for the period {date_sent}.
-
-            Employee Information:
-
-            Employee Number: {employee_number}
-            Biometrics Number: {biometrics_number}
-            Employee Name: {employee_name}
-
-            Attendance & Earnings:
-
-            Daily Rate: {daily_rate} PHP
-            Basic Salary: {basic_salary} PHP
-            Days Present: {present_days} days
-            Ordinary Day Overtime: {ordinary_day_overtime} hrs
-            Overtime Earnings: {overtime_earnings} PHP
-
-        If you have any questions or need further clarification regarding your payroll, please feel free to reach out to the HR department.
-
-        Thank you for your hard work and dedication.
+        # stylesheet for html body
+        styles = """
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+              height: 10px;
+            }
+            
+            .earningsTable td {
+              text-align: right;
+            }
+            
+            .othersTable td {
+              text-align: right;
+            }
+            
+            .deductionsTable td {
+              text-align: right;
+            }
+            
+            .earningsTable th {
+              font-weight: normal;
+            }
+            
+            .othersTable th {
+              font-weight: normal;
+            }
+            
+            .deductionsTable th {
+              font-weight: normal;
+            }
+        </style>
         """
+
+        html_body = f"""
+        <html>
+            <head>
+                {styles}
+            </head>
+            <body>
+                <p>Dear {employee_name},</p>
+
+                <p>Below are your payroll details: </p>
+                
+                <table>
+                    <tr>
+                        <th>Employee Name</th>
+                        <td>{employee_name}</td>
+                        <th>Payroll cut off period</th>
+                        <td>{self.from_date} - {self.to_date}</td>
+                    </tr>
+                    <tr>
+                        <th>Employee Number</th>
+                        <td>{employee_number}</td>
+                        <th>Department</th>
+                        <td>CITCS</td>
+                    </tr>
+                </table>
+            
+                <br>
+                
+                <table class="tables">
+                    <tr>
+                        <td style="border:none"></td>
+                        <td style="border:none"></td>
+                        <th><b>NET PAY</b></th>
+                        <td>5,000</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="earningsTable">
+                                <tr>
+                                  <th colspan="3"><b>Earnings</b></th>
+                                </tr>
+                                <tr>
+                                  <th>BASIC PAY</th>
+                                  <td>11</td>
+                                  <td>{basic_salary}</td>
+                                </tr>
+                                <tr>
+                                  <th>OVERTIME</th>
+                                  <td>11</td>
+                                  <td>{overtime_earnings}</td>
+                                </tr>
+                                <tr>
+                                  <th>SUN/SPCL</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>SUN/SPCL OT</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>SUN NIGHT DIFF</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>NIGHT DIFF</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>NIGHT OT</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>HOLIDAY</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>ALLOWANCE</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th>OTHERS (+)</th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th></th>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <th><b>GROSS PAY</b></th>
+                                  <td>11</td>
+                                  <td>5,000</td>
+                                </tr>
+                                <tr>
+                                  <th></th>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                            </table>
+                        </td>
+                    <td style="padding: 8px;"></td>
+                    <td colspan="2">
+                        <table class="deductionsTable">
+                            <tr>
+                              <th colspan="2"><b>DEDUCTIONS</b></th>
+                            </tr>
+                            <tr>
+                              <th>LATE / ABSENT</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>SSS LOAN</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>PAG IBIG LOAN</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>CASH ADVANCE</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>CANTEEN</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>TAX</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>SSS</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>MEDICARE/PHILHEALTH</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>PAGIBIG</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th>OTHERS (+)</th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th></th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th><b>TOTAL DEDUCTIONS</b></th>
+                              <td>5,000</td>
+                            </tr>
+                            <tr>
+                              <th></th>
+                              <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                  </tr>
+                </table>
+                
+                <br>
+                <br>
+                
+                <table class="othersTable">
+                    <tr>
+                        <th style="text-align: center;" colspan="2"><b>OTHERS (+)</b></th>
+                        <th style="text-align: center;" colspan="4"><b>OTHERS (+)</b></th>
+                    </tr>
+                    <tr>
+                        <th>TYLS</th>
+                        <td>0.00</td>
+                        <th>CLINIC</th>
+                        <td>0.00</td>
+                        <th>NTPECA CONTRI</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>OS ALLOWANCE</th>
+                        <td>0.00</td>
+                        <th>ARAYATA ANNUAL</th>
+                        <td>0.00</td>
+                        <th>LONG TERM</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>CBA ALLOWANCE</th>
+                        <td>0.00</td>
+                        <th>HMI</th>
+                        <td>0.00</td>
+                        <th>SHORT TERM</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>HAZARD PAY</th>
+                        <td>0.00</td>
+                        <th>FUNERAL</th>
+                        <td>0.00</td>
+                        <th>CFE</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>PA</th>
+                        <td>0.00</td>
+                        <th>VOLUNTARY</th>
+                        <td>0.00</td>
+                        <th>GUARANTOR</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>HOL EARN/SUN ND</th>
+                        <td>0.00</td>
+                        <th>HDMF MP2</th>
+                        <td>0.00</td>
+                        <th>TRANSPO</th>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <th>BACKPAY</th>
+                        <td>0.00</td>
+                        <th>UD/AF</th>
+                        <td>0.00</td>
+                        <th>OTHERS</th>
+                        <td>0.00</td>
+                    </tr>
+                </table>
+                
+                <p>If you have any questions or need further clarification regarding your payroll, please feel free to reach out to the HR department.</p>
+
+                <p>Thank you for your hard work and dedication.</p>
+            </body>
+        </html>
+        """
+
+        # Inlining css styles to html body
+        body = inline(html_body)
 
         return body
 

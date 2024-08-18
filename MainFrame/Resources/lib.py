@@ -19,6 +19,8 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 import warnings
+from css_inline import inline
+from email.utils import formataddr
 
 from dotenv import load_dotenv
 
