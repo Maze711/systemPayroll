@@ -28,11 +28,13 @@ class timecard(QDialog):
         self.dateFromCC = self.findChild(QComboBox, 'dateFromCC')
         self.dateToCC = self.findChild(QComboBox, 'dateToCC')
         self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
+        self.costCenterBox = self.findChild(QComboBox, 'costCenterBox')
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
 
         # Initialize the year combo box
         self.populate_year_combo_box()
+        self.populateCostCenterBox()
 
         # Connect signals to slots
         self.yearCC.currentTextChanged.connect(self.populate_date_combo_boxes)
@@ -123,6 +125,39 @@ class timecard(QDialog):
 
         except Exception as e:
             logging.error(f"Error populating date combo boxes: {e}")
+
+        finally:
+            cursor.close()
+            connection.close()
+
+    def populateCostCenterBox(self):
+        """Populate the costCenterBox with values from the pos_descr column in the emp_posnsched table."""
+        connection = create_connection('FILE201')  # Ensure you have a create_connection function for 'FILE201'
+        if not connection:
+            logging.error("Error: Unable to connect to FILE201 database.")
+            return
+
+        try:
+            cursor = connection.cursor()
+
+            # Query to fetch distinct pos_descr values
+            query = "SELECT DISTINCT pos_descr FROM emp_posnsched ORDER BY pos_descr"
+            cursor.execute(query)
+
+            # Fetch all results
+            pos_descr_list = cursor.fetchall()
+
+            # Clear the current items in the QComboBox
+            self.costCenterBox.clear()
+
+            # Add items to the QComboBox
+            for pos_descr in pos_descr_list:
+                self.costCenterBox.addItem(pos_descr[0])  # pos_descr is a tuple, so get the first element
+
+            logging.info("Cost center box populated successfully.")
+
+        except Exception as e:
+            logging.error(f"Error populating cost center box: {e}")
 
         finally:
             cursor.close()
@@ -256,6 +291,7 @@ class timecard(QDialog):
         for row in range(self.TimeListTable.rowCount()):
             # Fetch data from the table for each row
             bioNum = self.TimeListTable.item(row, 0).text()
+            emp_name = self.TimeListTable.item(row, 1).text()  # Get emp_name
             trans_date = self.TimeListTable.item(row, 2).text()
             check_in = self.TimeListTable.item(row, 4).text()
             check_out = self.TimeListTable.item(row, 5).text()
@@ -306,6 +342,7 @@ class timecard(QDialog):
             # Append the data to the dataMerge list
             dataMerge.append({
                 'BioNum': bioNum,
+                'Employee': emp_name,  # Include emp_name
                 'Check_In': check_in,
                 'Check_Out': check_out,
                 'Hours_Worked': str(hoursWorked),
