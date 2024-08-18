@@ -258,7 +258,7 @@ class MainWindow(QMainWindow):
 
     def openBugReportModal(self):
         if self.bugReportModal is None:
-            self.bugReportModal = BugReportModal(self)
+            self.bugReportModal = BugReportModal()
             self.open_dialogs.append(self.bugReportModal)
         if self.bugReportModal.isVisible():
             self.bugReportModal.activateWindow()

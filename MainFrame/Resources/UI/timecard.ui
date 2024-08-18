@@ -433,7 +433,7 @@ border-radius: 5px;
       <rect>
        <x>130</x>
        <y>140</y>
-       <width>91</width>
+       <width>101</width>
        <height>35</height>
       </rect>
      </property>
@@ -445,122 +445,122 @@ border-radius: 5px;
      </property>
      <item>
       <property name="text">
-       <string>1</string>
+       <string>00:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>2</string>
+       <string>01:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>3</string>
+       <string>02:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>4</string>
+       <string>03:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>5</string>
+       <string>04:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>6</string>
+       <string>05:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>7</string>
+       <string>06:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>8</string>
+       <string>07:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>9</string>
+       <string>08:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>10</string>
+       <string>09:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>11</string>
+       <string>10:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>12</string>
+       <string>11:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>13</string>
+       <string>12:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>14</string>
+       <string>13:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>15</string>
+       <string>14:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>16</string>
+       <string>15:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>17</string>
+       <string>16:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>18</string>
+       <string>17:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>19</string>
+       <string>18:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>20</string>
+       <string>19:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>21</string>
+       <string>20:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>22</string>
+       <string>21:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>23</string>
+       <string>22:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>24</string>
+       <string>23:00</string>
       </property>
      </item>
     </widget>
@@ -569,7 +569,7 @@ border-radius: 5px;
       <rect>
        <x>10</x>
        <y>140</y>
-       <width>91</width>
+       <width>101</width>
        <height>35</height>
       </rect>
      </property>
@@ -581,122 +581,122 @@ border-radius: 5px;
      </property>
      <item>
       <property name="text">
-       <string>1</string>
+       <string>00:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>2</string>
+       <string>01:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>3</string>
+       <string>02:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>4</string>
+       <string>03:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>5</string>
+       <string>04:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>6</string>
+       <string>05:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>7</string>
+       <string>06:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>8</string>
+       <string>07:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>9</string>
+       <string>08:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>10</string>
+       <string>09:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>11</string>
+       <string>10:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>12</string>
+       <string>11:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>13</string>
+       <string>12:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>14</string>
+       <string>13:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>15</string>
+       <string>14:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>16</string>
+       <string>15:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>17</string>
+       <string>16:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>18</string>
+       <string>17:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>19</string>
+       <string>18:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>20</string>
+       <string>19:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>21</string>
+       <string>20:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>22</string>
+       <string>21:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>23</string>
+       <string>22:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>24</string>
+       <string>23:00</string>
       </property>
      </item>
     </widget>
