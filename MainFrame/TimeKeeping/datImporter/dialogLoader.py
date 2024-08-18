@@ -22,6 +22,9 @@ class dialogModal(QDialog):
         self.importBTN.clicked.connect(self.importTxt)
         self.btnProcessTimeCard.clicked.connect(self.validateToOpen)
 
+        if hasattr(self, 'progressBar'):
+            self.progressBar.setVisible(False)
+
     def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open DAT File", "", "DAT Files (*.DAT)")
         if fileName:
