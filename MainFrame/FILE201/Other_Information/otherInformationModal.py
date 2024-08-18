@@ -2,16 +2,16 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
-
 from MainFrame.systemFunctions import globalFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class personalModal(QDialog):
     def __init__(self, mode='view'):
         super(personalModal, self).__init__()
         self.setFixedSize(1153, 665)
-        #ui_file = os.path.join(os.path.dirname(__file__), 'personalInformation.ui')
         ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\personalInformation.ui"))
         loadUi(ui_file, self)
 

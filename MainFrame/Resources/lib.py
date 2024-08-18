@@ -18,6 +18,7 @@ import openpyxl
 from email.message import EmailMessage
 import ssl
 import smtplib
+import warnings
 
 from dotenv import load_dotenv
 
@@ -29,7 +30,7 @@ from PyQt5.QtWidgets import (
     QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox, QStackedWidget
 )
 from PyQt5.uic import loadUi
-
+# from MainFrame.systemFunctions import single_function_logger
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 

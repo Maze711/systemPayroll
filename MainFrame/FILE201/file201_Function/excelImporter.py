@@ -5,10 +5,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import single_function_logger
 
 
-    #@single_function_logger.log_function
 def convert_to_24hour(time_str):
     try:
         if isinstance(time_str, str):
@@ -49,7 +47,6 @@ def remove_dashes_in_id(id_number):
     return id_number_without_dashes
 
 
-    #@single_function_logger.log_function
 def importIntoDB(parent, display_employees_callback):
     cursor = None
     connection = None
@@ -187,7 +184,6 @@ def importIntoDB(parent, display_employees_callback):
         if connection:
             connection.close()
 
-    #@single_function_logger.log_function
 def get_empl_ids_from_db():
     """
     Fetch `empl_id` values from the database tables and return as a set of integers.
@@ -224,7 +220,6 @@ def get_empl_ids_from_db():
         return set()
 
 
-    #@single_function_logger.log_function
 def compare_empl_id_with_excel(parent):
     """
     Compare `empl_id` from database with `empno` from the Excel file and print matches.
@@ -271,7 +266,6 @@ def compare_empl_id_with_excel(parent):
         QMessageBox.critical(parent, "Comparison Error", f"An error occurred while comparing data: {str(e)}")
 
 
-    #@single_function_logger.log_function
 def update_db_for_missing_row_columns(parent):
     try:
         options = QFileDialog.Options()

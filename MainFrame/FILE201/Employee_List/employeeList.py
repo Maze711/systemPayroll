@@ -11,6 +11,8 @@ from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB, updat
 
 from MainFrame.systemFunctions import globalFunction
 
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class EmployeeList(QMainWindow):
     def __init__(self):

@@ -4,13 +4,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 
-from MainFrame.systemFunctions import single_function_logger, DatabaseConnectionError
+from MainFrame.systemFunctions import DatabaseConnectionError
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.user_session import UserSession
 
 
 class UserAuthorization:
-    #@single_function_logger.log_function
     def getUserRole(self, username):
         connection = None
         cursor = None
@@ -46,7 +45,6 @@ class UserAuthentication(UserAuthorization):
         self.user_session = UserSession()
 
     """LOG IN USER"""
-    #@single_function_logger.log_function
     def logInUser(self, instance):
         try:
             username = instance.txtUsername.text()
@@ -87,7 +85,6 @@ class UserAuthentication(UserAuthorization):
                                  "Please check your network connection or contact the system administrator.")
 
     """SIGN UP USER"""
-    #@single_function_logger.log_function
     def signUpUser(self, instance):
         connection = None
         cursor = None
@@ -163,7 +160,6 @@ class UserAuthentication(UserAuthorization):
             QMessageBox.critical(instance, "Database Connection Error",
                                  "Please check your network connection or contact the system administrator.")
 
-    #@single_function_logger.log_function
     def resetUserPassword(self, instance):
         connection = None
         cursor = None
@@ -220,7 +216,6 @@ class UserAuthentication(UserAuthorization):
 
 
     """Validation Functions"""
-    #@single_function_logger.log_function
     def isUsernameNotExist(self, username):
         connection = None
         cursor = None
@@ -252,7 +247,6 @@ class UserAuthentication(UserAuthorization):
                 connection.close()
                 logging.info("Database connection closed")
 
-    #@single_function_logger.log_function
     def isCorrectPassword(self, username, password):
         connection = None
         cursor = None
@@ -304,14 +298,12 @@ class UserAuthentication(UserAuthorization):
             instance.btnReportBug.setVisible(True)
             instance.mainBody.setVisible(False)
 
-    #@single_function_logger.log_function
     def getGeneratedHashPassword(self, password):
         salt = bcrypt.gensalt()
         hashedPassword = bcrypt.hashpw(password.encode('utf-8'), salt)
 
         return hashedPassword.decode('utf-8')
 
-    #@single_function_logger.log_function
     def fetchLoggedInUserInfo(self, user_name):
         connection = None
         cursor = None

@@ -3,7 +3,9 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
 class DateChange(QDialog):
@@ -33,7 +35,7 @@ class DateChange(QDialog):
 
         self.original_items = [self.cmbHoliday.itemText(i) for i in range(self.cmbHoliday.count())]
 
-    # @single_function_logger.log_function
+
     def load_holidays(self):
         try:
             cursor = self.connection.cursor()
@@ -46,7 +48,6 @@ class DateChange(QDialog):
             logging.exception("Error while loading holidays from MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to load holidays")
 
-#     @single_function_logger.log_function
     def load_date_types(self):
         try:
             cursor = self.connection.cursor()
@@ -65,7 +66,7 @@ class DateChange(QDialog):
         self.dateEdit.setDate(QDate.currentDate())
         self.cmbDateType.setCurrentIndex(1)
 
-    # @single_function_logger.log_function
+
     def fetch_holiday_data(self, index=None):
         if self.add_mode:
             return
@@ -127,7 +128,7 @@ class DateChange(QDialog):
         self.btnUpdate.setEnabled(False)
         self.reset_selection()
 
-    # @single_function_logger.log_function
+
     def save_new_holiday(self):
         holiday_name = self.cmbHoliday.currentText()
         date_type = self.cmbDateType.currentText()
@@ -155,7 +156,7 @@ class DateChange(QDialog):
             logging.exception("Error while adding new holiday to MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to add new holiday")
 
-    # @single_function_logger.log_function
+
     def update_holiday_date(self, checked=False):
         holiday_name = self.cmbHoliday.currentText()
         new_date = self.dateEdit.date().toString("yyyy-MM-dd")
@@ -181,4 +182,3 @@ class DateChange(QDialog):
             self.save_new_holiday()
         else:
             self.toggle_add_mode()
-

@@ -2,6 +2,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
+
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS2
@@ -18,7 +20,6 @@ def load_fonts():
     # List all font files in the directory
     font_files = [os.path.join(font_dir, f) for f in os.listdir(font_dir) if f.endswith('.ttf') or f.endswith('.otf')]
 
-    #print(font_files)
     # Load each font file into the QFontDatabase
     for font_file in font_files:
         font_id = font_db.addApplicationFont(font_file)

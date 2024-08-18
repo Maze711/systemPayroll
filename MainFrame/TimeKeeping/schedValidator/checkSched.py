@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 
 
 class chkSched(QDialog):
@@ -29,7 +29,6 @@ class chkSched(QDialog):
         self.holidayNameTxt.setText(self.getHolidayName(trans_date))
         self.typeOfDayCb.setCurrentText(timekeepingFunction.getTypeOfDate(trans_date))
 
-    # @single_function_logger.log_function
     def getHolidayName(self, trans_date):
         try:
             connection = create_connection('TIMEKEEPING')

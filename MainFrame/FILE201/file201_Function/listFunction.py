@@ -7,8 +7,6 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeQuery
 from MainFrame.FILE201.Other_Information.otherInformationModal import personalModal
 
-from MainFrame.systemFunctions import single_function_logger
-
 
 class ListFunction:
     def __init__(self, main_window):
@@ -115,7 +113,6 @@ class ListFunction:
             widget.setReadOnly(True)
             widget.setStyleSheet(disableStyle)
 
-    #@single_function_logger.log_function
     def fetch_employee_data(self, empID):
         query = """
             SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
@@ -248,7 +245,6 @@ class ListFunction:
             modal.schoolYear3.setDate(QDate.fromString(elem_year, "MM-dd-yyyy"))
 
         except Exception as e:
-            #logger.error(f"Error populating modal with employee data: {e}")
             print(f"Error: {e}")
 
     def open_otherInformationMODAL_add(self):
