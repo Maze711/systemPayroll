@@ -188,7 +188,7 @@ class timecard(QDialog):
                 employee_query = (
                     "SELECT pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out "
                     "FROM emp_info pi "
-                    "JOIN emp_posnsched ps ON pi.empid = ps.empl_id "
+                    "JOIN emp_posnsched ps ON pi.empid = ps.empid "
                     f"WHERE pi.empid = {bioNum}"
                 )
 
