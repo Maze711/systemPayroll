@@ -23,7 +23,6 @@ class FileProcessor(QObject):
         self.data = pd.DataFrame()  # Initialize as an empty DataFrame
         self.temp_folder = os.path.join(os.path.dirname(self.fileName), "temp_chunks")
 
-    # @single_function_logger.log_function
     def process(self):
         """Main processing method that handles the entire workflow."""
         try:
@@ -33,7 +32,7 @@ class FileProcessor(QObject):
             if not os.path.exists(self.temp_folder):
                 os.makedirs(self.temp_folder)
 
-            # Chunk data into months and process each chunk
+            # Chunk data by month and process each chunk
             chunks = self.chunkDataByMonth()
             total_chunks = len(chunks)
             for i, (chunk_name, chunk_data) in enumerate(chunks.items()):
@@ -79,49 +78,38 @@ class FileProcessor(QObject):
 
     def combineTimeInOut(self):
         """Combines Time IN and Time OUT into a single DataFrame."""
-        # Separate Time IN and Time OUT entries
-        time_in_data = self.data[self.data['sched'] == 'Time IN']
-        time_out_data = self.data[self.data['sched'] == 'Time OUT']
-
-        # Merge Time IN with the latest Time OUT on the same date
         combined_data = []
-        for _, time_in_row in time_in_data.iterrows():
-            matching_out = time_out_data[
-                (time_out_data['bio_no'] == time_in_row['bio_no']) &
-                (time_out_data['date'] == time_in_row['date'])
-            ]
-            if not matching_out.empty:
-                # Take the last Time OUT entry
-                last_out_row = matching_out.sort_values(by='time', ascending=False).iloc[0]
-                combined_data.append([
-                    time_in_row['bio_no'],
-                    time_in_row['date'],
-                    time_in_row['mach_code'],
-                    time_in_row['time'],
-                    last_out_row['time']
-                ])
+
+        for bio_no, group in self.data.groupby(['bio_no', 'date']):
+            time_in_data = group[group['sched'] == 'Time IN']
+            time_out_data = group[group['sched'] == 'Time OUT']
+
+            # Get the last Time IN and last Time OUT for the day
+            if not time_in_data.empty:
+                last_time_in = time_in_data.sort_values(by='time').iloc[-1]
+                if not time_out_data.empty:
+                    last_time_out = time_out_data.sort_values(by='time').iloc[-1]
+                    combined_data.append([
+                        last_time_in['bio_no'],
+                        last_time_in['date'],
+                        last_time_in['mach_code'],
+                        last_time_in['time'],
+                        last_time_out['time']
+                    ])
 
         combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
         return combined_df
 
     def chunkDataByMonth(self):
-        """Chunks the data into months."""
-        start_date = datetime.strptime(self.data['date'].min(), '%Y-%m-%d')
-        end_date = datetime.strptime(self.data['date'].max(), '%Y-%m-%d')
-
+        """Chunks the data by YYYY_MM."""
         chunks = {}
-        current_start = start_date
 
-        while current_start <= end_date:
-            year_month = current_start.strftime('%Y_%m')
-            next_month_start = (current_start + timedelta(days=31)).replace(day=1)
-            chunk_name = f"Table_{year_month}"
-            chunk_data = self.data[
-                (self.data['date'] >= current_start.strftime('%Y-%m-%d')) &
-                (self.data['date'] < next_month_start.strftime('%Y-%m-%d'))
-            ]
-            chunks[chunk_name] = chunk_data
-            current_start = next_month_start
+        for month, group in self.data.groupby(self.data['date'].str[:7]):
+            chunk_name = f"Table_{month.replace('-', '_')}"
+            if chunk_name not in chunks:
+                chunks[chunk_name] = group
+            else:
+                chunks[chunk_name] = pd.concat([chunks[chunk_name], group])
 
         return chunks
 
@@ -189,8 +177,6 @@ class FileProcessor(QObject):
                 logging.info(f"Chunk file {chunk_file} deleted successfully.")
             except OSError as e:
                 logging.error(f"Error deleting chunk file: {chunk_file}, {e}")
-
-
 
 # @single_function_logger.log_function
 class dialogModal(QDialog):
