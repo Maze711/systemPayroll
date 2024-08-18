@@ -260,7 +260,7 @@ def get_generated_employee_id(employee_id):
     year = str_employee_id[:4]
     id_number = str_employee_id[4:]
 
-    current_year = str(2024)
+    current_year = datetime.now().year
 
     # Validate the format of the employee ID
     if len(str_employee_id) < 8:
