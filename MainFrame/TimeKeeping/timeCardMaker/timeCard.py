@@ -4,6 +4,7 @@ import os
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.TimeKeeping.timeCardMaker.filter import filter
+from MainFrame.notificationMaker import notificationLoader
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
@@ -31,6 +32,9 @@ class timecard(QDialog):
         self.costCenterBox = self.findChild(QComboBox, 'costCenterBox')
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
+        self.importBTN = self.findChild(QPushButton, 'importBTN')
+
+        #self.importBTN.clicked.connect(lambda: timekeepingFunction.getTypeOfDate)
 
         # Initialize the year combo box
         self.populate_year_combo_box()

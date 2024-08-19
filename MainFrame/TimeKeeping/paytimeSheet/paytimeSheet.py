@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.payTrans.payTransLoader import PayTrans
@@ -72,31 +73,53 @@ class DeductionUI:
         self.parent.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
 
         self.parent.btnEdit = self.parent.findChild(QPushButton, 'btnEdit')
+        self.parent.placeBTN = self.parent.findChild(QPushButton, 'placeBTN')
 
-        # Populate the table with the specified columns
+        if self.parent.btnEdit:
+            self.parent.btnEdit.clicked.connect(self.showDeductionUI)
+        else:
+            logging.error("Error: btnEdit QPushButton not found in the UI.")
+
+        if self.parent.placeBTN:
+            self.parent.placeBTN.clicked.connect(self.placeDeductions)
+        else:
+            logging.error("Error: placeBTN QPushButton not found in the UI.")
+
         self.populatePaytimeSheetTable(self.parent.data)
 
     def populatePaytimeSheetTable(self, data):
-        self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
+        self.parent.paytimesheetTable.setRowCount(len(data) - 1)
         for row in range(self.parent.paytimesheetTable.rowCount()):
             self.parent.paytimesheetTable.setRowHidden(row, False)
 
-        # Define the column names for the Deduction UI
         column_names = {
             'Emp Number': 'empnumber',
             'Bio Num': 'empnumber',
-            'Employee Name': 'empname'
+            'Employee Name': 'empname',
+            'Pay Ded 1': 'payded1',
+            'Pay Ded 2': 'payded2',
+            'Pay Ded 3': 'payded3',
+            'Pay Ded 4': 'payded4',
+            'Pay Ded 5': 'payded5',
+            'Pay Ded 6': 'payded6',
+            'Pay Ded 7': 'payded7',
+            'Pay Ded 8': 'payded8',
+            'Pay Ded 9': 'payded9',
+            'Pay Ded 10': 'payded10',
+            'Pay Ded 11': 'payded11',
+            'Pay Ded 12': 'payded12',
+            'Pay Ded 13': 'payded13',
+            'Pay Ded 14': 'payded14',
         }
 
-        # Extract column indices from the header row
-        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
+        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]
         col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
 
         if not col_indices:
             logging.error("No matching columns found in headers.")
             return
 
-        for i, row in enumerate(data[1:]):  # Skip header row
+        for i, row in enumerate(data[1:]):
             for field_name, col_name in column_names.items():
                 col_idx = col_indices.get(field_name)
                 if col_idx is not None:
@@ -110,7 +133,77 @@ class DeductionUI:
                     logging.warning(f"Column '{field_name}' not found in data.")
             logging.info(f"Adding row {i}: {row}")
 
+    def showDeductionUI(self):
+        selected_row = self.parent.paytimesheetTable.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self.parent, "No Selection", "Please select a row from the table first.")
+            return
 
+        try:
+            emp_name_item = self.parent.paytimesheetTable.item(selected_row, 2)
+            bio_num_item = self.parent.paytimesheetTable.item(selected_row, 1)
+
+            emp_name = emp_name_item.text() if emp_name_item else ""
+            bio_num = bio_num_item.text() if bio_num_item else ""
+
+            ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\deduction.ui")
+            self.deductionQDialog = QDialog()
+            loadUi(ui_file, self.deductionQDialog)
+
+            empNameTxt = self.deductionQDialog.findChild(QLabel, 'empNameTxt')
+            bioNumTxt = self.deductionQDialog.findChild(QLabel, 'bioNumTxt')
+
+            if empNameTxt:
+                empNameTxt.setText(emp_name)
+            if bioNumTxt:
+                bioNumTxt.setText(bio_num)
+
+            self.placeBTN = self.deductionQDialog.findChild(QPushButton, 'placeBTN')
+            if self.placeBTN:
+                self.placeBTN.clicked.connect(self.placeDeductions)
+            else:
+                logging.error("Error: placeBTN QPushButton not found in the deduction UI.")
+
+            self.deductionQDialog.show()
+            logging.info("Deduction UI loaded successfully.")
+        except Exception as e:
+            logging.error(f"Failed to load deduction UI: {e}")
+            print(f"Failed to load deduction UI: {e}")
+
+    def placeDeductions(self):
+        try:
+            selected_row = self.parent.paytimesheetTable.currentRow()
+            if selected_row == -1:
+                logging.warning("No row selected.")
+                QMessageBox.warning(self.parent, "No Selection", "Please select a row from the table first.")
+                return
+
+            for i in range(1, 15):
+                deduction_field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
+                if deduction_field and deduction_field.text().isdigit():
+                    deduction_value = deduction_field.text()
+                    deduction_col = self.getColumnIndex(f'Pay Ded {i}')
+                    if deduction_col != -1:
+                        item = QTableWidgetItem(deduction_value)
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.parent.paytimesheetTable.setItem(selected_row, deduction_col, item)
+                        logging.info(f"Updated Pay Ded {i} for row {selected_row} with value {deduction_value}")
+                    else:
+                        logging.warning(f"Pay Ded {i} column not found in the table.")
+        except Exception as e:
+            logging.error(f"Failed to place deductions: {e}")
+            print(f"Failed to place deductions: {e}")
+
+    def getColumnIndex(self, column_name):
+        header_items = [self.parent.paytimesheetTable.horizontalHeaderItem(i).text()
+                        for i in range(self.parent.paytimesheetTable.columnCount())]
+        if column_name in header_items:
+            return header_items.index(column_name)
+        return -1
+
+    def getBioNum(self, row):
+        bio_num_item = self.parent.paytimesheetTable.item(row, 1)
+        return bio_num_item.text() if bio_num_item else "Unknown"
 
 class PaytimeSheet(QMainWindow):
     def __init__(self, main_window, content, user_role):
