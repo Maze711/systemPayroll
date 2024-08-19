@@ -53,6 +53,7 @@ class timecard(QDialog):
         filtered_data = []  # Initialized properly
         self.original_data = filtered_data.copy()
 
+
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
         connection = create_connection('LIST_LOG_IMPORT')
@@ -76,6 +77,7 @@ class timecard(QDialog):
 
             # Add year-month combinations to the combo box
             self.yearCC.addItems(sorted(year_months))
+            self.yearCC.setCurrentIndex(-1)
 
         except Exception as e:
             logging.error(f"Error populating year combo box: {e}")
@@ -286,6 +288,15 @@ class timecard(QDialog):
             connection_file201.close()
 
     def createTimeSheet(self, checked=False):
+        if self.TimeListTable.rowCount() == 0:
+            QMessageBox.warning(
+                self,
+                "No rows available",
+                "No rows detected, please make sure that there are data available within the table first in order to"
+                "proceed!"
+            )
+            return
+
         dataMerge = []
 
         for row in range(self.TimeListTable.rowCount()):
@@ -486,6 +497,14 @@ class timecard(QDialog):
             QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
 
     def filterModal(self, checked=False):
+        if self.yearCC.currentIndex() == -1 or self.dateFromCC.currentIndex() == -1 or self.dateToCC.currentIndex() == -1:
+            QMessageBox.warning(
+                self,
+                "No filter selected",
+                "Please select a year, day from, and day to first!"
+            )
+            return
+
         try:
             # Check if the filter dialog is open already
             for child in QApplication.instance().topLevelWidgets():

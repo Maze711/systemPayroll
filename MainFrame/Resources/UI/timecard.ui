@@ -24,7 +24,7 @@
 	border-radius: 5px;
 }
 
-#btnTimeSheet, #importBTN{
+#btnTimeSheet, #importBTN, #btnExport{
 border-radius: 5px;
 background-color: &quot;#30d977&quot;;
 }</string>
@@ -813,6 +813,39 @@ border-radius: 5px;
      </size>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnExport">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>330</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>  Export</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="header">
    <property name="geometry">
@@ -915,9 +948,9 @@ border-radius: 5px;
    <widget class="QLabel" name="lblDateFrom">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>600</x>
       <y>9</y>
-      <width>131</width>
+      <width>121</width>
       <height>41</height>
      </rect>
     </property>
@@ -930,15 +963,15 @@ border-radius: 5px;
      </font>
     </property>
     <property name="text">
-     <string>Date From:</string>
+     <string>Day From:</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblDateTo">
     <property name="geometry">
      <rect>
-      <x>900</x>
+      <x>910</x>
       <y>10</y>
-      <width>101</width>
+      <width>91</width>
       <height>41</height>
      </rect>
     </property>
@@ -951,7 +984,7 @@ border-radius: 5px;
      </font>
     </property>
     <property name="text">
-     <string>Date To:</string>
+     <string>Day To:</string>
     </property>
    </widget>
   </widget>
