@@ -25,7 +25,6 @@ class PayComputation:
                 rate_int = 0
 
             basic = days_work_int * rate_int
-
             item['Basic'] = basic
             logging.info(f"Calculated basic for EmpNo {item['EmpNo']}: {basic}")
 
@@ -40,41 +39,109 @@ class PayComputation:
                 ordinary_day_ot_float = 0
 
             overtime_value = ordinary_day_ot_float * overtime_rate
-
-            # Round the overtime value to the nearest two decimal places
-            overtime_value_rounded = round(overtime_value, 2)
-
-            item['OT_Earn'] = overtime_value_rounded
-            logging.info(f"Calculated overtime for EmpNo {item['EmpNo']}: {overtime_value_rounded}")
+            item['OT_Earn'] = round(overtime_value, 2)
+            logging.info(f"Calculated overtime for EmpNo {item['EmpNo']}: {item['OT_Earn']}")
 
 
-class PaytimeSheet(QMainWindow):
-    def __init__(self, main_window, content):
-        super(PaytimeSheet, self).__init__()
-        self.setFixedSize(1700, 665)
-        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytimesheet.ui")
-        loadUi(ui_file, self)
+class PaytimeSheetUI:
+    def __init__(self, parent):
+        self.parent = parent
 
-        self.main_window = main_window
+    def setupUI(self):
+        self.parent.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
 
-        self.data = content
-        self.original_data = content  # Store original data
+        self.parent.payTransBtn = self.parent.findChild(QPushButton, 'btnPayTrans')
+        self.parent.payTransBtn.clicked.connect(self.parent.createPayTrans)
 
-        self.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
-
-        self.payTransBtn = self.findChild(QPushButton, 'btnPayTrans')
-        self.payTransBtn.clicked.connect(self.createPayTrans)
-
-        self.searchBioNum = self.findChild(QLineEdit, 'txtSearch')
-        if self.searchBioNum is not None:
-            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+        self.parent.searchBioNum = self.parent.findChild(QLineEdit, 'txtSearch')
+        if self.parent.searchBioNum is not None:
+            self.parent.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self.parent))
         else:
             logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
-        self.populatePaytimeSheetTable(self.data)
+        self.parent.populatePaytimeSheetTable(self.parent.data)
+
+
+class DeductionUI:
+    def __init__(self, parent):
+        self.parent = parent
+
+    def setupUI(self):
+        self.parent.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
+
+        self.parent.btnEdit = self.parent.findChild(QPushButton, 'btnEdit')
+
+        # Populate the table with the specified columns
+        self.populatePaytimeSheetTable(self.parent.data)
 
     def populatePaytimeSheetTable(self, data):
+        self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
+        for row in range(self.parent.paytimesheetTable.rowCount()):
+            self.parent.paytimesheetTable.setRowHidden(row, False)
+
+        # Define the column names for the Deduction UI
+        column_names = {
+            'Emp Number': 'empnumber',
+            'Bio Num': 'empnumber',
+            'Employee Name': 'empname'
+        }
+
+        # Extract column indices from the header row
+        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
+        col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
+
+        if not col_indices:
+            logging.error("No matching columns found in headers.")
+            return
+
+        for i, row in enumerate(data[1:]):  # Skip header row
+            for field_name, col_name in column_names.items():
+                col_idx = col_indices.get(field_name)
+                if col_idx is not None:
+                    item = QTableWidgetItem(str(row[col_idx]))
+                    if field_name in column_names:
+                        item.setTextAlignment(Qt.AlignCenter)
+                    if field_name == 'Employee Name':
+                        item.setToolTip(row[col_idx])
+                    self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
+                else:
+                    logging.warning(f"Column '{field_name}' not found in data.")
+            logging.info(f"Adding row {i}: {row}")
+
+
+
+class PaytimeSheet(QMainWindow):
+    def __init__(self, main_window, content, user_role):
+        super(PaytimeSheet, self).__init__()
+        self.setFixedSize(1700, 665)
+
+        # Load different UI based on user_role
+        if user_role == "Pay Master 2":
+            ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\payDeduction.ui")
+        else:
+            ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\paytimesheet.ui")
+
+        loadUi(ui_file, self)
+
+        self.main_window = main_window
+        self.data = content
+        self.user_role = user_role
+        self.original_data = content  # Store original data
+
+        # Print the user_role
+        print(f"User Role: {self.user_role}")
+
+        if user_role == "Pay Master 1":
+            self.uiHandler = PaytimeSheetUI(self)
+            self.uiHandler.setupUI()
+        elif user_role == "Pay Master 2":
+            self.uiHandler = DeductionUI(self)
+            self.uiHandler.setupUI()
+
+    def populatePaytimeSheetTable(self, data):
+        self.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
         for row in range(self.paytimesheetTable.rowCount()):
             self.paytimesheetTable.setRowHidden(row, False)
 
@@ -114,8 +181,6 @@ class PaytimeSheet(QMainWindow):
             logging.error("No matching columns found in headers.")
             return
 
-        self.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
-
         for i, row in enumerate(data[1:]):  # Skip header row
             for field_name, col_name in column_names.items():
                 col_idx = col_indices.get(field_name)
@@ -128,8 +193,6 @@ class PaytimeSheet(QMainWindow):
                     self.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
                 else:
                     logging.warning(f"Column '{field_name}' not found in data.")
-
-            # Logging the row data being added
             logging.info(f"Adding row {i}: {row}")
 
     def createPayTrans(self, checked=False):
@@ -167,7 +230,7 @@ class PaytimeSheet(QMainWindow):
         # Perform automated calculations
         pay_computation = PayComputation(selected_data)
         pay_computation.basicComputation()
-        pay_computation.overtimeComputation()  # Call the new method for overtime computation
+        pay_computation.overtimeComputation()
 
         match_count = sum(1 for item in selected_data if item['BioNum'] in bio_num_to_rate)
         logging.info(f"Total matches of bio_num with processed empl_id: {match_count}")
@@ -189,7 +252,6 @@ class PaytimeSheet(QMainWindow):
             workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
             sheet = workbook.sheet_by_index(0)  # Use the first sheet
 
-            # Find indices for 'empl_id' and 'rate' columns
             headers = [sheet.cell_value(0, col_idx).strip().lower() for col_idx in range(sheet.ncols)]
             empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
             rate_index = headers.index('rate') if 'rate' in headers else None
@@ -198,16 +260,20 @@ class PaytimeSheet(QMainWindow):
                 logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
                 return bio_num_to_rate
 
-            for row_idx in range(1, sheet.nrows):  # Skip header row
-                empl_id = sheet.cell_value(row_idx, empl_id_index)
-                rate = sheet.cell_value(row_idx, rate_index)
+            for row_idx in range(1, sheet.nrows):  # Skip the header row
+                empl_id_value = str(sheet.cell_value(row_idx, empl_id_index))
+                rate_value = str(sheet.cell_value(row_idx, rate_index))
 
-                # Update bio_num_to_rate
-                bio_num_to_rate[empl_id] = str(int(float(rate)))  # Convert rate to integer
+                # Remove trailing '.0' from empl_id_value, if present
+                if empl_id_value.endswith('.0'):
+                    empl_id_value = empl_id_value[:-2]
 
-            logging.info(f"Processed Employee IDs and Rates from Excel file: {bio_num_to_rate}")
+                bio_num_to_rate[empl_id_value] = rate_value
+
+            logging.info(f"Processed {sheet.nrows - 1} rows from Excel file.")
 
         except Exception as e:
-            logging.error(f"Error reading or processing Excel file: {e}")
+            logging.error(f"Error reading Excel file: {e}")
+            print(f"Error reading Excel file: {e}")
 
         return bio_num_to_rate
