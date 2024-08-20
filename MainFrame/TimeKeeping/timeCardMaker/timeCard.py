@@ -174,8 +174,8 @@ class timecard(QDialog):
         try:
             cursor = connection.cursor()
 
-            # Query to fetch distinct pos_descr values
-            query = "SELECT DISTINCT pos_descr FROM emp_posnsched ORDER BY pos_descr"
+            # Query to fetch distinct dept_name values
+            query = "SELECT DISTINCT dept_name FROM emp_posnsched ORDER BY dept_name"
             cursor.execute(query)
 
             # Fetch all results
