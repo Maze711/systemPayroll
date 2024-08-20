@@ -311,7 +311,7 @@ class DeductionUI:
                             payDed5, payDed6, payDed7, payDed8, payDed9, payDed10, 
                             payDed11, payDed12, payDed13, payDed14, deduction_placed_by, deduction_placed_date
                         ) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
                     """
 
                     cursor.execute(insert_query, values)
