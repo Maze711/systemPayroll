@@ -500,7 +500,7 @@ QTableWidget {
     </property>
     <property name="styleSheet">
      <string notr="true">#widget{
-background-color: white;
+background-color: &quot;#DCE5FE&quot;;
 }
 
 #btnCheckSched, #btnFilter {
@@ -536,6 +536,7 @@ background-color: rgb(255, 110, 112);
      </property>
      <property name="styleSheet">
       <string notr="true">#searchBar{
+	background-color: white;
 	border: 1px solid &quot;#344273&quot;;
 	border-radius: 3px; 
 }</string>
@@ -737,7 +738,7 @@ background-color: rgb(255, 110, 112);
     <widget class="QPushButton" name="btnSendToEmail">
      <property name="geometry">
       <rect>
-       <x>580</x>
+       <x>780</x>
        <y>10</y>
        <width>181</width>
        <height>41</height>
@@ -763,6 +764,42 @@ background-color: rgb(255, 110, 112);
      <property name="icon">
       <iconset>
        <normaloff>../Icons/mail.svg</normaloff>../Icons/mail.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnInsertDeduction">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>10</y>
+       <width>191</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: &quot;#344273&quot;;
+color: white;
+border: none;
+border-radius: 5px;</string>
+     </property>
+     <property name="text">
+      <string>INSERT DEDUCTION</string>
      </property>
      <property name="iconSize">
       <size>
