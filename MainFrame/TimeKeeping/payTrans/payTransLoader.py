@@ -5,7 +5,6 @@ from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 from MainFrame.TimeKeeping.payTrans.payTransMailer import EmailerLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.TimeKeeping.payTrans.insertDeductionLoader import InsertDeductionLoader
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
