@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
         message = QMessageBox.question(self, "Log out", "Are you sure you want to log out?",
                                        QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
         if message == QMessageBox.Yes:
-            QTimer.singleShot(1000, self.loggedOutSuccessfully)
+            self.loggedOutSuccessfully()
 
     def loggedOutSuccessfully(self):
         self.isLoggedIn = False
@@ -184,28 +184,45 @@ class MainWindow(QMainWindow):
         return super().eventFilter(source, event)
 
     def showAdditionalButtons(self):
-        self.hideAdditionalButtons()
-        button_width = 150
-        button_height = 40
-        frame_width = button_width + 20
-        frame_height = 2 * button_height + 25
-        left_offset = self.btnTimeKeeping.geometry().right() + 5
-        top_offset = self.btnTimeKeeping.geometry().top()
+        try:
+            logging.info("Entering showAdditionalButtons")
 
-        if not self.additional_buttons_container:
-            self.additional_buttons_container = QWidget(self)
-            self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
-            self.additional_buttons_container.setStyleSheet("background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
+            # If the container already exists and is visible, do nothing
+            if self.additional_buttons_container and self.additional_buttons_container.isVisible():
+                logging.info("additional_buttons_container is already shown")
+                return
 
-            additional_button_texts = ["Date Change", "Time Logger"]
-            for i, text in enumerate(additional_button_texts):
-                button = QPushButton(text, self.additional_buttons_container)
-                button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
-                button.setStyleSheet("background-color: white;")
-                button.installEventFilter(self)
-                button.clicked.connect(self.open_dialog(text))
+            # If the container exists but is hidden, just show it
+            if self.additional_buttons_container:
+                logging.info("additional_buttons_container exists but is hidden")
+                self.additional_buttons_container.show()
+            else:
+                # Create the container if it doesn't exist
+                logging.info("additional_buttons_container does not exist, creating new container")
+                button_width = 150
+                button_height = 40
+                frame_width = button_width + 20
+                frame_height = 2 * button_height + 25
+                left_offset = self.btnTimeKeeping.geometry().right() + 5
+                top_offset = self.btnTimeKeeping.geometry().top()
 
-            self.additional_buttons_container.show()
+                self.additional_buttons_container = QWidget(self)
+                self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
+                self.additional_buttons_container.setStyleSheet(
+                    "background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
+
+                additional_button_texts = ["Date Change", "Time Logger"]
+                for i, text in enumerate(additional_button_texts):
+                    button = QPushButton(text, self.additional_buttons_container)
+                    button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
+                    button.setStyleSheet("background-color: white;")
+                    button.installEventFilter(self)
+                    button.clicked.connect(lambda _, t=text: self.open_dialog(t))
+
+                logging.info("Showing additional_buttons_container")
+                self.additional_buttons_container.show()
+        except Exception as e:
+            logging.error(f"Error in showAdditionalButtons: {str(e)}")
 
     def open_dialog(self, dialog_type):
         dialogs = {
@@ -216,15 +233,14 @@ class MainWindow(QMainWindow):
 
     def checkAndHideAdditionalButtons(self):
         cursor_pos = self.mapFromGlobal(QCursor.pos())
-        button_rect = self.btnTimeKeeping.geometry()
-        if not button_rect.contains(cursor_pos) and not self.additional_buttons_container.geometry().contains(cursor_pos):
-            self.hideAdditionalButtons()
+        if not self.btnTimeKeeping.geometry().contains(cursor_pos):
+            if self.additional_buttons_container:
+                if not self.additional_buttons_container.geometry().contains(cursor_pos):
+                    self.hideAdditionalButtons()
 
     def hideAdditionalButtons(self):
         if self.additional_buttons_container:
             self.additional_buttons_container.hide()
-            self.additional_buttons_container.deleteLater()
-            self.additional_buttons_container = None
 
     def employeeWindow(self):
         if self.employee_list_window is None:
