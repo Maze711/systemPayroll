@@ -25,6 +25,9 @@ class dialogModal(QDialog):
         if hasattr(self, 'progressBar'):
             self.progressBar.setVisible(False)
 
+        if hasattr(self, 'btnViewDeduction'):
+            self.btnViewDeduction.setVisible(False)
+
     def importTxt(self, *args):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open DAT File", "", "DAT Files (*.DAT)")
         if fileName:

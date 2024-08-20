@@ -6,6 +6,7 @@ from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_session import UserSession
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -51,6 +52,7 @@ class PayrollDialog(QDialog):
 
         self.user_session = UserSession().getALLSessionData()
 
+        self.user_role = str(self.user_session["user_role"])
 
         self.importBTN.clicked.connect(self.importTxt)
         self.importBTN.setText("Import Excel")
@@ -58,6 +60,12 @@ class PayrollDialog(QDialog):
         # Disable the btnProcessTimeCard button
         if hasattr(self, 'btnProcessTimeCard'):
             self.btnProcessTimeCard.setVisible(False)
+
+        activation = True if self.user_session['user_role'] == 'Pay Master 2' else False
+
+        self.btnViewDeduction.setVisible(activation)
+
+        self.btnViewDeduction.clicked.connect(self.viewDeduction)
 
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
@@ -92,8 +100,6 @@ class PayrollDialog(QDialog):
         self.thread.quit()
         self.thread.wait()
 
-        user_role = str(self.user_session["user_role"])
-
         # Validate columns and show data
         if content:
             headers = content[0]
@@ -116,7 +122,7 @@ class PayrollDialog(QDialog):
                 QMessageBox.warning(self, "Missing Columns", error_message)
                 return
 
-            self.showData(content, user_role)
+            self.showData(content, self.user_role)
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
@@ -130,5 +136,23 @@ class PayrollDialog(QDialog):
     def showData(self, content, user_role):
         self.paytimesheet = PaytimeSheet(self.main_window, content, user_role)  # Pass user_role
         self.main_window.open_dialogs.append(self.paytimesheet)
+        print(content)
         self.paytimesheet.show()
         self.close()
+
+    def viewDeduction(self):
+        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        if connection is None:
+            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            return
+
+        cursor = connection.cursor()
+
+        try:
+            query = "SELECT * from deductions"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result)
+            return result
+        except Error as e:
+            print(f"Error fetching or processing deduction data: {e}")
