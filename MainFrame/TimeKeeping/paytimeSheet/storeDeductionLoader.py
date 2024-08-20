@@ -54,7 +54,8 @@ class StoringDeductionProcessor(QObject):
                         payDed13 INT(11),
                         payDed14 INT(11),
                         deduction_placed_by VARCHAR(225),
-                        deduction_placed_date DATETIME
+                        deduction_placed_date DATETIME,
+                        UNIQUE KEY unique_entry (empNum, bioNum, empName)
                     )
                 """
         try:
@@ -100,7 +101,14 @@ class StoringDeductionProcessor(QObject):
                                     payDed5, payDed6, payDed7, payDed8, payDed9, payDed10, 
                                     payDed11, payDed12, payDed13, payDed14, deduction_placed_by, deduction_placed_date
                                 ) 
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW()) 
+                                ON DUPLICATE KEY UPDATE 
+                                    payDed1 = VALUES(payDed1), payDed2 = VALUES(payDed2), payDed3 = VALUES(payDed3),
+                                    payDed4 = VALUES(payDed4), payDed5 = VALUES(payDed5), payDed6 = VALUES(payDed6),
+                                    payDed7 = VALUES(payDed7), payDed8 = VALUES(payDed8), payDed9 = VALUES(payDed9),
+                                    payDed10 = VALUES(payDed10), payDed11 = VALUES(payDed11), payDed12 = VALUES(payDed12), 
+                                    payDed13 = VALUES(payDed13), payDed14 = VALUES(payDed14), 
+                                    deduction_placed_by = VALUES(deduction_placed_by), deduction_placed_date = NOW()
                             """
 
                     cursor.execute(insert_query, values)
