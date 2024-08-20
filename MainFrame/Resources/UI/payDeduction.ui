@@ -25,7 +25,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">#widget{
-background-color: white;
+background-color: &quot;#dce5fe&quot;;
 }
 
 #btnCheckSched, #btnFilter {
@@ -62,6 +62,7 @@ background-color: rgb(255, 110, 112);
       <string notr="true">#searchBar{
 	border: 1px solid &quot;#344273&quot;;
 	border-radius: 3px; 
+background-color: white;
 }</string>
      </property>
      <property name="frameShape">
@@ -263,7 +264,9 @@ background-color: rgb(255, 110, 112);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">border-radius: 5px;
+color: white;
+background-color: rgb(255, 110, 112);</string>
      </property>
      <property name="text">
       <string>STORE DATA</string>
@@ -296,7 +299,10 @@ background-color: rgb(255, 110, 112);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">background-color: &quot;#344273&quot;;
+color: white;
+border: none;
+border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>EDIT DEDUCTION</string>

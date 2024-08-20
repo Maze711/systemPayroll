@@ -131,7 +131,7 @@ background-color: white;
      </font>
     </property>
     <property name="text">
-     <string>Date From:</string>
+     <string>Day From:</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblFrom">
@@ -200,7 +200,7 @@ background-color: white;
      </font>
     </property>
     <property name="text">
-     <string>Date To:</string>
+     <string>Day To:</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblMachCode">
@@ -536,6 +536,25 @@ color: white
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QWidget" name="widget_4" native="true">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>60</y>
+     <width>491</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+background-color: &quot;#344273&quot;; 
+border-bottom: 2px solid black;
+border-top: 2px solid black;
+
+</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
   </widget>
  </widget>
  <resources/>

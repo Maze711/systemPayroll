@@ -217,7 +217,7 @@ class MainWindow(QMainWindow):
                     button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
                     button.setStyleSheet("background-color: white;")
                     button.installEventFilter(self)
-                    button.clicked.connect(lambda _, t=text: self.open_dialog(t))
+                    button.clicked.connect(self.open_dialog(text))
 
                 logging.info("Showing additional_buttons_container")
                 self.additional_buttons_container.show()
