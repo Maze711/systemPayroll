@@ -4,16 +4,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.systemFunctions import DatabaseConnectionError
 
-from MainFrame.systemFunctions import single_function_logger
-
-# @single_function_logger.log_function
 def add_employee(data):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            #logger.error("Error: Could not establish database connection.")
-            return False
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
 
@@ -158,18 +158,21 @@ def add_employee(data):
         logging.error(f"Error adding employee: {ex}")
         return False
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
-            #logger.info("Database connection closed")
+            logging.info("Database connection closed")
 
-# @single_function_logger.log_function
 def save_employee(empl_id, data):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            logging.error("Error: Could not establish database connection.")
-            return False
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
 
@@ -244,19 +247,19 @@ def save_employee(empl_id, data):
 
         # Commit changes to the database
         connection.commit()
-        #logger.info(f"Employee with ID {empl_id} updated successfully")
         return True
 
     except Error as e:
-        #logger.error(f"Error updating employee with ID {empl_id}: {e}")
         print(e)
         return False
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
-            #logger.info("Database connection closed")
+            logging.info("Database connection closed")
 
 def revert_employee():
     pass
@@ -269,7 +272,7 @@ def get_generated_employee_id(employee_id):
     year = str_employee_id[:4]
     id_number = str_employee_id[4:]
 
-    current_year = str(2024)
+    current_year = datetime.now().year
 
     # Validate the format of the employee ID
     if len(str_employee_id) < 8:
@@ -286,13 +289,14 @@ def get_generated_employee_id(employee_id):
         except ValueError:
             raise ValueError("Invalid id_number format.")
 
-# @single_function_logger.log_function
 def executeQuery(query, *args):
+    connection = None
+    cursor = None
+
     try:
         connection = create_connection('FILE201')
         if connection is None:
-            logging.error("Error: Could not establish database connection.")
-            return []
+            raise DatabaseConnectionError("Error: Could not establish database connection.")
 
         cursor = connection.cursor()
         values = args
@@ -305,7 +309,9 @@ def executeQuery(query, *args):
         return []
 
     finally:
-        if 'connection' in locals() and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+        # Ensure the connection is closed if it was established
+        if connection is not None and connection.is_connected():
             connection.close()
-            #logger.info("Database connection closed")
+            logging.info("Database connection closed")

@@ -1,7 +1,10 @@
 from MainFrame.Resources.lib import *
 from email.utils import formataddr
 from MainFrame.Database_Connection.user_session import UserSession
-from MainFrame.systemFunctions import globalFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class BugReportModal(QDialog):
     def __init__(self):
@@ -21,7 +24,6 @@ class BugReportModal(QDialog):
         self.bugReportInputTxt.clear()
         self.close()
 
-    # @single_function_logger.log_function
     def sendBugReport(self, checked=False):
         bugReportTxt = self.bugReportInputTxt.toPlainText().strip()
 
@@ -103,7 +105,6 @@ class BugReportModal(QDialog):
 
         return body
 
-#     @single_function_logger.log_function
     def send_email(self, em, smtp):
         # Sends email to each receiver
         try:

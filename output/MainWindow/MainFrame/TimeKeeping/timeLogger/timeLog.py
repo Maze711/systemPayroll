@@ -6,14 +6,13 @@ from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
 from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 
 
 class timelogger(QMainWindow):
     def __init__(self, content):
         super().__init__()
         self.setFixedSize(1180, 665)
-        #loadUi(os.path.join(os.path.dirname(__file__), 'timeLog.ui'), self)
         ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\timeLog.ui"))
         loadUi(ui_file, self)
 
@@ -30,7 +29,6 @@ class timelogger(QMainWindow):
 
         self.filterButton.clicked.connect(self.showFilteredData)
         self.createCard.clicked.connect(self.openTimeCard)
-        # self.createCard.clicked.connect(self.createPaytimeSheet)
         self.createCard.setEnabled(False)
 
         self.processContent()
@@ -40,7 +38,6 @@ class timelogger(QMainWindow):
         self.employeeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.employeeListTable.horizontalHeader().setStretchLastSection(True)
 
-    # @single_function_logger.log_function
     def processContent(self):
 
         rows = self.content.strip().split('\n')
@@ -74,8 +71,6 @@ class timelogger(QMainWindow):
                 'sched': sched  # Store sched instead of code_1, code_2, code_3
             })
 
-
-#     @single_function_logger.log_function
     def loadData(self):
 
         try:
@@ -83,7 +78,6 @@ class timelogger(QMainWindow):
         except Exception as e:
             logging.error(f"Error loading data: {e}")
 
-    @single_function_logger.log_function
     def showFilteredData(self, checked=False):
 
         from_date = self.fromCalendar.date()
@@ -99,7 +93,6 @@ class timelogger(QMainWindow):
         self.populateTable(filtered_data)
         self.createCard.setEnabled(bool(filtered_data))
 
-    @single_function_logger.log_function
     def populateTable(self, data):
 
         self.employeeListTable.setRowCount(len(data))
@@ -119,8 +112,6 @@ class timelogger(QMainWindow):
             for column, item in enumerate(items):
                 self.employeeListTable.setItem(row_position, column, item)
 
-
-    @single_function_logger.log_function
     def openTimeCard(self, checked=False):
         filtered_data, from_date, to_date = timekeepingFunction.appendDate(self.fromCalendar, self.toCalendar, self.data)
 
@@ -199,7 +190,6 @@ class timelogger(QMainWindow):
         else:
             logging.error("Failed to establish database connection")
 
-    @single_function_logger.log_function
     def calculateHoursWorked(self, sched_in, sched_out):
         try:
             sched_in_time = datetime.strptime(sched_in, "%I:%M %p")  # Example: '6:00 am'
@@ -213,7 +203,6 @@ class timelogger(QMainWindow):
         except ValueError:
             return "Invalid Time Format"
 
-    @single_function_logger.log_function
     def createPaytimeSheet(self):
         filtered_data, from_date, to_date = timekeepingFunction.appendDate(self.fromCalendar, self.toCalendar, self.data)
 
@@ -290,7 +279,6 @@ class timelogger(QMainWindow):
         self.window.show()
         self.close()
 
-    @single_function_logger.log_function
     def fetch_all_holidays(self):
         connection = create_connection('TIMEKEEPING')
         if connection:

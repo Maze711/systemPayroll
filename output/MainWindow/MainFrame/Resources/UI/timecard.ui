@@ -24,7 +24,7 @@
 	border-radius: 5px;
 }
 
-#btnTimeSheet{
+#btnTimeSheet, #importBTN, #btnExport{
 border-radius: 5px;
 background-color: &quot;#30d977&quot;;
 }</string>
@@ -237,7 +237,7 @@ QTableWidget {
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>Create Time Sheet</string>
+     <string>Process Time Sheet</string>
     </property>
     <property name="iconSize">
      <size>
@@ -433,7 +433,7 @@ border-radius: 5px;
       <rect>
        <x>130</x>
        <y>140</y>
-       <width>91</width>
+       <width>101</width>
        <height>35</height>
       </rect>
      </property>
@@ -445,122 +445,122 @@ border-radius: 5px;
      </property>
      <item>
       <property name="text">
-       <string>1</string>
+       <string>00:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>2</string>
+       <string>01:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>3</string>
+       <string>02:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>4</string>
+       <string>03:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>5</string>
+       <string>04:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>6</string>
+       <string>05:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>7</string>
+       <string>06:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>8</string>
+       <string>07:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>9</string>
+       <string>08:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>10</string>
+       <string>09:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>11</string>
+       <string>10:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>12</string>
+       <string>11:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>13</string>
+       <string>12:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>14</string>
+       <string>13:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>15</string>
+       <string>14:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>16</string>
+       <string>15:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>17</string>
+       <string>16:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>18</string>
+       <string>17:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>19</string>
+       <string>18:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>20</string>
+       <string>19:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>21</string>
+       <string>20:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>22</string>
+       <string>21:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>23</string>
+       <string>22:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>24</string>
+       <string>23:00</string>
       </property>
      </item>
     </widget>
@@ -569,7 +569,7 @@ border-radius: 5px;
       <rect>
        <x>10</x>
        <y>140</y>
-       <width>91</width>
+       <width>101</width>
        <height>35</height>
       </rect>
      </property>
@@ -581,122 +581,122 @@ border-radius: 5px;
      </property>
      <item>
       <property name="text">
-       <string>1</string>
+       <string>00:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>2</string>
+       <string>01:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>3</string>
+       <string>02:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>4</string>
+       <string>03:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>5</string>
+       <string>04:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>6</string>
+       <string>05:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>7</string>
+       <string>06:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>8</string>
+       <string>07:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>9</string>
+       <string>08:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>10</string>
+       <string>09:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>11</string>
+       <string>10:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>12</string>
+       <string>11:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>13</string>
+       <string>12:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>14</string>
+       <string>13:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>15</string>
+       <string>14:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>16</string>
+       <string>15:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>17</string>
+       <string>16:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>18</string>
+       <string>17:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>19</string>
+       <string>18:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>20</string>
+       <string>19:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>21</string>
+       <string>20:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>22</string>
+       <string>21:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>23</string>
+       <string>22:00</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>24</string>
+       <string>23:00</string>
       </property>
      </item>
     </widget>
@@ -757,11 +757,6 @@ border-radius: 5px;
        <pointsize>12</pointsize>
       </font>
      </property>
-     <item>
-      <property name="text">
-       <string>data</string>
-      </property>
-     </item>
     </widget>
     <widget class="QLabel" name="lblFromCC">
      <property name="geometry">
@@ -784,6 +779,72 @@ border-radius: 5px;
       <string>From:</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="importBTN">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>270</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>DAT Import</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnExport">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>330</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>  Export</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
+    </property>
    </widget>
   </widget>
   <widget class="QFrame" name="header">
@@ -887,9 +948,9 @@ border-radius: 5px;
    <widget class="QLabel" name="lblDateFrom">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>600</x>
       <y>9</y>
-      <width>131</width>
+      <width>121</width>
       <height>41</height>
      </rect>
     </property>
@@ -902,15 +963,15 @@ border-radius: 5px;
      </font>
     </property>
     <property name="text">
-     <string>Date From:</string>
+     <string>Day From:</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblDateTo">
     <property name="geometry">
      <rect>
-      <x>900</x>
+      <x>910</x>
       <y>10</y>
-      <width>101</width>
+      <width>91</width>
       <height>41</height>
      </rect>
     </property>
@@ -923,7 +984,7 @@ border-radius: 5px;
      </font>
     </property>
     <property name="text">
-     <string>Date To:</string>
+     <string>Day To:</string>
     </property>
    </widget>
   </widget>

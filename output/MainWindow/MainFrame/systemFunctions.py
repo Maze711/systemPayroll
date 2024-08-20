@@ -7,7 +7,7 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 
 
 class SingleFunctionLogger:
-    pass
+     pass
 #     def __init__(self, log_file='file_import.log'):
 #         self.log_file = log_file
 #         self.logger = logging.getLogger('SingleFunctionLogger')
@@ -55,8 +55,7 @@ class SingleFunctionLogger:
 # root_logger = logging.getLogger()
 # root_logger.setLevel(logging.DEBUG)
 # root_logger.addHandler(SingleFunctionLogger().file_handler)
-#
-#
+
 single_function_logger = SingleFunctionLogger()
 
 
@@ -96,7 +95,6 @@ class timekeepingFunction():
     def __init__(self):
         super(timekeepingFunction, self).__init__()
 
-    #@single_function_logger.log_function
     def getTypeOfDate(trans_date):
         logger = logging.getLogger('SingleFunctionLogger')
         try:

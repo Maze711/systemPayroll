@@ -5,10 +5,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import single_function_logger
 
 
-    #@single_function_logger.log_function
 def convert_to_24hour(time_str):
     try:
         if isinstance(time_str, str):
@@ -49,7 +47,6 @@ def remove_dashes_in_id(id_number):
     return id_number_without_dashes
 
 
-    #@single_function_logger.log_function
 def importIntoDB(parent, display_employees_callback):
     cursor = None
     connection = None
@@ -187,7 +184,6 @@ def importIntoDB(parent, display_employees_callback):
         if connection:
             connection.close()
 
-    #@single_function_logger.log_function
 def get_empl_ids_from_db():
     """
     Fetch `empl_id` values from the database tables and return as a set of integers.
@@ -224,7 +220,6 @@ def get_empl_ids_from_db():
         return set()
 
 
-    #@single_function_logger.log_function
 def compare_empl_id_with_excel(parent):
     """
     Compare `empl_id` from database with `empno` from the Excel file and print matches.
@@ -271,7 +266,6 @@ def compare_empl_id_with_excel(parent):
         QMessageBox.critical(parent, "Comparison Error", f"An error occurred while comparing data: {str(e)}")
 
 
-    #@single_function_logger.log_function
 def update_db_for_missing_row_columns(parent):
     try:
         options = QFileDialog.Options()
@@ -304,7 +298,8 @@ def update_db_for_missing_row_columns(parent):
                 'tin': 'tin', 'pagibig': 'pagibig', 'philhealth': 'philhealth', 'bank_code': 'bank_code'
             }
             posnsched_column_mapping = {
-                'empl_id': 'empno', 'pos_descr': 'pos_descr', 'dept_name': 'dept_name', 'sche_name': 'sche_name'
+                'empl_id': 'empno', 'pos_descr': 'pos_descr', 'dept_name': 'dept_name', 'sche_name': 'sche_name',
+                'empid': 'emp_id'
             }
             status_column_mapping = {
                 'empl_id': 'empno', 'position': 'pos_descr'
@@ -324,7 +319,7 @@ def update_db_for_missing_row_columns(parent):
                 UPDATE emp_list_id SET sss = %s, tin = %s, pagibig = %s, philhealth = %s, bank_code = %s WHERE empl_id = %s
             """
             update_posnsched_query = """
-                UPDATE emp_posnsched SET pos_descr = %s, sched_in = %s, sched_out = %s, dept_name = %s WHERE empl_id = %s
+                UPDATE emp_posnsched SET empid = %s, pos_descr = %s, sched_in = %s, sched_out = %s, dept_name = %s WHERE empl_id = %s
             """
             update_status_query = """
                 UPDATE emp_status SET position = %s WHERE empl_id = %s
@@ -402,11 +397,13 @@ def update_db_for_missing_row_columns(parent):
                 # Position Schedule
                 sched_in, sched_out = split_schedule(str(row[headers.index(posnsched_column_mapping['sche_name'])]))
                 posnsched_row = (
+                    row[headers.index(posnsched_column_mapping['empid'])],
                     str(row[headers.index(posnsched_column_mapping['pos_descr'])]).upper(),
                     sched_in,
                     sched_out,
                     str(row[headers.index(posnsched_column_mapping['dept_name'])]),
                     empno
+
                 )
                 posnsched_data.append(posnsched_row)
 
