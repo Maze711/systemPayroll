@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1154</width>
+    <width>1155</width>
     <height>665</height>
    </rect>
   </property>
@@ -448,7 +448,7 @@ font-family: Poppins;
       </property>
      </item>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_2">
+    <widget class="QLineEdit" name="txtStatus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -690,7 +690,7 @@ font-family: Poppins;
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QDateEdit" name="dateHired_3">
+    <widget class="QDateEdit" name="dateResigned">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -763,7 +763,7 @@ font-family: Poppins;
       <string>Max Sick</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_3">
+    <widget class="QLineEdit" name="txtVacn">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -776,7 +776,7 @@ font-family: Poppins;
       <string/>
      </property>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_4">
+    <widget class="QLineEdit" name="txtSick">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -828,7 +828,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1137</y>
+      <y>-1637</y>
       <width>1218</width>
       <height>2318</height>
      </rect>
@@ -4412,15 +4412,12 @@ font-family: Poppins;
           <number>15</number>
          </property>
         </widget>
-        <widget class="QComboBox" name="cmbSchedIn">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+        <widget class="QLineEdit" name="cmbSchedIn">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>190</y>
-           <width>220</width>
+           <x>9</x>
+           <y>196</y>
+           <width>351</width>
            <height>31</height>
           </rect>
          </property>
@@ -4430,48 +4427,19 @@ font-family: Poppins;
            <pointsize>10</pointsize>
           </font>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="editable">
+         <property name="autoFillBackground">
           <bool>false</bool>
          </property>
-         <property name="currentText">
-          <string>Time Kineme</string>
+         <property name="maxLength">
+          <number>15</number>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-         <property name="duplicatesEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Time Kineme</string>
-          </property>
-         </item>
         </widget>
-        <widget class="QComboBox" name="cmbSchedOut">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+        <widget class="QLineEdit" name="cmbSchedOut">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>260</y>
-           <width>220</width>
+           <width>351</width>
            <height>31</height>
           </rect>
          </property>
@@ -4481,38 +4449,12 @@ font-family: Poppins;
            <pointsize>10</pointsize>
           </font>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="editable">
+         <property name="autoFillBackground">
           <bool>false</bool>
          </property>
-         <property name="currentText">
-          <string>Time Kineme</string>
+         <property name="maxLength">
+          <number>15</number>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-         <property name="duplicatesEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Time Kineme</string>
-          </property>
-         </item>
         </widget>
        </widget>
        <widget class="QLabel" name="workExpLabel_3">
@@ -4884,10 +4826,10 @@ font-family: Poppins;
   <tabstop>saveBTN</tabstop>
   <tabstop>revertBTN</tabstop>
   <tabstop>cmbResigned_2</tabstop>
-  <tabstop>txtVacn_2</tabstop>
+  <tabstop>txtStatus</tabstop>
   <tabstop>dateHired_2</tabstop>
-  <tabstop>dateHired_3</tabstop>
-  <tabstop>txtVacn_3</tabstop>
+  <tabstop>dateResigned</tabstop>
+  <tabstop>txtVacn</tabstop>
   <tabstop>validationDate1_3</tabstop>
   <tabstop>techSkillTextEdit</tabstop>
   <tabstop>techSkillTextEdit_2</tabstop>
@@ -4897,7 +4839,7 @@ font-family: Poppins;
   <tabstop>certiTextEdit1_3</tabstop>
   <tabstop>schoolYear</tabstop>
   <tabstop>schoolYear2</tabstop>
-  <tabstop>txtVacn_4</tabstop>
+  <tabstop>txtSick</tabstop>
   <tabstop>addBTN</tabstop>
   <tabstop>schoolYear3</tabstop>
   <tabstop>courseTextEdit3</tabstop>
@@ -4916,8 +4858,6 @@ font-family: Poppins;
   <tabstop>positionTextEdit_5</tabstop>
   <tabstop>txtDept</tabstop>
   <tabstop>txtPos</tabstop>
-  <tabstop>cmbSchedIn</tabstop>
-  <tabstop>cmbSchedOut</tabstop>
   <tabstop>txtRate</tabstop>
   <tabstop>txtRPH</tabstop>
   <tabstop>txtDailyAllow</tabstop>
