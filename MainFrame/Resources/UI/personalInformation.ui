@@ -227,7 +227,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>40</y>
+      <y>10</y>
       <width>161</width>
       <height>181</height>
      </rect>
@@ -249,7 +249,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
+      <y>200</y>
       <width>310</width>
       <height>41</height>
      </rect>
@@ -279,7 +279,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>290</y>
       <width>311</width>
       <height>41</height>
      </rect>
@@ -303,7 +303,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>280</y>
+      <y>240</y>
       <width>291</width>
       <height>41</height>
      </rect>
@@ -333,7 +333,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>370</y>
+      <y>330</y>
       <width>291</width>
       <height>41</height>
      </rect>
@@ -363,13 +363,17 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>390</y>
       <width>321</width>
-      <height>261</height>
+      <height>281</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel{
+     <string notr="true">#frame{
+border-top: 1px groove #BFBFBF;
+}
+
+QLabel{
 border: none;
 }
 
@@ -790,6 +794,16 @@ font-family: Poppins;
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>340</y>
+      <width>120</width>
+      <height>80</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
@@ -828,7 +842,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1637</y>
+      <y>0</y>
       <width>1218</width>
       <height>2318</height>
      </rect>

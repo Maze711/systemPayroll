@@ -204,9 +204,9 @@ border-radius: 5px;</string>
   <widget class="QDateEdit" name="dateEdit">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>230</x>
      <y>240</y>
-     <width>110</width>
+     <width>231</width>
      <height>30</height>
     </rect>
    </property>
@@ -218,6 +218,9 @@ border-radius: 5px;</string>
    </property>
    <property name="displayFormat">
     <string>yyyy-MM-dd</string>
+   </property>
+   <property name="calendarPopup">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="btnUpdate">
@@ -291,7 +294,7 @@ background-color: &quot;#485994&quot;;
       <x>20</x>
       <y>10</y>
       <width>291</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -420,9 +423,9 @@ background-color: &quot;#485994&quot;;
   <widget class="QComboBox" name="cmbDateType">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>230</x>
      <y>170</y>
-     <width>131</width>
+     <width>231</width>
      <height>30</height>
     </rect>
    </property>
