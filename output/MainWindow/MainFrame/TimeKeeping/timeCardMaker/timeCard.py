@@ -4,11 +4,12 @@ import os
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.TimeKeeping.timeCardMaker.filter import filter
+from MainFrame.notificationMaker import notificationLoader
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction, single_function_logger
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 import re
 
 
@@ -28,11 +29,20 @@ class timecard(QDialog):
         self.dateFromCC = self.findChild(QComboBox, 'dateFromCC')
         self.dateToCC = self.findChild(QComboBox, 'dateToCC')
         self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
+        self.costCenterBox = self.findChild(QComboBox, 'costCenterBox')
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
+        self.importBTN = self.findChild(QPushButton, 'importBTN')
+
+        #self.importBTN.clicked.connect(lambda: timekeepingFunction.getTypeOfDate)
+
+        self.btnExport = self.findChild(QPushButton, 'btnExport')
+
+        self.btnExport.clicked.connect(self.export_to_excel)
 
         # Initialize the year combo box
         self.populate_year_combo_box()
+        self.populateCostCenterBox()
 
         # Connect signals to slots
         self.yearCC.currentTextChanged.connect(self.populate_date_combo_boxes)
@@ -50,6 +60,31 @@ class timecard(QDialog):
         self.original_data = []
         filtered_data = []  # Initialized properly
         self.original_data = filtered_data.copy()
+
+    def export_to_excel(self, checked=False):
+        if hasattr(self, 'original_data') and self.original_data:
+            try:
+                if isinstance(self.original_data, pd.DataFrame):
+                    data_to_export = self.original_data
+                else:
+                    data_to_export = pd.DataFrame(self.original_data)
+                file_dialog = QFileDialog(self, "Save File", "", "Excel Files (*.xlsx)")
+                if file_dialog.exec_():
+                    file_name = file_dialog.selectedFiles()[0]
+                    if not file_name.endswith('.xlsx'):
+                        file_name += '.xlsx'
+                    globalFunction.export_to_excel(data_to_export, file_name)
+
+                    QMessageBox.information(self, "Export Successful",
+                                            f"Data has been successfully exported to {file_name}")
+                else:
+                    QMessageBox.warning(self, "Export Cancelled", "Export was cancelled by the user.")
+
+            except Exception as e:
+                QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
+                logging.error(f"Export error: {e}")
+        else:
+            QMessageBox.warning(self, "No Data", "There is no data to export.")
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
@@ -74,6 +109,7 @@ class timecard(QDialog):
 
             # Add year-month combinations to the combo box
             self.yearCC.addItems(sorted(year_months))
+            self.yearCC.setCurrentIndex(-1)
 
         except Exception as e:
             logging.error(f"Error populating year combo box: {e}")
@@ -128,7 +164,39 @@ class timecard(QDialog):
             cursor.close()
             connection.close()
 
-    # @single_function_logger.log_function
+    def populateCostCenterBox(self):
+        """Populate the costCenterBox with values from the pos_descr column in the emp_posnsched table."""
+        connection = create_connection('FILE201')  # Ensure you have a create_connection function for 'FILE201'
+        if not connection:
+            logging.error("Error: Unable to connect to FILE201 database.")
+            return
+
+        try:
+            cursor = connection.cursor()
+
+            # Query to fetch distinct pos_descr values
+            query = "SELECT DISTINCT pos_descr FROM emp_posnsched ORDER BY pos_descr"
+            cursor.execute(query)
+
+            # Fetch all results
+            pos_descr_list = cursor.fetchall()
+
+            # Clear the current items in the QComboBox
+            self.costCenterBox.clear()
+
+            # Add items to the QComboBox
+            for pos_descr in pos_descr_list:
+                self.costCenterBox.addItem(pos_descr[0])  # pos_descr is a tuple, so get the first element
+
+            logging.info("Cost center box populated successfully.")
+
+        except Exception as e:
+            logging.error(f"Error populating cost center box: {e}")
+
+        finally:
+            cursor.close()
+            connection.close()
+
     def populate_time_list_table(self, checked=False):
         """Populate the time list table with check-in and check-out times, machCode, and employee data."""
         selected_year_month = self.yearCC.currentText()
@@ -188,7 +256,7 @@ class timecard(QDialog):
                 employee_query = (
                     "SELECT pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out "
                     "FROM emp_info pi "
-                    "JOIN emp_posnsched ps ON pi.empid = ps.empl_id "
+                    "JOIN emp_posnsched ps ON pi.empid = ps.empid "
                     f"WHERE pi.empid = {bioNum}"
                 )
 
@@ -251,13 +319,22 @@ class timecard(QDialog):
             connection_list_log.close()
             connection_file201.close()
 
-#     @single_function_logger.log_function
     def createTimeSheet(self, checked=False):
+        if self.TimeListTable.rowCount() == 0:
+            QMessageBox.warning(
+                self,
+                "No rows available",
+                "No rows detected, please make sure that there are data available within the table first in order to"
+                "proceed!"
+            )
+            return
+
         dataMerge = []
 
         for row in range(self.TimeListTable.rowCount()):
             # Fetch data from the table for each row
             bioNum = self.TimeListTable.item(row, 0).text()
+            emp_name = self.TimeListTable.item(row, 1).text()  # Get emp_name
             trans_date = self.TimeListTable.item(row, 2).text()
             check_in = self.TimeListTable.item(row, 4).text()
             check_out = self.TimeListTable.item(row, 5).text()
@@ -308,6 +385,7 @@ class timecard(QDialog):
             # Append the data to the dataMerge list
             dataMerge.append({
                 'BioNum': bioNum,
+                'Employee': emp_name,  # Include emp_name
                 'Check_In': check_in,
                 'Check_Out': check_out,
                 'Hours_Worked': str(hoursWorked),
@@ -357,7 +435,6 @@ class timecard(QDialog):
                 item.setTextAlignment(Qt.AlignCenter)
                 self.TimeListTable.setItem(row_position, col, item)
 
-    # @single_function_logger.log_function
     def getTotalHoursWorked(self, time_start, time_end):
         if time_start == 'Missing' or time_end == 'Missing':
             return "Unknown"
@@ -381,7 +458,6 @@ class timecard(QDialog):
 
         return round(work_duration_in_hours, 2)
 
-#     @single_function_logger.log_function
     def CheckSched(self, checked=False):
         selected_row = self.TimeListTable.currentRow()
 
@@ -420,7 +496,6 @@ class timecard(QDialog):
                 "Please select a row from the table first!"
             )
 
-    # @single_function_logger.log_function
     def apply_filter(self, filter_values):
         try:
             filtered = []
@@ -453,8 +528,15 @@ class timecard(QDialog):
             logging.error(f"Error in apply_filter: {str(e)}")
             QMessageBox.critical(self, "Error", f"An error occurred while applying the filter: {str(e)}")
 
-#     @single_function_logger.log_function
     def filterModal(self, checked=False):
+        if self.yearCC.currentIndex() == -1 or self.dateFromCC.currentIndex() == -1 or self.dateToCC.currentIndex() == -1:
+            QMessageBox.warning(
+                self,
+                "No filter selected",
+                "Please select a year, day from, and day to first!"
+            )
+            return
+
         try:
             # Check if the filter dialog is open already
             for child in QApplication.instance().topLevelWidgets():
@@ -473,7 +555,6 @@ class timecard(QDialog):
             logging.error(traceback.format_exc())
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
 
-    # @single_function_logger.log_function
     def clear_filter(self):
         try:
             self.filter.cmbCheckIn.setCurrentIndex(0)
@@ -483,7 +564,6 @@ class timecard(QDialog):
             logging.error(f"Error in clear_filter: {str(e)}")
             logging.error(traceback.format_exc())
 
-#     @single_function_logger.log_function
     def show_missing(self):
         try:
             filter_values = self.filter.get_filter_values()

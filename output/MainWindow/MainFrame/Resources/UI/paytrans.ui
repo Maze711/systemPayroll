@@ -108,7 +108,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>51</number>
+     <number>65</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -416,6 +416,76 @@ QTableWidget {
     <column>
      <property name="text">
       <string>Emp_Status</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>New Column</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_3</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_4</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_5</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_6</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_7</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_8</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_9</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_10</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_11</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_12</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Payded_14</string>
      </property>
     </column>
    </widget>

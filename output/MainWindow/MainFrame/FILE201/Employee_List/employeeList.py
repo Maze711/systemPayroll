@@ -7,9 +7,11 @@ from MainFrame.FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
 from MainFrame.FILE201.file201_Function.excelExport import fetch_personal_information, export_to_excel
-from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB
+from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB, update_db_for_missing_row_columns
 
 from MainFrame.systemFunctions import globalFunction
+
+warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
 class EmployeeList(QMainWindow):
@@ -43,15 +45,21 @@ class EmployeeList(QMainWindow):
         self.employeeListTable.itemClicked.connect(self.functions.getSelectedRow)
         self.btnClear.clicked.connect(self.functions.clearFunction)
         self.txtSearch.textChanged.connect(self.functions.searchEmployees)
-        self.btnExport.clicked.connect(self.export_to_excel)
+        self.btnExport.clicked.connect(self.handle_export)
         self.btnImport = self.findChild(QPushButton, 'btnImport')
         self.btnImport.clicked.connect(lambda: importIntoDB(self, self.functions.displayEmployees))
+        #self.btnImport.clicked.connect(lambda: update_db_for_missing_row_columns(self))
 
-    def export_to_excel(self):
-        data_dict = fetch_personal_information()
-        if data_dict:
-            options = QFileDialog.Options()
-            file_name, _ = QFileDialog.getSaveFileName(self, "Save As", "", "Excel Files (*.xlsx);;All Files (*)",
-                                                       options=options)
-            if file_name:
-                export_to_excel(data_dict, file_name)
+    def handle_export(self):
+        try:
+            data_dict = fetch_personal_information()
+            if data_dict:
+                options = QFileDialog.Options()
+                file_name, _ = QFileDialog.getSaveFileName(self, "Save As", "",
+                                                           "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;CSV Files (*.csv);;All Files (*)",
+                                                           options=options)
+                if file_name:
+                    export_to_excel(data_dict, file_name)
+        except Exception as e:
+            logging.error(f"Error in handle_export: {e}", exc_info=True)
+            QMessageBox.critical(self, "Export Error", f"An error occurred while preparing data for export: {str(e)}")

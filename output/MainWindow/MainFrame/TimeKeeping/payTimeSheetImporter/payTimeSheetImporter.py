@@ -4,8 +4,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
-from MainFrame.systemFunctions import globalFunction, single_function_logger
-
+from MainFrame.systemFunctions import globalFunction
+from MainFrame.Database_Connection.user_session import UserSession
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -45,11 +45,20 @@ class PayrollDialog(QDialog):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
-        self.setFixedSize(418, 392)
+        self.setFixedSize(418, 200)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
 
+        self.user_session = UserSession().getALLSessionData()
+
+
         self.importBTN.clicked.connect(self.importTxt)
+        self.importBTN.setText("Import Excel")
+
+        # Disable the btnProcessTimeCard button
+        if hasattr(self, 'btnProcessTimeCard'):
+            self.btnProcessTimeCard.setVisible(False)
+
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
 
@@ -57,6 +66,7 @@ class PayrollDialog(QDialog):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
 
         if not fileName:
+            QMessageBox.information(self, "No File Selected", "Please select an Excel file to import.")
             return
 
         # Use FileProcessor to handle the file reading
@@ -77,11 +87,12 @@ class PayrollDialog(QDialog):
             self.progressBar.setFormat("Finishing Up..")
         QApplication.processEvents()
 
-    # @single_function_logger.log_function
     def fileProcessingFinished(self, content):
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
+
+        user_role = str(self.user_session["user_role"])
 
         # Validate columns and show data
         if content:
@@ -105,7 +116,7 @@ class PayrollDialog(QDialog):
                 QMessageBox.warning(self, "Missing Columns", error_message)
                 return
 
-            self.showData(content)
+            self.showData(content, user_role)
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
@@ -113,8 +124,11 @@ class PayrollDialog(QDialog):
         self.thread.quit()
         self.thread.wait()
 
-    def showData(self, content):
-        self.paytimesheet = PaytimeSheet(self.main_window, content)
+        QMessageBox.critical(self, "File Processing Error", f"An error occurred while processing the file:\n{error}")
+        self.close()
+
+    def showData(self, content, user_role):
+        self.paytimesheet = PaytimeSheet(self.main_window, content, user_role)  # Pass user_role
         self.main_window.open_dialogs.append(self.paytimesheet)
         self.paytimesheet.show()
         self.close()
