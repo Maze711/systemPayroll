@@ -36,6 +36,10 @@ class timecard(QDialog):
 
         #self.importBTN.clicked.connect(lambda: timekeepingFunction.getTypeOfDate)
 
+        self.btnExport = self.findChild(QPushButton, 'btnExport')
+
+        self.btnExport.clicked.connect(self.export_to_excel)
+
         # Initialize the year combo box
         self.populate_year_combo_box()
         self.populateCostCenterBox()
@@ -57,6 +61,30 @@ class timecard(QDialog):
         filtered_data = []  # Initialized properly
         self.original_data = filtered_data.copy()
 
+    def export_to_excel(self, checked=False):
+        if hasattr(self, 'original_data') and self.original_data:
+            try:
+                if isinstance(self.original_data, pd.DataFrame):
+                    data_to_export = self.original_data
+                else:
+                    data_to_export = pd.DataFrame(self.original_data)
+                file_dialog = QFileDialog(self, "Save File", "", "Excel Files (*.xlsx)")
+                if file_dialog.exec_():
+                    file_name = file_dialog.selectedFiles()[0]
+                    if not file_name.endswith('.xlsx'):
+                        file_name += '.xlsx'
+                    globalFunction.export_to_excel(data_to_export, file_name)
+
+                    QMessageBox.information(self, "Export Successful",
+                                            f"Data has been successfully exported to {file_name}")
+                else:
+                    QMessageBox.warning(self, "Export Cancelled", "Export was cancelled by the user.")
+
+            except Exception as e:
+                QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
+                logging.error(f"Export error: {e}")
+        else:
+            QMessageBox.warning(self, "No Data", "There is no data to export.")
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
