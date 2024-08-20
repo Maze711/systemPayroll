@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
@@ -45,7 +46,6 @@ class ListFunction:
             QMessageBox.critical(self.main_window, "Database Connection Error",
                                  "An unexpected disconnection has occurred. Please check your network connection or "
                                  "contact the system administrator.")
-
 
     # Retrieves selected row in the employeeListTable
     def getSelectedRow(self):
@@ -140,27 +140,29 @@ class ListFunction:
         cursor = None
 
         query = """
-            SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
-               p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex,
-               f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
-               f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
-               f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
-               f.dependentsName,
-               i.sss, i.tin, i.pagibig, i.philhealth,
-               w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
-               t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
-               t.techSkill3, t.certificate3, t.validationDate3,
-               e.college, e.highSchool, e.elemSchool,
-               e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
-               e.highschoolYear, e.elemYear
-               FROM emp_info p
-               LEFT JOIN educ_information e on p.empl_id = e.empl_id
-               LEFT JOIN family_background f ON p.empl_id = f.empl_id
-               LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
-               LEFT JOIN work_exp w ON p.empl_id = w.empl_id
-               LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
-               WHERE p.empl_id = %s
-            """
+                    SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
+                       p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex, p.religion, 
+                       p.citizenship, p.blood_type, p.email,
+                       f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
+                       f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
+                       f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
+                       f.dependentsName, m.emer_name,
+                       i.sss, i.tin, i.pagibig, i.philhealth, i.taxtstat, i.account_no, i.bank_code, i.cola,
+                       w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+                       t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
+                       t.techSkill3, t.certificate3, t.validationDate3,
+                       e.college, e.highSchool, e.elemSchool,
+                       e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
+                       e.highschoolYear, e.elemYear
+                       FROM emp_info p
+                       LEFT JOIN educ_information e on p.empl_id = e.empl_id
+                       LEFT JOIN emergency_list m on p.empl_id = m.empl_id
+                       LEFT JOIN family_background f ON p.empl_id = f.empl_id
+                       LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
+                       LEFT JOIN work_exp w ON p.empl_id = w.empl_id
+                       LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
+                       WHERE p.empl_id = %s
+                    """
         try:
             connection = create_connection('FILE201')
             if connection is None:
@@ -188,11 +190,11 @@ class ListFunction:
     def populate_modal_with_employee_data(self, modal, data):
         try:
             (empl_id, surname, firstname, mi, suffix, street, barangay, city, province, zipcode,
-             mobile, height, weight, status, birthday, birthplace, sex,
+             mobile, height, weight, status, birthday, birthplace, sex, religion, citizenship, blood_type, email,
              fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
              spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
-             beneficiaryMiddleName, dependentsName,
-             sss, pagibig, philhealth, tin,
+             beneficiaryMiddleName, dependentsName, emer_name,
+             sss, pagibig, philhealth, tin, taxstat, account_no, bank_code, cola,
              from_date, to_date, company_name, company_add, position,
              tech_skill1, certificate_skill1, validation_date1, tech_skill2, certificate_skill2, validation_date2,
              tech_skill3, certificate_skill3, validation_date3, college, high_school, elem_school,
@@ -217,6 +219,10 @@ class ListFunction:
             modal.dtDateOfBirth.setDate(QDate.fromString(birthday, "yyyy-MM-dd"))
             modal.txtPlace.setText(birthplace)
             modal.cmbGender.setCurrentText(sex)
+            modal.txtReligion.setText(religion)
+            modal.txtCitizenship.setText(citizenship)
+            modal.txtEmail.setText(email)
+            modal.cmbBlood.setCurrentText(blood_type)
 
             modal.txtFatherLast.setText(fathersLastName)
             modal.txtFatherFirst.setText(fathersFirstName)
@@ -231,11 +237,16 @@ class ListFunction:
             modal.txtBeneFirst.setText(beneficiaryFirstName)
             modal.txtBeneMiddle.setText(beneficiaryMiddleName)
             modal.txtDependent.setText(dependentsName)
+            modal.txtEmergency.setText(emer_name)
 
             modal.sssTextEdit.setText(str(sss))
             modal.pagibigTextEdit.setText(str(pagibig))
             modal.philHealthTextEdit.setText(str(philhealth))
             modal.tinTextEdit.setText(str(tin))
+            modal.txtTaxstat.setText(str(taxstat))
+            modal.txtAccount.setText(account_no)
+            modal.txtBank.setText(bank_code)
+            modal.txtCola.setText(cola)
 
             modal.dateStart_4.setDate(QDate.fromString(from_date, "MM-dd-yyyy"))
             modal.dateEnd_4.setDate(QDate.fromString(to_date, "MM-dd-yyyy"))
