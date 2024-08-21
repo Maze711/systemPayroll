@@ -194,14 +194,3 @@ class PayrollDialog(QDialog):
                 cursor.close()
             if connection:
                 connection.close()
-
-    def closeEvent(self, event):
-        """Override the close event to clear the session when the dialog is closed."""
-        self.clearUserSession()
-        event.accept()  # Accept the event to proceed with the close
-
-    def clearUserSession(self):
-        """Clear the user session data."""
-        user_session = UserSession()
-        user_session.clearSession()
-        print("User session cleared")
