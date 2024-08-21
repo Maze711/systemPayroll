@@ -51,24 +51,33 @@ class PayrollDialog(QDialog):
         loadUi(ui_file, self)
 
         self.user_session = UserSession().getALLSessionData()
+        self.user_role = str(self.user_session.get("user_role", ""))
 
-        self.user_role = str(self.user_session["user_role"])
+        # Print the user_role to verify it
+        print(f"User Role: {self.user_role}")
+
+        self.configureButtons(self.user_role)
 
         self.importBTN.clicked.connect(self.importTxt)
         self.importBTN.setText("Import Excel")
-
-        # Disable the btnProcessTimeCard button
-        if hasattr(self, 'btnProcessTimeCard'):
-            self.btnProcessTimeCard.setVisible(False)
-
-        activation = True if self.user_session['user_role'] == 'Pay Master 2' else False
-
-        self.btnViewDeduction.setVisible(activation)
 
         self.btnViewDeduction.clicked.connect(self.viewDeduction)
 
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
+
+    def configureButtons(self, user_role):
+        """Configure button visibility based on the user role."""
+        if user_role == "Pay Master 1":
+            if hasattr(self, 'btnProcessTimeCard'):
+                self.btnProcessTimeCard.setVisible(True)
+            if hasattr(self, 'btnViewDeduction'):
+                self.btnViewDeduction.setVisible(False)
+        elif user_role == "Pay Master 2":
+            if hasattr(self, 'btnProcessTimeCard'):
+                self.btnProcessTimeCard.setVisible(False)
+            if hasattr(self, 'btnViewDeduction'):
+                self.btnViewDeduction.setVisible(True)
 
     def importTxt(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
@@ -156,3 +165,14 @@ class PayrollDialog(QDialog):
             return result
         except Error as e:
             print(f"Error fetching or processing deduction data: {e}")
+
+    def closeEvent(self, event):
+        """Override the close event to clear the session when the dialog is closed."""
+        self.clearUserSession()
+        event.accept()  # Accept the event to proceed with the close
+
+    def clearUserSession(self):
+        """Clear the user session data."""
+        user_session = UserSession()
+        user_session.clearSession()
+        print("User session cleared")

@@ -409,11 +409,16 @@ class timecard(QDialog):
 
         dataMerge = []
 
+        # Fetch date values from ComboBoxes
+        date_from = self.dateFromCC.currentText()
+        date_to = self.dateToCC.currentText()
+
         for row in range(self.TimeListTable.rowCount()):
             # Fetch data from the table for each row
             bioNum = self.TimeListTable.item(row, 0).text()
             emp_name = self.TimeListTable.item(row, 1).text()  # Get emp_name
             trans_date = self.TimeListTable.item(row, 2).text()
+            mach_code = self.TimeListTable.item(row, 3).text()  # Get mach_code
             check_in = self.TimeListTable.item(row, 4).text()
             check_out = self.TimeListTable.item(row, 5).text()
 
@@ -475,9 +480,9 @@ class timecard(QDialog):
         for data in dataMerge:
             logging.info(data)
 
-        # Now pass the dataMerge into the TimeSheet dialog
+        # Pass date and mach_code along with the dataMerge to TimeSheet dialog
         try:
-            dialog = TimeSheet(dataMerge)
+            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
