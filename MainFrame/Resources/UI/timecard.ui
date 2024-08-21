@@ -685,9 +685,9 @@ border-radius: 5px;
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>5</x>
       <y>80</y>
-      <width>251</width>
+      <width>240</width>
       <height>351</height>
      </rect>
     </property>
