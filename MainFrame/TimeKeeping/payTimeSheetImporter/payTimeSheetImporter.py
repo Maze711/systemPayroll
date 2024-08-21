@@ -46,7 +46,7 @@ class PayrollDialog(QDialog):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
-        self.setFixedSize(418, 200)
+        # self.setFixedSize(418, 339)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
 
@@ -61,7 +61,7 @@ class PayrollDialog(QDialog):
         self.importBTN.clicked.connect(self.importTxt)
         self.importBTN.setText("Import Excel")
 
-        self.btnViewDeduction.clicked.connect(self.viewDeduction)
+        self.btnExportToExcel.clicked.connect(self.viewDeduction)
 
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
@@ -70,14 +70,14 @@ class PayrollDialog(QDialog):
         """Configure button visibility based on the user role."""
         if user_role == "Pay Master 1":
             if hasattr(self, 'btnProcessTimeCard'):
-                self.btnProcessTimeCard.setVisible(True)
-            if hasattr(self, 'btnViewDeduction'):
-                self.btnViewDeduction.setVisible(False)
+                self.btnProcessTimeCard.setVisible(False)
+            if hasattr(self, 'btnExportToExcel'):
+                self.btnExportToExcel.setVisible(False)
         elif user_role == "Pay Master 2":
             if hasattr(self, 'btnProcessTimeCard'):
                 self.btnProcessTimeCard.setVisible(False)
-            if hasattr(self, 'btnViewDeduction'):
-                self.btnViewDeduction.setVisible(True)
+            if hasattr(self, 'btnExportToExcel'):
+                self.btnExportToExcel.setVisible(True)
 
     def importTxt(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")

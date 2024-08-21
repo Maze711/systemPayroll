@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>309</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -133,7 +133,7 @@ background-color: rgb(71, 91, 157);
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QPushButton" name="btnViewDeduction">
+    <widget class="QPushButton" name="btnExportToExcel">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -155,7 +155,7 @@ background-color: rgb(71, 91, 157);
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>View Deduction</string>
+      <string>Process Export to Excel</string>
      </property>
      <property name="icon">
       <iconset>
