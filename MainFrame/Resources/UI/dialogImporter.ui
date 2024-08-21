@@ -38,13 +38,13 @@ background-color: rgb(255, 110, 112);
 background-color: rgb(255, 80, 83);
 }
 
-#btnViewDeduction{
+#btnExportToExcel{
 border-radius: 5px;
 background-color: &quot;#344273&quot;;
 color: white;
 }
 
-#btnViewDeduction:hover{
+#btnExportToExcel:hover{
 background-color: rgb(71, 91, 157);
 }</string>
   </property>

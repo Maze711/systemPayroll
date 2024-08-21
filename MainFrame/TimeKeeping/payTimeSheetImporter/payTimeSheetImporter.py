@@ -1,5 +1,8 @@
 import sys
 import os
+
+from openpyxl.workbook import Workbook
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
@@ -61,7 +64,7 @@ class PayrollDialog(QDialog):
         self.importBTN.clicked.connect(self.importTxt)
         self.importBTN.setText("Import Excel")
 
-        self.btnExportToExcel.clicked.connect(self.viewDeduction)
+        self.btnExportToExcel.clicked.connect(self.exportDeductionToExcel)
 
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
@@ -149,7 +152,7 @@ class PayrollDialog(QDialog):
         self.paytimesheet.show()
         self.close()
 
-    def viewDeduction(self):
+    def exportDeductionToExcel(self):
         connection = create_connection('SYSTEM_STORE_DEDUCTION')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
@@ -158,13 +161,39 @@ class PayrollDialog(QDialog):
         cursor = connection.cursor()
 
         try:
-            query = "SELECT * from deductions"
+            query = "SELECT * FROM deductions"
             cursor.execute(query)
             result = cursor.fetchall()
-            print(result)
-            return result
+            column_names = [desc[0] for desc in cursor.description]
+
+            # Create a new workbook and select the active worksheet
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Deductions"
+
+            # Write column headers
+            ws.append(column_names)
+
+            # Write data rows
+            for row in result:
+                ws.append(row)
+
+            # Prompt the user to choose a file location and name
+            file_name, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Excel Files (*.xlsx);;All Files (*)")
+            if file_name:
+                # Save the workbook
+                wb.save(file_name)
+                QMessageBox.information(self, "Export Successful", "Deductions Data was exported successfully!")
+                print(f"Data exported successfully to {file_name}")
+
         except Error as e:
             print(f"Error fetching or processing deduction data: {e}")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
 
     def closeEvent(self, event):
         """Override the close event to clear the session when the dialog is closed."""
