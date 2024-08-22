@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Notification Loader</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">

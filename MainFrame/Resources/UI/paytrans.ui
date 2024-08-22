@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>PayTrans</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="paytransTable">
     <property name="geometry">

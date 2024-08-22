@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>HRTPAYMS</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralwidget {
@@ -264,7 +268,7 @@ background-color: &quot;#DCE5FE&quot;;
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>530</y>
+       <y>520</y>
        <width>211</width>
        <height>31</height>
       </rect>
@@ -303,10 +307,10 @@ background-color: &quot;#DCE5FE&quot;;
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>40</x>
        <y>570</y>
-       <width>151</width>
-       <height>20</height>
+       <width>81</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="font">
@@ -318,16 +322,32 @@ background-color: &quot;#DCE5FE&quot;;
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);</string>
+      <string notr="true">color: lightgray</string>
      </property>
      <property name="text">
-      <string>Powered by: BEEZLINK</string>
+      <string>Powered By</string>
      </property>
-     <property name="textFormat">
-      <enum>Qt::MarkdownText</enum>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>125</x>
+       <y>570</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="styleSheet">
+      <string notr="true">opacity: 0.5</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../beezlinkupsmall.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>

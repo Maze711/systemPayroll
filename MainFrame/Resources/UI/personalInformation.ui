@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Personal Information</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">/* VERTICAL SCROLLBAR */
 QScrollBar:vertical {
@@ -842,7 +846,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-1637</y>
       <width>1218</width>
       <height>2318</height>
      </rect>

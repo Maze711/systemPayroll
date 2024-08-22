@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TimeSheet</string>
+   <string>Timesheet</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -459,7 +463,7 @@ QTableWidget {
     <rect>
      <x>0</x>
      <y>60</y>
-     <width>441</width>
+     <width>471</width>
      <height>51</height>
     </rect>
    </property>
@@ -497,9 +501,9 @@ color: white
   <widget class="QWidget" name="widget_3" native="true">
    <property name="geometry">
     <rect>
-     <x>899</x>
+     <x>889</x>
      <y>60</y>
-     <width>801</width>
+     <width>811</width>
      <height>51</height>
     </rect>
    </property>
@@ -540,17 +544,17 @@ color: white
   <widget class="QWidget" name="widget_4" native="true">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>460</x>
      <y>60</y>
-     <width>491</width>
+     <width>431</width>
      <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">
 background-color: &quot;#344273&quot;; 
-border-bottom: 2px solid black;
-border-top: 2px solid black;
+border: 2px solid black;
+
 
 </string>
    </property>

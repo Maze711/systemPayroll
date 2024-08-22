@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Importer</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">#descFrame{
 border: 1px solid black;

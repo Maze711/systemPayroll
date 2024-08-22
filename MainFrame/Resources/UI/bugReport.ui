@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Report Bug</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <widget class="QPushButton" name="btnSendReport">
    <property name="geometry">
     <rect>
@@ -189,6 +193,25 @@ border-radius: 5px;</string>
    </property>
    <property name="placeholderText">
     <string>Write your message here. Please include at least 10 characters.</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>260</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../Icons/attachment.svg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
