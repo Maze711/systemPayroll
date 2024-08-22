@@ -30,6 +30,9 @@ class timecard(QDialog):
         self.dateToCC = self.findChild(QComboBox, 'dateToCC')
         self.timeSheetButton = self.findChild(QPushButton, 'btnTimeSheet')
         self.costCenterBox = self.findChild(QComboBox, 'costCenterBox')
+        self.btnCCSched = self.findChild(QPushButton, 'btnCCSched')
+        self.costCenterFrom = self.findChild(QComboBox, 'costCenterFrom')
+        self.costCenterBox = self.findChild(QComboBox, 'costCenterBox')
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
         self.importBTN = self.findChild(QPushButton, 'importBTN')
@@ -45,6 +48,7 @@ class timecard(QDialog):
         self.populateCostCenterBox()
 
         # Connect signals to slots
+        self.btnCCSched.clicked.connect(self.updateSchedule)
         self.yearCC.currentTextChanged.connect(self.populate_date_combo_boxes)
         self.dateFromCC.currentTextChanged.connect(self.populate_time_list_table)
         self.dateToCC.currentTextChanged.connect(self.populate_time_list_table)
@@ -60,6 +64,79 @@ class timecard(QDialog):
         self.original_data = []
         filtered_data = []  # Initialized properly
         self.original_data = filtered_data.copy()
+
+    @pyqtSlot()
+    def updateSchedule(self):
+        # Retrieve selected values
+        selectedCostCenterFrom = self.costCenterFrom.currentText()
+        selectedCostCenterBox = self.costCenterBox.currentText()
+        selectedCostCenterTo = self.costCenterTo.currentText()
+
+        if not selectedCostCenterFrom or not selectedCostCenterBox or not selectedCostCenterTo:
+            print("Please select all required fields.")
+            return
+
+        # Print the selected data
+        print(f"Selected Cost Center From: {selectedCostCenterFrom}")
+        print(f"Selected Cost Center To: {selectedCostCenterTo}")
+        print(f"Selected Cost Center Box: {selectedCostCenterBox}")
+
+        # Show caution message box
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Caution")
+        msg.setText(f"CAUTION! It will change the schedule of {selectedCostCenterBox}. Do you want to continue?")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        result = msg.exec_()
+
+        # Proceed only if the user clicks "Yes"
+        if result == QMessageBox.Yes:
+            # Database connection
+            connection = create_connection('FILE201')
+            if not connection:
+                logging.error("Error: Unable to connect to FILE201 database.")
+                return
+
+            try:
+                cursor = connection.cursor()
+
+                # Query to fetch existing schedule
+                query = """
+                    SELECT sched_in, sched_out
+                    FROM emp_posnsched
+                    WHERE dept_name = %s
+                """
+                cursor.execute(query, (selectedCostCenterBox,))
+                result = cursor.fetchone()
+
+                if result:
+                    sched_in, sched_out = result
+                    print(f"Existing Scheduled In: {sched_in}")
+                    print(f"Existing Scheduled Out: {sched_out}")
+
+                    # Ensure all results are processed
+                    cursor.fetchall()  # Process remaining results
+
+                    # Update sched_in and sched_out based on selectedCostCenterFrom and selectedCostCenterTo
+                    update_query = """
+                        UPDATE emp_posnsched
+                        SET sched_in = %s, sched_out = %s
+                        WHERE dept_name = %s
+                    """
+                    cursor.execute(update_query, (selectedCostCenterFrom, selectedCostCenterTo, selectedCostCenterBox))
+                    connection.commit()
+
+                    print(f"Updated Scheduled In to: {selectedCostCenterFrom}")
+                    print(f"Updated Scheduled Out to: {selectedCostCenterTo}")
+                else:
+                    print("No schedule found for the selected Cost Center Box.")
+
+            except Exception as e:
+                logging.error(f"An error occurred while updating schedule: {e}")
+            finally:
+                connection.close()
+        else:
+            print("Update canceled by user.")
 
     def export_to_excel(self, checked=False):
         if hasattr(self, 'original_data') and self.original_data:
@@ -174,8 +251,8 @@ class timecard(QDialog):
         try:
             cursor = connection.cursor()
 
-            # Query to fetch distinct pos_descr values
-            query = "SELECT DISTINCT pos_descr FROM emp_posnsched ORDER BY pos_descr"
+            # Query to fetch distinct dept_name values
+            query = "SELECT DISTINCT dept_name FROM emp_posnsched ORDER BY dept_name"
             cursor.execute(query)
 
             # Fetch all results
@@ -183,6 +260,7 @@ class timecard(QDialog):
 
             # Clear the current items in the QComboBox
             self.costCenterBox.clear()
+            self.costCenterBox.setCurrentIndex(-1)
 
             # Add items to the QComboBox
             for pos_descr in pos_descr_list:
@@ -331,11 +409,16 @@ class timecard(QDialog):
 
         dataMerge = []
 
+        # Fetch date values from ComboBoxes
+        date_from = self.dateFromCC.currentText()
+        date_to = self.dateToCC.currentText()
+
         for row in range(self.TimeListTable.rowCount()):
             # Fetch data from the table for each row
             bioNum = self.TimeListTable.item(row, 0).text()
             emp_name = self.TimeListTable.item(row, 1).text()  # Get emp_name
             trans_date = self.TimeListTable.item(row, 2).text()
+            mach_code = self.TimeListTable.item(row, 3).text()  # Get mach_code
             check_in = self.TimeListTable.item(row, 4).text()
             check_out = self.TimeListTable.item(row, 5).text()
 
@@ -397,9 +480,9 @@ class timecard(QDialog):
         for data in dataMerge:
             logging.info(data)
 
-        # Now pass the dataMerge into the TimeSheet dialog
+        # Pass date and mach_code along with the dataMerge to TimeSheet dialog
         try:
-            dialog = TimeSheet(dataMerge)
+            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")

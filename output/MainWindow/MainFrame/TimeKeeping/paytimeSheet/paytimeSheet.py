@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.payTrans.payTransLoader import PayTrans
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
-from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.TimeKeeping.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
 from MainFrame.Database_Connection.user_session import UserSession
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -79,6 +79,7 @@ class DeductionUI:
         self.parent.btnEdit = self.parent.findChild(QPushButton, 'btnEdit')
         self.parent.placeBTN = self.parent.findChild(QPushButton, 'placeBTN')
         self.parent.btnStore = self.parent.findChild(QPushButton, 'btnStore')
+        self.parent.txtSearch = self.parent.findChild(QLineEdit, 'txtSearch')
 
         if self.parent.btnEdit:
             self.parent.btnEdit.clicked.connect(self.showDeductionUI)
@@ -91,9 +92,14 @@ class DeductionUI:
             logging.error("Error: placeBTN QPushButton not found in the UI.")
 
         if self.parent.btnStore:
-            self.parent.btnStore.clicked.connect(self.storeDeductionsToDatabase)
+            self.parent.btnStore.clicked.connect(self.showStoreDeductionLoader)
         else:
-            logging.error("Error: placeBTN QPushButton not found in the UI.")
+            logging.error("Error: btnStore QPushButton not found in the UI.")
+
+        if self.parent.txtSearch:
+            self.parent.txtSearch.textChanged.connect(self.filterTable)
+        else:
+            logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
         self.populatePaytimeSheetTable(self.parent.data)
 
@@ -142,6 +148,17 @@ class DeductionUI:
                 else:
                     logging.warning(f"Column '{field_name}' not found in data.")
             logging.info(f"Adding row {i}: {row}")
+
+    def filterTable(self):
+        search_text = self.parent.txtSearch.text().strip().lower()
+        row_count = self.parent.paytimesheetTable.rowCount()
+
+        for row in range(row_count):
+            item = self.parent.paytimesheetTable.item(row, 1)  # Bio Num column is assumed to be index 1
+            if item and search_text in item.text().strip().lower():
+                self.parent.paytimesheetTable.setRowHidden(row, False)
+            else:
+                self.parent.paytimesheetTable.setRowHidden(row, True)
 
     def showDeductionUI(self):
         selected_row = self.parent.paytimesheetTable.currentRow()
@@ -207,7 +224,6 @@ class DeductionUI:
     def get_deduction_table_data(self):
         deduction_data = []
 
-        # Get the number of rows and columns
         row_count = self.parent.paytimesheetTable.rowCount()
         column_count = self.parent.paytimesheetTable.columnCount()
 
@@ -217,10 +233,7 @@ class DeductionUI:
             row_data = {}
 
             for column_index in range(column_count):
-                # Get the header/column name
                 column_name = self.parent.paytimesheetTable.horizontalHeaderItem(column_index).text()
-
-                # Get each cell data
                 cell_item = self.parent.paytimesheetTable.item(row_index, column_index)
                 cell_data = cell_item.text() if cell_item else None
 
@@ -233,110 +246,15 @@ class DeductionUI:
 
         return deduction_data
 
-    def storeDeductionsToDatabase(self):
-        print("storeDeductionsToDatabase method invoked")
-        connection = create_connection('SYSTEM_STORE_DEDUCTION')
-        if connection is None:
-            logging.error("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
-            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
-            return
-
-        cursor = connection.cursor()
-
-        table_name = "deductions"
-
-        create_table_query = f"""
-            CREATE TABLE IF NOT EXISTS {table_name} (
-                ID INT AUTO_INCREMENT PRIMARY KEY, 
-                empNum INT(11),
-                bioNum INT(11),
-                empName VARCHAR(225),
-                payDed1 INT(11),
-                payDed2 INT(11),
-                payDed3 INT(11),
-                payDed4 INT(11),
-                payDed5 INT(11),
-                payDed6 INT(11),
-                payDed7 INT(11),
-                payDed8 INT(11),
-                payDed9 INT(11),
-                payDed10 INT(11),
-                payDed11 INT(11),
-                payDed12 INT(11),
-                payDed13 INT(11),
-                payDed14 INT(11),
-                deduction_placed_by VARCHAR(225),
-                deduction_placed_date DATETIME
-            )
-        """
-        try:
-            cursor.execute(create_table_query)
-            connection.commit()
-        except Error as e:
-            logging.error(f"Error creating table {table_name}: {e}")
-            print(f"Error creating table {table_name}: {e}")
-            return
-
-        try:
-            deduction_data = self.get_deduction_table_data()
-            user = self.user_session['user_name']
-
-            for each_data in deduction_data:
-                print(each_data)
-                try:
-                    values = (
-                        each_data.get('Emp Number', 0),  # Default to 0 if not present
-                        each_data.get('Bio Num', 0),
-                        each_data.get('Employee Name', ""),
-                        each_data.get('Pay Ded 1', 0),
-                        each_data.get('Pay Ded 2', 0),
-                        each_data.get('Pay Ded 3', 0),
-                        each_data.get('Pay Ded 4', 0),
-                        each_data.get('Pay Ded 5', 0),
-                        each_data.get('Pay Ded 6', 0),
-                        each_data.get('Pay Ded 7', 0),
-                        each_data.get('Pay Ded 8', 0),
-                        each_data.get('Pay Ded 9', 0),
-                        each_data.get('Pay Ded 10', 0),
-                        each_data.get('Pay Ded 11', 0),
-                        each_data.get('Pay Ded 12', 0),
-                        each_data.get('Pay Ded 13', 0),
-                        each_data.get('Pay Ded 14', 0),
-                        user
-                    )
-
-                    insert_query = f"""
-                           INSERT INTO {table_name} (
-                            empNum, bioNum, empName, payDed1, payDed2, payDed3, payDed4, 
-                            payDed5, payDed6, payDed7, payDed8, payDed9, payDed10, 
-                            payDed11, payDed12, payDed13, payDed14, deduction_placed_by, deduction_placed_date
-                        ) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-                    """
-
-                    cursor.execute(insert_query, values)
-                    connection.commit()
-                    logging.info(f"Data inserted for employee {each_data.get('Employee Name')}")
-                    print(f"Data inserted for employee {each_data.get('Employee Name')}")
-                except KeyError as e:
-                    logging.error(f"KeyError for employee data: Missing key {e} in {each_data}")
-                    print(f"KeyError: Missing key {e} in {each_data}")
-                except Error as e:
-                    logging.error(f"Error inserting data for row {each_data.get('Employee Name')}: {e}")
-                    print(f"Error inserting data for row {each_data.get('Employee Name')}: {e}")
-
-            print(len(deduction_data))
-            QMessageBox.information(self.parent, "Successfully Stored",
-                                    "Deduction Data has been successfully stored in the database")
-
-        except Error as e:
-            logging.error(f"Error fetching or processing deduction data: {e}")
-            print(f"Error fetching or processing deduction data: {e}")
-        finally:
-            if cursor:
-                cursor.close()
-            if connection and connection.is_connected():
-                connection.close()
+    def showStoreDeductionLoader(self):
+        message = QMessageBox.question(self.parent, "Storing Deduction into Database",
+                                       "Are you sure you want to store all the data into database "
+                                       "even though not all data has deductions?",
+                                       QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
+        if message == QMessageBox.Yes:
+            self.deduction_data = self.get_deduction_table_data()
+            self.storeDeductionLoader = StoreDeductionLoader(self.deduction_data, self.parent)
+            self.storeDeductionLoader.show()
 
     def getColumnIndex(self, column_name):
         header_items = [self.parent.paytimesheetTable.horizontalHeaderItem(i).text()

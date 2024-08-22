@@ -1,11 +1,15 @@
 import sys
 import os
+
+from openpyxl.workbook import Workbook
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_session import UserSession
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -45,22 +49,38 @@ class PayrollDialog(QDialog):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
-        self.setFixedSize(418, 200)
+        # self.setFixedSize(418, 339)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\dialogImporter.ui")
         loadUi(ui_file, self)
 
         self.user_session = UserSession().getALLSessionData()
+        self.user_role = str(self.user_session.get("user_role", ""))
 
+        # Print the user_role to verify it
+        print(f"User Role: {self.user_role}")
+
+        self.configureButtons(self.user_role)
 
         self.importBTN.clicked.connect(self.importTxt)
         self.importBTN.setText("Import Excel")
 
-        # Disable the btnProcessTimeCard button
-        if hasattr(self, 'btnProcessTimeCard'):
-            self.btnProcessTimeCard.setVisible(False)
+        self.btnExportToExcel.clicked.connect(self.exportDeductionToExcel)
 
         self.progressBar = self.findChild(QProgressBar, 'progressBar')
         self.progressBar.setVisible(False)
+
+    def configureButtons(self, user_role):
+        """Configure button visibility based on the user role."""
+        if user_role == "Pay Master 1":
+            if hasattr(self, 'btnProcessTimeCard'):
+                self.btnProcessTimeCard.setVisible(False)
+            if hasattr(self, 'btnExportToExcel'):
+                self.btnExportToExcel.setVisible(False)
+        elif user_role == "Pay Master 2":
+            if hasattr(self, 'btnProcessTimeCard'):
+                self.btnProcessTimeCard.setVisible(False)
+            if hasattr(self, 'btnExportToExcel'):
+                self.btnExportToExcel.setVisible(True)
 
     def importTxt(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
@@ -92,8 +112,6 @@ class PayrollDialog(QDialog):
         self.thread.quit()
         self.thread.wait()
 
-        user_role = str(self.user_session["user_role"])
-
         # Validate columns and show data
         if content:
             headers = content[0]
@@ -116,7 +134,7 @@ class PayrollDialog(QDialog):
                 QMessageBox.warning(self, "Missing Columns", error_message)
                 return
 
-            self.showData(content, user_role)
+            self.showData(content, self.user_role)
 
     def fileProcessingError(self, error):
         logging.error(f"Failed to read file: {error}")
@@ -130,5 +148,49 @@ class PayrollDialog(QDialog):
     def showData(self, content, user_role):
         self.paytimesheet = PaytimeSheet(self.main_window, content, user_role)  # Pass user_role
         self.main_window.open_dialogs.append(self.paytimesheet)
+        print(content)
         self.paytimesheet.show()
         self.close()
+
+    def exportDeductionToExcel(self):
+        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        if connection is None:
+            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            return
+
+        cursor = connection.cursor()
+
+        try:
+            query = "SELECT * FROM deductions"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            column_names = [desc[0] for desc in cursor.description]
+
+            # Create a new workbook and select the active worksheet
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Deductions"
+
+            # Write column headers
+            ws.append(column_names)
+
+            # Write data rows
+            for row in result:
+                ws.append(row)
+
+            # Prompt the user to choose a file location and name
+            file_name, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Excel Files (*.xlsx);;All Files (*)")
+            if file_name:
+                # Save the workbook
+                wb.save(file_name)
+                QMessageBox.information(self, "Export Successful", "Deductions Data was exported successfully!")
+                print(f"Data exported successfully to {file_name}")
+
+        except Error as e:
+            print(f"Error fetching or processing deduction data: {e}")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()

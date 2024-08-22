@@ -295,7 +295,7 @@ QTableWidget {
     </property>
     <property name="styleSheet">
      <string notr="true">#widget{
-background-color: white;
+background-color: &quot;#dce5fe&quot;;
 }
 
 #btnCheckSched, #btnFilter {
@@ -326,6 +326,7 @@ background-color: rgb(96, 206, 114);
       <string notr="true">#searchBar{
 	border: 1px solid &quot;#344273&quot;;
 	border-radius: 3px; 
+background-color: white;
 }</string>
      </property>
      <property name="frameShape">
@@ -488,7 +489,7 @@ background-color: rgb(96, 206, 114);
     <widget class="QPushButton" name="btnPayTrans">
      <property name="geometry">
       <rect>
-       <x>700</x>
+       <x>380</x>
        <y>10</y>
        <width>171</width>
        <height>41</height>
@@ -510,72 +511,6 @@ background-color: rgb(96, 206, 114);
      </property>
      <property name="text">
       <string>Create Pay Trans</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnFilter">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>10</y>
-       <width>131</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Filter</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnCheckSched">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>10</y>
-       <width>171</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Check Schedule</string>
      </property>
      <property name="iconSize">
       <size>

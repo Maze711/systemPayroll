@@ -142,7 +142,7 @@ class EmailerProcessor(QObject):
                         <th>Employee Number</th>
                         <td>{employee_number}</td>
                         <th>Department</th>
-                        <td>CITCS</td>
+                        <td>Company</td>
                     </tr>
                 </table>
 

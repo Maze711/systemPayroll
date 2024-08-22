@@ -79,6 +79,7 @@ class DeductionUI:
         self.parent.btnEdit = self.parent.findChild(QPushButton, 'btnEdit')
         self.parent.placeBTN = self.parent.findChild(QPushButton, 'placeBTN')
         self.parent.btnStore = self.parent.findChild(QPushButton, 'btnStore')
+        self.parent.txtSearch = self.parent.findChild(QLineEdit, 'txtSearch')
 
         if self.parent.btnEdit:
             self.parent.btnEdit.clicked.connect(self.showDeductionUI)
@@ -93,7 +94,12 @@ class DeductionUI:
         if self.parent.btnStore:
             self.parent.btnStore.clicked.connect(self.showStoreDeductionLoader)
         else:
-            logging.error("Error: placeBTN QPushButton not found in the UI.")
+            logging.error("Error: btnStore QPushButton not found in the UI.")
+
+        if self.parent.txtSearch:
+            self.parent.txtSearch.textChanged.connect(self.filterTable)
+        else:
+            logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
         self.populatePaytimeSheetTable(self.parent.data)
 
@@ -142,6 +148,17 @@ class DeductionUI:
                 else:
                     logging.warning(f"Column '{field_name}' not found in data.")
             logging.info(f"Adding row {i}: {row}")
+
+    def filterTable(self):
+        search_text = self.parent.txtSearch.text().strip().lower()
+        row_count = self.parent.paytimesheetTable.rowCount()
+
+        for row in range(row_count):
+            item = self.parent.paytimesheetTable.item(row, 1)  # Bio Num column is assumed to be index 1
+            if item and search_text in item.text().strip().lower():
+                self.parent.paytimesheetTable.setRowHidden(row, False)
+            else:
+                self.parent.paytimesheetTable.setRowHidden(row, True)
 
     def showDeductionUI(self):
         selected_row = self.parent.paytimesheetTable.currentRow()
@@ -207,7 +224,6 @@ class DeductionUI:
     def get_deduction_table_data(self):
         deduction_data = []
 
-        # Get the number of rows and columns
         row_count = self.parent.paytimesheetTable.rowCount()
         column_count = self.parent.paytimesheetTable.columnCount()
 
@@ -217,10 +233,7 @@ class DeductionUI:
             row_data = {}
 
             for column_index in range(column_count):
-                # Get the header/column name
                 column_name = self.parent.paytimesheetTable.horizontalHeaderItem(column_index).text()
-
-                # Get each cell data
                 cell_item = self.parent.paytimesheetTable.item(row_index, column_index)
                 cell_data = cell_item.text() if cell_item else None
 
