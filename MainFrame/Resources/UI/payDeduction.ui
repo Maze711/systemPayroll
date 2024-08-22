@@ -520,7 +520,7 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Medicate/PhilHealth</string>
+      <string>Medicare/PhilHealth</string>
      </property>
     </column>
     <column>
