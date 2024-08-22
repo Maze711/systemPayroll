@@ -18,6 +18,10 @@
   <property name="windowTitle">
    <string>Schedule</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: white;
 font-family: poppins;
@@ -329,6 +333,12 @@ font-family: poppins;
    </item>
    <item>
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+border: 1px solid black;
+border-radius: 5px;
+}</string>
+     </property>
      <widget class="QLabel" name="lblBio_4">
       <property name="geometry">
        <rect>
@@ -421,8 +431,14 @@ font-family: poppins;
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="styleSheet">
-       <string notr="true">	background-color: &quot;#344273&quot;;
-	color: white;</string>
+       <string notr="true">#pushButton{
+	background-color: &quot;#344273&quot;;
+	color: white;
+}
+
+#pushButton:hover{
+background-color: &quot;#2d3963&quot;
+}</string>
       </property>
       <property name="text">
        <string> Update</string>

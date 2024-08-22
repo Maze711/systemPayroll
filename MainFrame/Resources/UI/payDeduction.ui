@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PayDeduction</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="widget" native="true">
@@ -481,72 +485,72 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 1</string>
+      <string>Late/Absent</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 2</string>
+      <string>SSS_Loan</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 3</string>
+      <string>Pag_Ibig_Loan</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 4</string>
+      <string>Cash_Advance</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 5</string>
+      <string>Canteen</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 6</string>
+      <string>Tax</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 7</string>
+      <string>SSS</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 8</string>
+      <string>Medicate/PhilHealth</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 9</string>
+      <string>PAGIBIG</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 10</string>
+      <string>Clinic</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 11</string>
+      <string>Arayata_Annual</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 12</string>
+      <string>HMI</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 13</string>
+      <string>Funeral</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Pay Ded 14</string>
+      <string>Voluntary</string>
      </property>
     </column>
    </widget>

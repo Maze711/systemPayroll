@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Employee List</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">#centralwidget{

@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Date Change</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: white;
 font-family: Poppins;</string>
@@ -213,8 +217,11 @@ border-radius: 5px;</string>
    <property name="font">
     <font>
      <family>Poppins</family>
-     <pointsize>8</pointsize>
+     <pointsize>10</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="displayFormat">
     <string>yyyy-MM-dd</string>
