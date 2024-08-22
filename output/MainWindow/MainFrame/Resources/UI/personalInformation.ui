@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1154</width>
+    <width>1155</width>
     <height>665</height>
    </rect>
   </property>
@@ -227,7 +227,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>40</y>
+      <y>10</y>
       <width>161</width>
       <height>181</height>
      </rect>
@@ -249,7 +249,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
+      <y>200</y>
       <width>310</width>
       <height>41</height>
      </rect>
@@ -279,7 +279,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>290</y>
       <width>311</width>
       <height>41</height>
      </rect>
@@ -303,7 +303,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>280</y>
+      <y>240</y>
       <width>291</width>
       <height>41</height>
      </rect>
@@ -333,7 +333,7 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>370</y>
+      <y>330</y>
       <width>291</width>
       <height>41</height>
      </rect>
@@ -363,13 +363,17 @@ border: 1px solid black
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>390</y>
       <width>321</width>
-      <height>261</height>
+      <height>281</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel{
+     <string notr="true">#frame{
+border-top: 1px groove #BFBFBF;
+}
+
+QLabel{
 border: none;
 }
 
@@ -448,7 +452,7 @@ font-family: Poppins;
       </property>
      </item>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_2">
+    <widget class="QLineEdit" name="txtStatus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -690,7 +694,7 @@ font-family: Poppins;
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QDateEdit" name="dateHired_3">
+    <widget class="QDateEdit" name="dateResigned">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -763,7 +767,7 @@ font-family: Poppins;
       <string>Max Sick</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_3">
+    <widget class="QLineEdit" name="txtVacn">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -776,7 +780,7 @@ font-family: Poppins;
       <string/>
      </property>
     </widget>
-    <widget class="QLineEdit" name="txtVacn_4">
+    <widget class="QLineEdit" name="txtSick">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -789,6 +793,16 @@ font-family: Poppins;
       <string/>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>340</y>
+      <width>120</width>
+      <height>80</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QScrollArea" name="scrollArea">
@@ -828,7 +842,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1637</y>
+      <y>0</y>
       <width>1218</width>
       <height>2318</height>
      </rect>
@@ -1273,7 +1287,7 @@ border: 1px solid black;
 font-family: Poppins;
 }
 
-#cmbCivil, #dateEdit, #cmbGender {
+#cmbCivil, #dateEdit, #cmbGender, #cmbBlood {
 border-radius: 4px;
 border: 1px solid black;
 font-family: Poppins;
@@ -2160,25 +2174,6 @@ font-family: Poppins;
           </property>
          </item>
         </widget>
-        <widget class="QLineEdit" name="txtBlood">
-         <property name="geometry">
-          <rect>
-           <x>660</x>
-           <y>340</y>
-           <width>101</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="maxLength">
-          <number>50</number>
-         </property>
-        </widget>
         <widget class="QLabel" name="lblBlood">
          <property name="geometry">
           <rect>
@@ -2198,6 +2193,16 @@ font-family: Poppins;
          </property>
          <property name="text">
           <string>Blood Type</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cmbBlood">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>340</y>
+           <width>101</width>
+           <height>22</height>
+          </rect>
          </property>
         </widget>
        </widget>
@@ -4421,15 +4426,12 @@ font-family: Poppins;
           <number>15</number>
          </property>
         </widget>
-        <widget class="QComboBox" name="cmbSchedIn">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+        <widget class="QLineEdit" name="cmbSchedIn">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>190</y>
-           <width>220</width>
+           <x>9</x>
+           <y>196</y>
+           <width>351</width>
            <height>31</height>
           </rect>
          </property>
@@ -4439,48 +4441,19 @@ font-family: Poppins;
            <pointsize>10</pointsize>
           </font>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="editable">
+         <property name="autoFillBackground">
           <bool>false</bool>
          </property>
-         <property name="currentText">
-          <string>Time Kineme</string>
+         <property name="maxLength">
+          <number>15</number>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-         <property name="duplicatesEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Time Kineme</string>
-          </property>
-         </item>
         </widget>
-        <widget class="QComboBox" name="cmbSchedOut">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+        <widget class="QLineEdit" name="cmbSchedOut">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>260</y>
-           <width>220</width>
+           <width>351</width>
            <height>31</height>
           </rect>
          </property>
@@ -4490,38 +4463,12 @@ font-family: Poppins;
            <pointsize>10</pointsize>
           </font>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="editable">
+         <property name="autoFillBackground">
           <bool>false</bool>
          </property>
-         <property name="currentText">
-          <string>Time Kineme</string>
+         <property name="maxLength">
+          <number>15</number>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-         <property name="duplicatesEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Time Kineme</string>
-          </property>
-         </item>
         </widget>
        </widget>
        <widget class="QLabel" name="workExpLabel_3">
@@ -4830,6 +4777,107 @@ font-family: Poppins;
   <zorder>scrollArea</zorder>
   <zorder>widgetBTN</zorder>
  </widget>
+ <tabstops>
+  <tabstop>txtLastName</tabstop>
+  <tabstop>txtFirstName</tabstop>
+  <tabstop>txtMiddleName</tabstop>
+  <tabstop>txtSuffix</tabstop>
+  <tabstop>txtStreet</tabstop>
+  <tabstop>txtBarangay</tabstop>
+  <tabstop>txtCity</tabstop>
+  <tabstop>txtProvince</tabstop>
+  <tabstop>txtZip</tabstop>
+  <tabstop>txtPhone</tabstop>
+  <tabstop>txtReligion</tabstop>
+  <tabstop>txtCitizenship</tabstop>
+  <tabstop>txtEmail</tabstop>
+  <tabstop>txtHeight</tabstop>
+  <tabstop>txtWeight</tabstop>
+  <tabstop>cmbCivil</tabstop>
+  <tabstop>dtDateOfBirth</tabstop>
+  <tabstop>txtPlace</tabstop>
+  <tabstop>cmbGender</tabstop>
+  <tabstop>cmbBlood</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>txtFatherLast</tabstop>
+  <tabstop>txtFatherFirst</tabstop>
+  <tabstop>txtFatherMiddle</tabstop>
+  <tabstop>txtMotherLast</tabstop>
+  <tabstop>txtMotherFirst</tabstop>
+  <tabstop>txtMotherMiddle</tabstop>
+  <tabstop>txtSpouseLast</tabstop>
+  <tabstop>txtSpouseFirst</tabstop>
+  <tabstop>txtSpouseMiddle</tabstop>
+  <tabstop>txtBeneLast</tabstop>
+  <tabstop>txtBeneFirst</tabstop>
+  <tabstop>txtBeneMiddle</tabstop>
+  <tabstop>txtDependent</tabstop>
+  <tabstop>btnAddDependent</tabstop>
+  <tabstop>txtEmergency</tabstop>
+  <tabstop>sssTextEdit</tabstop>
+  <tabstop>pagibigTextEdit</tabstop>
+  <tabstop>philHealthTextEdit</tabstop>
+  <tabstop>tinTextEdit</tabstop>
+  <tabstop>txtTaxstat</tabstop>
+  <tabstop>txtAccount</tabstop>
+  <tabstop>txtBank</tabstop>
+  <tabstop>txtCola</tabstop>
+  <tabstop>hrNoteTextEdit</tabstop>
+  <tabstop>scrollWorkExpArea</tabstop>
+  <tabstop>dateStart_4</tabstop>
+  <tabstop>dateEnd_4</tabstop>
+  <tabstop>companyTextEdit_4</tabstop>
+  <tabstop>addressTextEdit_4</tabstop>
+  <tabstop>positionTextEdit_4</tabstop>
+  <tabstop>dateStart_6</tabstop>
+  <tabstop>dateEnd_6</tabstop>
+  <tabstop>companyTextEdit_6</tabstop>
+  <tabstop>addressTextEdit_6</tabstop>
+  <tabstop>positionTextEdit_6</tabstop>
+  <tabstop>validationDate1</tabstop>
+  <tabstop>validationDate1_2</tabstop>
+  <tabstop>editBTN</tabstop>
+  <tabstop>saveBTN</tabstop>
+  <tabstop>revertBTN</tabstop>
+  <tabstop>cmbResigned_2</tabstop>
+  <tabstop>txtStatus</tabstop>
+  <tabstop>dateHired_2</tabstop>
+  <tabstop>dateResigned</tabstop>
+  <tabstop>txtVacn</tabstop>
+  <tabstop>validationDate1_3</tabstop>
+  <tabstop>techSkillTextEdit</tabstop>
+  <tabstop>techSkillTextEdit_2</tabstop>
+  <tabstop>techSkillTextEdit_3</tabstop>
+  <tabstop>certiTextEdit1</tabstop>
+  <tabstop>certiTextEdit1_2</tabstop>
+  <tabstop>certiTextEdit1_3</tabstop>
+  <tabstop>schoolYear</tabstop>
+  <tabstop>schoolYear2</tabstop>
+  <tabstop>txtSick</tabstop>
+  <tabstop>addBTN</tabstop>
+  <tabstop>schoolYear3</tabstop>
+  <tabstop>courseTextEdit3</tabstop>
+  <tabstop>collegeTextEdit</tabstop>
+  <tabstop>highTextEdit</tabstop>
+  <tabstop>elemTextEdit</tabstop>
+  <tabstop>addressTextEdit</tabstop>
+  <tabstop>addressTextEdit2</tabstop>
+  <tabstop>addressTextEdit3</tabstop>
+  <tabstop>courseTextEdit</tabstop>
+  <tabstop>courseTextEdit2</tabstop>
+  <tabstop>dateStart_5</tabstop>
+  <tabstop>dateEnd_5</tabstop>
+  <tabstop>companyTextEdit_5</tabstop>
+  <tabstop>addressTextEdit_5</tabstop>
+  <tabstop>positionTextEdit_5</tabstop>
+  <tabstop>txtDept</tabstop>
+  <tabstop>txtPos</tabstop>
+  <tabstop>txtRate</tabstop>
+  <tabstop>txtRPH</tabstop>
+  <tabstop>txtDailyAllow</tabstop>
+  <tabstop>txtMonthSalary</tabstop>
+  <tabstop>txtMonthAllow</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

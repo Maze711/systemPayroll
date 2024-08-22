@@ -22,31 +22,23 @@ class ExportProcessor(QObject):
     def process_export(self):
         """ Processes exporting data to an Excel file with progress updates. """
         try:
-            chunksize = 10000  # Adjust this value based on your memory constraints
-            combined_df = pd.concat(self.data_dict.values(), axis=1)
-            total_rows = len(combined_df)
-            current_row = 0
+            # Group the data by empl_id
+            grouped_data = {}
+            for table_name, df in self.data_dict.items():
+                grouped_data[table_name] = df.groupby('empl_id')
+
+            # Combine the grouped data into a single DataFrame
+            combined_df = pd.concat([df.first() for df in grouped_data.values()], axis=1)
+            combined_df = combined_df.loc[:, ~combined_df.columns.duplicated()]
+
+            # Reset the index to include empl_id as a column
+            combined_df = combined_df.reset_index()
 
             if self.file_name.endswith('.csv'):
-                # Export CSV in chunks
-                for i in range(0, len(combined_df), chunksize):
-                    mode = 'w' if i == 0 else 'a'
-                    combined_df.iloc[i:i + chunksize].to_csv(self.file_name, mode=mode, index=False, header=(i == 0))
-                    current_row += len(combined_df.iloc[i:i + chunksize])
-                    progress = int((current_row / total_rows) * 100)
-                    self.progressChanged.emit(progress)
+                combined_df.to_csv(self.file_name, index=False)
             else:
-                # Export XLSX in chunks
                 with pd.ExcelWriter(self.file_name, engine='openpyxl') as writer:
-                    for i in range(0, len(combined_df), chunksize):
-                        combined_df.iloc[i:i + chunksize].to_excel(
-                            writer, sheet_name='Employee Data',
-                            startrow=writer.sheets['Employee Data'].max_row if i > 0 else 0,
-                            header=(i == 0), index=False
-                        )
-                        current_row += len(combined_df.iloc[i:i + chunksize])
-                        progress = int((current_row / total_rows) * 100)
-                        self.progressChanged.emit(progress)
+                    combined_df.to_excel(writer, sheet_name='Employee Data', index=False)
 
             self.finished.emit(f"Data successfully exported to {self.file_name}")
 

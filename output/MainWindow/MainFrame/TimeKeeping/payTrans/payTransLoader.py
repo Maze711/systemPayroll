@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 from MainFrame.TimeKeeping.payTrans.payTransMailer import EmailerLoader
+from MainFrame.Database_Connection.DBConnection import create_connection
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -31,6 +32,7 @@ class PayTrans(QMainWindow):
         self.populatePayTransTable(self.data)
         self.btnPayTrans.clicked.connect(self.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.openEmailLoader)
+        self.btnInsertDeduction.clicked.connect(self.insertDeductionToTable)
 
     def populatePayTransTable(self, data):
         for row in range(self.paytransTable.rowCount()):
@@ -48,9 +50,15 @@ class PayTrans(QMainWindow):
             ordinary_day_ot_item = QTableWidgetItem(row.get('OrdinaryDayOT', 'N/A'))  # Add OrdinaryDayOT
             ot_earn_item = QTableWidgetItem(str(row['OT_Earn']))  # Get OT_Earn or '0.00' if not found
 
+            # Adding deduction items to the table
+            pay_ded_items = []
+            for j in range(1, 15):
+                deduction = row.get(f'Pay Ded {j}', '')
+                pay_ded_items.append(QTableWidgetItem(str(deduction)))
+
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
-                         ordinary_day_ot_item, ot_earn_item]:
+                         ordinary_day_ot_item, ot_earn_item] + pay_ded_items:
                 item.setTextAlignment(Qt.AlignCenter)
 
             # Set items in the table. Adjust the column indices as needed.
@@ -63,15 +71,65 @@ class PayTrans(QMainWindow):
             self.paytransTable.setItem(i, 6, ordinary_day_ot_item)  # OT Hours (add column index here)
             self.paytransTable.setItem(i, 14, ot_earn_item)  # OT Hours (add column index here)
 
+            # Add deduction items to the table in subsequent columns
+            for j, pay_ded_item in enumerate(pay_ded_items, start=52): # Pay Ded columns starts at index 52
+                self.paytransTable.setItem(i, j, pay_ded_item)
+
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved
-        file_name = "paytrans_data.xlsx"
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save As", "",
+                                                   "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;CSV Files (*.csv);;All Files (*)",
+                                                   options=options)
+        if file_name:
+        # file_name = "paytrans_data.xlsx"
+            try:
+                globalFunction.export_to_excel(self.data, file_name)
+                QMessageBox.information(self, "Export Successful", f"Data has been successfully exported to {file_name}")
+            except Exception as e:
+                QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
+                logging.error(f"Export error: {e}")
+        else:
+            QMessageBox.information(self, "No File Selected", "Please export an excel file.")
+            return
+
+    def insertDeductionToTable(self):
+        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        if connection is None:
+            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            QMessageBox.warning(self, "Connection Error", "Failed to connect to database. Please check your "
+                                                          "connection or contact the system administrator")
+            return
+
+        cursor = connection.cursor()
+
         try:
-            globalFunction.export_to_excel(self.data, file_name)
-            QMessageBox.information(self, "Export Successful", f"Data has been successfully exported to {file_name}")
-        except Exception as e:
-            QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
-            logging.error(f"Export error: {e}")
+
+            for index, row in enumerate(self.original_data):
+                emp_no = row['EmpNo']
+                query = f""" SELECT payDed1, payDed2, payDed3, payDed4, payDed5, payDed6, payDed7, payDed8, payDed9, 
+                             payDed10, payDed11, payDed12, payDed13, payDed14 FROM deductions WHERE empNum = %s
+                """
+                cursor.execute(query, (emp_no,))
+                result = cursor.fetchone()
+
+                # Adds the deductions to each dictionary
+                for i in range(0, 14):
+                    row.update({f'Pay Ded {i + 1}': result[i]})
+
+            QMessageBox.information(self, "Insertion Successful", "Inserting Deduction into the table has been "
+                                                                  "successfully added!")
+            # repopulate the table with the updated data
+            self.populatePayTransTable(self.original_data)
+
+        except Error as e:
+            QMessageBox.warning(self, "Insertion Error", f"Error fetching or processing deduction data: {e}")
+            print(f"Error fetching or processing deduction data: {e}")
+        finally:
+            if cursor:
+                cursor.close()
+            if connection and connection.is_connected():
+                connection.close()
 
     def openEmailLoader(self):
         message = QMessageBox.question(self, "Sending Email", "Are you sure you want to send an email?",

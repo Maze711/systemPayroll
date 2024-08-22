@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
@@ -45,7 +46,6 @@ class ListFunction:
             QMessageBox.critical(self.main_window, "Database Connection Error",
                                  "An unexpected disconnection has occurred. Please check your network connection or "
                                  "contact the system administrator.")
-
 
     # Retrieves selected row in the employeeListTable
     def getSelectedRow(self):
@@ -136,142 +136,174 @@ class ListFunction:
             widget.setStyleSheet(disableStyle)
 
     def fetch_employee_data(self, empID):
-        connection = None
-        cursor = None
-
         query = """
             SELECT p.empl_id, p.surname, p.firstname, p.mi, p.suffix, p.street, p.barangay, p.city, p.province,
-               p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex,
-               f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, f.mothersLastName, 
-               f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
-               f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
-               f.dependentsName,
-               i.sss, i.tin, i.pagibig, i.philhealth,
-               w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
-               t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
-               t.techSkill3, t.certificate3, t.validationDate3,
-               e.college, e.highSchool, e.elemSchool,
-               e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
-               e.highschoolYear, e.elemYear
-               FROM emp_info p
-               LEFT JOIN educ_information e on p.empl_id = e.empl_id
-               LEFT JOIN family_background f ON p.empl_id = f.empl_id
-               LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
-               LEFT JOIN work_exp w ON p.empl_id = w.empl_id
-               LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
-               WHERE p.empl_id = %s
-            """
+                   p.zipcode, p.mobile, p.height, p.weight, p.status, p.birthday, p.birthplace, p.sex, p.religion, 
+                   p.citizenship, p.blood_type, p.email, f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, 
+                   f.mothersLastName, f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
+                   f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
+                   f.dependentsName, m.emer_name, i.sss, i.tin, i.pagibig, i.philhealth, i.taxstat, i.account_no, 
+                   i.bank_code, i.cola, w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+                   t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
+                   t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
+                   e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
+                   e.highschoolYear, e.elemYear, ps.pos_descr, ps.sched_in, ps.sched_out, ps.dept_name, r.rph, r.rate,
+                   r.mth_salary, r.dailyallow, r.mntlyallow, s.compcode, s.dept_code, s.position, s.emp_stat, s.date_hired,
+                   s.resigned, s.dtresign, vcs.max_vacn, vcs.max_sick
+            FROM emp_info p
+            LEFT JOIN educ_information e ON p.empl_id = e.empl_id
+            LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
+            LEFT JOIN emp_posnsched ps ON p.empl_id = ps.empl_id
+            LEFT JOIN emp_rate r ON p.empl_id = r.empl_id
+            LEFT JOIN emp_status s ON p.empl_id = s.empl_id
+            LEFT JOIN vacn_sick_count vcs ON p.empl_id = vcs.empl_id
+            LEFT JOIN family_background f ON p.empl_id = f.empl_id
+            LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
+            LEFT JOIN work_exp w ON p.empl_id = w.empl_id
+            LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
+            WHERE p.empl_id = %s
+        """
         try:
             connection = create_connection('FILE201')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
-            cursor = connection.cursor()
+            cursor = connection.cursor(dictionary=True)
             cursor.execute(query, (empID,))
             result = cursor.fetchone()
-            if result:
-                return result  # Returns a tuple with all fetched columns
-            return None
+            return result if result else None
 
         except Error as e:
             logging.error(f"Error fetching employee data: {e}")
             return None
 
         finally:
-            if cursor is not None:
+            if cursor:
                 cursor.close()
-            # Ensure the connection is closed if it was established
-            if connection is not None and connection.is_connected():
+            if connection and connection.is_connected():
                 connection.close()
                 logging.info("Database connection closed")
 
     def populate_modal_with_employee_data(self, modal, data):
         try:
-            (empl_id, surname, firstname, mi, suffix, street, barangay, city, province, zipcode,
-             mobile, height, weight, status, birthday, birthplace, sex,
-             fathersLastName, fathersFirstName, fathersMiddleName, mothersLastName, mothersFirstName, mothersMiddleName,
-             spouseLastName, spouseFirstName, spouseMiddleName, beneficiaryLastName, beneficiaryFirstName,
-             beneficiaryMiddleName, dependentsName,
-             sss, pagibig, philhealth, tin,
-             from_date, to_date, company_name, company_add, position,
-             tech_skill1, certificate_skill1, validation_date1, tech_skill2, certificate_skill2, validation_date2,
-             tech_skill3, certificate_skill3, validation_date3, college, high_school, elem_school,
-             college_add, highschool_add, elem_add, college_course, highschool_strand, college_year,
-             highschool_year, elem_year) = data
+            # Dictionary mapping modal fields to data keys
+            field_mapping = {
+                # EMP_INFO TABLE
+                "nameDisplay": f"{data['surname']} {data['firstname']} {data['mi']}",
+                "idDisplay": data['empl_id'],
+                "txtLastName": data['surname'],
+                "txtFirstName": data['firstname'],
+                "txtMiddleName": data['mi'],
+                "txtSuffix": data['suffix'],
+                "txtStreet": data['street'],
+                "txtBarangay": data['barangay'],
+                "txtCity": data['city'],
+                "txtProvince": data['province'],
+                "txtZip": data['zipcode'],
+                "txtPhone": data['mobile'],
+                "txtHeight": data['height'],
+                "txtWeight": data['weight'],
+                "cmbCivil": data['status'],
+                "dtDateOfBirth": QDate.fromString(data['birthday'], "yyyy-MM-dd"),
+                "txtPlace": data['birthplace'],
+                "cmbGender": data['sex'],
+                "txtReligion": data['religion'],
+                "txtCitizenship": data['citizenship'],
+                "txtEmail": data['email'],
+                "cmbBlood": data['blood_type'],
+                # FAMILY_BACKGROUND TABLE
+                "txtFatherLast": data['fathersLastName'],
+                "txtFatherFirst": data['fathersFirstName'],
+                "txtFatherMiddle": data['fathersMiddleName'],
+                "txtMotherLast": data['mothersLastName'],
+                "txtMotherFirst": data['mothersFirstName'],
+                "txtMotherMiddle": data['mothersMiddleName'],
+                "txtSpouseLast": data['spouseLastName'],
+                "txtSpouseFirst": data['spouseFirstName'],
+                "txtSpouseMiddle": data['spouseMiddleName'],
+                "txtBeneLast": data['beneficiaryLastName'],
+                "txtBeneFirst": data['beneficiaryFirstName'],
+                "txtBeneMiddle": data['beneficiaryMiddleName'],
+                "txtDependent": data['dependentsName'],
+                "txtEmergency": data['emer_name'],
+                # EMP_LIST_ID TABLE
+                "sssTextEdit": data['sss'],
+                "pagibigTextEdit": data['pagibig'],
+                "philHealthTextEdit": data['philhealth'],
+                "tinTextEdit": data['tin'],
+                "txtTaxstat": data['taxstat'],
+                "txtAccount": data['account_no'],
+                "txtBank": data['bank_code'],
+                "txtCola": data['cola'],
+                # WORK_EXP TABLE
+                "dateStart_4": QDate.fromString(data['fromDate'], "MM-dd-yyyy"),
+                "dateEnd_4": QDate.fromString(data['toDate'], "MM-dd-yyyy"),
+                "companyTextEdit_4": data['companyName'],
+                "addressTextEdit_4": data['companyAdd'],
+                "positionTextEdit_4": data['empPosition'],
+                # TECH_SKILLS TABLE
+                "techSkillTextEdit": data['techSkill1'],
+                "certiTextEdit1": data['certificate1'],
+                "validationDate1": QDate.fromString(data['validationDate1'], "MM-dd-yyyy"),
+                "techSkillTextEdit_2": data['techSkill2'],
+                "certiTextEdit1_2": data['certificate2'],
+                "validationDate1_2": QDate.fromString(data['validationDate2'], "MM-dd-yyyy"),
+                "techSkillTextEdit_3": data['techSkill3'],
+                "certiTextEdit1_3": data['certificate3'],
+                "validationDate1_3": QDate.fromString(data['validationDate3'], "MM-dd-yyyy"),
+                # EDUCATION TABLE
+                "collegeTextEdit": data['college'],
+                "highTextEdit": data['highSchool'],
+                "elemTextEdit": data['elemSchool'],
+                "addressTextEdit": data['collegeAdd'],
+                "addressTextEdit2": data['highschoolAdd'],
+                "addressTextEdit3": data['elemAdd'],
+                "courseTextEdit": data['collegeCourse'],
+                "courseTextEdit2": data['highschoolStrand'],
+                "schoolYear": QDate.fromString(data['collegeYear'], "MM-dd-yyyy"),
+                "schoolYear2": QDate.fromString(data['highschoolYear'], "MM-dd-yyyy"),
+                "schoolYear3": QDate.fromString(data['elemYear'], "MM-dd-yyyy"),
+                # EMP_POSNSCHED TABLE
+                "txtPos": data['pos_descr'],
+                "txtDept": data['dept_name'],
+                "cmbSchedIn": data['sched_in'],
+                "cmbSchedOut": data['sched_out'],
+                # EMP_RATE TABLE
+                "txtRPH": data['rph'],
+                "txtRate": data['rate'],
+                "txtMonthSalary": data['mth_salary'],
+                "txtDailyAllow": data['dailyallow'],
+                "txtMonthAllow": data['mntlyallow'],
+                # EMP_STATUS TABLE
+                "lblComp": data['compcode'],
+                "lblDept_2": data['dept_code'],
+                "txtStatus": data['emp_stat'],
+                "dateHired_2": QDate.fromString(data['date_hired'], "MM-dd-yyyy"),
+                "dateResigned": QDate.fromString(data['dtresign'], "MM-dd-yyyy"),
+                "cmbResigned_2": data['resigned'],
+                # VACN_SICK_COUNT TABLE
+                "txtVacn": data['max_vacn'],
+                "txtSick": data['max_sick']
+            }
 
-            modal.nameDisplay.setText(f"{surname} {firstname} {mi}")
-            modal.idDisplay.setText(str(empl_id))
-            modal.txtLastName.setText(surname)
-            modal.txtFirstName.setText(firstname)
-            modal.txtMiddleName.setText(mi)
-            modal.txtSuffix.setText(suffix)
-            modal.txtStreet.setText(street)
-            modal.txtBarangay.setText(barangay)
-            modal.txtCity.setText(city)
-            modal.txtProvince.setText(province)
-            modal.txtZip.setText(str(zipcode))
-            modal.txtPhone.setText(mobile)
-            modal.txtHeight.setText(str(height))
-            modal.txtWeight.setText(str(weight))
-            modal.cmbCivil.setCurrentText(status)
-            modal.dtDateOfBirth.setDate(QDate.fromString(birthday, "yyyy-MM-dd"))
-            modal.txtPlace.setText(birthplace)
-            modal.cmbGender.setCurrentText(sex)
-
-            modal.txtFatherLast.setText(fathersLastName)
-            modal.txtFatherFirst.setText(fathersFirstName)
-            modal.txtFatherMiddle.setText(fathersMiddleName)
-            modal.txtMotherLast.setText(mothersLastName)
-            modal.txtMotherFirst.setText(mothersFirstName)
-            modal.txtMotherMiddle.setText(mothersMiddleName)
-            modal.txtSpouseLast.setText(spouseLastName)
-            modal.txtSpouseFirst.setText(spouseFirstName)
-            modal.txtSpouseMiddle.setText(spouseMiddleName)
-            modal.txtBeneLast.setText(beneficiaryLastName)
-            modal.txtBeneFirst.setText(beneficiaryFirstName)
-            modal.txtBeneMiddle.setText(beneficiaryMiddleName)
-            modal.txtDependent.setText(dependentsName)
-
-            modal.sssTextEdit.setText(str(sss))
-            modal.pagibigTextEdit.setText(str(pagibig))
-            modal.philHealthTextEdit.setText(str(philhealth))
-            modal.tinTextEdit.setText(str(tin))
-
-            modal.dateStart_4.setDate(QDate.fromString(from_date, "MM-dd-yyyy"))
-            modal.dateEnd_4.setDate(QDate.fromString(to_date, "MM-dd-yyyy"))
-            modal.companyTextEdit_4.setText(company_name)
-            modal.addressTextEdit_4.setText(company_add)
-            modal.positionTextEdit_4.setText(position)
-
-            modal.techSkillTextEdit.setText(tech_skill1)
-            modal.certiTextEdit1.setText(certificate_skill1)
-            modal.validationDate1.setDate(QDate.fromString(validation_date1, "MM-dd-yyyy"))
-
-            modal.techSkillTextEdit_2.setText(tech_skill2)
-            modal.certiTextEdit1_2.setText(certificate_skill2)
-            modal.validationDate1_2.setDate(QDate.fromString(validation_date2, "MM-dd-yyyy"))
-
-            modal.techSkillTextEdit_3.setText(tech_skill3)
-            modal.certiTextEdit1_3.setText(certificate_skill3)
-            modal.validationDate1_3.setDate(QDate.fromString(validation_date3, "MM-dd-yyyy"))
-
-            modal.collegeTextEdit.setText(college)
-            modal.highTextEdit.setText(high_school)
-            modal.elemTextEdit.setText(elem_school)
-
-            modal.addressTextEdit.setText(college_add)
-            modal.addressTextEdit2.setText(highschool_add)
-            modal.addressTextEdit3.setText(elem_add)
-
-            modal.courseTextEdit.setText(college_course)
-            modal.courseTextEdit2.setText(highschool_strand)
-
-            modal.schoolYear.setDate(QDate.fromString(college_year, "MM-dd-yyyy"))
-            modal.schoolYear2.setDate(QDate.fromString(highschool_year, "MM-dd-yyyy"))
-            modal.schoolYear3.setDate(QDate.fromString(elem_year, "MM-dd-yyyy"))
+            # Populate modal fields
+            for field, value in field_mapping.items():
+                if hasattr(modal, field):
+                    widget = getattr(modal, field)
+                    if isinstance(widget, QLineEdit):
+                        widget.setText(str(value))
+                    elif isinstance(widget, QLabel):
+                        widget.setText(str(value))
+                    elif isinstance(widget, QComboBox):
+                        widget.setCurrentText(str(value))
+                    elif isinstance(widget, QDateEdit):
+                        widget.setDate(value if isinstance(value, QDate) else QDate.currentDate())
+                    else:
+                        logging.warning(f"Unhandled widget type for field: {field}")
 
         except Exception as e:
-            print(f"Error: {e}")
+            logging.error(f"Error populating modal with employee data: {e}")
+
 
     def open_otherInformationMODAL_add(self):
         modal = personalModal(mode='add')

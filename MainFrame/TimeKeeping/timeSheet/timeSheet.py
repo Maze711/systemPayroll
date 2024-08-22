@@ -55,13 +55,13 @@ class TimeSheet(QDialog):
                 item.setTextAlignment(Qt.AlignCenter)
 
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
-            self.TimeSheetTable.setItem(i, 1, emp_name_item)  # Employee
-            self.TimeSheetTable.setItem(i, 2, check_in_item)  # Check In
-            self.TimeSheetTable.setItem(i, 3, check_out_item)  # Check Out
-            self.TimeSheetTable.setItem(i, 4, hours_worked_item)  # Hours Worked
-            self.TimeSheetTable.setItem(i, 5, difference_item)  # Ordinary Day (Difference)
-            self.TimeSheetTable.setItem(i, 6, regular_holiday_overtime)  # Regular Holiday Overtime
-            self.TimeSheetTable.setItem(i, 7, special_holiday_overtime)  # Special Holiday Overtime
+            self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee
+            self.TimeSheetTable.setItem(i, 3, check_in_item)  # Check In
+            self.TimeSheetTable.setItem(i, 4, check_out_item)  # Check Out
+            self.TimeSheetTable.setItem(i, 5, hours_worked_item)  # Hours Worked
+            self.TimeSheetTable.setItem(i, 6, difference_item)  # Ordinary Day (Difference)
+            self.TimeSheetTable.setItem(i, 7, regular_holiday_overtime)  # Regular Holiday Overtime
+            self.TimeSheetTable.setItem(i, 8, special_holiday_overtime)  # Special Holiday Overtime
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')

@@ -77,13 +77,21 @@ class PayTrans(QMainWindow):
 
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved
-        file_name = "paytrans_data.xlsx"
-        try:
-            globalFunction.export_to_excel(self.data, file_name)
-            QMessageBox.information(self, "Export Successful", f"Data has been successfully exported to {file_name}")
-        except Exception as e:
-            QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
-            logging.error(f"Export error: {e}")
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save As", "",
+                                                   "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;CSV Files (*.csv);;All Files (*)",
+                                                   options=options)
+        if file_name:
+        # file_name = "paytrans_data.xlsx"
+            try:
+                globalFunction.export_to_excel(self.data, file_name)
+                QMessageBox.information(self, "Export Successful", f"Data has been successfully exported to {file_name}")
+            except Exception as e:
+                QMessageBox.warning(self, "Export Error", f"An error occurred while exporting data: {e}")
+                logging.error(f"Export error: {e}")
+        else:
+            QMessageBox.information(self, "No File Selected", "Please export an excel file.")
+            return
 
     def insertDeductionToTable(self):
         connection = create_connection('SYSTEM_STORE_DEDUCTION')

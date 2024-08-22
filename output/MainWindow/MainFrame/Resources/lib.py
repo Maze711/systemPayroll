@@ -24,7 +24,7 @@ from email.utils import formataddr
 
 from dotenv import load_dotenv
 
-from PyQt5.QtCore import QTimer, QDate, Qt, QEvent, QTime, QObject, pyqtSignal, QThread, QRect
+from PyQt5.QtCore import QTimer, QDate, Qt, QEvent, QTime, QObject, pyqtSignal, QThread, QRect, pyqtSlot
 from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator, QStandardItemModel, QScreen, QCursor
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,

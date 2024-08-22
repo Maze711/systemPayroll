@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>215</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,46 +32,23 @@ background-color: #51ad61;
 border-radius: 5px;
 color: white;
 background-color: rgb(255, 110, 112);
+}
+
+#btnProcessTimeCard:hover{
+background-color: rgb(255, 80, 83);
+}
+
+#btnExportToExcel{
+border-radius: 5px;
+background-color: &quot;#344273&quot;;
+color: white;
+}
+
+#btnExportToExcel:hover{
+background-color: rgb(71, 91, 157);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QPushButton" name="btnProcessTimeCard">
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>80</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>18</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Process Time Card</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../../MainFrame/Resources/Icons/import.svg</normaloff>../../MainFrame/Resources/Icons/import.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>30</width>
-       <height>30</height>
-      </size>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="importBTN">
      <property name="minimumSize">
@@ -111,10 +88,84 @@ background-color: rgb(255, 110, 112);
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btnProcessTimeCard">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Process Time Card</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../MainFrame/Resources/Icons/import.svg</normaloff>../../MainFrame/Resources/Icons/import.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>30</width>
+       <height>30</height>
+      </size>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QProgressBar" name="progressBar">
      <property name="value">
       <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btnExportToExcel">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Process Export to Excel</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../MainFrame/Resources/Icons/import.svg</normaloff>../../MainFrame/Resources/Icons/import.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>30</width>
+       <height>30</height>
+      </size>
      </property>
     </widget>
    </item>
