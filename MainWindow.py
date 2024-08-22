@@ -269,9 +269,10 @@ class MainWindow(QMainWindow):
         self.datechange.show()
 
     def openPayRoll(self):
-        if self.payroll_window is None:
-            self.payroll_window = PayrollDialog(self)
-            self.open_dialogs.append(self.payroll_window)
+        if self.payroll_window is not None:
+            self.payroll_window.close()  # Close the previous window if it exists
+        self.payroll_window = PayrollDialog(self)
+        self.open_dialogs.append(self.payroll_window)
         if self.payroll_window.isVisible():
             self.payroll_window.activateWindow()
         else:
