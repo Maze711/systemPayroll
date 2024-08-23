@@ -8,14 +8,14 @@ from MainFrame.systemFunctions import globalFunction
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
-class filter(QDialog):
-    def __init__(self, parent=None):
+class FilterDialog(QDialog):
+    def __init__(self, parent=None, additional_argument=None):
         try:
             super().__init__(parent)
+            self.additional_argument = additional_argument  # Handle additional_argument if needed
             self.setFixedSize(400, 300)
             ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\filter.ui")
             loadUi(ui_file, self)
-
 
             self.cmbCheckIn = self.findChild(QComboBox, 'cmbCheckIn')
             self.cmbCheckOut = self.findChild(QComboBox, 'cmbCheckOut')
@@ -34,14 +34,13 @@ class filter(QDialog):
                 if combo.itemText(0) != "AM/PM":
                     combo.insertItem(0, "AM/PM")
 
-            # Store the selected values when the filter modal is closed
             self.selected_check_in = "AM/PM"
             self.selected_check_out = "AM/PM"
 
         except Exception as e:
-            logging.error(f"Error initializing filter dialog: {str(e)}")
+            logging.error(f"Error initializing FilterDialog: {str(e)}")
             logging.error(traceback.format_exc())
-            QMessageBox.critical(self, "Error", f"An error occurred while initializing the filter dialog: {str(e)}")
+            QMessageBox.critical(self, "Error", f"An error occurred while initializing the FilterDialog: {str(e)}")
 
     def clear_filter(self, checked=False):
         self.cmbCheckIn.setCurrentIndex(0)
@@ -72,7 +71,6 @@ class filter(QDialog):
         return values
 
     def closeEvent(self, event):
-        # Store the selected values before closing
         self.selected_check_in = self.cmbCheckIn.currentText()
         self.selected_check_out = self.cmbCheckOut.currentText()
         super().closeEvent(event)
