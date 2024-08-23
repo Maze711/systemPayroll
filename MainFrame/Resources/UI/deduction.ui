@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>780</width>
-    <height>413</height>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -245,7 +245,7 @@ background-color: #DCE5FE
         <x>0</x>
         <y>0</y>
         <width>750</width>
-        <height>640</height>
+        <height>719</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -817,6 +817,24 @@ border-radius: 5px;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>txtDed1</tabstop>
+  <tabstop>txtDed2</tabstop>
+  <tabstop>txtDed3</tabstop>
+  <tabstop>txtDed4</tabstop>
+  <tabstop>txtDed5</tabstop>
+  <tabstop>txtDed6</tabstop>
+  <tabstop>txtDed7</tabstop>
+  <tabstop>txtDed8</tabstop>
+  <tabstop>txtDed9</tabstop>
+  <tabstop>txtDed10</tabstop>
+  <tabstop>txtDed11</tabstop>
+  <tabstop>txtDed12</tabstop>
+  <tabstop>txtDed13</tabstop>
+  <tabstop>txtDed14</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>placeBTN</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
