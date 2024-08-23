@@ -7,7 +7,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.payTrans.payTransLoader import PayTrans
 from MainFrame.TimeKeeping.payroll_functions.payComputations import PayComputation
-from MainFrame.systemFunctions import timekeepingFunction
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
@@ -15,21 +14,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyT
 class PaytimeSheetUI:
     def __init__(self, parent):
         self.parent = parent
-
-    def setupUI(self):
-        self.parent.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.parent.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
-
-        self.parent.payTransBtn = self.parent.findChild(QPushButton, 'btnPayTrans')
-        self.parent.payTransBtn.clicked.connect(self.createPayTrans)
-
-        self.parent.searchBioNum = self.parent.findChild(QLineEdit, 'txtSearch')
-        if self.parent.searchBioNum is not None:
-            self.parent.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self.parent))
-        else:
-            logging.error("Error: txtSearch QLineEdit not found in the UI.")
-
-        self.populatePaytimeSheetTable(self.parent.data)
 
     def populatePaytimeSheetTable(self, data):
         self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row

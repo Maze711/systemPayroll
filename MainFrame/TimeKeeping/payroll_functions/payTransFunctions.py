@@ -71,12 +71,43 @@ class PayTransFunctions:
             QMessageBox.information(self.parent, "No File Selected", "Please export an excel file.")
             return
 
+    def checkIfDeductionTableNotExist(self):
+        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        if connection is None:
+            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database. Please check your "
+                                                                 "connection or contact the system administrator")
+            return
+
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute("SHOW TABLES;")
+            tables = cursor.fetchall()
+            if len(tables) > 0:
+                return False
+
+            return True
+
+        except Exception as e:
+            QMessageBox.critical(self, "Database Error", f"An error occurred: {e}")
+            return
+        finally:
+            cursor.close()
+            connection.close()
+
     def insertDeductionToTable(self):
         connection = create_connection('SYSTEM_STORE_DEDUCTION')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
             QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database. Please check your "
                                                           "connection or contact the system administrator")
+            return
+
+        if self.checkIfDeductionTableNotExist():
+            print("Deduction table does not exist in SYSTEM_STORE_DEDUCTION database.")
+            QMessageBox.warning(self.parent, "Insert Error", "There are no processed deductions available. "
+                                                             "Please contact Pay Master 2")
             return
 
         cursor = connection.cursor()
