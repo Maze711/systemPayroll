@@ -14,37 +14,6 @@ class DeductionUI:
         self.parent = parent
         self.user_session = UserSession().getALLSessionData()
 
-    def setupUI(self):
-        self.parent.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.parent.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
-
-        self.parent.btnEdit = self.parent.findChild(QPushButton, 'btnEdit')
-        self.parent.placeBTN = self.parent.findChild(QPushButton, 'placeBTN')
-        self.parent.btnStore = self.parent.findChild(QPushButton, 'btnStore')
-        self.parent.txtSearch = self.parent.findChild(QLineEdit, 'txtSearch')
-
-        if self.parent.btnEdit:
-            self.parent.btnEdit.clicked.connect(self.showDeductionUI)
-        else:
-            logging.error("Error: btnEdit QPushButton not found in the UI.")
-
-        if self.parent.placeBTN:
-            self.parent.placeBTN.clicked.connect(self.placeDeductions)
-        else:
-            logging.error("Error: placeBTN QPushButton not found in the UI.")
-
-        if self.parent.btnStore:
-            self.parent.btnStore.clicked.connect(self.showStoreDeductionLoader)
-        else:
-            logging.error("Error: btnStore QPushButton not found in the UI.")
-
-        if self.parent.txtSearch:
-            self.parent.txtSearch.textChanged.connect(self.filterTable)
-        else:
-            logging.error("Error: txtSearch QLineEdit not found in the UI.")
-
-        self.populatePaytimeSheetTable(self.parent.data)
-
     def populatePaytimeSheetTable(self, data):
         self.parent.paytimesheetTable.setRowCount(len(data) - 1)
         for row in range(self.parent.paytimesheetTable.rowCount()):
