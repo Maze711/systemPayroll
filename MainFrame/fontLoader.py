@@ -17,9 +17,11 @@ def load_fonts():
     font_dir = (resource_path("MainFrame\\Resources\\Fonts"))
     font_db = QFontDatabase()
 
+
+
     # List all font files in the directory
     font_files = [os.path.join(font_dir, f) for f in os.listdir(font_dir) if f.endswith('.ttf') or f.endswith('.otf')]
-
+    print(font_files)
     # Load each font file into the QFontDatabase
     for font_file in font_files:
         font_id = font_db.addApplicationFont(font_file)
