@@ -209,6 +209,7 @@ class DeductionUI:
 
             ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\deduction.ui")
             self.deductionQDialog = QDialog()
+            self.deductionQDialog.setFixedSize(780, 413)
             loadUi(ui_file, self.deductionQDialog)
 
             empNameTxt = self.deductionQDialog.findChild(QLabel, 'empNameTxt')
