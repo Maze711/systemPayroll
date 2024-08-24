@@ -50,6 +50,9 @@ class modalFunction:
                 ('Province', self.main_window.txtProvince.text()),
                 ('zipcode', self.main_window.txtZip.text()),
                 ('Phone Number', self.main_window.txtPhone.text()),
+                ('Religion', self.main_window.txtReligion.text()),
+                ('Citizenship', self.main_window.txtCitizenship.text()),
+                ('Email', self.main_window.txtEmail.text()),
 
                 ('Height', self.main_window.txtHeight.text()),
                 ('Weight', self.main_window.txtWeight.text()),
@@ -57,6 +60,7 @@ class modalFunction:
                 ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy")),
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
+                ('Blood Type', self.main_window.cmbBlood.currentText()),
 
                 # Employee's Family Background Inputs
                 ("Father's Last Name", self.main_window.txtFatherLast.text()),
@@ -76,12 +80,17 @@ class modalFunction:
                 ("Beneficiary's Middle Name", self.main_window.txtBeneMiddle.text()),
 
                 ("Dependent's Name", self.main_window.txtDependent.text()),
+                ("Emergency Name", self.main_window.txtEmergency.text()),
 
                 # Employee ID inputs
                 ('SSS Number', self.main_window.sssTextEdit.text()),
                 ('Pag-IBIG Number', self.main_window.pagibigTextEdit.text()),
                 ('PhilHealth Number', self.main_window.philHealthTextEdit.text()),
                 ('TIN Number', self.main_window.tinTextEdit.text()),
+                ('Taxstat', self.main_window.txtTaxstat.text()),
+                ('Account no.', self.main_window.txtAccount.text()),
+                ('Bank code', self.main_window.txtBank.text()),
+                ('Cola', self.main_window.txtCola.text()),
 
                 # HR Notes Text Input
                 ('HR Notes', self.main_window.hrNoteTextEdit.toPlainText()),
@@ -120,6 +129,29 @@ class modalFunction:
                 ('College Graduate Year', self.main_window.schoolYear.date().toString("MM-dd-yyyy")),
                 ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM-dd-yyyy")),
                 ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
+
+                # PosNSched text inputs
+                ('Description', self.main_window.txtPos.text()),
+                ('Department Name', self.main_window.txtDept.text()),
+                ('Sched In', self.main_window.cmbSchedIn.Text()),
+                ('Sched Out', self.main_window.cmbSchedOut.Text()),
+
+                # Employee Rate text inputs
+                ('RPH', self.main_window.txtRPH.text()),
+                ('Rate', self.main_window.txtRate.text()),
+                ('Month Salary', self.main_window.txtMonthSalary.text()),
+                ('Daily Allowance', self.main_window.txtDailyAllow.text()),
+                ('Monthly Allowance', self.main_window.txtMonthAllow.text()),
+
+                # Employee Status text inputs
+                ('Status', self.main_window.txtStatus.text()),
+                ('Resigned', self.main_window.cmbResigned_2.currentText()),
+                ('Date Hired', self.main_window.dateHired_2.date().toString("MM-dd-yyyy")),
+                ('Date Resign', self.main_window.dateResigned.date().toString("MM-dd-yyyy")),
+
+                # Vacation sick count text inputs
+                ('Max Vacation', self.main_window.txtVacn.text()),
+                ('Max sick', self.main_window.txtSick.text()),
             ]
 
             not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
@@ -192,6 +224,9 @@ class modalFunction:
             'Province': self.main_window.txtProvince.text(),
             'zipcode': self.main_window.txtZip.text(),
             'Phone Number': self.main_window.txtPhone.text(),
+            'Religion': self.main_window.txtReligion.text(),
+            'Citizenship': self.main_window.txtCitizenship.text(),
+            'Email': self.main_window.txtEmail.text(),
 
             'Height': self.main_window.txtHeight.text(),
             'Weight': self.main_window.txtWeight.text(),
@@ -199,6 +234,7 @@ class modalFunction:
             'Date of Birth': self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy"),
             'Place of Birth': self.main_window.txtPlace.text(),
             'Gender': self.main_window.cmbGender.currentText(),
+            'Blood Type': self.main_window.cmbBlood.currentText(),
 
             "Father's Last Name": self.main_window.txtFatherLast.text(),
             "Father's First Name": self.main_window.txtFatherFirst.text(),
@@ -217,11 +253,16 @@ class modalFunction:
             "Beneficiary's Middle Name": self.main_window.txtBeneMiddle.text(),
 
             "Dependent's Name": self.main_window.txtDependent.text(),
+            "Emergency Name": self.main_window.txtEmergency.text(),
 
             'SSS Number': self.main_window.sssTextEdit.text(),
             'Pag-IBIG Number': self.main_window.pagibigTextEdit.text(),
             'PhilHealth Number': self.main_window.philHealthTextEdit.text(),
             'TIN Number': self.main_window.tinTextEdit.text(),
+            'Taxstat': self.main_window.txtTaxstat.text(),
+            'Account no.': self.main_window.txtAccount.text(),
+            'Bank code': self.main_window.txtBank.text(),
+            'Cola': self.main_window.txtCola.text(),
 
             'HR Notes': self.main_window.hrNoteTextEdit.toPlainText(),
 
@@ -257,6 +298,25 @@ class modalFunction:
             'College Graduate Year': self.main_window.schoolYear.date().toString("MM-dd-yyyy"),
             'High-School Graduate Year': self.main_window.schoolYear2.date().toString("MM-dd-yyyy"),
             'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy"),
+
+            'Description': self.main_window.txtPos.text(),
+            'Department Name': self.main_window.txtDept.text(),
+            'Sched In': self.main_window.cmbSchedIn.Text(),
+            'Sched Out': self.main_window.cmbSchedOut.Text(),
+
+            'RPH': self.main_window.txtRPH.text(),
+            'Rate': self.main_window.txtRate.text(),
+            'Month Salary': self.main_window.txtMonthSalary.text(),
+            'Daily Allowance': self.main_window.txtDailyAllow.text(),
+            'Monthly Allowance': self.main_window.txtMonthAllow.text(),
+
+            'Status': self.main_window.txtStatus.text(),
+            'Resigned': self.main_window.cmbResigned_2.currentText(),
+            'Date Hired': self.main_window.dateHired_2.date().toString("MM-dd-yyyy"),
+            'Date Resign': self.main_window.dateResigned.date().toString("MM-dd-yyyy"),
+
+            'Max Vacation': self.main_window.txtVacn.text(),
+            'Max sick': self.main_window.txtSick.text(),
         }
         return data
 

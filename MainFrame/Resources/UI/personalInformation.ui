@@ -2208,6 +2208,11 @@ font-family: Poppins;
            <height>22</height>
           </rect>
          </property>
+         <item>
+          <property name="text">
+           <string>A</string>
+          </property>
+         </item>
         </widget>
        </widget>
        <widget class="QWidget" name="wgtInfo" native="true">
