@@ -23,7 +23,7 @@
      <rect>
       <x>0</x>
       <y>60</y>
-      <width>1701</width>
+      <width>1441</width>
       <height>605</height>
      </rect>
     </property>
@@ -498,7 +498,7 @@ QTableWidget {
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1711</width>
+      <width>1441</width>
       <height>61</height>
      </rect>
     </property>
@@ -506,32 +506,282 @@ QTableWidget {
      <string notr="true">#widget{
 background-color: &quot;#DCE5FE&quot;;
 }
-
-#btnCheckSched, #btnFilter {
-	background-color: &quot;#344273&quot;;
-	color: white;
-	border-radius: 5px;
+</string>
+    </property>
+    <widget class="QLabel" name="lblDateFrom">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date From:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblFrom">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>20</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblTo">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>20</y>
+       <width>181</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblDateTo">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>20</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date To:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="sideBar">
+    <property name="geometry">
+     <rect>
+      <x>1440</x>
+      <y>0</y>
+      <width>261</width>
+      <height>665</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#sideBar{
+	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
 }
 
+#btnInsertDeduction{
+background-color: &quot;#546aba&quot;;
+color: white;
+border: none;
+border-radius: 5px;
+}
+
+#btnInsertDeduction:hover{
+background-color: #485ba1;
+}
 
 #btnPayTrans{
 border-radius: 5px;
 color: white;
-background-color: rgb(96, 206, 114);
+background-color: &quot;#30d977&quot;;
+}
+
+#btnPayTrans:hover{
+	background-color: &quot;#26ad5f&quot;;
 }
 
 #btnSendToEmail{
 border-radius: 5px;
 color: white;
 background-color: rgb(255, 110, 112);
+}
+
+#btnSendToEmail:hover{
+background-color: #c75657;
 }</string>
     </property>
-    <widget class="QFrame" name="searchBar">
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="widget_2" native="true">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
-       <width>361</width>
+       <y>200</y>
+       <width>241</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="btnPayTrans">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>  EXPORT TO EXCEL</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnInsertDeduction">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>INSERT DEDUCTION</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSendToEmail">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>  SEND TO EMAIL</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/mail.svg</normaloff>../Icons/mail.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QFrame" name="searchBar">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>221</width>
        <height>41</height>
       </rect>
      </property>
@@ -556,7 +806,7 @@ background-color: rgb(255, 110, 112);
        <rect>
         <x>43</x>
         <y>10</y>
-        <width>301</width>
+        <width>161</width>
         <height>21</height>
        </rect>
       </property>
@@ -611,206 +861,6 @@ background-color: rgb(255, 110, 112);
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-    </widget>
-    <widget class="QLabel" name="lblDateFrom">
-     <property name="geometry">
-      <rect>
-       <x>1110</x>
-       <y>20</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>16</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Date From:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lblFrom">
-     <property name="geometry">
-      <rect>
-       <x>1230</x>
-       <y>20</y>
-       <width>181</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lblTo">
-     <property name="geometry">
-      <rect>
-       <x>1500</x>
-       <y>20</y>
-       <width>181</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lblDateTo">
-     <property name="geometry">
-      <rect>
-       <x>1410</x>
-       <y>20</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>16</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Date To:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnPayTrans">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>10</y>
-       <width>191</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>  EXPORT TO EXCEL</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnSendToEmail">
-     <property name="geometry">
-      <rect>
-       <x>780</x>
-       <y>10</y>
-       <width>181</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>  SEND TO EMAIL</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../Icons/mail.svg</normaloff>../Icons/mail.svg</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnInsertDeduction">
-     <property name="geometry">
-      <rect>
-       <x>580</x>
-       <y>10</y>
-       <width>191</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: &quot;#344273&quot;;
-color: white;
-border: none;
-border-radius: 5px;</string>
-     </property>
-     <property name="text">
-      <string>INSERT DEDUCTION</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
     </widget>
    </widget>
   </widget>

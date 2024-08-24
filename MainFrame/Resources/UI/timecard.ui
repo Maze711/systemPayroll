@@ -21,19 +21,7 @@
    <string notr="true">#Dialog{
 	background-color: white;
 }
-
-#btnCheckSched, #btnFilter, #btnCostCenter {
-	background-color: &quot;#546aba&quot;;
-	color: white;
-	border-radius: 5px;
-}
-
-
-#btnTimeSheet, #importBTN, #btnExport{
-border-radius: 5px;
-	color: white;
-background-color: &quot;#30d977&quot;;
-}</string>
+</string>
   </property>
   <widget class="QTableWidget" name="TimeListTable">
    <property name="geometry">
@@ -222,7 +210,7 @@ QTableWidget {
    <widget class="QFrame" name="searchBar">
     <property name="geometry">
      <rect>
-      <x>15</x>
+      <x>17</x>
       <y>20</y>
       <width>221</width>
       <height>41</height>
@@ -309,9 +297,9 @@ QTableWidget {
     <property name="geometry">
      <rect>
       <x>5</x>
-      <y>460</y>
+      <y>409</y>
       <width>241</width>
-      <height>200</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="font">
@@ -330,6 +318,16 @@ QTableWidget {
 #costCenterBox, #costCenterFrom, #costCenterTo{
 border: 1px solid black;
 border-radius: 5px;
+}
+
+#btnCCSched{
+background-color: rgb(255, 110, 112);
+	color: white;
+	border-radius: 5px;
+}
+
+#btnCCSched:hover{
+background-color: #c75657;
 }</string>
     </property>
     <property name="title">
@@ -686,6 +684,51 @@ border-radius: 5px;
       <string>From:</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnCCSched">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>190</y>
+       <width>221</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>CHANGE CC SCHED</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>22</width>
+       <height>22</height>
+      </size>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -693,14 +736,31 @@ border-radius: 5px;
       <x>10</x>
       <y>80</y>
       <width>231</width>
-      <height>351</height>
+      <height>321</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
+     <string notr="true">#btnCheckSched, #btnFilter {
+	background-color: &quot;#546aba&quot;;
+	color: white;
+	border-radius: 5px;
+}
+
+#btnTimeSheet, #btnExport{
+border-radius: 5px;
+	color: white;
+background-color: &quot;#30d977&quot;;
+}
+
 #btnCheckSched:hover, #btnFilter:hover{
-	background-color: &quot;#45a049''
-}</string>
+background-color: #485ba1;
+}
+
+#btnTimeSheet:hover, #btnExport:hover{
+	background-color: &quot;#26ad5f&quot;;
+}
+
+</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -859,47 +919,6 @@ border-radius: 5px;
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="btnCCSched">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 110, 112);
-	color: white;
-	border-radius: 5px;</string>
-       </property>
-       <property name="text">
-        <string>CHANGE CC SCHED</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -932,8 +951,8 @@ border-radius: 5px;
    <widget class="QLabel" name="lblYear">
     <property name="geometry">
      <rect>
-      <x>25</x>
-      <y>9</y>
+      <x>50</x>
+      <y>10</y>
       <width>71</width>
       <height>41</height>
      </rect>
@@ -953,8 +972,8 @@ border-radius: 5px;
    <widget class="QComboBox" name="dateFromCC">
     <property name="geometry">
      <rect>
-      <x>405</x>
-      <y>10</y>
+      <x>430</x>
+      <y>11</y>
       <width>170</width>
       <height>35</height>
      </rect>
@@ -968,8 +987,8 @@ border-radius: 5px;
    <widget class="QComboBox" name="yearCC">
     <property name="geometry">
      <rect>
-      <x>95</x>
-      <y>10</y>
+      <x>120</x>
+      <y>11</y>
       <width>170</width>
       <height>35</height>
      </rect>
@@ -989,8 +1008,8 @@ border-radius: 5px;
    <widget class="QComboBox" name="dateToCC">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>10</y>
+      <x>715</x>
+      <y>11</y>
       <width>170</width>
       <height>35</height>
      </rect>
@@ -1004,8 +1023,8 @@ border-radius: 5px;
    <widget class="QLabel" name="lblDateFrom">
     <property name="geometry">
      <rect>
-      <x>285</x>
-      <y>9</y>
+      <x>310</x>
+      <y>10</y>
       <width>121</width>
       <height>41</height>
      </rect>
@@ -1025,8 +1044,8 @@ border-radius: 5px;
    <widget class="QLabel" name="lblDateTo">
     <property name="geometry">
      <rect>
-      <x>595</x>
-      <y>10</y>
+      <x>620</x>
+      <y>11</y>
       <width>91</width>
       <height>41</height>
      </rect>

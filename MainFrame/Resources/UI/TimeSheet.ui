@@ -22,105 +22,17 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1701</width>
+     <width>1441</width>
      <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: &quot;#DCE5FE&quot;;</string>
    </property>
-   <widget class="QFrame" name="searchBar">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>361</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::StrongFocus</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#searchBar{
-	border: 1px solid &quot;#344273&quot;;
-	border-radius: 3px; 
-}
-*{
-background-color: white;
-}</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLineEdit" name="txtSearch_4">
-     <property name="geometry">
-      <rect>
-       <x>43</x>
-       <y>10</y>
-       <width>301</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::ClickFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#txtSearch{
-
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="placeholderText">
-      <string>Type to search...</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="searchIcon_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>31</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#searchIcon{
-	background-color: white;
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../Icons/search.svg</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="lblDateFrom">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>40</x>
       <y>20</y>
       <width>121</width>
       <height>21</height>
@@ -141,7 +53,7 @@ background-color: white;
    <widget class="QLabel" name="lblFrom">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>160</x>
       <y>20</y>
       <width>181</width>
       <height>21</height>
@@ -165,7 +77,7 @@ background-color: white;
    <widget class="QLabel" name="lblTo">
     <property name="geometry">
      <rect>
-      <x>990</x>
+      <x>560</x>
       <y>20</y>
       <width>181</width>
       <height>21</height>
@@ -189,7 +101,7 @@ background-color: white;
    <widget class="QLabel" name="lblDateTo">
     <property name="geometry">
      <rect>
-      <x>900</x>
+      <x>470</x>
       <y>20</y>
       <width>91</width>
       <height>21</height>
@@ -210,7 +122,7 @@ background-color: white;
    <widget class="QLabel" name="lblMachCode">
     <property name="geometry">
      <rect>
-      <x>1170</x>
+      <x>910</x>
       <y>20</y>
       <width>131</width>
       <height>21</height>
@@ -231,7 +143,7 @@ background-color: white;
    <widget class="QLabel" name="lblMach">
     <property name="geometry">
      <rect>
-      <x>1300</x>
+      <x>1040</x>
       <y>20</y>
       <width>160</width>
       <height>21</height>
@@ -256,10 +168,10 @@ background-color: white;
   <widget class="QTableWidget" name="TimeSheetTable">
    <property name="geometry">
     <rect>
-     <x>-10</x>
-     <y>109</y>
-     <width>1711</width>
-     <height>555</height>
+     <x>0</x>
+     <y>60</y>
+     <width>1441</width>
+     <height>601</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -305,7 +217,7 @@ QTableWidget {
 }</string>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
+    <enum>Qt::ScrollBarAsNeeded</enum>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -458,107 +370,152 @@ QTableWidget {
     </property>
    </column>
   </widget>
-  <widget class="QWidget" name="widget_2" native="true">
+  <widget class="QFrame" name="sideBar">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>60</y>
-     <width>471</width>
-     <height>51</height>
+     <x>1440</x>
+     <y>0</y>
+     <width>261</width>
+     <height>665</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">#widget_2{
-background-color: &quot;#344273&quot;; 
-color: white;
-border: 2px solid black
+    <string notr="true">#sideBar{
+	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
 }
-QLabel{
-color: white
+
+#btnInsertDeduction{
+background-color: &quot;#546aba&quot;;
+color: white;
+border: none;
+border-radius: 5px;
+}
+
+#btnInsertDeduction:hover{
+background-color: #485ba1;
+}
+
+#btnPayTrans{
+border-radius: 5px;
+color: white;
+background-color: &quot;#30d977&quot;;
+}
+
+#btnPayTrans:hover{
+	background-color: &quot;#26ad5f&quot;;
+}
+
+#btnSendToEmail{
+border-radius: 5px;
+color: white;
+background-color: rgb(255, 110, 112);
+}
+
+#btnSendToEmail:hover{
+background-color: #c75657;
 }</string>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="font">
-       <font>
-        <family>Poppins</family>
-        <pointsize>11</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Employee Details</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="widget_3" native="true">
-   <property name="geometry">
-    <rect>
-     <x>889</x>
-     <y>60</y>
-     <width>811</width>
-     <height>51</height>
-    </rect>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="styleSheet">
-    <string notr="true">#widget_3{
-background-color: &quot;#344273&quot;; 
-color: white;
-border: 2px solid black
+   <widget class="QFrame" name="searchBar">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>221</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::StrongFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#searchBar{
+	border: 1px solid &quot;#344273&quot;;
+	border-radius: 3px; 
 }
-QLabel{
-color: white
+*{
+background-color: white;
 }</string>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="font">
-       <font>
-        <family>Poppins</family>
-        <pointsize>11</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Overtime</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="widget_4" native="true">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>60</y>
-     <width>431</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">
-background-color: &quot;#344273&quot;; 
-border: 2px solid black;
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLineEdit" name="txtSearch_4">
+     <property name="geometry">
+      <rect>
+       <x>43</x>
+       <y>10</y>
+       <width>171</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#txtSearch{
 
-
-</string>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>Type to search...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="searchIcon_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#searchIcon{
+	background-color: white;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Icons/search.svg</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>
