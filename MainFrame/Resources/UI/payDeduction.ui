@@ -23,7 +23,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1711</width>
+      <width>1441</width>
       <height>665</height>
      </rect>
     </property>
@@ -31,115 +31,12 @@
      <string notr="true">#widget{
 background-color: &quot;#dce5fe&quot;;
 }
-
-#btnCheckSched, #btnFilter {
-	background-color: &quot;#344273&quot;;
-	color: white;
-	border-radius: 5px;
-}
-
-
-#btnPayTrans{
-border-radius: 5px;
-background-color: rgb(96, 206, 114);
-}
-
-#btnSendToEmail{
-border-radius: 5px;
-color: white;
-background-color: rgb(255, 110, 112);
-}</string>
+</string>
     </property>
-    <widget class="QFrame" name="searchBar">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>361</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#searchBar{
-	border: 1px solid &quot;#344273&quot;;
-	border-radius: 3px; 
-background-color: white;
-}</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QLineEdit" name="txtSearch">
-      <property name="geometry">
-       <rect>
-        <x>43</x>
-        <y>10</y>
-        <width>301</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#txtSearch{
-
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="frame">
-       <bool>false</bool>
-      </property>
-      <property name="placeholderText">
-       <string>Type to search...</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="searchIcon">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#searchIcon{
-	background-color: white;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>../Icons/search.svg</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>false</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </widget>
     <widget class="QLabel" name="lblDateFrom">
      <property name="geometry">
       <rect>
-       <x>1110</x>
+       <x>40</x>
        <y>20</y>
        <width>121</width>
        <height>21</height>
@@ -160,7 +57,7 @@ background-color: white;
     <widget class="QLabel" name="lblFrom">
      <property name="geometry">
       <rect>
-       <x>1230</x>
+       <x>160</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -184,7 +81,7 @@ background-color: white;
     <widget class="QLabel" name="lblTo">
      <property name="geometry">
       <rect>
-       <x>1500</x>
+       <x>570</x>
        <y>20</y>
        <width>181</width>
        <height>21</height>
@@ -208,7 +105,7 @@ background-color: white;
     <widget class="QLabel" name="lblDateTo">
      <property name="geometry">
       <rect>
-       <x>1410</x>
+       <x>480</x>
        <y>20</y>
        <width>91</width>
        <height>21</height>
@@ -226,105 +123,13 @@ background-color: white;
       <string>Date To:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="lblDateFrom_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>361</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>16</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnStore">
-     <property name="geometry">
-      <rect>
-       <x>580</x>
-       <y>10</y>
-       <width>181</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 5px;
-color: white;
-background-color: rgb(255, 110, 112);</string>
-     </property>
-     <property name="text">
-      <string>STORE DATA</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnEdit">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>10</y>
-       <width>191</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: &quot;#344273&quot;;
-color: white;
-border: none;
-border-radius: 5px;</string>
-     </property>
-     <property name="text">
-      <string>EDIT DEDUCTION</string>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
-     </property>
-    </widget>
    </widget>
    <widget class="QTableWidget" name="paytimesheetTable">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>60</y>
-      <width>1701</width>
+      <width>1441</width>
       <height>605</height>
      </rect>
     </property>
@@ -553,6 +358,219 @@ QTableWidget {
       <string>Voluntary</string>
      </property>
     </column>
+   </widget>
+   <widget class="QFrame" name="sideBar">
+    <property name="geometry">
+     <rect>
+      <x>1440</x>
+      <y>0</y>
+      <width>261</width>
+      <height>665</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#sideBar{
+	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
+}
+
+#btnEdit{
+background-color: &quot;#546aba&quot;;
+color: white;
+border: none;
+border-radius: 5px;
+}
+
+#btnEdit:hover{
+background-color: #485ba1;
+}
+
+#btnStore{
+border-radius: 5px;
+color: white;
+background-color: rgb(255, 110, 112);
+}
+
+#btnStore:hover{
+background-color: #c75657;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>200</y>
+       <width>241</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="btnEdit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>EDIT DEDUCTION</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnStore">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>STORE DATA</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QFrame" name="searchBar">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#searchBar{
+	border: 1px solid &quot;#344273&quot;;
+	border-radius: 3px; 
+background-color: white;
+}</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLabel" name="searchIcon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#searchIcon{
+	background-color: white;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Icons/search.svg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtSearch">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>10</y>
+        <width>175</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#txtSearch{
+
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <property name="placeholderText">
+       <string>Type to search...</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
