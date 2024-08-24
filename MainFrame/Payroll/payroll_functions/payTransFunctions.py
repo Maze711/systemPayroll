@@ -5,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
-from MainFrame.TimeKeeping.payTrans.payTransMailer import EmailerLoader
+from MainFrame.Payroll.payTrans.payTransMailer import EmailerLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 

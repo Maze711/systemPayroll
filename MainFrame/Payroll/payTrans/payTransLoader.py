@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction
-from MainFrame.TimeKeeping.payroll_functions.payTransFunctions import PayTransFunctions
+from MainFrame.Payroll.payroll_functions.payTransFunctions import PayTransFunctions
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 

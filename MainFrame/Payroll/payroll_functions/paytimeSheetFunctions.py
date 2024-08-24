@@ -1,12 +1,11 @@
-import logging
 import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
-from MainFrame.TimeKeeping.payTrans.payTransLoader import PayTrans
-from MainFrame.TimeKeeping.payroll_functions.payComputations import PayComputation
+from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
+from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 

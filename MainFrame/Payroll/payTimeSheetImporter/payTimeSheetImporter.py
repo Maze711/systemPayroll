@@ -6,7 +6,7 @@ from openpyxl.workbook import Workbook
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
-from MainFrame.TimeKeeping.paytimeSheet.paytimeSheet import PaytimeSheet
+from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.Database_Connection.DBConnection import create_connection
