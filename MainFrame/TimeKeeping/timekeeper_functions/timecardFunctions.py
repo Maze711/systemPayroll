@@ -177,16 +177,12 @@ class populateList:
             records = cursor_list_log.fetchall()
 
             self.parent.TimeListTable.setRowCount(0)
-            time_data = {}
-
+            time_data = []
             for bioNum, trans_date, time_in, time_out, mach_code in records:
                 if bioNum not in time_data:
-                    time_data[bioNum] = {"Check_In": None, "Check_Out": None}
-
-                if time_in:  # Consider `time_in` as Check_In
-                    time_data[bioNum]["Check_In"] = (trans_date, str(time_in))
-                if time_out:  # Consider `time_out` as Check_Out
-                    time_data[bioNum]["Check_Out"] = (trans_date, str(time_out))
+                    time_data.append(
+                        {"bioNum": bioNum, "trans_date": trans_date, "time_in": time_in, "time_out": time_out,
+                         "mach_code": mach_code})
 
                 # Query to get employee information and schedule from FILE201
                 employee_query = (
@@ -220,7 +216,7 @@ class populateList:
                     mach_code = "Error"
                     schedule = "Error"
 
-                if time_data[bioNum]["Check_In"] or time_data[bioNum]["Check_Out"]:
+                if time_data:
                     row_position = self.parent.TimeListTable.rowCount()
                     self.parent.TimeListTable.insertRow(row_position)
 
@@ -229,17 +225,22 @@ class populateList:
                         item.setTextAlignment(Qt.AlignCenter)
                         return item
 
-                    check_in_time = time_data[bioNum]["Check_In"][1] if time_data[bioNum]["Check_In"] else "Missing"
-                    check_out_time = time_data[bioNum]["Check_Out"][1] if time_data[bioNum][
-                        "Check_Out"] else "Missing"
+                    check_in_time = time_data[0]["time_in"] if time_data[0]["time_in"] else "Missing"
+                    check_out_time = time_data[0]["time_out"] if time_data[0]["time_out"] else "Missing"
 
-                    self.parent.TimeListTable.setItem(row_position, 0, create_centered_item(str(bioNum)))
+                    self.parent.TimeListTable.setItem(row_position, 0,
+                                                      create_centered_item(str(time_data[0]["bioNum"])))
                     self.parent.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
-                    self.parent.TimeListTable.setItem(row_position, 2, create_centered_item(str(trans_date)))
-                    self.parent.TimeListTable.setItem(row_position, 3, create_centered_item(str(mach_code)))
+                    self.parent.TimeListTable.setItem(row_position, 2,
+                                                      create_centered_item(str(time_data[0]["trans_date"])))
+                    self.parent.TimeListTable.setItem(row_position, 3,
+                                                      create_centered_item(str(time_data[0]["mach_code"])))
                     self.parent.TimeListTable.setItem(row_position, 4, create_centered_item(str(check_in_time)))
                     self.parent.TimeListTable.setItem(row_position, 5, create_centered_item(str(check_out_time)))
                     self.parent.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
+
+            # Assign data to original_data
+            self.parent.original_data = time_data
 
         except Exception as e:
             logging.error(f"Error populating time list table: {e}")
