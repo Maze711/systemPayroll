@@ -178,11 +178,17 @@ class populateList:
 
             self.parent.TimeListTable.setRowCount(0)
             time_data = []
+
             for bioNum, trans_date, time_in, time_out, mach_code in records:
-                if bioNum not in time_data:
-                    time_data.append(
-                        {"bioNum": bioNum, "trans_date": trans_date, "time_in": time_in, "time_out": time_out,
-                         "mach_code": mach_code})
+                if time_in:  # Consider `time_in` as Check_In
+                    check_in_time = (trans_date, str(time_in))
+                else:
+                    check_in_time = ("Missing",)
+
+                if time_out:  # Consider `time_out` as Check_Out
+                    check_out_time = (trans_date, str(time_out))
+                else:
+                    check_out_time = ("Missing",)
 
                 # Query to get employee information and schedule from FILE201
                 employee_query = (
@@ -216,30 +222,13 @@ class populateList:
                     mach_code = "Error"
                     schedule = "Error"
 
-                if time_data:
-                    row_position = self.parent.TimeListTable.rowCount()
-                    self.parent.TimeListTable.insertRow(row_position)
+                if check_in_time or check_out_time:
+                    time_data.append(
+                        [bioNum, emp_name, trans_date, mach_code, check_in_time[1], check_out_time[1], schedule])
 
-                    def create_centered_item(text):
-                        item = QTableWidgetItem(str(text))
-                        item.setTextAlignment(Qt.AlignCenter)
-                        return item
-
-                    check_in_time = time_data[0]["time_in"] if time_data[0]["time_in"] else "Missing"
-                    check_out_time = time_data[0]["time_out"] if time_data[0]["time_out"] else "Missing"
-
-                    self.parent.TimeListTable.setItem(row_position, 0,
-                                                      create_centered_item(str(time_data[0]["bioNum"])))
-                    self.parent.TimeListTable.setItem(row_position, 1, create_centered_item(emp_name))
-                    self.parent.TimeListTable.setItem(row_position, 2,
-                                                      create_centered_item(str(time_data[0]["trans_date"])))
-                    self.parent.TimeListTable.setItem(row_position, 3,
-                                                      create_centered_item(str(time_data[0]["mach_code"])))
-                    self.parent.TimeListTable.setItem(row_position, 4, create_centered_item(str(check_in_time)))
-                    self.parent.TimeListTable.setItem(row_position, 5, create_centered_item(str(check_out_time)))
-                    self.parent.TimeListTable.setItem(row_position, 6, create_centered_item(schedule))
-
-            # Assign data to original_data
+            # Populate the table with time_data
+            self.populate_table_with_data(time_data)
+            # Set original_data
             self.parent.original_data = time_data
 
         except Exception as e:
@@ -250,6 +239,25 @@ class populateList:
             cursor_file201.close()
             connection_list_log.close()
             connection_file201.close()
+
+    def populate_table_with_data(self, data):
+        try:
+            self.parent.TimeListTable.setRowCount(0)  # Clear existing rows
+            logging.info("Populating table with data.")
+
+            for row_data in data:
+                row_position = self.parent.TimeListTable.rowCount()
+                self.parent.TimeListTable.insertRow(row_position)
+
+                for col, value in enumerate(row_data):
+                    item = QTableWidgetItem(str(value))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.parent.TimeListTable.setItem(row_position, col, item)
+
+            logging.info(f"Table populated with {len(data)} rows.")
+        except Exception as e:
+            logging.error(f"Error populating table with data: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
 
 
 class buttonTimecardFunction:
@@ -560,13 +568,23 @@ class searchBioNum:
         search_text = self.parent.searchBioNum.text().strip().lower()
         logging.info(f"Search text: '{search_text}'")
 
-        logging.info(f"Original data before filtering: {self.parent.original_data}")
+        if not hasattr(self.parent, 'original_data') or not isinstance(self.parent.original_data, list):
+            logging.error("original_data is not properly initialized or is not a list.")
+            QMessageBox.critical(self.parent, "Error", "Original data is not properly initialized.")
+            return
 
         if not search_text:
             logging.info("Search text is empty. Restoring original data.")
             self.populate_table_with_data(self.parent.original_data)
             return
 
+        # Ensure original_data is a list of lists/tuples
+        if not all(isinstance(row, (list, tuple)) for row in self.parent.original_data):
+            logging.error("Original data is not in the expected format.")
+            QMessageBox.critical(self.parent, "Error", "Original data format is incorrect.")
+            return
+
+        # Perform the search
         filtered_data = [row for row in self.parent.original_data if search_text in str(row[0]).lower()]
         logging.info(f"Filtered data contains {len(filtered_data)} rows.")
 
@@ -579,6 +597,11 @@ class searchBioNum:
         try:
             self.parent.TimeListTable.setRowCount(0)  # Clear existing rows
             logging.info("Populating table with data.")
+
+            if not data or not isinstance(data[0], (list, tuple)):
+                logging.error("Data to populate is not in the expected format.")
+                QMessageBox.critical(self.parent, "Error", "Data to populate is not in the expected format.")
+                return
 
             for row_data in data:
                 row_position = self.parent.TimeListTable.rowCount()
@@ -593,6 +616,7 @@ class searchBioNum:
         except Exception as e:
             logging.error(f"Error populating table with data: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
+
 
 
 class FilterDialog(QDialog):
