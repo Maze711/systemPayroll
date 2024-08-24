@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1700</width>
-    <height>665</height>
+    <width>1699</width>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -329,7 +329,7 @@ background-color: rgb(96, 206, 114);
      <property name="styleSheet">
       <string notr="true">#searchBar{
 	border: 1px solid &quot;#344273&quot;;
-	border-radius: 3px; 
+	border-radius: 3px;
 background-color: white;
 }</string>
      </property>
