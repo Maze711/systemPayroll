@@ -1,4 +1,3 @@
-import logging
 import sys
 import os
 
@@ -6,7 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
-from MainFrame.TimeKeeping.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
+from MainFrame.Payroll.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
 from MainFrame.Database_Connection.user_session import UserSession
 
 class DeductionUI:

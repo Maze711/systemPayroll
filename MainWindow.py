@@ -6,7 +6,7 @@ from MainFrame.Resources.lib import *
 from MainFrame.FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
 from MainFrame.TimeKeeping.datImporter.dialogLoader import dialogModal
-from MainFrame.TimeKeeping.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
+from MainFrame.Payroll.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
