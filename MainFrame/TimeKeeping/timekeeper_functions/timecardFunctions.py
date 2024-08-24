@@ -3,13 +3,7 @@ import os
 import logging
 
 # Configure logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout)  # Output to console
-    ]
-)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -535,28 +529,27 @@ class buttonTimecardFunction:
             logging.error(f"Error in on_row_double_clicked: {e}", exc_info=True)
 
     def getTotalHoursWorked(self, time_start, time_end):
-        # Ensure QTime is imported
-        if time_start == 'Missing' or time_end == 'Missing':
+        # Ensure time is in correct format
+        try:
+            timeIn = datetime.strptime(time_start, "%H:%M:%S")
+            timeOut = datetime.strptime(time_end, "%H:%M:%S")
+        except ValueError as e:
+            logging.error(f"Time format error: {e}")
             return "Unknown"
-
-        timeIn = QTime.fromString(time_start, "HH:mm:ss")
-        timeOut = QTime.fromString(time_end, "HH:mm:ss")
 
         # Converting time into seconds
         seconds_in_a_day = 24 * 60 * 60
-        time_in_seconds = (timeIn.hour() * 3600) + (timeIn.minute() * 60) + timeIn.second()
-        time_out_seconds = (timeOut.hour() * 3600) + (timeOut.minute() * 60) + timeOut.second()
+        time_in_seconds = (timeIn.hour * 3600) + (timeIn.minute * 60) + timeIn.second
+        time_out_seconds = (timeOut.hour * 3600) + (timeOut.minute * 60) + timeOut.second
 
         # Handle crossing midnight
         if time_out_seconds < time_in_seconds:
             time_out_seconds += seconds_in_a_day
 
         time_difference = time_out_seconds - time_in_seconds
-
-        # Convert the difference to hours
         work_duration_in_hours = time_difference / 3600
-
         return round(work_duration_in_hours, 2)
+
 
 class searchBioNum:
     def __init__(self, parent):
@@ -564,26 +557,41 @@ class searchBioNum:
 
     def search_bioNum(self):
         search_text = self.parent.searchBioNum.text().strip().lower()
+        logging.info(f"Search text: '{search_text}'")
+
+        logging.info(f"Original data before filtering: {self.parent.original_data}")
 
         if not search_text:
+            logging.info("Search text is empty. Restoring original data.")
             self.populate_table_with_data(self.parent.original_data)
             return
 
-        # Filter original data based on the search text in the bioNum column
         filtered_data = [row for row in self.parent.original_data if search_text in str(row[0]).lower()]
+        logging.info(f"Filtered data contains {len(filtered_data)} rows.")
+
+        if not filtered_data:
+            logging.warning("No matching records found.")
+
         self.populate_table_with_data(filtered_data)
 
     def populate_table_with_data(self, data):
-        self.parent.TimeListTable.setRowCount(0)
+        try:
+            self.parent.TimeListTable.setRowCount(0)  # Clear existing rows
+            logging.info("Populating table with data.")
 
-        for row_data in data:
-            row_position = self.parent.TimeListTable.rowCount()
-            self.parent.TimeListTable.insertRow(row_position)
+            for row_data in data:
+                row_position = self.parent.TimeListTable.rowCount()
+                self.parent.TimeListTable.insertRow(row_position)
 
-            for col, value in enumerate(row_data):
-                item = QTableWidgetItem(str(value))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.parent.TimeListTable.setItem(row_position, col, item)
+                for col, value in enumerate(row_data):
+                    item = QTableWidgetItem(str(value))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.parent.TimeListTable.setItem(row_position, col, item)
+
+            logging.info(f"Table populated with {len(data)} rows.")
+        except Exception as e:
+            logging.error(f"Error populating table with data: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
 
 
 class FilterDialog(QDialog):
