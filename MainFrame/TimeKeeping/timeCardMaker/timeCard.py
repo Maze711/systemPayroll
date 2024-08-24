@@ -1,11 +1,13 @@
 import sys
 import os
 
+from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.TimeKeeping.timekeeper_functions.timecardFunctions import populateList, buttonTimecardFunction, \
-    searchBioNum, filterFunction
+    searchBioNum, FilterDialog
 
 
 class timecard(QDialog):
@@ -18,7 +20,7 @@ class timecard(QDialog):
         self.populateComboBox = populateList(self)
         self.buttonFunctions = buttonTimecardFunction(self)
         self.searchFunction = searchBioNum(self)
-        self.filteringFunction = filterFunction(self)
+        self.filteringFunction = FilterDialog(self)
         self.setupTimecardUI()
 
         # Initialize data attributes
@@ -40,6 +42,7 @@ class timecard(QDialog):
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)
             self.btnTimeSheet.clicked.connect(self.buttonFunctions.createTimeSheet)
             self.btnCheckSched.clicked.connect(self.buttonFunctions.CheckSched)
+            self.TimeListTable.doubleClicked.connect(self.buttonFunctions.on_row_double_clicked)
 
             self.searchBioNum.textChanged.connect(self.searchFunction.search_bioNum)
 
@@ -50,3 +53,4 @@ class timecard(QDialog):
 
         except Exception as e:
             logging.error(f"Error in setupTimecardUI: {e}")
+

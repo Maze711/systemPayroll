@@ -1,5 +1,15 @@
 import sys
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)  # Output to console
+    ]
+)
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -479,6 +489,51 @@ class buttonTimecardFunction:
                 "Please select a row from the table first!"
             )
 
+    def on_row_double_clicked(self, index):
+        try:
+            logging.debug("Row double-clicked in TimeListTable.")
+            selected_row = index.row()
+
+            if selected_row != -1:
+                bioNum = self.parent.TimeListTable.item(selected_row, 0).text() if self.parent.TimeListTable.item(
+                    selected_row, 0) else "N/A"
+                empName = self.parent.TimeListTable.item(selected_row, 1).text() if self.parent.TimeListTable.item(
+                    selected_row, 1) else "N/A"
+                trans_date = self.parent.TimeListTable.item(selected_row, 2).text() if self.parent.TimeListTable.item(
+                    selected_row, 2) else "N/A"
+                checkIn = self.parent.TimeListTable.item(selected_row, 4).text() if self.parent.TimeListTable.item(
+                    selected_row, 4) else "Missing"
+                checkOut = self.parent.TimeListTable.item(selected_row, 5).text() if self.parent.TimeListTable.item(
+                    selected_row, 5) else "Missing"
+                sched = self.parent.TimeListTable.item(selected_row, 6).text() if self.parent.TimeListTable.item(
+                    selected_row, 6) else "N/A"
+
+                total_hours = self.getTotalHoursWorked(checkIn, checkOut)
+
+                empNum = "DefaultEmpNum"  # Replace with the actual employee number if available
+                data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours]
+
+                if len(data) == 8:
+                    logging.debug(f"Data is valid. Opening chkSched dialog with data: {data}")
+                    dialog = chkSched(data)  # Ensure chkSched is defined/imported
+                    dialog.exec_()
+                else:
+                    logging.warning("Insufficient data to process. Please check the row data.")
+                    QMessageBox.warning(
+                        self.parent,
+                        "Data Error",
+                        "Insufficient data to process. Please check the row data."
+                    )
+            else:
+                logging.warning("No row selected in TimeListTable.")
+                QMessageBox.warning(
+                    self.parent,
+                    "No Row Selected",
+                    "Please select a row from the table first!"
+                )
+        except Exception as e:
+            logging.error(f"Error in on_row_double_clicked: {e}", exc_info=True)
+
     def getTotalHoursWorked(self, time_start, time_end):
         # Ensure QTime is imported
         if time_start == 'Missing' or time_end == 'Missing':
@@ -531,108 +586,48 @@ class searchBioNum:
                 self.parent.TimeListTable.setItem(row_position, col, item)
 
 
-class filterFunction:
-    def __init__(self, parent):
+class FilterDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(400, 300)
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\filter.ui")
+        loadUi(ui_file, self)
+
+        self.cmbCheckIn = self.findChild(QComboBox, 'cmbCheckIn')
+        self.cmbCheckOut = self.findChild(QComboBox, 'cmbCheckOut')
+        self.btnOK = self.findChild(QPushButton, 'btnOK')
+        self.btnClear = self.findChild(QPushButton, 'btnClear')
+        self.btnMissing = self.findChild(QPushButton, 'btnMissing')
+
+        if not all([self.cmbCheckIn, self.cmbCheckOut, self.btnOK, self.btnClear, self.btnMissing]):
+            raise ValueError("One or more UI elements not found")
+
+        self.btnOK.clicked.connect(self.accept)
+        self.btnClear.clicked.connect(self.clear_filter)
+        self.btnMissing.clicked.connect(self.show_missing)
+
+        for combo in [self.cmbCheckIn, self.cmbCheckOut]:
+            if combo.itemText(0) != "AM/PM":
+                combo.insertItem(0, "AM/PM")
+
+        self.selected_check_in = "AM/PM"
+        self.selected_check_out = "AM/PM"
         self.parent = parent
 
-    def apply_filter(self, filter_values):
+    def clear_filter(self, checked=False):
         try:
-            filtered = []
-            for row in self.parent.original_data:
-                check_in_time = row[4]
-                check_out_time = row[5]
-
-                if filter_values['show_missing']:
-                    # Include rows where check-in or check-out is missing
-                    if check_in_time == 'Missing' or check_out_time == 'Missing':
-                        filtered.append(row)
-                else:
-                    # Apply AM/PM filtering
-                    if check_in_time != 'Missing' and check_out_time != 'Missing':
-                        check_in_hour = int(check_in_time.split(':')[0])
-                        check_out_hour = int(check_out_time.split(':')[0])
-
-                        if filter_values['check_in_ampm'] == 'AM' and not (0 <= check_in_hour < 12):
-                            continue
-                        if filter_values['check_in_ampm'] == 'PM' and not (12 <= check_in_hour < 24):
-                            continue
-                        if filter_values['check_out_ampm'] == 'AM' and not (0 <= check_out_hour < 12):
-                            continue
-                        if filter_values['check_out_ampm'] == 'PM' and not (12 <= check_out_hour < 24):
-                            continue
-
-                        filtered.append(row)
-
-            self.parent.filtered_data = filtered
-            self.populate_table_with_data(self.parent.filtered_data)
-        except Exception as e:
-            logging.error(f"Error in apply_filter: {str(e)}")
-            QMessageBox.critical(self.parent, "Error", f"An error occurred while applying the filter: {str(e)}")
-
-    def populate_table_with_data(self, data):
-        self.parent.TimeListTable.setRowCount(0)
-
-        for row_data in data:
-            row_position = self.parent.TimeListTable.rowCount()
-            self.parent.TimeListTable.insertRow(row_position)
-
-            for col, value in enumerate(row_data):
-                item = QTableWidgetItem(str(value))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.parent.TimeListTable.setItem(row_position, col, item)
-
-    def filterModal(self):
-        if self.parent.yearCC.currentIndex() == -1 or self.parent.dateFromCC.currentIndex() == -1 or self.parent.dateToCC.currentIndex() == -1:
-            QMessageBox.warning(
-                self.parent,
-                "No filter selected",
-                "Please select a year, day from, and day to first!"
-            )
-            return
-
-        try:
-            filter_dialog = QDialog(self.parent)
-            ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\filter.ui")
-            loadUi(ui_file, filter_dialog)
-
-            filter_dialog.cmbCheckIn = filter_dialog.findChild(QComboBox, 'cmbCheckIn')
-            filter_dialog.cmbCheckOut = filter_dialog.findChild(QComboBox, 'cmbCheckOut')
-            filter_dialog.btnOK = filter_dialog.findChild(QPushButton, 'btnOK')
-            filter_dialog.btnClear = filter_dialog.findChild(QPushButton, 'btnClear')
-            filter_dialog.btnMissing = filter_dialog.findChild(QPushButton, 'btnMissing')
-
-            for combo in [filter_dialog.cmbCheckIn, filter_dialog.cmbCheckOut]:
-                if combo.itemText(0) != "AM/PM":
-                    combo.insertItem(0, "AM/PM")
-
-            filter_dialog.btnOK.clicked.connect(filter_dialog.accept)
-            filter_dialog.btnClear.clicked.connect(lambda: self.clear_filter())
-            filter_dialog.btnMissing.clicked.connect(lambda: self.show_missing())
-
-            if filter_dialog.exec_() == QDialog.Accepted:
-                filter_values = {
-                    'check_in_ampm': filter_dialog.cmbCheckIn.currentText(),
-                    'check_out_ampm': filter_dialog.cmbCheckOut.currentText(),
-                    'show_missing': False
-                }
-                self.apply_filter(filter_values)
-
-        except Exception as e:
-            logging.error(f"Error in filterModal: {str(e)}")
-            QMessageBox.critical(self.parent, "Error", f"An error occurred: {str(e)}")
-
-    def clear_filter(self):
-        try:
-            self.parent.cmbCheckIn.setCurrentIndex(0)
-            self.parent.cmbCheckOut.setCurrentIndex(0)
-            self.parent.filtered_data = self.parent.original_data.copy()
-            self.populate_table_with_data(self.parent.filtered_data)
-            logging.info("Filter cleared")
+            if self.parent:
+                logging.info("Clearing filter...")
+                logging.info(f"Original data before clearing: {self.parent.original_data}")
+                self.parent.filtered_data = self.parent.original_data.copy()
+                self.populate_table_with_data(self.parent.filtered_data)
+                logging.info("Filter cleared and table restored to original state.")
         except Exception as e:
             logging.error(f"Error in clear_filter: {str(e)}")
             logging.error(traceback.format_exc())
+        self.accept()
 
-    def show_missing(self):
+    def show_missing(self, checked=False):
         try:
             filter_values = {
                 'check_in_ampm': "AM/PM",
@@ -644,3 +639,101 @@ class filterFunction:
         except Exception as e:
             logging.error(f"Error in show_missing: {str(e)}")
             logging.error(traceback.format_exc())
+        self.accept()
+
+    def get_filter_values(self):
+        values = {
+            'check_in_ampm': self.cmbCheckIn.currentText(),
+            'check_out_ampm': self.cmbCheckOut.currentText(),
+            'show_missing': False
+        }
+        logging.info(f"Filter values: {values}")
+        return values
+
+    def apply_filter(self, filter_values):
+        try:
+            logging.info(f"Applying filter with values: {filter_values}")
+
+            filtered = []
+            logging.info(f"Original data contains {len(self.parent.original_data)} rows.")
+
+            for row in self.parent.original_data:
+                check_in_time = row[4]
+                check_out_time = row[5]
+
+                logging.debug(f"Row check-in time: {check_in_time}, check-out time: {check_out_time}")
+
+                if filter_values['show_missing']:
+                    if check_in_time == 'Missing' or check_out_time == 'Missing':
+                        filtered.append(row)
+                        logging.debug(f"Row with bioNum {row[0]} added due to missing time.")
+                        continue
+
+                if check_in_time != 'Missing' and check_out_time != 'Missing':
+                    try:
+                        check_in_hour = int(check_in_time.split(':')[0])
+                        check_out_hour = int(check_out_time.split(':')[0])
+                    except ValueError as ve:
+                        logging.error(f"Error parsing time: {ve}")
+                        continue
+
+                    if filter_values['check_in_ampm'] == 'AM' and not (0 <= check_in_hour < 12):
+                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
+                        continue
+                    if filter_values['check_in_ampm'] == 'PM' and not (12 <= check_in_hour < 24):
+                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
+                        continue
+                    if filter_values['check_out_ampm'] == 'AM' and not (0 <= check_out_hour < 12):
+                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
+                        continue
+                    if filter_values['check_out_ampm'] == 'PM' and not (12 <= check_out_hour < 24):
+                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
+                        continue
+
+                    filtered.append(row)
+                    logging.debug(f"Row with bioNum {row[0]} added to filtered list.")
+
+            logging.info(f"Filtered data contains {len(filtered)} rows.")
+            self.parent.filtered_data = filtered
+            self.populate_table_with_data(self.parent.filtered_data)
+
+        except Exception as e:
+            logging.error(f"Error in apply_filter: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"An error occurred while applying the filter: {str(e)}")
+
+    def populate_table_with_data(self, data):
+        try:
+            self.parent.TimeListTable.setRowCount(0)
+            logging.info("Populating table with data.")
+
+            for row_data in data:
+                row_position = self.parent.TimeListTable.rowCount()
+                self.parent.TimeListTable.insertRow(row_position)
+
+                for col, value in enumerate(row_data):
+                    item = QTableWidgetItem(str(value))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.parent.TimeListTable.setItem(row_position, col, item)
+
+            logging.info(f"Table populated with {len(data)} rows.")
+        except Exception as e:
+            logging.error(f"Error populating table with data: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
+
+    def filterModal(self):
+        try:
+            if self.exec_() == QDialog.Accepted:
+                filter_values = self.get_filter_values()
+                logging.info(f"Filter values obtained from dialog: {filter_values}")
+                self.apply_filter(filter_values)
+            else:
+                logging.info("Filter dialog was canceled by the user.")
+
+        except Exception as e:
+            logging.error(f"Error in filterModal: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"An error occurred while opening the filter dialog: {str(e)}")
+
+    def closeEvent(self, event):
+        self.selected_check_in = self.cmbCheckIn.currentText()
+        self.selected_check_out = self.cmbCheckOut.currentText()
+        super().closeEvent(event)
