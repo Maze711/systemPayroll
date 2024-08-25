@@ -226,6 +226,7 @@ class populateList:
                     time_data.append(
                         [bioNum, emp_name, trans_date, mach_code, check_in_time[1], check_out_time[1], schedule])
 
+            self.parent.original_data = time_data
             # Populate the table with time_data
             self.populate_table_with_data(time_data)
             # Set original_data
@@ -593,31 +594,6 @@ class searchBioNum:
 
         self.populate_table_with_data(filtered_data)
 
-    def populate_table_with_data(self, data):
-        try:
-            self.parent.TimeListTable.setRowCount(0)  # Clear existing rows
-            logging.info("Populating table with data.")
-
-            if not data or not isinstance(data[0], (list, tuple)):
-                logging.error("Data to populate is not in the expected format.")
-                QMessageBox.critical(self.parent, "Error", "Data to populate is not in the expected format.")
-                return
-
-            for row_data in data:
-                row_position = self.parent.TimeListTable.rowCount()
-                self.parent.TimeListTable.insertRow(row_position)
-
-                for col, value in enumerate(row_data):
-                    item = QTableWidgetItem(str(value))
-                    item.setTextAlignment(Qt.AlignCenter)
-                    self.parent.TimeListTable.setItem(row_position, col, item)
-
-            logging.info(f"Table populated with {len(data)} rows.")
-        except Exception as e:
-            logging.error(f"Error populating table with data: {str(e)}")
-            QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
-
-
 
 class FilterDialog(QDialog):
     def __init__(self, parent=None):
@@ -632,9 +608,6 @@ class FilterDialog(QDialog):
         self.btnClear = self.findChild(QPushButton, 'btnClear')
         self.btnMissing = self.findChild(QPushButton, 'btnMissing')
 
-        if not all([self.cmbCheckIn, self.cmbCheckOut, self.btnOK, self.btnClear, self.btnMissing]):
-            raise ValueError("One or more UI elements not found")
-
         self.btnOK.clicked.connect(self.accept)
         self.btnClear.clicked.connect(self.clear_filter)
         self.btnMissing.clicked.connect(self.show_missing)
@@ -643,8 +616,6 @@ class FilterDialog(QDialog):
             if combo.itemText(0) != "AM/PM":
                 combo.insertItem(0, "AM/PM")
 
-        self.selected_check_in = "AM/PM"
-        self.selected_check_out = "AM/PM"
         self.parent = parent
 
     def clear_filter(self, checked=False):
@@ -652,8 +623,12 @@ class FilterDialog(QDialog):
             if self.parent:
                 logging.info("Clearing filter...")
                 logging.info(f"Original data before clearing: {self.parent.original_data}")
+
+                # Reset to original data
                 self.parent.filtered_data = self.parent.original_data.copy()
-                self.populate_table_with_data(self.parent.filtered_data)
+
+                # Populate the table using the populate_time_list_table method
+                self.parent.populateComboBox.populate_time_list_table(self.parent.filtered_data)
                 logging.info("Filter cleared and table restored to original state.")
         except Exception as e:
             logging.error(f"Error in clear_filter: {str(e)}")
@@ -688,70 +663,41 @@ class FilterDialog(QDialog):
             logging.info(f"Applying filter with values: {filter_values}")
 
             filtered = []
-            logging.info(f"Original data contains {len(self.parent.original_data)} rows.")
-
             for row in self.parent.original_data:
                 check_in_time = row[4]
                 check_out_time = row[5]
 
-                logging.debug(f"Row check-in time: {check_in_time}, check-out time: {check_out_time}")
-
+                # Filter logic for missing entries
                 if filter_values['show_missing']:
                     if check_in_time == 'Missing' or check_out_time == 'Missing':
                         filtered.append(row)
-                        logging.debug(f"Row with bioNum {row[0]} added due to missing time.")
                         continue
 
+                # AM/PM filtering logic
                 if check_in_time != 'Missing' and check_out_time != 'Missing':
-                    try:
-                        check_in_hour = int(check_in_time.split(':')[0])
-                        check_out_hour = int(check_out_time.split(':')[0])
-                    except ValueError as ve:
-                        logging.error(f"Error parsing time: {ve}")
-                        continue
+                    check_in_hour = int(check_in_time.split(':')[0])
+                    check_out_hour = int(check_out_time.split(':')[0])
 
                     if filter_values['check_in_ampm'] == 'AM' and not (0 <= check_in_hour < 12):
-                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
                         continue
                     if filter_values['check_in_ampm'] == 'PM' and not (12 <= check_in_hour < 24):
-                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
                         continue
                     if filter_values['check_out_ampm'] == 'AM' and not (0 <= check_out_hour < 12):
-                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
                         continue
                     if filter_values['check_out_ampm'] == 'PM' and not (12 <= check_out_hour < 24):
-                        logging.debug(f"Row with bioNum {row[0]} excluded based on AM/PM filter.")
                         continue
 
                     filtered.append(row)
-                    logging.debug(f"Row with bioNum {row[0]} added to filtered list.")
 
             logging.info(f"Filtered data contains {len(filtered)} rows.")
             self.parent.filtered_data = filtered
-            self.populate_table_with_data(self.parent.filtered_data)
+
+            # Update the table with filtered data
+            self.parent.populateComboBox.populate_table_with_data(self.parent.filtered_data)
 
         except Exception as e:
             logging.error(f"Error in apply_filter: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while applying the filter: {str(e)}")
-
-    def populate_table_with_data(self, data):
-        try:
-            self.parent.TimeListTable.setRowCount(0)
-            logging.info("Populating table with data.")
-
-            for row_data in data:
-                row_position = self.parent.TimeListTable.rowCount()
-                self.parent.TimeListTable.insertRow(row_position)
-
-                for col, value in enumerate(row_data):
-                    item = QTableWidgetItem(str(value))
-                    item.setTextAlignment(Qt.AlignCenter)
-                    self.parent.TimeListTable.setItem(row_position, col, item)
-
-            logging.info(f"Table populated with {len(data)} rows.")
-        except Exception as e:
-            logging.error(f"Error populating table with data: {str(e)}")
-            QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
 
     def filterModal(self):
         try:
@@ -765,8 +711,3 @@ class FilterDialog(QDialog):
         except Exception as e:
             logging.error(f"Error in filterModal: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while opening the filter dialog: {str(e)}")
-
-    def closeEvent(self, event):
-        self.selected_check_in = self.cmbCheckIn.currentText()
-        self.selected_check_out = self.cmbCheckOut.currentText()
-        super().closeEvent(event)
