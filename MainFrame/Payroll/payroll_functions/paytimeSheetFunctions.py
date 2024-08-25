@@ -10,7 +10,7 @@ from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
-class PaytimeSheetUI:
+class PaytimeSheetFunctions:
     def __init__(self, parent):
         self.parent = parent
 

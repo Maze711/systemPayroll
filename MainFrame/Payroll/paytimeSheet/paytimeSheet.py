@@ -4,9 +4,9 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
-from MainFrame.Payroll.payroll_functions.deductionFunctions import DeductionUI
+from MainFrame.Payroll.payroll_functions.deductionFunctions import DeductionFunctions
 from MainFrame.systemFunctions import globalFunction
-from MainFrame.Payroll.payroll_functions.paytimeSheetFunctions import PaytimeSheetUI
+from MainFrame.Payroll.payroll_functions.paytimeSheetFunctions import PaytimeSheetFunctions
 from MainFrame.systemFunctions import timekeepingFunction
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -33,11 +33,11 @@ class PaytimeSheet(QMainWindow):
         self.searchBioNum = self.txtSearch
 
         if user_role == "Pay Master 1":
-            self.payTimeFunctions = PaytimeSheetUI(self)
+            self.payTimeFunctions = PaytimeSheetFunctions(self)
             self.populatePaytimeSheetTable = self.payTimeFunctions.populatePaytimeSheetTable
             self.setupPayTimeSheetUI()
         elif user_role == "Pay Master 2":
-            self.deductionFunctions = DeductionUI(self)
+            self.deductionFunctions = DeductionFunctions(self)
             self.populatePaytimeSheetTable = self.deductionFunctions.populatePaytimeSheetTable
             self.setupDeductionUI()
 
@@ -61,6 +61,7 @@ class PaytimeSheet(QMainWindow):
         try:
             self.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
             self.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
+            self.paytimesheetTable.cellDoubleClicked.connect(self.deductionFunctions.showDeductionUI)
 
             self.btnEdit.clicked.connect(self.deductionFunctions.showDeductionUI)
 
