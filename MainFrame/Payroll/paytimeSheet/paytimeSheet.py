@@ -26,15 +26,19 @@ class PaytimeSheet(QMainWindow):
         loadUi(ui_file, self)
 
         self.main_window = main_window
+        self.original_data = content  # Store original data
         self.data = content
         self.user_role = user_role
-        self.original_data = content  # Store original data
+
+        self.searchBioNum = self.txtSearch
 
         if user_role == "Pay Master 1":
             self.payTimeFunctions = PaytimeSheetUI(self)
+            self.populatePaytimeSheetTable = self.payTimeFunctions.populatePaytimeSheetTable
             self.setupPayTimeSheetUI()
         elif user_role == "Pay Master 2":
             self.deductionFunctions = DeductionUI(self)
+            self.populatePaytimeSheetTable = self.deductionFunctions.populatePaytimeSheetTable
             self.setupDeductionUI()
 
     def setupPayTimeSheetUI(self):
@@ -44,12 +48,9 @@ class PaytimeSheet(QMainWindow):
 
             self.btnPayTrans.clicked.connect(self.payTimeFunctions.createPayTrans)
 
-            if self.txtSearch is not None:
-                self.txtSearch.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
-            else:
-                logging.error("Error: searchBioNum QLineEdit not found in the UI.")
+            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 
-            self.payTimeFunctions.populatePaytimeSheetTable(self.data)
+            self.populatePaytimeSheetTable(self.original_data)
             logging.info("Table populated with data.")
 
         except Exception as e:
@@ -61,26 +62,12 @@ class PaytimeSheet(QMainWindow):
             self.paytimesheetTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
             self.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
 
-            self.btnEdit = self.findChild(QPushButton, 'btnEdit')
-            self.placeBTN = self.findChild(QPushButton, 'placeBTN')
-            self.btnStore = self.findChild(QPushButton, 'btnStore')
-            self.txtSearch = self.findChild(QLineEdit, 'txtSearch')
+            self.btnEdit.clicked.connect(self.deductionFunctions.showDeductionUI)
 
-            if self.btnEdit:
-                self.btnEdit.clicked.connect(self.deductionFunctions.showDeductionUI)
-            else:
-                logging.error("Error: btnEdit QPushButton not found in the UI.")
+            self.btnStore.clicked.connect(self.deductionFunctions.showStoreDeductionLoader)
 
-            if self.btnStore:
-                self.btnStore.clicked.connect(self.deductionFunctions.showStoreDeductionLoader)
-            else:
-                logging.error("Error: btnStore QPushButton not found in the UI.")
+            self.searchBioNum.textChanged.connect(self.deductionFunctions.filterTable)
 
-            if self.txtSearch:
-                self.txtSearch.textChanged.connect(self.deductionFunctions.filterTable)
-            else:
-                logging.error("Error: txtSearch QLineEdit not found in the UI.")
-
-            self.deductionFunctions.populatePaytimeSheetTable(self.data)
+            self.populatePaytimeSheetTable(self.original_data)
         except Exception as e:
             logging.error(f"Error in setupDeductionUI: {e}")
