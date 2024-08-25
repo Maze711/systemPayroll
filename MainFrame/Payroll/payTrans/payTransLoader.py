@@ -20,17 +20,16 @@ class PayTrans(QMainWindow):
         self.to_date = to_date
 
         self.functions = PayTransFunctions(self)
+        self.populatePayTransTable = self.functions.populatePayTransTable
 
         self.paytransTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.paytransTable.horizontalHeader().setStretchLastSection(True)
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
-        if self.searchBioNum is not None:
-            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
-        else:
-            logging.error("Error: txtSearch QLineEdit not found in the UI.")
 
-        self.functions.populatePayTransTable(self.data)
+        self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+
+        self.populatePayTransTable(self.data)
         self.btnPayTrans.clicked.connect(self.functions.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.functions.openEmailLoader)
         self.btnInsertDeduction.clicked.connect(self.functions.insertDeductionToTable)
