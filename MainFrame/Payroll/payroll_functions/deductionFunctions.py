@@ -8,7 +8,7 @@ from MainFrame.systemFunctions import globalFunction
 from MainFrame.Payroll.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
 from MainFrame.Database_Connection.user_session import UserSession
 
-class DeductionUI:
+class DeductionFunctions:
     def __init__(self, parent):
         self.parent = parent
         self.user_session = UserSession().getALLSessionData()
