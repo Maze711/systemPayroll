@@ -407,15 +407,15 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>1035</width>
-        <height>640</height>
+        <y>-89</y>
+        <width>1031</width>
+        <height>500</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>640</height>
+        <height>500</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -482,8 +482,8 @@ border-radius: 5px;
            <rect>
             <x>20</x>
             <y>140</y>
-            <width>311</width>
-            <height>191</height>
+            <width>450</width>
+            <height>300</height>
            </rect>
           </property>
          </widget>
@@ -511,7 +511,7 @@ border-radius: 5px;
            <rect>
             <x>530</x>
             <y>400</y>
-            <width>331</width>
+            <width>470</width>
             <height>40</height>
            </rect>
           </property>
@@ -856,9 +856,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtSpecialy">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>300</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -866,9 +866,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtEmerLeave">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>50</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -897,9 +897,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtSole">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>250</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -928,9 +928,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtPaternity">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>200</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -980,9 +980,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtMagda">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>100</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -1032,9 +1032,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtMaternity">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>150</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
@@ -1063,9 +1063,9 @@ background-color: &quot;#2d3963&quot;
          <widget class="QLineEdit" name="txtSIL">
           <property name="geometry">
            <rect>
-            <x>700</x>
+            <x>730</x>
             <y>350</y>
-            <width>160</width>
+            <width>270</width>
             <height>27</height>
            </rect>
           </property>
