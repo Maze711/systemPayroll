@@ -28,9 +28,31 @@ class EmailerProcessor(QObject):
             email_password = str(self.user_session['user_email_password'])
 
             # Tentative Email Receiver
-            email_receiver = ['rodelcuyag123@gmail.com', 'badlonmazeclarion@gmail.com', 'jhayemcalleja011@gmail.com']
+            email_receiver = [
+                'badlonmazeclarion@gmail.com', 'berri@temp-inbox.me', 'leghtk@temp-inbox.me',
+                'xrxnkb@temp-inbox.me', 'nqiivl@temp-inbox.me', 'ndliida@temp-inbox.me',
+                'zizbwh@temp-inbox.me', 'nbajd@temp-inbox.me', 'yvycx@temp-inbox.me',
+                'hhxrvjb@temp-inbox.me', 'zkxjsvp@temp-inbox.me', 'yojktw@temp-inbox.me',
+                'qbthp@temp-inbox.me', 'sauylfh@temp-inbox.me', 'uergjx@temp-inbox.me',
+                'zurejm@temp-inbox.me', 'rsipc@temp-inbox.me', 'ueuzo@temp-inbox.me',
+                'ojfivuv@temp-inbox.me', 'bnlxe@temp-inbox.me', 'llpozv@temp-inbox.me',
+                'ezziysc@temp-inbox.me', 'nqhjau@temp-inbox.me', 'elwaslh@temp-inbox.me',
+                'fuxgr@temp-inbox.me', 'oyfyrs@temp-inbox.me', 'tzaijwj@temp-inbox.me',
+                'ckquilw@temp-inbox.me', 'evaivh@temp-inbox.me', 'bwnpyc@temp-inbox.me',
+                'xksucn@temp-inbox.me', 'qwlxxm@temp-inbox.me', 'jaeyry@temp-inbox.me',
+                'azdgw@temp-inbox.me', 'pdeax@temp-inbox.me', 'tzixev@temp-inbox.me',
+                'fdqqpos@temp-inbox.me', 'duqqwe@temp-inbox.me', 'cblye@temp-inbox.me',
+                'qgduswf@temp-inbox.me', 'shandee@temp-inbox.me', 'riuio@temp-inbox.me',
+                'usoshwkw@temp-inbox.me', 'vaoajwnq@temp-inbox.me', 'jsoctsja@temp-inbox.me',
+                'ja0ajalqk@temp-inbox.me', 'kapahwiqjq@temp-inbox.me', 'qpau@temp-inbox.me',
+                'gajaja@temp-inbox.me', 'gajana@temp-inbox.me', 'ua8agqq@temp-inbox.me',
+                'bziahaa@temp-inbox.me', 'baiaha@temp-inbox.me', 'hsisbwjs@temp-inbox.me',
+                'oaowjw@temp-inbox.me', 'hajaha@temp-inbox.me', 'haisha@temp-inbox.me',
+                'bzis@temp-inbox.me', 'bskana@temp-inbox.me', 'hssh@temp-inbox.me',
+                'uu@temp-inbox.me', 'lizabeth@temp-inbox.me'
+            ]
 
-            total_data = len(self.data[0:3])
+            total_data = min(len(self.data), len(email_receiver))
 
             date_sent = date.today()
 
@@ -39,9 +61,10 @@ class EmailerProcessor(QObject):
             with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
                 smtp.login(email_sender, email_password)
 
-                for i, row in enumerate(self.data[0:3]):
+                for i in range(total_data):
+                    per_email = self.data[i]
                     subject = f'Payroll Details - {date_sent}'
-                    body = self.prepare_email_body(row, date_sent)
+                    body = self.prepare_email_body(per_email, date_sent)
 
                     em = EmailMessage()
                     em['From'] = formataddr((f"{sender_name}", f"{email_sender}"))

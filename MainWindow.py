@@ -1,5 +1,5 @@
 from MainFrame.Resources.lib import *
-from main_functions import MainWindowFunctions
+from MainFrame.main_functions import MainWindowFunctions
 
 class MainWindow(MainWindowFunctions):
     def __init__(self):
