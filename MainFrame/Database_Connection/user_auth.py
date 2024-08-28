@@ -20,7 +20,7 @@ class UserAuthorization:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
-            fetch_user_role_in_users_table = "SELECT user_role FROM users WHERE user_name = %s"
+            fetch_user_role_in_users_table = "SELECT user_role FROM users WHERE BINARY user_name = %s"
             cursor.execute(fetch_user_role_in_users_table, (username,))
             result = cursor.fetchone()
 
@@ -184,7 +184,7 @@ class UserAuthentication(UserAuthorization):
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
-            update_user_password_in_users_table = "UPDATE users SET user_password = %s WHERE user_name = %s"
+            update_user_password_in_users_table = "UPDATE users SET user_password = %s WHERE BINARY user_name = %s"
             username = self.getVerifiedUserName()
             hashedPassword = self.getGeneratedHashPassword(new_password)
             values = (hashedPassword, username)
@@ -230,7 +230,7 @@ class UserAuthentication(UserAuthorization):
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
-            fetch_username_in_users_table = "SELECT user_name FROM users WHERE user_name = %s"
+            fetch_username_in_users_table = "SELECT user_name FROM users WHERE BINARY user_name = %s"
             cursor.execute(fetch_username_in_users_table, (username,))
             result = cursor.fetchone()
 
@@ -261,7 +261,7 @@ class UserAuthentication(UserAuthorization):
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
             cursor = connection.cursor()
-            fetch_password_in_users_table = "SELECT user_password FROM users WHERE user_name = %s"
+            fetch_password_in_users_table = "SELECT user_password FROM users WHERE BINARY user_name = %s"
             cursor.execute(fetch_password_in_users_table, (username, ))
             result = cursor.fetchone()
 
@@ -319,7 +319,7 @@ class UserAuthentication(UserAuthorization):
 
             cursor = connection.cursor()
             fetch_user_id_in_users_table = """
-            SELECT user_id, user_name, user_email, user_email_password, user_role FROM users WHERE user_name = %s
+            SELECT user_id, user_name, user_email, user_email_password, user_role FROM users WHERE BINARY user_name = %s
             """
             cursor.execute(fetch_user_id_in_users_table, (user_name,))
             result = cursor.fetchone()
