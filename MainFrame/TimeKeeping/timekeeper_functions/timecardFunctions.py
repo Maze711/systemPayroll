@@ -2,10 +2,6 @@ import sys
 import os
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
@@ -370,13 +366,13 @@ class buttonTimecardFunction:
             QMessageBox.warning(
                 self.parent,
                 "No rows available",
-                "No rows detected, please make sure that there are data available within the table first in order to proceed!"
+                "No rows detected, please make sure that there is data available within the table first in order to proceed!"
             )
             return
 
-        dataMerge = []
+        # Dictionary to store aggregated data for each unique BioNum
+        aggregated_data = {}
 
-        # Fetch date values from ComboBoxes through self.parent
         date_from = self.parent.dateFromCC.currentText()
         date_to = self.parent.dateToCC.currentText()
 
@@ -389,60 +385,28 @@ class buttonTimecardFunction:
             check_in = self.parent.TimeListTable.item(row, 4).text()
             check_out = self.parent.TimeListTable.item(row, 5).text()
 
-            # Calculate hours worked
             try:
                 hoursWorked = self.getTotalHoursWorked(check_in, check_out)
             except AttributeError as e:
                 logging.error(f"Error: {e} - Please make sure getTotalHoursWorked is defined.")
-                hoursWorked = 'Unknown'
+                hoursWorked = 0.0
 
-            workHours = 'N/A'
-            difference = ''
-            regularOT = ''
-            specialOT = ''
+            # Aggregate the data for the current BioNum
+            if bioNum not in aggregated_data:
+                aggregated_data[bioNum] = {
+                    'BioNum': bioNum,
+                    'EmpNumber': bioNum,
+                    'Employee': emp_name,
+                    'Total_Hours_Worked': 0.0,
+                    'Days_Work': 0,
+                    'Days_Present': 0  # You can increment this if needed
+                }
 
-            # Check the type of the date (ensure timekeepingFunction.getTypeOfDate is defined/imported)
-            dateType = timekeepingFunction.getTypeOfDate(trans_date)
-            if dateType == "Ordinary Day" and hoursWorked != 'Unknown':
-                try:
-                    workHours = round(float(workHours), 2)
-                    hoursWorked = round(float(hoursWorked), 2)
-                    difference = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
-                                 f"Hours Worked: {hoursWorked:.2f}, Difference: {difference:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating difference for BioNum: {bioNum}")
-                    difference = 'N/A'
+            # Add the current row's data to the aggregate
+            aggregated_data[bioNum]['Total_Hours_Worked'] += hoursWorked
+            aggregated_data[bioNum]['Days_Work'] += 1
 
-            if dateType == "Regular Holiday" and hoursWorked != 'Unknown':
-                try:
-                    regularOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
-                                 f"Hours Worked: {hoursWorked:.2f}, Regular Holiday Overtime: {regularOT:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating regular holiday for BioNum: {bioNum}")
-                    regularOT = 'N/A'
-
-            if dateType == "Special Holiday" and hoursWorked != 'Unknown':
-                try:
-                    specialOT = round(hoursWorked - workHours, 2)
-                    logging.info(f"BioNum: {bioNum}, Work Hours: {workHours:.2f}, "
-                                 f"Hours Worked: {hoursWorked:.2f}, Special Holiday Overtime: {specialOT:.2f}")
-                except ValueError:
-                    logging.error(f"Error calculating special holiday for BioNum: {bioNum}")
-                    specialOT = 'N/A'
-
-            # Append the data to the dataMerge list
-            dataMerge.append({
-                'BioNum': bioNum,
-                'Employee': emp_name,
-                'Check_In': check_in,
-                'Check_Out': check_out,
-                'Hours_Worked': str(hoursWorked),
-                'Difference': difference,
-                'Regular Holiday Overtime': regularOT,
-                'Special Holiday Overtime': specialOT
-            })
+        dataMerge = list(aggregated_data.values())
 
         for data in dataMerge:
             logging.info(data)
@@ -559,7 +523,6 @@ class buttonTimecardFunction:
         time_difference = time_out_seconds - time_in_seconds
         work_duration_in_hours = time_difference / 3600
         return round(work_duration_in_hours, 2)
-
 
 class searchBioNum:
     def __init__(self, parent):
