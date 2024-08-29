@@ -259,7 +259,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>11</number>
+    <number>17</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -307,12 +307,12 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>ID</string>
+     <string>Emp Number</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Employee</string>
+     <string>Emp Name</string>
     </property>
     <property name="font">
      <font>
@@ -331,17 +331,22 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Check In</string>
+     <string>Cost Center</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Check Out</string>
+     <string>Days Work</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Hours Worked</string>
+     <string>Days Present</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hours Work</string>
     </property>
    </column>
    <column>
@@ -351,22 +356,47 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Holiday</string>
+     <string>Ordinary Day OT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Special Holiday</string>
+     <string>Ordinary Day ND</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Rest Day</string>
+     <string>Ordinary Day ND OT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Night Differential</string>
+     <string>Regular Holiday</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Regular Holiday ND</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Regular Holiday ND OT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Late</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Absent</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Date Posted</string>
     </property>
    </column>
   </widget>

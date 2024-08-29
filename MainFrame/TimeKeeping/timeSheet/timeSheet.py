@@ -42,26 +42,21 @@ class TimeSheet(QDialog):
 
         for i, row in enumerate(data):
             bio_num_item = QTableWidgetItem(row['BioNum'])
+            emp_num_item = QTableWidgetItem(row['EmpNumber'])
             emp_name_item = QTableWidgetItem(row['Employee'])
-            check_in_item = QTableWidgetItem(row['Check_In'])
-            check_out_item = QTableWidgetItem(row['Check_Out'])
-            hours_worked_item = QTableWidgetItem(row['Hours_Worked'])
-            difference_item = QTableWidgetItem(str(row.get('Difference', '')))
-            regular_holiday_overtime = QTableWidgetItem(str(row.get('Regular Holiday Overtime', '')))
-            special_holiday_overtime = QTableWidgetItem(str(row.get('Special Holiday Overtime', '')))
+            days_work_item = QTableWidgetItem(str(row['Days_Work']))
+            days_present_item = QTableWidgetItem(str(row['Days_Present']))
+            total_hours_work = QTableWidgetItem(str(row['Total_Hours_Worked']))
 
-            for item in [bio_num_item, emp_name_item, check_in_item, check_out_item, hours_worked_item,
-                         difference_item, regular_holiday_overtime, special_holiday_overtime]:
+            for item in [bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, total_hours_work]:
                 item.setTextAlignment(Qt.AlignCenter)
 
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
+            self.TimeSheetTable.setItem(i, 1, emp_num_item)  # Bio No.
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee
-            self.TimeSheetTable.setItem(i, 3, check_in_item)  # Check In
-            self.TimeSheetTable.setItem(i, 4, check_out_item)  # Check Out
-            self.TimeSheetTable.setItem(i, 5, hours_worked_item)  # Hours Worked
-            self.TimeSheetTable.setItem(i, 6, difference_item)  # Ordinary Day (Difference)
-            self.TimeSheetTable.setItem(i, 7, regular_holiday_overtime)  # Regular Holiday Overtime
-            self.TimeSheetTable.setItem(i, 8, special_holiday_overtime)  # Special Holiday Overtime
+            self.TimeSheetTable.setItem(i, 4, days_work_item)  # Sum of days of work
+            self.TimeSheetTable.setItem(i, 5, days_present_item)  # Sum of days of work
+            self.TimeSheetTable.setItem(i, 6, total_hours_work)  # Sum of days of work
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')
