@@ -30,6 +30,28 @@ class PayTrans(QMainWindow):
         self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 
         self.populatePayTransTable(self.data)
+        self.btnInsertDeduction.installEventFilter(self)
         self.btnPayTrans.clicked.connect(self.functions.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.functions.openEmailLoader)
-        self.btnInsertDeduction.clicked.connect(self.functions.insertDeductionToTable)
+
+    def eventFilter(self, source, event):
+        if source == self.btnInsertDeduction and not source.isEnabled():
+            return False
+        if source == self.btnInsertDeduction:
+            if event.type() == QEvent.Enter:
+                self.functions.showButtonsContainer()
+            elif event.type() == QEvent.Leave:
+                QTimer.singleShot(200, self.functions.checkAndHideAdditionalButtons)
+        elif self.functions.additional_buttons_container and source in self.functions.additional_buttons_container.children():
+            if event.type() == QEvent.HoverEnter:
+                source.setStyleSheet("background-color: #344273; color: white; font-family: Poppins; font-size: 10pt;"
+                                     "font-weight: bold;")
+            elif event.type() == QEvent.HoverLeave:
+                source.setStyleSheet("background-color: white; font-family: Poppins; font-size: 10pt;"
+                                     "font-weight: bold;")
+            if event.type() == QEvent.Enter:
+                return True
+            elif event.type() == QEvent.Leave:
+                QTimer.singleShot(200, self.functions.checkAndHideAdditionalButtons)
+
+        return super().eventFilter(source, event)
