@@ -13,6 +13,8 @@ class PayTransFunctions:
     def __init__(self, parent):
         self.parent = parent
 
+        self.additional_buttons_container = None
+
     def populatePayTransTable(self, data):
         for row in range(self.parent.paytransTable.rowCount()):
             self.parent.paytransTable.setRowHidden(row, False)
@@ -100,12 +102,14 @@ class PayTransFunctions:
         connection = create_connection('SYSTEM_STORE_DEDUCTION')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            self.hideAdditionalButtons()
             QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database. Please check your "
                                                           "connection or contact the system administrator")
             return
 
         if self.checkIfDeductionTableNotExist():
             print("Deduction table does not exist in SYSTEM_STORE_DEDUCTION database.")
+            self.hideAdditionalButtons()
             QMessageBox.warning(self.parent, "Insert Error", "There are no processed deductions available. "
                                                              "Please contact Pay Master 2")
             return
@@ -126,12 +130,15 @@ class PayTransFunctions:
                 for i in range(0, 14):
                     row.update({f'Pay Ded {i + 1}': result[i]})
 
+            self.hideAdditionalButtons()
+
             QMessageBox.information(self.parent, "Insertion Successful", "Inserting Deduction into the table has been "
                                                                   "successfully added!")
             # repopulate the table with the updated data
             self.populatePayTransTable(self.parent.original_data)
 
         except Error as e:
+            self.hideAdditionalButtons()
             QMessageBox.warning(self.parent, "Insertion Error", f"Error fetching or processing deduction data: {e}")
             print(f"Error fetching or processing deduction data: {e}")
         finally:
@@ -146,3 +153,58 @@ class PayTransFunctions:
         if message == QMessageBox.Yes:
             self.emailerLoader = EmailerLoader(self.parent.original_data, self.parent)
             self.emailerLoader.show()
+
+    def showButtonsContainer(self):
+        # If the container already exists and is visible, do nothing
+        if self.additional_buttons_container and self.additional_buttons_container.isVisible():
+            return
+
+        # If the container exists but is hidden, just show it
+        if self.additional_buttons_container:
+            self.additional_buttons_container.show()
+        else:
+            # Create the container if it doesn't exist
+            button_width = 180
+            button_height = 45
+            frame_width = button_width + 20
+            frame_height = 2 * button_height + 25
+            left_offset = self.parent.sideBar.frameGeometry().left() - 195
+            top_offset = self.parent.widget_2.frameGeometry().top() + 93
+
+            self.additional_buttons_container = QWidget(self.parent.centralwidget)
+            self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
+            self.additional_buttons_container.setStyleSheet(
+                "background-color: #DCE5FE; border: 1px solid gray;")
+
+            additional_button_texts = ["Import from Excel", "Import from Database"]
+            for i, text in enumerate(additional_button_texts):
+                button = QPushButton(text, self.additional_buttons_container)
+                button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
+                button.setStyleSheet("background-color: white; font-family: Poppins; font-size: 10pt;"
+                                     "font-weight: bold;")
+                button.setCursor(Qt.PointingHandCursor)
+                button.installEventFilter(self.parent)
+                button.clicked.connect(self.button_functions(text))
+
+            self.additional_buttons_container.show()
+
+    def button_functions(self, btn_type):
+        functions = {
+            'Import from Excel': self.importFromExcel,
+            'Import from Database': self.insertDeductionToTable
+        }
+        return functions.get(btn_type)
+
+    def checkAndHideAdditionalButtons(self):
+        cursor_pos = QCursor.pos()
+        if not self.parent.btnInsertDeduction.geometry().contains(self.parent.mapFromGlobal(cursor_pos)):
+            if self.additional_buttons_container:
+                if not self.additional_buttons_container.geometry().contains(self.parent.mapFromGlobal(cursor_pos)):
+                    self.hideAdditionalButtons()
+
+    def hideAdditionalButtons(self):
+        if self.additional_buttons_container:
+            self.additional_buttons_container.hide()
+
+    def importFromExcel(self):
+        pass
