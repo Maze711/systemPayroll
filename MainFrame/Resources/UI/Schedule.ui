@@ -246,7 +246,7 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
        <string/>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -407,8 +407,8 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-89</y>
-        <width>1031</width>
+        <y>0</y>
+        <width>1035</width>
         <height>500</height>
        </rect>
       </property>
