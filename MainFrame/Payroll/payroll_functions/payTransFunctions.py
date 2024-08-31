@@ -34,7 +34,7 @@ class PayTransFunctions:
             # Adding deduction items to the table
             pay_ded_items = []
             for j in range(1, 15):
-                deduction = row.get(f'Pay Ded {j}', '')
+                deduction = row.get(f'Pay Ded {j}', 0)
                 pay_ded_items.append(QTableWidgetItem(str(deduction)))
 
             # Center all the items
@@ -114,6 +114,13 @@ class PayTransFunctions:
                                                              "Please contact Pay Master 2")
             return
 
+        message = QMessageBox.question(self.parent, "Importing Deduction",
+                                       "Are you sure you want to insert/import deductions in the table?",
+                                       QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
+        if message != QMessageBox.Yes:
+            self.hideAdditionalButtons()
+            return
+
         cursor = connection.cursor()
 
         try:
@@ -132,8 +139,8 @@ class PayTransFunctions:
 
             self.hideAdditionalButtons()
 
-            QMessageBox.information(self.parent, "Insertion Successful", "Inserting Deduction into the table has been "
-                                                                  "successfully added!")
+            QMessageBox.information(self.parent, "Insertion Successful", "Deduction has been inserted in the "
+                                                                         "table successfully!")
             # repopulate the table with the updated data
             self.populatePayTransTable(self.parent.original_data)
 
@@ -207,4 +214,142 @@ class PayTransFunctions:
             self.additional_buttons_container.hide()
 
     def importFromExcel(self):
-        pass
+        file_name, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "",
+                                                   "Excel Files (*.xls *.xlsx)")
+        if not file_name:
+            self.hideAdditionalButtons()
+            QMessageBox.information(self.parent, "No File Selected", "Please select an Excel file to import.")
+            return
+
+        self.hideAdditionalButtons()
+        self.ImportFromExcelLoader = ImportFromExcelLoader(file_name, self.parent.original_data, self.parent)
+        self.ImportFromExcelLoader.show()
+
+class ImportFromExcelLoader(QDialog):
+    def __init__(self, file, data, payTrans_window):
+        super(ImportFromExcelLoader, self).__init__()
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        loadUi(ui_file, self)
+        self.setFixedSize(400, 124)
+
+        self.data = data
+        self.file = file
+        self.payTrans_window = payTrans_window
+
+        self.functions = PayTransFunctions(self.payTrans_window)
+
+
+        # Get UI elements
+        self.progressBar = self.findChild(QProgressBar, 'progressBar')
+
+        self.progressBar.setVisible(True)
+        self.progressBar.setValue(0)
+
+        self.thread = QThread()
+        self.worker = FileProcessor(self.file, self.data)
+        self.worker.moveToThread(self.thread)
+        self.worker.progressChanged.connect(self.updateProgressBar)
+        self.worker.finished.connect(self.insertingExcelDeductionFinished)
+        self.worker.error.connect(self.insertingExcelDeductionError)
+        self.thread.started.connect(self.worker.process)
+        self.thread.start()
+
+        self.move_to_bottom_right()
+
+    def updateProgressBar(self, value):
+        self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.setFormat("Finishing Up..")
+        QApplication.processEvents()
+
+    def insertingExcelDeductionFinished(self, data):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        self.functions.populatePayTransTable(data)
+        QMessageBox.information(self.payTrans_window, "Insertion Successful", "Deduction has been inserted in "
+                                                                              "the table successfully!")
+        self.close()
+
+    def insertingExcelDeductionError(self, error):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        QMessageBox.critical(self.payTrans_window, "Insertion Error", error)
+        self.close()
+
+    def move_to_bottom_right(self):
+        """Position the dialog at the bottom right of the screen."""
+        screen = QApplication.primaryScreen()
+        screen_rect = screen.availableGeometry()
+        dialog_rect = self.rect()
+
+        x = screen_rect.width() - dialog_rect.width()
+        y = screen_rect.height() - dialog_rect.height() - 40
+
+        self.move(x, y)
+
+class FileProcessor(QObject):
+    progressChanged = pyqtSignal(int)
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+
+    def __init__(self, file_name, data):
+        super().__init__()
+        self.file_name = file_name
+        self.data = data
+
+    def process(self):
+        try:
+            # Determine the appropriate engine based on the file extension
+            if self.file_name.endswith('.xlsx'):
+                df = pd.read_excel(self.file_name, sheet_name=None, engine='openpyxl')
+            elif self.file_name.endswith('.xls'):
+                df = pd.read_excel(self.file_name, sheet_name=None, engine='xlrd')
+            else:
+                self.error.emit("Unsupported file format")
+                raise ValueError("Unsupported file format")
+
+            sheet = df[list(df.keys())[0]]  # Get the first sheet
+
+            # Fetch the headers from the DataFrame
+            headers = sheet.columns.tolist()
+
+            required_columns = ['ID', 'empNum', 'bioNum', 'empName'] + [f'payDed{i}' for i in range(1, 15)]
+
+            missing_columns = [col for col in required_columns if
+                               col not in headers[:18]]  # excludes the deduction placed by and date
+
+            if missing_columns:
+                self.error.emit(f"Missing required columns: {', '.join(missing_columns)}")
+                return
+
+            # Convert empNum column to string type
+            sheet['empNum'] = sheet['empNum'].astype(str)
+
+            total_rows = sheet.shape[0] - 1 # excluding the header
+
+            print(total_rows)
+
+            # Iterate over the original_data and update payDed keys based on empNum
+            for i, row in enumerate(self.data):
+                emp_no = str(row['EmpNo'])
+
+                # Check if this EmpNo is in the imported sheet
+                matching_rows = sheet[sheet['empNum'] == emp_no]
+
+                if not matching_rows.empty:
+                    # Update the Pay Ded keys for this EmpNo
+                    for j in range(1, 15):
+                        row[f'Pay Ded {j}'] = int(matching_rows.iloc[0][f'payDed{j}'])
+
+                # Navigates the current progress
+                progress = int(((i + 1) / total_rows) * 100)
+                self.progressChanged.emit(progress)
+                QThread.msleep(1)  # Simulate work being done
+
+            self.finished.emit(self.data)
+        except Exception as e:
+            self.error.emit(f"Failed to process .xlsx file: {e}")
