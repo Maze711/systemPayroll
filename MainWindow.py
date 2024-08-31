@@ -1,3 +1,6 @@
+import asyncio
+import websockets
+from MainFrame.Database_Connection.notification_listener import NotificationListener
 from MainFrame.Resources.lib import *
 from MainFrame.main_functions import MainWindowFunctions
 
@@ -23,6 +26,19 @@ class MainWindow(MainWindowFunctions):
         self.load_fonts()
 
         self.log_memory_usage("After initialization")
+
+        # Start the notification listener
+        self.notification_listener = NotificationListener()
+        self.start_notification_listener()
+
+    def start_notification_listener(self):
+        """Start the notification listener."""
+        loop = asyncio.get_event_loop()
+        loop.run_in_executor(None, self.run_notification_listener)
+
+    def run_notification_listener(self):
+        """Run the notification listener in a separate thread."""
+        asyncio.run(self.notification_listener.start())
 
         def keyPressEvent(self, event):
             MainWindowFunctions.keyPressEvent(self, event)
