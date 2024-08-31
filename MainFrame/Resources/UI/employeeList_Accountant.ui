@@ -17,7 +17,54 @@
    <string notr="true">#employeeRate, #scrollAreaWidgetContents, #employeeDetails{
 background-color: #DCE5FE;
 border: 1px solid black;
-}</string>
+}
+
+QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
+    min-height: 48px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+</string>
   </property>
   <widget class="QWidget" name="employeeDetails" native="true">
    <property name="geometry">
@@ -56,7 +103,7 @@ border: 1px solid black;
        </font>
       </property>
       <property name="text">
-       <string>TEST</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -101,7 +148,7 @@ border: 1px solid black;
        </font>
       </property>
       <property name="text">
-       <string>TEST</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -131,7 +178,7 @@ border: 1px solid black;
        </font>
       </property>
       <property name="text">
-       <string>TEST</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -175,14 +222,14 @@ border: 1px solid black;
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>363</width>
-      <height>300</height>
+      <width>368</width>
+      <height>650</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>0</width>
-      <height>300</height>
+      <height>650</height>
      </size>
     </property>
     <property name="styleSheet">
@@ -191,6 +238,12 @@ border: 1px solid black;
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QWidget" name="widget_2" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">QComboBox{
 border: 1px solid black;
@@ -514,6 +567,353 @@ border-radius: 5px;
         </property>
         <property name="text">
          <string>Time OUT:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="tinLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>292</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>TIN</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sssLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>90</y>
+          <width>300</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>SSS</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="philHealthLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>220</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>PhilHealth</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="sssTextEdit">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>110</y>
+          <width>303</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="pagibigTextEdit">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>180</y>
+          <width>303</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="tinTextEdit">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>320</y>
+          <width>303</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="pagibigLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>158</y>
+          <width>300</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>PAGIBIG</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="philHealthTextEdit">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>250</y>
+          <width>303</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="colaLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>572</y>
+          <width>297</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Cola</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtTaxstat">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>390</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="accountLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>438</y>
+          <width>297</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Account no.</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtCola">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>600</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtAccount">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>460</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="taxstatLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>370</y>
+          <width>297</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Taxstat</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtBank">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>530</y>
+          <width>300</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bankLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>500</y>
+          <width>297</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Bank code</string>
         </property>
        </widget>
       </widget>
@@ -890,6 +1290,11 @@ background-color: &quot;#2d3963&quot;
     </size>
    </property>
   </widget>
+  <zorder>employeeDetails</zorder>
+  <zorder>sideBar</zorder>
+  <zorder>employeeRate</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>scrollArea</zorder>
  </widget>
  <tabstops>
   <tabstop>scrollArea</tabstop>

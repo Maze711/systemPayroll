@@ -846,7 +846,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1637</y>
+      <y>-698</y>
       <width>1218</width>
       <height>2318</height>
      </rect>
@@ -1184,7 +1184,7 @@ border: 1px solid black;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1509</y>
+          <y>1379</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -2773,7 +2773,7 @@ color: white;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1530</y>
+          <y>1400</y>
           <width>770</width>
           <height>340</height>
          </rect>
@@ -3401,7 +3401,7 @@ border: 1px solid black;</string>
           <x>10</x>
           <y>1170</y>
           <width>771</width>
-          <height>321</height>
+          <height>195</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -3439,8 +3439,8 @@ background-color: #DCE5FE
            <widget class="QFrame" name="workExpFrame">
             <property name="minimumSize">
              <size>
-              <width>500</width>
-              <height>570</height>
+              <width>0</width>
+              <height>0</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -3461,384 +3461,6 @@ background-color: rgb(255, 255, 255);
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <widget class="QFrame" name="groupExp1_3">
-             <property name="geometry">
-              <rect>
-               <x>7</x>
-               <y>363</y>
-               <width>741</width>
-               <height>171</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-background-color: rgba(231, 226, 226, 0.66);
-border: 1px solid black;
-}
-
-QLabel{
-border: none;
-}
-</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_3">
-              <item row="0" column="0">
-               <widget class="QLabel" name="dateLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="fromLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>From</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QDateEdit" name="dateStart_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-                </property>
-                <property name="displayFormat">
-                 <string>yyyy-MM-dd</string>
-                </property>
-                <property name="calendarPopup">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLabel" name="toLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>To</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="QDateEdit" name="dateEnd_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-                </property>
-                <property name="displayFormat">
-                 <string>yyyy-MM-dd</string>
-                </property>
-                <property name="calendarPopup">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="companyLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Company</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="addressLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Address</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="positionLabel_5">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Position</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2" colspan="3">
-               <widget class="QLineEdit" name="companyTextEdit_5">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2" colspan="3">
-               <widget class="QLineEdit" name="addressTextEdit_5">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2" colspan="3">
-               <widget class="QLineEdit" name="positionTextEdit_5">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QFrame" name="groupExp1_2">
-             <property name="geometry">
-              <rect>
-               <x>7</x>
-               <y>183</y>
-               <width>741</width>
-               <height>171</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-background-color: rgba(231, 226, 226, 0.66);
-border: 1px solid black;
-}
-
-QLabel{
-border: none;
-}
-</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_2">
-              <item row="0" column="1">
-               <widget class="QLabel" name="fromLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>From</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2" colspan="3">
-               <widget class="QLineEdit" name="companyTextEdit_6">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="dateLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="positionLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Position</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="addressLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Address</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2" colspan="3">
-               <widget class="QLineEdit" name="addressTextEdit_6">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QDateEdit" name="dateStart_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-                </property>
-                <property name="displayFormat">
-                 <string>yyyy-MM-dd</string>
-                </property>
-                <property name="calendarPopup">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLabel" name="toLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>To</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="companyLabel_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Company</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="QDateEdit" name="dateEnd_6">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-                </property>
-                <property name="displayFormat">
-                 <string>yyyy-MM-dd</string>
-                </property>
-                <property name="calendarPopup">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2" colspan="3">
-               <widget class="QLineEdit" name="positionTextEdit_6">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
             <widget class="QFrame" name="groupExp1">
              <property name="geometry">
               <rect>
@@ -4838,11 +4460,6 @@ font-family: Poppins;
   <tabstop>companyTextEdit_4</tabstop>
   <tabstop>addressTextEdit_4</tabstop>
   <tabstop>positionTextEdit_4</tabstop>
-  <tabstop>dateStart_6</tabstop>
-  <tabstop>dateEnd_6</tabstop>
-  <tabstop>companyTextEdit_6</tabstop>
-  <tabstop>addressTextEdit_6</tabstop>
-  <tabstop>positionTextEdit_6</tabstop>
   <tabstop>validationDate1</tabstop>
   <tabstop>validationDate1_2</tabstop>
   <tabstop>editBTN</tabstop>
@@ -4874,11 +4491,6 @@ font-family: Poppins;
   <tabstop>addressTextEdit3</tabstop>
   <tabstop>courseTextEdit</tabstop>
   <tabstop>courseTextEdit2</tabstop>
-  <tabstop>dateStart_5</tabstop>
-  <tabstop>dateEnd_5</tabstop>
-  <tabstop>companyTextEdit_5</tabstop>
-  <tabstop>addressTextEdit_5</tabstop>
-  <tabstop>positionTextEdit_5</tabstop>
   <tabstop>txtDept</tabstop>
   <tabstop>txtPos</tabstop>
   <tabstop>txtRate</tabstop>
