@@ -28,10 +28,6 @@ def set_fields_non_editable(modal):
 
 class modalFunction:
     def __init__(self, main_window):
-        self.txtMiddleName = None
-        self.txtFirstName = None
-        self.txtLastName = None
-        self.txtEmployeeID = None
         self.main_window = main_window
 
     def add_Employee(self):
@@ -133,8 +129,8 @@ class modalFunction:
                 # PosNSched text inputs
                 ('Description', self.main_window.txtPos.text()),
                 ('Department Name', self.main_window.txtDept.text()),
-                ('Sched In', self.main_window.cmbSchedIn.Text()),
-                ('Sched Out', self.main_window.cmbSchedOut.Text()),
+                ('Sched In', self.main_window.cmbSchedIn.text()),
+                ('Sched Out', self.main_window.cmbSchedOut.text()),
 
                 # Employee Rate text inputs
                 ('RPH', self.main_window.txtRPH.text()),
@@ -163,7 +159,8 @@ class modalFunction:
                                    'HR Notes', "Dependent's Name", 'Technical Skills #1', 'Certificate #1',
                                    'Validation Date #1', 'Technical Skills #2', 'Certificate #2', 'Validation Date #2',
                                    'Technical Skills #3', 'Certificate #3', 'Validation Date #3', 'Elementary',
-                                   'Elementary Address', 'Elementary Graduate Year', 'High-School', 'High-School Address',
+                                   'Elementary Address', 'Elementary Graduate Year', 'High-School',
+                                   'High-School Address',
                                    'High-School Strand', 'High-School Graduate Year', 'College', 'College Address',
                                    'College Course', 'College Graduate Year']
 
@@ -184,8 +181,8 @@ class modalFunction:
                 self.main_window.close()  # Closes the modal
             else:
                 QMessageBox.critical(self.main_window, "Adding Employee Error", f"{message} "
-                                                                f"Please check your network connection or contact the "
-                                                                f"system administrator.")
+                                                                                f"Please check your network connection or contact the "
+                                                                                f"system administrator.")
         except Exception as e:
             QMessageBox.critical(self.main_window, "Adding Employee Error", f"An error occurred: {e}")
 

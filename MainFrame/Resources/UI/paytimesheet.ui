@@ -496,6 +496,43 @@ background-color: &quot;#30d977&quot;;
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="btnNotification">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Notification</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/notification-bell.svg</normaloff>../Icons/notification-bell.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
     <widget class="QFrame" name="searchBar">

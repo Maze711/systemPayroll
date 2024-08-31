@@ -47,6 +47,7 @@ class PaytimeSheet(QMainWindow):
             self.paytimesheetTable.horizontalHeader().setStretchLastSection(True)
 
             self.btnPayTrans.clicked.connect(self.payTimeFunctions.createPayTrans)
+            self.btnNotification.clicked.connect(self.payTimeFunctions.showNewListEmployee)
 
             self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 

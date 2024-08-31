@@ -1,11 +1,11 @@
 import sys
 import os
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
 from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
+from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
@@ -151,3 +151,7 @@ class PaytimeSheetFunctions:
         except Exception as e:
             logging.error(f"Failed to create PayTrans window: {e}")
             print(f"Failed to create PayTrans window: {e}")
+
+    def showNewListEmployee(self):
+        payAddEmployee_dialog = payAddEmployee()
+        payAddEmployee_dialog.exec_()
