@@ -17,6 +17,7 @@ class FileProcessor(QObject):
     def __init__(self, fileName):
         super().__init__()
         self.fileName = fileName
+        # When using a book1 excel file the daypresent should be dayspresent
         self.required_columns = [
             'bionum', 'empnumber', 'empname', 'costcenter', 'fromdate', 'todate', 'daypresent', 'restday',
             'holiday', 'rsthlyday', 'orddaynite', 'rstdaynite', 'hlydaynite', 'rsthlydayn', 'orddayot',
