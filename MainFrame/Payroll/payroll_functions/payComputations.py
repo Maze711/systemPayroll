@@ -42,23 +42,46 @@ class PayComputation:
             item['OT_Earn'] = round(overtime_value, 2)
             logging.info(f"Calculated overtime for EmpNo {item['EmpNo']}: {item['OT_Earn']}")
 
-    def lateUndertimeComputation(self):
-        late_and_undertime_rate = 59.875  # Define the late and undertime rate
+    def lateComputation(self):
+        late_rate = 59.875  # Define the late
+        scaling_factor = 10  # Define the scaling factor to adjust 'Late' values
+
         for item in self.data:
-            days = item.get('Days')
-            hours = item.get('Hours')
+            hours = item.get('Late')
+
+            logging.info(f"Raw data for EmpNo {item['EmpNo']}: Late={hours}")
 
             try:
-                days_float = float(days)
                 hours_float = float(hours)
-            except ValueError:
-                days_float = 0
+            except ValueError as e:
+                logging.error(f"Error converting Late value for EmpNo {item['EmpNo']}: {e}")
                 hours_float = 0
 
-            if hours_float > 0:
-                late_undertime_value = (days_float / hours_float) * late_and_undertime_rate
-            else:
-                late_undertime_value = 0
+            # Adjust the hours value using the scaling factor
+            scaled_hours = hours_float * scaling_factor
+            late_undertime_value = scaled_hours * late_rate
 
             item['LateUndertime'] = round(late_undertime_value, 2)
-            logging.info(f"Calculated late and undertime for EmpNo {item['EmpNo']}: {item['LateUndertime']}")
+            logging.info(f"Calculated late value for EmpNo {item['EmpNo']}: {item['LateUndertime']}")
+
+    def undertimeComputation(self):
+        undertime_rate = 59.875  # Define the undertime rate
+        scaling_factor = 10  # Define the scaling factor to adjust 'Late' values
+
+        for item in self.data:
+            hours = item.get('Undertime')
+
+            logging.info(f"Raw data for EmpNo {item['EmpNo']}: Undertime={hours}")
+
+            try:
+                hours_float = float(hours)
+            except ValueError as e:
+                logging.error(f"Error converting Undertime value for EmpNo {item['EmpNo']}: {e}")
+                hours_float = 0
+
+            # Adjust the hours value using the scaling factor
+            scaled_hours = hours_float * scaling_factor
+            Undertime_value = scaled_hours * undertime_rate
+
+            item['undertime'] = round(Undertime_value, 2)
+            logging.info(f"Calculated late value for EmpNo {item['EmpNo']}: {item['undertime']}")

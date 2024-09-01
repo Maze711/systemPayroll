@@ -25,8 +25,10 @@ class PaytimeSheetFunctions:
             'Bio Num': 'empnumber',
             'Employee Name': 'empname',
             'CostCenter': 'costcenter',
-            'DaysWork': 'actual days',
-            'DaysPresent': 'dayspresent',
+            #'DaysWork': 'actual days',
+            'DaysWork': 'dayswork',
+            #'DaysPresent': 'dayspresent',
+            'DaysPresent': 'daypresent',
             'RestDay': 'restday',
             'Holiday': 'holiday',
             'RestHoliday': 'rsthlyday',
@@ -114,9 +116,11 @@ class PaytimeSheetFunctions:
             emp_name_item = self.parent.paytimesheetTable.item(row, 2)
             present_days_item = self.parent.paytimesheetTable.item(row, 5)
             ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 13)
+            late_item = self.parent.paytimesheetTable.item(row, 17)
+            undertime_item = self.parent.paytimesheetTable.item(row, 18)
 
             if bio_num_item and bio_num_item.text():
-                bio_num = bio_num_item.text()[2:]
+                bio_num = bio_num_item.text()[3:]
             else:
                 bio_num = ""
 
@@ -125,7 +129,9 @@ class PaytimeSheetFunctions:
                 'BioNum': bio_num,
                 'EmpName': emp_name_item.text(),
                 'Present Days': present_days_item.text(),
-                'OrdinaryDayOT': ordinary_day_ot_item.text()
+                'OrdinaryDayOT': ordinary_day_ot_item.text(),
+                'Late': late_item.text(),
+                'Undertime': undertime_item.text()
             })
 
         bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\file201.xls')
@@ -138,6 +144,8 @@ class PaytimeSheetFunctions:
         pay_computation = PayComputation(selected_data)
         pay_computation.basicComputation()
         pay_computation.overtimeComputation()
+        pay_computation.lateComputation()
+        pay_computation.undertimeComputation()
 
         match_count = sum(1 for item in selected_data if item['BioNum'] in bio_num_to_rate)
         logging.info(f"Total matches of bio_num with processed empl_id: {match_count}")
