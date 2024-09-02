@@ -295,11 +295,13 @@ class UserAuthentication(UserAuthorization):
         if isLoggedIn is False:
             instance.btnLogOut.setVisible(False)
             instance.btnReportBug.setVisible(False)
+            instance.btnNotification.setVisible(False)
             instance.disableAllNavButtons()
             instance.mainBody.setVisible(True)
         else:
             instance.btnLogOut.setVisible(True)
             instance.btnReportBug.setVisible(True)
+            instance.btnNotification.setVisible(True)
             instance.mainBody.setVisible(False)
 
     def getGeneratedHashPassword(self, password):
