@@ -9,7 +9,7 @@ HR Side Application:
 
 Timekeeper Side Application:
 
- - Search field doesn't working properly (IT MAKES THE APPLICATION CRUSHED)
+ - Search field doesn't working properly (IT MAKES THE APPLICATION CRUSHED) *DONE*
  - Filter button should open when there's a data in table 
  - Drop down for every row (Time in and Time out column)
  - Loader when fetching the value from selecting YEAR, DAY FROM AND TO
