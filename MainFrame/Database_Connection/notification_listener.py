@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, request, jsonify
 import mysql.connector
 import requests
@@ -8,7 +9,7 @@ class NotificationService:
     def __init__(self):
         self.app = Flask(__name__)
         self.mysql_config = {
-            'host': 'localhost',
+            'host': 'localhost', # JUST CHANGE THE IP ADDRESS
             'database': 'SYSTEM_NOTIFICATION',
             'user': 'root',
             'password': '',
@@ -17,6 +18,7 @@ class NotificationService:
         self.last_checked = 0
 
         self.app.add_url_rule('/notifications', 'get_notifications', self.get_notifications, methods=['GET'])
+        self.app.add_url_rule('/notification_count', 'get_notification_count', self.get_notification_count, methods=['GET'])
 
     def create_mysql_connection(self):
         try:
@@ -50,6 +52,23 @@ class NotificationService:
 
         return jsonify(notifications)
 
+    def get_notification_count(self):
+        connection = self.create_mysql_connection()
+        if connection is None:
+            return jsonify({'count': 0})
+
+        cursor = connection.cursor()
+        query = "SELECT COUNT(*) FROM employee_notifications WHERE id > %s"
+        cursor.execute(query, (self.last_checked,))
+        count = cursor.fetchone()[0]
+        cursor.close()
+        connection.close()
+
+        logging.info(f"Last Checked ID: {self.last_checked}")
+        logging.info(f"Notification Count: {count}")
+
+        return jsonify({'count': count})
+
     def start_server(self):
         self.app.run(port=5000)
 
@@ -79,7 +98,5 @@ class NotificationService:
 
         self.poll_notifications()
 
-# Still using this if statement to run it to console since it's still not integrated in the application itself.
-if __name__ == "__main__":
-    service = NotificationService()
-    service.run()
+    def get_last_checked(self):
+        return self.last_checked
