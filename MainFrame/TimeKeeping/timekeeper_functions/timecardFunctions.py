@@ -529,6 +529,10 @@ class searchBioNum:
         self.parent = parent
 
     def search_bioNum(self):
+        # Instance creation to use populateList Functions
+        self.populateList = populateList(self.parent)
+        self.populate_table_with_data = self.populateList.populate_table_with_data
+
         search_text = self.parent.searchBioNum.text().strip().lower()
         logging.info(f"Search text: '{search_text}'")
 
