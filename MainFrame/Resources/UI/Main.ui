@@ -50,7 +50,7 @@ background-color: white;
     background-color: &quot;#485994&quot;;
 }
 
-#btnReportBug {
+#btnReportBug, #btnNotification {
 	background-color: white;
 	border: none;
 }
@@ -115,6 +115,41 @@ background-color: &quot;#DCE5FE&quot;;
      <property name="icon">
       <iconset>
        <normaloff>../Icons/alert-triangle.svg</normaloff>../Icons/alert-triangle.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>25</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnNotification">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>0</y>
+       <width>41</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Report a Bug</string>
+     </property>
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../Icons/notification-bell.svg</normaloff>../Icons/notification-bell.svg</iconset>
      </property>
      <property name="iconSize">
       <size>

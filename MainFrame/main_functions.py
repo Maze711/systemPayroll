@@ -40,15 +40,18 @@ class MainWindowFunctions(QMainWindow):
         self.isLoggedIn = False
         self.authentication = UserAuthentication()
         self.user_session = UserSession()
+        self.session_at_main = UserSession().getALLSessionData()
         self.employee_list_window = None
         self.datechange = None
         self.timekeeping_window = None
         self.payroll_window = None
         self.bugReportModal = None
+        self.btnNotification = None
         self.additional_buttons_container = None
 
         self.btnLogOut = self.findChild(QPushButton, "btnLogOut")
         self.btnReportBug = self.findChild(QPushButton, "btnReportBug")
+        self.btnNotification = self.findChild(QPushButton, "btnNotification")
         self.btnLogin = self.findChild(QPushButton, "btnLogin")
 
     def setup_connections(self):
@@ -100,6 +103,7 @@ class MainWindowFunctions(QMainWindow):
         self.switchPageAndResetInputs(self.loginPage)
         QMessageBox.information(self, "Log out", "You have been logged out.")
         self.btnLogin.setEnabled(True)
+
 
     def showPassword(self, state, page):
         passwordFields = {
@@ -253,6 +257,8 @@ class MainWindowFunctions(QMainWindow):
             self.payroll_window.activateWindow()
         else:
             self.payroll_window.show()
+            self.print_user_name()
+
 
     def openBugReportModal(self):
         if self.bugReportModal is None:
@@ -268,3 +274,13 @@ class MainWindowFunctions(QMainWindow):
 
     def load_fonts(self):
         load_fonts()
+
+    def print_user_name(self):
+        try:
+            user_name = str(self.session_at_main["user_name"])
+            print(f"User Name: {user_name}")
+        except AttributeError:
+            print("UserSession does not have the 'user_name' attribute.")
+        except KeyError:
+            print("The key 'user_name' does not exist in the user session dictionary.")
+
