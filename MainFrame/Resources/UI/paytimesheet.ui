@@ -459,11 +459,11 @@ background-color: &quot;#30d977&quot;;
        <x>10</x>
        <y>200</y>
        <width>241</width>
-       <height>311</height>
+       <height>301</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
        <widget class="QPushButton" name="btnPayTrans">
         <property name="maximumSize">
          <size>
@@ -496,7 +496,7 @@ background-color: &quot;#30d977&quot;;
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="0">
        <widget class="QPushButton" name="btnPayTrans_2">
         <property name="maximumSize">
          <size>
@@ -521,10 +521,6 @@ background-color: &quot;#30d977&quot;;
         <property name="text">
          <string>Import</string>
         </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../Icons/import.svg</normaloff>../Icons/import.svg</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>22</width>
@@ -533,7 +529,7 @@ background-color: &quot;#30d977&quot;;
         </property>
        </widget>
       </item>
-      <item>
+      <item row="2" column="0">
        <widget class="QPushButton" name="btnNotification">
         <property name="maximumSize">
          <size>
@@ -653,6 +649,37 @@ background-color: white;
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+    </widget>
+    <widget class="QPushButton" name="btnNotification_2">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>400</y>
+       <width>40</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Report a Bug</string>
+     </property>
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>25</width>
+       <height>24</height>
+      </size>
+     </property>
     </widget>
    </widget>
   </widget>
