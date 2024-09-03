@@ -20,7 +20,7 @@ def import_dat_file(dialog):
         return
 
 def check_if_table_exists(dialog):
-    connection = create_connection('LIST_LOG_IMPORT')
+    connection = create_connection('NTP_LOG_IMPORTS')
     if connection is None:
         QMessageBox.critical(dialog, "Database Error", "Failed to connect to the LIST_LOG_IMPORT database.")
         return False

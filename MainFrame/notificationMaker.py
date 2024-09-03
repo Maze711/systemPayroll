@@ -111,7 +111,7 @@ class FileProcessor(QObject):
 
     def importChunkToDatabase(self, chunk_file, chunk_name):
         """Imports the chunk data into the database."""
-        connection = create_connection('LIST_LOG_IMPORT')
+        connection = create_connection('NTP_LOG_IMPORTS')
         if connection is None:
             self.error.emit("Failed to connect to LIST_LOG_IMPORT database.")
             return

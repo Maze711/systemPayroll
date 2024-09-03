@@ -31,7 +31,7 @@ class chkSched(QDialog):
 
     def getHolidayName(self, trans_date):
         try:
-            connection = create_connection('TIMEKEEPING')
+            connection = create_connection('NTP_HOLIDAY_LIST')
             if connection is None:
                 logging.error("Error: Could not establish database connection.")
                 return None

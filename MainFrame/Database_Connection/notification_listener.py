@@ -10,7 +10,7 @@ class NotificationService:
         self.app = Flask(__name__)
         self.mysql_config = {
             'host': 'localhost', # JUST CHANGE THE IP ADDRESS
-            'database': 'SYSTEM_NOTIFICATION',
+            'database': 'NTP_ACCOUNTANT_NOTIFICATION',
             'user': 'root',
             'password': '',
             'port': 3306

@@ -22,7 +22,7 @@ class StoringDeductionProcessor(QObject):
 
     def processStoringDeduction(self):
         """  Main processing method that handles the entire workflow. """
-        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        connection = create_connection('NTP_STORED_DEDUCTIONS')
         if connection is None:
             logging.error("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
             self.error.emit("Failed to connect to SYSTEM_STORE_DEDUCTION database.")

@@ -67,7 +67,7 @@ def get_empl_ids_from_db():
     Fetch `empl_id` values from the database tables and return as a set of integers.
     """
     try:
-        with create_connection('FILE201') as connection:
+        with create_connection('NTP_EMP_LIST') as connection:
             if connection is None:
                 logging.error("Failed to connect to the FILE201 database.")
                 return set()
@@ -155,7 +155,7 @@ def update_db_for_missing_row_columns(parent):
         workbook = xlrd.open_workbook(file_name, encoding_override="cp1252")
         sheet = workbook.sheet_by_index(0)
 
-        with create_connection('FILE201') as connection:
+        with create_connection('NTP_EMP_LIST') as connection:
             if connection is None:
                 logging.error("Failed to connect to the FILE201 database.")
                 return
@@ -367,7 +367,7 @@ class ImportProcessor(QObject):
                 self.error.emit(error_message)
                 return
 
-            with create_connection('FILE201') as connection:
+            with create_connection('NTP_EMP_LIST') as connection:
                 if connection is None:
                     logging.error("Failed to connect to the FILE201 database.")
                     return

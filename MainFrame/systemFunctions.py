@@ -98,7 +98,7 @@ class timekeepingFunction():
     def getTypeOfDate(trans_date):
         logger = logging.getLogger('SingleFunctionLogger')
         try:
-            connection = create_connection('TIMEKEEPING')
+            connection = create_connection('NTP_HOLIDAY_LIST')
             if connection is None:
                 logger.error("Error: Could not establish database connection.")
                 return "Ordinary Day"  # Return default value on connection failure

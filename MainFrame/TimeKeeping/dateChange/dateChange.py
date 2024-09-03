@@ -15,7 +15,7 @@ class DateChange(QDialog):
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\datechange.ui")
         loadUi(ui_file, self)
 
-        self.connection = create_connection('TIMEKEEPING')
+        self.connection = create_connection('NTP_HOLIDAY_LIST')
         self.cmbHoliday.currentIndexChanged.connect(self.fetch_holiday_data)
         self.btnUpdate.clicked.connect(self.update_or_cancel)
         self.btnAdd.clicked.connect(self.add_or_save_holiday)

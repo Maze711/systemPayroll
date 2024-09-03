@@ -164,7 +164,7 @@ class ListFunction:
             WHERE p.empl_id = %s
         """
         try:
-            connection = create_connection('FILE201')
+            connection = create_connection('NTP_EMP_LIST')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
