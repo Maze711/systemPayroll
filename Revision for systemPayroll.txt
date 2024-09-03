@@ -5,7 +5,7 @@ HR Side Application:
 
  - Add image employee
  - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL)
- - Append the empid to posnsched table
+ - Append the empid to posnsched table *DONE*
 
 Timekeeper Side Application:
 

@@ -3,7 +3,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
+from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 
@@ -48,9 +48,6 @@ def remove_dashes_in_id(id_number):
 
 
 def importIntoDB(parent, display_employees_callback):
-    cursor = None
-    connection = None
-
     try:
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(
@@ -59,130 +56,11 @@ def importIntoDB(parent, display_employees_callback):
             QMessageBox.information(parent, "No File Selected", "Please select an Excel file to import.")
             return
 
-        # Read the entire Excel file
-        df = pd.read_excel(file_name, sheet_name=None)  # Load all sheets into a dictionary of DataFrames
-        sheet = df[list(df.keys())[0]]  # Get the first sheet
-
-        # Fetch the headers from the DataFrame
-        headers = sheet.columns.tolist()
-
-        required_columns = {
-            'personal': [
-                'empl_no', 'empl_id', 'idnum', 'empid', 'surname', 'firstname', 'mi', 'street', 'city', 'zipcode', 'birthday',
-                'birthplace', 'religion', 'status', 'sex', 'height', 'weight', 'mobile', 'blood_type', 'email'
-            ],
-            'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
-            'list': ['empl_no', 'empl_id', 'idnum', 'taxstat', 'sss', 'tin', 'pagibig', 'philhealth', 'bank_code', 'cola'],
-            'posnsched': ['empl_no', 'empl_id', 'idnum', 'pos_descr', 'sched_in', 'sched_out', 'dept_name'],
-            'rate': ['empl_no', 'empl_id', 'idnum', 'rph', 'rate', 'mth_salary', 'dailyallow', 'mntlyallow'],
-            'status': ['empl_no', 'empl_id', 'idnum', 'compcode', 'dept_code', 'position', 'emp_stat', 'date_hired', 'resigned', 'dtresign'],
-            'vacnsick': ['empl_no', 'empl_id', 'idnum', 'max_vacn', 'max_sick']
-        }
-
-        # Check for missing columns
-        missing_columns = [col for section in required_columns.values() for col in section if col not in headers]
-        if missing_columns:
-            error_message = f"Missing required columns: {', '.join(missing_columns)}"
-            QMessageBox.warning(parent, "Missing Columns", error_message)
-            return
-
-        with create_connection('FILE201') as connection:
-            if connection is None:
-                logging.error("Failed to connect to the FILE201 database.")
-                return
-            logging.debug("Database connection established successfully.")
-
-            cursor = connection.cursor()
-
-            # Prepare queries
-            insert_queries = {
-                'emergency': """
-                    INSERT IGNORE INTO emergency_list (empl_no, empl_id, idnum, emer_name)
-                    VALUES (%s, %s, %s, %s)
-                """,
-                'personal': """
-                    INSERT IGNORE INTO emp_info (empl_no, empl_id, idnum, empid, surname, firstname, mi, street, city, zipcode, birthday,
-                    birthplace, religion, status, sex, height, weight, mobile, blood_type, email)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                'list': """
-                    INSERT IGNORE INTO emp_list_id (empl_no, empl_id, idnum, taxstat, sss, tin, pagibig, philhealth, bank_code, cola)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                'posnsched': """
-                    INSERT IGNORE INTO emp_posnsched (empl_no, empl_id, idnum, pos_descr, sched_in, sched_out, dept_name)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """,
-                'rate': """
-                    INSERT IGNORE INTO emp_rate (empl_no, empl_id, idnum, rph, rate, mth_salary, dailyallow, mntlyallow)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                'status': """
-                    INSERT IGNORE INTO emp_status (empl_no, empl_id, idnum, compcode, dept_code, position, emp_stat, date_hired, resigned, dtresign)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                'vacnsick': """
-                    INSERT IGNORE INTO vacn_sick_count (empl_no, empl_id, idnum, max_vacn, max_sick)
-                    VALUES (%s, %s, %s, %s, %s)
-                """
-            }
-
-            data = {
-                'emergency': [],
-                'personal': [],
-                'list': [],
-                'posnsched': [],
-                'rate': [],
-                'status': [],
-                'vacnsick': []
-            }
-
-            # Manually split data into chunks
-            chunk_size = 1000  # Adjust chunk size based on your needs
-            num_chunks = (len(sheet) + chunk_size - 1) // chunk_size
-
-            for chunk_idx in range(num_chunks):
-                chunk_start = chunk_idx * chunk_size
-                chunk_end = min(chunk_start + chunk_size, len(sheet))
-                chunk_df = sheet.iloc[chunk_start:chunk_end]
-
-                # Process each row in the chunk
-                for row_idx, row in chunk_df.iterrows():
-                    empl_no = str(row['empl_no']).strip()
-                    surname = str(row['surname']).strip()
-                    firstname = str(row['firstname']).strip()
-
-                    if not empl_no:
-                        continue  # Skip rows without an employee number
-
-                    try:
-                        for section in data.keys():
-                            row_data = tuple(str(row[col]).strip() for col in required_columns[section])
-                            data[section].append(row_data)
-                            logging.debug(f"{section} data length: {len(row_data)}")
-                    except Exception as e:
-                        logging.error(f"Error processing row {row_idx}: {e}")
-                        continue
-
-                # Batch Insert Data
-                for section, insert_query in insert_queries.items():
-                    if data[section]:
-                        cursor.executemany(insert_query, data[section])
-                        logging.debug(f"Inserted {len(data[section])} rows into {section}.")
-                        data[section] = []  # Clear data for next chunk
-
-            connection.commit()
-            display_employees_callback()
-            QMessageBox.information(parent, "Success", "Data imported successfully.")
-
+        # Create and show the progress dialog
+        excelImporterLoader = ExcelImporterLoader(parent, file_name, display_employees_callback)
+        excelImporterLoader.exec_()
     except Exception as e:
-        logging.error(f"Error in importIntoDB: {str(e)}")
-        QMessageBox.critical(parent, "Import Error", str(e))
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+        print(f"Error importing data from Excel: {e}")
 
 def get_empl_ids_from_db():
     """
@@ -442,3 +320,218 @@ def update_db_for_missing_row_columns(parent):
             cursor.close()
         if connection:
             connection.close()
+
+class ImportProcessor(QObject):
+    progressChanged = pyqtSignal(int)
+    finished = pyqtSignal(str)
+    error = pyqtSignal(str)
+
+    def __init__(self, file_name):
+        super().__init__()
+        self.file_name = file_name
+
+    def process_import(self):
+        """ Processes importing data from an Excel file with progress updates. """
+        connection = None
+        cursor = None
+
+        try:
+            # Read the entire Excel file
+            df = pd.read_excel(self.file_name, sheet_name=None)  # Load all sheets into a dictionary of DataFrames
+            sheet = df[list(df.keys())[0]]  # Get the first sheet
+
+            # Fetch the headers from the DataFrame
+            headers = sheet.columns.tolist()
+
+            required_columns = {
+                'personal': [
+                    'empl_no', 'empl_id', 'idnum', 'empid', 'surname', 'firstname', 'mi', 'street', 'city', 'zipcode',
+                    'birthday',
+                    'birthplace', 'religion', 'status', 'sex', 'height', 'weight', 'mobile', 'blood_type', 'email'
+                ],
+                'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
+                'list': ['empl_no', 'empl_id', 'idnum', 'taxstat', 'sss', 'tin', 'pagibig', 'philhealth', 'bank_code',
+                         'cola'],
+                'posnsched': ['empl_no', 'empl_id', 'empid', 'idnum', 'pos_descr', 'sched_in', 'sched_out',
+                              'dept_name'],
+                'rate': ['empl_no', 'empl_id', 'idnum', 'rph', 'rate', 'mth_salary', 'dailyallow', 'mntlyallow'],
+                'status': ['empl_no', 'empl_id', 'idnum', 'compcode', 'dept_code', 'position', 'emp_stat', 'date_hired',
+                           'resigned', 'dtresign'],
+                'vacnsick': ['empl_no', 'empl_id', 'idnum', 'max_vacn', 'max_sick']
+            }
+
+            # Check for missing columns
+            missing_columns = [col for section in required_columns.values() for col in section if col not in headers]
+            if missing_columns:
+                error_message = f"\nMissing required columns: \n{', '.join(missing_columns)}"
+                self.error.emit(error_message)
+                return
+
+            with create_connection('FILE201') as connection:
+                if connection is None:
+                    logging.error("Failed to connect to the FILE201 database.")
+                    return
+                logging.debug("Database connection established successfully.")
+
+                cursor = connection.cursor()
+
+                # Prepare queries
+                insert_queries = {
+                    'emergency': """
+                        INSERT IGNORE INTO emergency_list (empl_no, empl_id, idnum, emer_name)
+                        VALUES (%s, %s, %s, %s)
+                    """,
+                    'personal': """
+                        INSERT IGNORE INTO emp_info (empl_no, empl_id, idnum, empid, surname, firstname, mi, street, city, zipcode, birthday,
+                        birthplace, religion, status, sex, height, weight, mobile, blood_type, email)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    'list': """
+                        INSERT IGNORE INTO emp_list_id (empl_no, empl_id, idnum, taxstat, sss, tin, pagibig, philhealth, bank_code, cola)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    'posnsched': """
+                        INSERT IGNORE INTO emp_posnsched (empl_no, empl_id, empid, idnum, pos_descr, sched_in, sched_out, dept_name)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    'rate': """
+                        INSERT IGNORE INTO emp_rate (empl_no, empl_id, idnum, rph, rate, mth_salary, dailyallow, mntlyallow)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    'status': """
+                        INSERT IGNORE INTO emp_status (empl_no, empl_id, idnum, compcode, dept_code, position, emp_stat, date_hired, resigned, dtresign)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    'vacnsick': """
+                        INSERT IGNORE INTO vacn_sick_count (empl_no, empl_id, idnum, max_vacn, max_sick)
+                        VALUES (%s, %s, %s, %s, %s)
+                    """
+                }
+
+                data = {
+                    'emergency': [],
+                    'personal': [],
+                    'list': [],
+                    'posnsched': [],
+                    'rate': [],
+                    'status': [],
+                    'vacnsick': []
+                }
+
+                # Manually split data into chunks
+                chunk_size = 1000  # Adjust chunk size based on your needs
+                num_chunks = (len(sheet) + chunk_size - 1) // chunk_size
+
+                for chunk_idx in range(num_chunks):
+                    chunk_start = chunk_idx * chunk_size
+                    chunk_end = min(chunk_start + chunk_size, len(sheet))
+                    chunk_df = sheet.iloc[chunk_start:chunk_end]
+
+                    # Process each row in the chunk
+                    for row_idx, row in chunk_df.iterrows():
+                        empl_no = str(row['empl_no']).strip()
+                        surname = str(row['surname']).strip()
+                        firstname = str(row['firstname']).strip()
+
+                        if not empl_no:
+                            continue  # Skip rows without an employee number
+
+                        try:
+                            for section in data.keys():
+                                row_data = tuple(str(row[col]).strip() for col in required_columns[section])
+                                data[section].append(row_data)
+                                logging.debug(f"{section} data length: {len(row_data)}")
+                        except Exception as e:
+                            logging.error(f"Error processing row {row_idx}: {e}")
+                            continue
+
+                    # Batch Insert Data
+                    for section, insert_query in insert_queries.items():
+                        if data[section]:
+                            cursor.executemany(insert_query, data[section])
+                            logging.debug(f"Inserted {len(data[section])} rows into {section}.")
+                            data[section] = []  # Clear data for next chunk
+
+                    # Navigate current progress
+                    progress = int(((chunk_idx + 1) / num_chunks) * 100)
+                    self.progressChanged.emit(progress)
+                    QThread.msleep(1)
+
+                connection.commit()
+                self.finished.emit("Data imported successfully.")
+
+        except Exception as e:
+            print(f"Error in importIntoDB: {str(e)}")
+            logging.error(f"Error in importIntoDB: {str(e)}")
+            self.error.emit(str(e))
+        finally:
+            if cursor is not None:
+                cursor.close()
+            if connection is not None:
+                connection.close()
+
+class ExcelImporterLoader(QDialog):
+    def __init__(self, hr_window, file_name, display_employees_callback):
+        super(ExcelImporterLoader, self).__init__()
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        loadUi(ui_file, self)
+        self.setFixedSize(400, 124)
+
+        self.file_name = file_name
+        self.hr_window = hr_window
+        self.display_employees_callback = display_employees_callback
+
+        # Get UI elements
+        self.progressBar = self.findChild(QProgressBar, 'progressBar')
+        self.progressBar.setVisible(True)
+        self.progressBar.setValue(0)
+
+        self.thread = QThread()
+        self.worker = ImportProcessor(self.file_name)
+        self.worker.moveToThread(self.thread)
+        self.worker.progressChanged.connect(self.updateProgressBar)
+        self.worker.finished.connect(self.importProcessingFinished)
+        self.worker.error.connect(self.importProcessingError)
+        self.thread.started.connect(self.worker.process_import)
+        self.thread.start()
+
+        self.move_to_bottom_right()
+
+    def updateProgressBar(self, value):
+        self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.setFormat("Finishing Up..")
+        QApplication.processEvents()
+
+    def importProcessingFinished(self, message):
+        self.progressBar.setVisible(False)
+        if self.thread.isRunning():
+            self.thread.quit()
+            self.thread.wait()
+
+        self.display_employees_callback()
+        QMessageBox.information(self.hr_window, "Success", message)
+        self.close()
+
+    def importProcessingError(self, error):
+        try:
+            self.progressBar.setVisible(False)
+            self.thread.quit()
+            self.thread.wait()
+
+            QMessageBox.critical(self.hr_window, "Import Error",
+                                 f"An unexpected error occurred while importing data:\n{error}")
+            self.close()
+        except Exception as e:
+            print("Error in importProcessingError: ", e)
+
+    def move_to_bottom_right(self):
+        """Position the dialog at the bottom right of the screen."""
+        screen = QApplication.primaryScreen()
+        screen_rect = screen.availableGeometry()
+        dialog_rect = self.rect()
+
+        x = screen_rect.width() - dialog_rect.width()
+        y = screen_rect.height() - dialog_rect.height() - 40
+
+        self.move(x, y)
