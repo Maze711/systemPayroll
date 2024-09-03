@@ -76,7 +76,7 @@ class PayTransFunctions:
             return
 
     def checkIfDeductionTableNotExist(self):
-        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        connection = create_connection('NTP_STORED_DEDUCTIONS')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
             QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database. Please check your "
@@ -101,7 +101,7 @@ class PayTransFunctions:
             connection.close()
 
     def insertDeductionToTable(self):
-        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        connection = create_connection('NTP_STORED_DEDUCTIONS')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
             self.hideAdditionalButtons()

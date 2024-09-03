@@ -15,7 +15,7 @@ class UserAuthorization:
         cursor = None
 
         try:
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
@@ -106,7 +106,7 @@ class UserAuthentication(UserAuthorization):
                 QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
                 return
 
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
 
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
@@ -179,7 +179,7 @@ class UserAuthentication(UserAuthorization):
                 QMessageBox.warning(instance, "Input Error", "Passwords do not match!")
                 return
 
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
@@ -225,7 +225,7 @@ class UserAuthentication(UserAuthorization):
         cursor = None
 
         try:
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
@@ -256,7 +256,7 @@ class UserAuthentication(UserAuthorization):
         cursor = None
 
         try:
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 
@@ -315,7 +315,7 @@ class UserAuthentication(UserAuthorization):
         cursor = None
 
         try:
-            connection = create_connection('SYSTEM_AUTHENTICATION')
+            connection = create_connection('NTP_EMP_AUTH')
             if connection is None:
                 raise DatabaseConnectionError("Error: Could not establish database connection.")
 

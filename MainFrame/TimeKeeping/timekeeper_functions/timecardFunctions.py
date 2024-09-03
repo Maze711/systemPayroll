@@ -19,7 +19,7 @@ class populateList:
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
-        connection = create_connection('LIST_LOG_IMPORT')
+        connection = create_connection('NTP_LOG_IMPORTS')
         if not connection:
             return
 
@@ -55,7 +55,7 @@ class populateList:
         if not selected_year_month:
             return
 
-        connection = create_connection('LIST_LOG_IMPORT')
+        connection = create_connection('NTP_LOG_IMPORTS')
         if not connection:
             return
 
@@ -97,7 +97,7 @@ class populateList:
 
     def populateCostCenterBox(self):
         """Populate the costCenterBox with values from the pos_descr column in the emp_posnsched table."""
-        connection = create_connection('FILE201')
+        connection = create_connection('NTP_EMP_LIST')
         if not connection:
             logging.error("Error: Unable to connect to FILE201 database.")
             return
@@ -147,8 +147,8 @@ class populateList:
         # Construct table name
         table_name = f"table_{selected_year_month.replace('-', '_')}"
 
-        connection_list_log = create_connection('LIST_LOG_IMPORT')
-        connection_file201 = create_connection('FILE201')
+        connection_list_log = create_connection('NTP_LOG_IMPORTS')
+        connection_file201 = create_connection('NTP_EMP_LIST')
         if not connection_list_log or not connection_file201:
             return
 
@@ -287,7 +287,7 @@ class buttonTimecardFunction:
         # Proceed only if the user clicks "Yes"
         if result == QMessageBox.Yes:
             # Database connection (ensure create_connection is defined/imported)
-            connection = create_connection('FILE201')
+            connection = create_connection('NTP_EMP_LIST')
             if not connection:
                 logging.error("Error: Unable to connect to FILE201 database.")
                 return

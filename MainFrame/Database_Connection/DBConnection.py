@@ -52,20 +52,20 @@ def create_connection(db_key):
 
 def test_databases_connection():
     """Test Databases Connection (for Debugging)"""
-    file201_connection = create_connection('FILE201')
-    timekeeping_connection = create_connection('TIMEKEEPING')
-    listlogimport_connection = create_connection('LIST_LOG_IMPORT')
-    systemAuthentication_connection = create_connection('SYSTEM_AUTHENTICATION')
-    systemNotification_connection = create_connection('SYSTEM_NOTIFICATION')
-    systemStoreDeduction_connection = create_connection('SYSTEM_STORE_DEDUCTION')
+    file201_connection = create_connection('NTP_EMP_LIST')
+    timekeeping_connection = create_connection('NTP_HOLIDAY_LIST')
+    listlogimport_connection = create_connection('NTP_LOG_IMPORTS')
+    systemAuthentication_connection = create_connection('NTP_EMP_AUTH')
+    systemNotification_connection = create_connection('NTP_ACCOUNTANT_NOTIFICATION')
+    systemStoreDeduction_connection = create_connection('NTP_STORED_DEDUCTIONS')
 
     connections = {
-        'FILE201': file201_connection,
-        'TIMEKEEPING': timekeeping_connection,
-        'LIST_LOG_IMPORT': listlogimport_connection,
-        'SYSTEM_AUTHENTICATION': systemAuthentication_connection,
-        'SYSTEM_NOTIFICATION': systemNotification_connection,
-        'SYSTEM_STORE_DEDUCTION': systemStoreDeduction_connection
+        'NTP_EMP_LIST': file201_connection,
+        'NTP_HOLIDAY_LIST': timekeeping_connection,
+        'NTP_LOG_IMPORTS': listlogimport_connection,
+        'NTP_EMP_AUTH': systemAuthentication_connection,
+        'NTP_ACCOUNTANT_NOTIFICATION': systemNotification_connection,
+        'NTP_STORED_DEDUCTIONS': systemStoreDeduction_connection
     }
 
     for db_key, db_connection in connections.items():

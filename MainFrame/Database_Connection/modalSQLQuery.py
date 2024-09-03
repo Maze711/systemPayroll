@@ -10,7 +10,7 @@ from MainFrame.systemFunctions import DatabaseConnectionError
 
 def add_employee(data):
     try:
-        connection = create_connection('FILE201')
+        connection = create_connection('NTP_EMP_LIST')
         if connection is None:
             raise DatabaseConnectionError("Error: Could not establish database connection.")
         cursor = connection.cursor()
@@ -170,7 +170,7 @@ def insert_emp_rate(cursor, empl_id, data):
 
 def send_notification(empl_id, data):
     try:
-        notification_connection = create_connection('SYSTEM_NOTIFICATION')
+        notification_connection = create_connection('NTP_ACCOUNTANT_NOTIFICATION')
         if notification_connection is None:
             raise DatabaseConnectionError("Error: Could not establish connection to the system_notification database.")
 
@@ -232,7 +232,7 @@ def save_employee(empl_id, data):
     cursor = None
 
     try:
-        connection = create_connection('FILE201')
+        connection = create_connection('NTP_EMP_LIST')
         if connection is None:
             raise DatabaseConnectionError("Error: Could not establish database connection.")
 
@@ -341,7 +341,7 @@ def executeQuery(query, *args):
     cursor = None
 
     try:
-        connection = create_connection('FILE201')
+        connection = create_connection('NTP_EMP_LIST')
         if connection is None:
             raise DatabaseConnectionError("Error: Could not establish database connection.")
 

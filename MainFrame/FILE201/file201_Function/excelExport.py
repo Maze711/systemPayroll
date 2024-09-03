@@ -107,7 +107,7 @@ class ExportLoader(QDialog):
 
 def fetch_personal_information():
     try:
-        connection = create_connection('FILE201')
+        connection = create_connection('NTP_EMP_LIST')
         if connection is None:
             logging.error("Could not establish database connection.")
             return None

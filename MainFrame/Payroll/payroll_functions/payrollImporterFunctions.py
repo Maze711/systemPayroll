@@ -110,7 +110,7 @@ class PayrollImporterFunctions:
         self.user_role = user_role
 
     def exportDeductionToExcel(self):
-        connection = create_connection('SYSTEM_STORE_DEDUCTION')
+        connection = create_connection('NTP_STORED_DEDUCTIONS')
         if connection is None:
             print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
             return
