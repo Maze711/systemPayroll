@@ -18,13 +18,34 @@ class FileProcessor(QObject):
         super().__init__()
         self.fileName = fileName
         # When using a book1 excel file the daypresent should be dayspresent
-        self.required_columns = [
-            'bionum', 'empnumber', 'empname', 'costcenter', 'fromdate', 'todate', 'daypresent', 'restday',
-            'holiday', 'rsthlyday', 'orddaynite', 'rstdaynite', 'hlydaynite', 'rsthlydayn', 'orddayot',
-            'rstdayot', 'hlydayot', 'rsthlydayo', 'orddaynit2', 'rstdaynit2', 'hlydaynit2', 'rsthlyday2',
-            'late', 'undertime', 'absent', 'dateposted', 'remarks', 'rstshlyday', 'rstshlyda2', 'rstshlyda3',
-            'rstshlyda4', 'empcompany', 'legalholid'
-        ]
+        self.column_mapping = {
+            'bionum': ['bionum'],
+            'empnumber': ['empnumber'],
+            'empname': ['empname'],
+            'costcenter': ['costcenter'],
+            'fromdate': ['fromdate'],
+            'todate': ['todate'],
+            'daypresent': ['daypresent', 'dayspresent'],
+            'restday': ['restday'],
+            'holiday': ['holiday'],
+            'rsthlyday': ['rsthlyday'],
+            'orddaynite': ['orddaynite'],
+            'rstdaynite': ['rstdaynite'],
+            'hlydaynite': ['hlydaynite'],
+            'rsthlydayn': ['rsthlydayn'],
+            'orddayot': ['orddayot'],
+            'rstdayot': ['rstdayot'],
+            'hlydayot': ['hlydayot'],
+            'rsthlydayo': ['rsthlydayo'],
+            'late': ['late'],
+            'undertime': ['undertime'],
+            'absent': ['absent'],
+            'dateposted': ['dateposted'],
+            'remarks': ['remarks'],
+            'empcompany': ['empcompany'],
+            'legalholid': ['legalholid']
+        }
+        self.required_columns = list(self.column_mapping.keys())
 
     def process(self):
         try:
@@ -56,19 +77,32 @@ class FileProcessor(QObject):
             else:
                 raise ValueError(f"Unsupported file format: {file_ext.split('.')[-1]}")
 
-            # Validate columns
-            formatted_headers = [header.strip().lower() if header is not None else '' for header in headers]
-            missing_columns = [col for col in self.required_columns if col not in formatted_headers]
+            # Validate and standardize columns
+            standardized_headers = self.standardize_headers(headers)
+            missing_columns = [col for col in self.required_columns if col not in standardized_headers]
 
             if missing_columns:
                 raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
 
-            content.insert(0, headers)  # Add header row to content
+            # Replace original headers with standardized headers
+            content[0] = standardized_headers
             self.finished.emit(content)
         except ValueError as ve:
             self.error.emit(str(ve))
         except Exception as e:
             self.error.emit(f"Unexpected error: {e}")
+
+    def standardize_headers(self, headers):
+        standardized = []
+        for header in headers:
+            header_lower = header.strip().lower() if header else ''
+            for std_name, variations in self.column_mapping.items():
+                if header_lower in variations:
+                    standardized.append(std_name)
+                    break
+            else:
+                standardized.append(header_lower)  # Keep original if no match found
+        return standardized
 
 class PayrollImporterFunctions:
     def __init__(self, dialog, user_role):
