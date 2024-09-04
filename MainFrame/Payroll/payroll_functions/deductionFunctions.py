@@ -1,11 +1,14 @@
 import sys
 import os
+from openpyxl.workbook import Workbook
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, FileProcessor
 from MainFrame.Payroll.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
+from MainFrame.Database_Connection.DBConnection import create_connection
+
 from MainFrame.Database_Connection.user_session import UserSession
 
 class DeductionFunctions:
@@ -252,3 +255,101 @@ class DeductionFunctions:
     def getBioNum(self, row):
         bio_num_item = self.parent.paytimesheetTable.item(row, 1)
         return bio_num_item.text() if bio_num_item else "Unknown"
+
+    def exportDeductionToExcel(self):
+        connection = create_connection('NTP_STORED_DEDUCTIONS')
+        if connection is None:
+            QMessageBox.critical(self.parent, "Connection Error",
+                                 "Failed to connect to SYSTEM_STORE_DEDUCTION database.")
+            return
+
+        cursor = connection.cursor()
+
+        try:
+            query = "SELECT * FROM deductions"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            column_names = [desc[0] for desc in cursor.description]
+
+            # Create a new workbook and select the active worksheet
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Deductions"
+
+            # Write column headers
+            ws.append(column_names)
+
+            # Write data rows
+            for row in result:
+                ws.append(row)
+
+            # Prompt the user to choose a file location and name
+            file_name, _ = QFileDialog.getSaveFileName(self.parent, "Save File", "",
+                                                       "Excel Files (*.xlsx);;All Files (*)")
+            if file_name:
+                # Ensure the file has the correct extension
+                if not file_name.endswith('.xlsx'):
+                    file_name += '.xlsx'
+
+                # Save the workbook
+                wb.save(file_name)
+                QMessageBox.information(self.parent, "Export Successful",
+                                        f"Deductions Data was exported successfully to {file_name}!")
+                print(f"Data exported successfully to {file_name}")
+
+        except Exception as e:
+            print(f"Error fetching or processing deduction data: {e}")
+            QMessageBox.critical(self.parent, "Export Failed", f"Failed to export deductions data: {e}")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+
+    def buttonImport(self):
+        fileName, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
+        if not fileName:
+            return
+
+        # Load the showNotification.ui
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        self.import_dialog = QDialog(self.parent)
+        loadUi(ui_file, self.import_dialog)
+
+        # Set up and start the file processing
+        self.thread = QThread()
+        self.file_processor = FileProcessor(fileName)
+        self.file_processor.moveToThread(self.thread)
+        self.file_processor.progressChanged.connect(self.updateProgressBar)
+        self.file_processor.finished.connect(self.importFinished)
+        self.file_processor.error.connect(self.importError)
+        self.thread.started.connect(self.file_processor.process)
+
+        self.import_dialog.show()
+        self.thread.start()
+
+    def updateProgressBar(self, value):
+        if self.import_dialog:
+            self.import_dialog.progressBar.setValue(value)
+            QApplication.processEvents()
+
+    def importFinished(self, content):
+        self.thread.quit()
+        self.thread.wait()
+        if self.import_dialog:
+            self.import_dialog.close()
+
+        if content:
+            # Update the paytimesheetTable with the new data
+            self.populatePaytimeSheetTable(content)
+            QMessageBox.information(self.parent, "Import Successful", "Data imported successfully!")
+        else:
+            QMessageBox.warning(self.parent, "Import Failed", "No data was imported.")
+
+    def importError(self, error_message):
+        self.thread.quit()
+        self.thread.wait()
+        if self.import_dialog:
+            self.import_dialog.close()
+        QMessageBox.critical(self.parent, "Import Error", f"An error occurred during import:\n{error_message}")

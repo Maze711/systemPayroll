@@ -463,7 +463,7 @@ background-color: &quot;#30d977&quot;;
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
+      <item row="2" column="0">
        <widget class="QPushButton" name="btnPayTrans">
         <property name="maximumSize">
          <size>
@@ -497,7 +497,7 @@ background-color: &quot;#30d977&quot;;
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QPushButton" name="btnPayTrans_2">
+       <widget class="QPushButton" name="btnImport">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -529,7 +529,7 @@ background-color: &quot;#30d977&quot;;
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QPushButton" name="btnNotification">
         <property name="maximumSize">
          <size>

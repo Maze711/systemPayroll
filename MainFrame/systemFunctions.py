@@ -58,6 +58,100 @@ class SingleFunctionLogger:
 
 single_function_logger = SingleFunctionLogger()
 
+class FileProcessor(QObject):
+    progressChanged = pyqtSignal(int)
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+
+    def __init__(self, fileName):
+        super().__init__()
+        self.fileName = fileName
+        # When using a book1 excel file the daypresent should be dayspresent
+        self.column_mapping = {
+            'bionum': ['bionum'],
+            'empnumber': ['empnumber'],
+            'empname': ['empname'],
+            'costcenter': ['costcenter'],
+            'fromdate': ['fromdate'],
+            'todate': ['todate'],
+            'daypresent': ['daypresent', 'dayspresent'],
+            'restday': ['restday'],
+            'holiday': ['holiday'],
+            'rsthlyday': ['rsthlyday'],
+            'orddaynite': ['orddaynite'],
+            'rstdaynite': ['rstdaynite'],
+            'hlydaynite': ['hlydaynite'],
+            'rsthlydayn': ['rsthlydayn'],
+            'orddayot': ['orddayot'],
+            'rstdayot': ['rstdayot'],
+            'hlydayot': ['hlydayot'],
+            'rsthlydayo': ['rsthlydayo'],
+            'late': ['late'],
+            'undertime': ['undertime'],
+            'absent': ['absent'],
+            'dateposted': ['dateposted'],
+            'remarks': ['remarks'],
+            'empcompany': ['empcompany'],
+            'legalholid': ['legalholid']
+        }
+        self.required_columns = list(self.column_mapping.keys())
+
+    def process(self):
+        try:
+            content = []
+            file_ext = self.fileName.lower()
+
+            if file_ext.endswith('.xlsx'):
+                workbook = openpyxl.load_workbook(self.fileName, data_only=True)
+                sheet = workbook.active
+                headers = [cell.value for cell in sheet[1]]
+                total_rows = sheet.max_row
+                for row_idx in range(2, total_rows + 1):  # Skip header row
+                    row = [sheet.cell(row=row_idx, column=col_idx).value for col_idx in range(1, sheet.max_column + 1)]
+                    content.append(row)
+                    progress = int((row_idx / total_rows) * 100)
+                    self.progressChanged.emit(progress)
+                    QThread.msleep(1)  # Simulate work being done
+            elif file_ext.endswith('.xls'):
+                workbook = xlrd.open_workbook(self.fileName, encoding_override="cp1252")
+                sheet = workbook.sheet_by_index(0)
+                headers = sheet.row_values(0)
+                total_rows = sheet.nrows
+                for row_idx in range(1, total_rows):  # Skip header row
+                    row = sheet.row_values(row_idx)
+                    content.append(row)
+                    progress = int((row_idx / total_rows) * 100)
+                    self.progressChanged.emit(progress)
+                    QThread.msleep(1)  # Simulate work being done
+            else:
+                raise ValueError(f"Unsupported file format: {file_ext.split('.')[-1]}")
+
+            # Validate and standardize columns
+            standardized_headers = self.standardize_headers(headers)
+            missing_columns = [col for col in self.required_columns if col not in standardized_headers]
+
+            if missing_columns:
+                raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+
+            # Replace original headers with standardized headers
+            content[0] = standardized_headers
+            self.finished.emit(content)
+        except ValueError as ve:
+            self.error.emit(str(ve))
+        except Exception as e:
+            self.error.emit(f"Unexpected error: {e}")
+
+    def standardize_headers(self, headers):
+        standardized = []
+        for header in headers:
+            header_lower = header.strip().lower() if header else ''
+            for std_name, variations in self.column_mapping.items():
+                if header_lower in variations:
+                    standardized.append(std_name)
+                    break
+            else:
+                standardized.append(header_lower)  # Keep original if no match found
+        return standardized
 
 class globalFunction():
     def __init__(self):
