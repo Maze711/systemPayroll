@@ -92,6 +92,21 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
     <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="3">
+     <widget class="QLabel" name="depTxt">
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="1">
      <widget class="QLabel" name="bioNumTxt">
       <property name="font">
@@ -137,21 +152,6 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="empNameTxt">
-      <property name="font">
-       <font>
-        <family>Poppins</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="lblBio">
       <property name="font">
@@ -167,14 +167,14 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
       </property>
      </widget>
     </item>
-    <item row="0" column="3">
-     <widget class="QLabel" name="depTxt">
+    <item row="0" column="1">
+     <widget class="QLabel" name="empNameTxt">
       <property name="font">
        <font>
-        <family>poppins</family>
+        <family>Poppins</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -959,58 +959,6 @@ background-color: &quot;#30d977&quot;;
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>60</y>
-      <width>223</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Employee Number</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>120</y>
-      <width>223</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Employee Number</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>174</y>
-      <width>223</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Employee Number</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_5">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>230</y>
-      <width>223</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Employee Number</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QWidget" name="employeeRate" native="true">
    <property name="geometry">
