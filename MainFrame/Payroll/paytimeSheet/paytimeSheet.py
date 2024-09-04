@@ -55,7 +55,7 @@ class PaytimeSheet(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_indication_lbl)
-        self.timer.start(2000)  # Update every 5 seconds
+        self.timer.start(2000)  # Update every 2 seconds
 
     def setupPayTimeSheetUI(self):
         try:
@@ -68,7 +68,6 @@ class PaytimeSheet(QMainWindow):
             self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 
             self.populatePaytimeSheetTable(self.original_data)
-            logging.info("Table populated with data.")
 
             # Initially set the indication label
             self.update_indication_lbl()
