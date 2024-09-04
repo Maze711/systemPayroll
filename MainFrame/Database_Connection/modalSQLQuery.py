@@ -27,6 +27,7 @@ def add_employee(data):
         insert_educ_information(cursor, generated_id, data)
         insert_tech_skills(cursor, generated_id, data)
         insert_emp_rate(cursor, generated_id, data)
+        insert_emp_img(cursor, generated_id, data)
 
         # Commit the changes to the FILE201 database
         connection.commit()
@@ -167,6 +168,17 @@ def insert_emp_rate(cursor, empl_id, data):
     cursor.execute(query, values)
     logging.info("Inserted into emp_rate table")
 
+def insert_emp_img(cursor, empl_id, data):
+    query = """
+    INSERT INTO emp_images(empl_id, empl_img)
+    VALUES (%s, %s)
+    """
+    values = (
+        empl_id, data.get('Employee Image')
+    )
+    cursor.execute(query, values)
+    logging.info("Inserted into emp_images table")
+
 
 def send_notification(empl_id, data):
     try:
@@ -228,9 +240,6 @@ def get_generated_employee_id(employee_id):
 
 
 def save_employee(empl_id, data):
-    connection = None
-    cursor = None
-
     try:
         connection = create_connection('NTP_EMP_LIST')
         if connection is None:
@@ -314,6 +323,10 @@ def save_employee(empl_id, data):
                         data['Technical Skills #2'], data['Certificate #2'], data['Validation Date #2'],
                         data['Technical Skills #3'], data['Certificate #3'], data['Validation Date #3'],
                         empl_id))
+
+        # Update emp_images table
+        update_emp_images = "UPDATE emp_images SET empl_img = %s WHERE empl_id = %s"
+        cursor.execute(update_emp_images, (data['Employee Image'], empl_id))
 
         # Commit changes to the database
         connection.commit()

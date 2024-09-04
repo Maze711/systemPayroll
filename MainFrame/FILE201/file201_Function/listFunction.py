@@ -149,7 +149,7 @@ class ListFunction:
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
                    e.highschoolYear, e.elemYear, ps.pos_descr, ps.sched_in, ps.sched_out, ps.dept_name, r.rph, r.rate,
                    r.mth_salary, r.dailyallow, r.mntlyallow, s.compcode, s.dept_code, s.position, s.emp_stat, s.date_hired,
-                   s.resigned, s.dtresign, vcs.max_vacn, vcs.max_sick
+                   s.resigned, s.dtresign, vcs.max_vacn, vcs.max_sick, img.empl_img
             FROM emp_info p
             LEFT JOIN educ_information e ON p.empl_id = e.empl_id
             LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
@@ -161,6 +161,7 @@ class ListFunction:
             LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
             LEFT JOIN work_exp w ON p.empl_id = w.empl_id
             LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
+            LEFT JOIN emp_images img ON p.empl_id = img.empl_id
             WHERE p.empl_id = %s
         """
         try:
@@ -283,7 +284,9 @@ class ListFunction:
                 "cmbResigned_2": data['resigned'],
                 # VACN_SICK_COUNT TABLE
                 "txtVacn": data['max_vacn'],
-                "txtSick": data['max_sick']
+                "txtSick": data['max_sick'],
+                # EMP_IMAGES TABLE
+                "lblViewImg": data['empl_img']
             }
 
             # Populate modal fields
@@ -294,6 +297,19 @@ class ListFunction:
                         widget.setText(str(value))
                     elif isinstance(widget, QLabel):
                         widget.setText(str(value))
+                        if widget.objectName() == 'lblViewImg':
+                            if not value:
+                                pixmap = QPixmap("MainFrame/Resources/Icons/user.svg")
+                                widget.setPixmap(pixmap)
+                            else:
+                                # Displays the employee profile image
+                                pixmap = self.convertBLOBToPixmap(value)
+                                # Scale the pixmap to fit the QLabel, keeping the aspect ratio
+                                scaled_pixmap = pixmap.scaled(widget.size(),
+                                                              Qt.KeepAspectRatioByExpanding,
+                                                              Qt.SmoothTransformation)
+                                widget.setPixmap(scaled_pixmap)
+                                modal.btnUploadImg.hide()
                     elif isinstance(widget, QComboBox):
                         widget.setCurrentText(str(value))
                     elif isinstance(widget, QDateEdit):
@@ -327,3 +343,14 @@ class ListFunction:
             self.main_window.functions.searchAndDisplay(searchText)
         else:
             self.main_window.functions.displayEmployees()
+
+    def convertBLOBToPixmap(self, blob_data):
+        pixmap = QPixmap()
+        try:
+            if not pixmap.loadFromData(QByteArray(blob_data)):
+                logging.error("Failed to load image from BLOB data.")
+                return None
+        except Exception as e:
+            logging.error(f"Exception occurred while loading pixmap: {e}")
+            return None
+        return pixmap

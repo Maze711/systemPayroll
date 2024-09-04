@@ -29,6 +29,7 @@ def set_fields_non_editable(modal):
 class modalFunction:
     def __init__(self, main_window):
         self.main_window = main_window
+        self.image_value = None
 
     def add_Employee(self):
         try:
@@ -57,6 +58,9 @@ class modalFunction:
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
                 ('Blood Type', self.main_window.cmbBlood.currentText()),
+
+                # Employee's uploaded image
+                ('Employee Image', self.get_employee_img()),
 
                 # Employee's Family Background Inputs
                 ("Father's Last Name", self.main_window.txtFatherLast.text()),
@@ -151,7 +155,7 @@ class modalFunction:
             ]
 
             not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
-                                   'Company', 'Company Address', 'Position',
+                                   'Employee Image', 'Company', 'Company Address', 'Position',
                                    "Father's Last Name", "Father's First Name", "Father's Middle Name",
                                    "Mother's Last Name", "Mother's First Name", "Mother's Middle Name",
                                    "Spouse's Last Name", "Spouse's First Name", "Spouse's Middle Name",
@@ -178,6 +182,7 @@ class modalFunction:
             message = "Employee data added successfully." if success else "Failed to add employee data."
             if success:
                 QMessageBox.information(self.main_window, "Success", message)
+                self.image_value = None
                 self.main_window.close()  # Closes the modal
             else:
                 QMessageBox.critical(self.main_window, "Adding Employee Error", f"{message} "
@@ -232,6 +237,8 @@ class modalFunction:
             'Place of Birth': self.main_window.txtPlace.text(),
             'Gender': self.main_window.cmbGender.currentText(),
             'Blood Type': self.main_window.cmbBlood.currentText(),
+
+            'Employee Image': self.getImageByte(),
 
             "Father's Last Name": self.main_window.txtFatherLast.text(),
             "Father's First Name": self.main_window.txtFatherFirst.text(),
@@ -298,8 +305,8 @@ class modalFunction:
 
             'Description': self.main_window.txtPos.text(),
             'Department Name': self.main_window.txtDept.text(),
-            'Sched In': self.main_window.cmbSchedIn.Text(),
-            'Sched Out': self.main_window.cmbSchedOut.Text(),
+            'Sched In': self.main_window.cmbSchedIn.text(),
+            'Sched Out': self.main_window.cmbSchedOut.text(),
 
             'RPH': self.main_window.txtRPH.text(),
             'Rate': self.main_window.txtRate.text(),
@@ -329,6 +336,7 @@ class modalFunction:
 
                 if success:
                     QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
+                    self.image_value = None
                     self.main_window.close()  # Close the modal upon successful save
                 else:
                     logging.error(f"Failed to save employee data for Employee ID: {empID}.")
@@ -340,8 +348,82 @@ class modalFunction:
                                         f"Failed to save employee data "
                                      "An unexpected disconnection has occurred. Please check your network connection or "
                                      "contact the system administrator.")
+            except Exception as e:
+                print(f"Unexpected error occurred: {e}")
+                logging.error(f"Unexpected error occurred: {e}")
+                QMessageBox.critical(self.main_window, "Saving Employee Data Error",
+                                     "An unexpected error occurred while saving employee data.")
 
 
     def revert_Employee(self):
         set_fields_non_editable(self.main_window)
         print("Revert")
+
+    def upload_img(self):
+        """Image Uploader for Employees Profile"""
+        try:
+            file_name, _ = QFileDialog.getOpenFileName(
+                self.main_window, "Select Excel File", "",
+                "JPG, JPEG, PNG Files (*.jpg *jpeg *.png);")
+
+            if file_name:
+                file_size = os.path.getsize(file_name)
+                max_size = 5 * 1024 * 1024 # 5MB size limit
+
+                if file_size > max_size:
+                    QMessageBox.warning(self.main_window, "File Too Large",
+                                        "The selected file exceeds the 5 MB size limit. Please choose a smaller file.")
+                else:
+                    # Preview the uploaded image
+                    self.pixmap = QPixmap(file_name)
+                    # Scales the pixmap to fit within the lblViewImg size
+                    scaled_pixmap = self.pixmap.scaled(self.main_window.lblViewImg.size(),
+                                                       Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+                    self.main_window.lblViewImg.setPixmap(scaled_pixmap)
+
+                    file_to_bytes = self.convertFileToBLOB(file_name)
+
+                    self.set_employee_img(file_to_bytes)
+
+
+        except Exception as e:
+            print("Error Uploading an image: ", e)
+            QMessageBox.critical(self.main_window, "Upload Error",
+                                "Something went wrong while uploading an image, please try again later.")
+
+    def convertFileToBLOB(self, file_name):
+        """Converts Image file into BLOB"""
+        with open(file_name, 'rb') as file:
+            binary_data = file.read()
+        return binary_data
+
+    def set_employee_img(self, blob):
+        self.image_value = blob
+
+    def get_employee_img(self):
+        return self.image_value
+
+    def getImageByte(self):
+        """Retrieves the image from QLabel and converts it into bytes"""
+        default_img_pixmap = QPixmap("MainFrame/Resources/Icons/user.svg") # Default Profile Image
+        current_pixmap = self.main_window.lblViewImg.pixmap() # Current/new Profile Image
+
+        if current_pixmap is None:
+            return None  # No image is currently set
+
+        default_byte = self.pixmap_to_byte(default_img_pixmap)
+        current_byte = self.pixmap_to_byte(current_pixmap)
+
+        if default_byte == current_byte:
+            return None
+
+        return bytes(current_byte)
+
+    def pixmap_to_byte(self, pixmap):
+        """Pixmap to Byte Conversion"""
+        byte_array = QByteArray()
+        buffer = QBuffer(byte_array)
+        buffer.open(QIODevice.WriteOnly)
+        pixmap.save(buffer, 'PNG')
+
+        return byte_array
