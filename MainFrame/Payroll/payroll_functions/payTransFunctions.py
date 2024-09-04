@@ -27,6 +27,7 @@ class PayTransFunctions:
             emp_name_item = QTableWidgetItem(row['EmpName'])
             basic_item = QTableWidgetItem(str(row['Basic']))
             present_days_item = QTableWidgetItem(row['Present Days'])
+            reg_day_night_diff_item = QTableWidgetItem(str(row['RegDayNightDiffEarn']))
             rate_item = QTableWidgetItem(row.get('Rate', 'Missing'))  # Get rate or 'Missing' if not found
             ot_earn_item = QTableWidgetItem(str(row['OT_Earn']))  # Get OT_Earn or '0.00' if not found
             late_earn_item = QTableWidgetItem(str(row['LateUndertime']))
@@ -40,7 +41,7 @@ class PayTransFunctions:
 
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
-                        ot_earn_item, late_earn_item, undertime_earn_item] + pay_ded_items:
+                        ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item] + pay_ded_items:
                 item.setTextAlignment(Qt.AlignCenter)
 
             # Set items in the table. Adjust the column indices as needed.
@@ -51,8 +52,9 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 4, rate_item)   # Rate
             self.parent.paytransTable.setItem(i, 5, present_days_item)  # Present Days
             self.parent.paytransTable.setItem(i, 6, ot_earn_item)  # OT Hours (add column index here)
-            self.parent.paytransTable.setItem(i, 7, late_earn_item)
-            self.parent.paytransTable.setItem(i, 8, undertime_earn_item)
+            self.parent.paytransTable.setItem(i, 7, reg_day_night_diff_item)
+            self.parent.paytransTable.setItem(i, 8, late_earn_item)
+            self.parent.paytransTable.setItem(i, 9, undertime_earn_item)
 
             # Add deduction items to the table in subsequent columns
             for j, pay_ded_item in enumerate(pay_ded_items, start=9): # Pay Ded columns starts at index 9

@@ -61,6 +61,7 @@ class PaytimeSheetFunctions:
             bio_num_item = self.parent.paytimesheetTable.item(row, 1)
             emp_name_item = self.parent.paytimesheetTable.item(row, 2)
             present_days_item = self.parent.paytimesheetTable.item(row, 5)
+            reg_day_night_diff_item = self.parent.paytimesheetTable.item(row, 9)
             ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 13)
             late_item = self.parent.paytimesheetTable.item(row, 17)
             undertime_item = self.parent.paytimesheetTable.item(row, 18)
@@ -75,6 +76,7 @@ class PaytimeSheetFunctions:
                 'BioNum': bio_num,
                 'EmpName': emp_name_item.text(),
                 'Present Days': present_days_item.text(),
+                'Regular Day Night Diff': reg_day_night_diff_item.text(),
                 'OrdinaryDayOT': ordinary_day_ot_item.text(),
                 'Late': late_item.text(),
                 'Undertime': undertime_item.text()
@@ -90,12 +92,9 @@ class PaytimeSheetFunctions:
         pay_computation = PayComputation(selected_data)
         pay_computation.basicComputation()
         pay_computation.overtimeComputation()
+        pay_computation.regularDayNightDiffComputation()
         pay_computation.lateComputation()
         pay_computation.undertimeComputation()
-
-        match_count = sum(1 for item in selected_data if item['BioNum'] in bio_num_to_rate)
-        logging.info(f"Total matches of bio_num with processed empl_id: {match_count}")
-        print(f"Total matches of bio_num with processed empl_id: {match_count}")
 
         try:
             self.parent.window = PayTrans(from_date, to_date, selected_data)

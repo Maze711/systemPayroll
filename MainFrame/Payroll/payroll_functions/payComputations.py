@@ -1,4 +1,3 @@
-import logging
 import sys
 import os
 
@@ -7,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class PayComputation:
     def __init__(self, data):
@@ -41,6 +41,25 @@ class PayComputation:
             overtime_value = ordinary_day_ot_float * overtime_rate
             item['OT_Earn'] = round(overtime_value, 2)
             logging.info(f"Calculated overtime for EmpNo {item['EmpNo']}: {item['OT_Earn']}")
+
+    def regularDayNightDiffComputation(self):
+        overtime_rate = 74.844  # Use the same overtime rate defined earlier
+        night_diff = 5.99  # Define the night differential rate
+
+        for item in self.data:
+            reg_day_night_diff = item.get('Regular Day Night Diff')
+
+            try:
+                reg_day_night_diff_float = float(reg_day_night_diff)
+            except ValueError:
+                reg_day_night_diff_float = 0
+
+            # Compute the regular day night differential using the given formula
+            regular_day_night_value = (reg_day_night_diff_float * overtime_rate) + (
+                    reg_day_night_diff_float * night_diff)
+
+            item['RegDayNightDiffEarn'] = round(regular_day_night_value, 2)
+            logging.info(f"Calculated regular day night diff for EmpNo {item['EmpNo']}: {item['RegDayNightDiffEarn']}")
 
     def lateComputation(self):
         late_rate = 59.875  # Define the late
