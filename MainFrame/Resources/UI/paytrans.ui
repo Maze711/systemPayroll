@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>22</number>
+     <number>23</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -200,6 +200,11 @@ QTableWidget {
     <column>
      <property name="text">
       <string>OT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Regular Night Diff</string>
      </property>
     </column>
     <column>
