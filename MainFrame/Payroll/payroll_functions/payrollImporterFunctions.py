@@ -109,48 +109,6 @@ class PayrollImporterFunctions:
         self.dialog = dialog
         self.user_role = user_role
 
-    def exportDeductionToExcel(self):
-        connection = create_connection('NTP_STORED_DEDUCTIONS')
-        if connection is None:
-            print("Failed to connect to SYSTEM_STORE_DEDUCTION database.")
-            return
-
-        cursor = connection.cursor()
-
-        try:
-            query = "SELECT * FROM deductions"
-            cursor.execute(query)
-            result = cursor.fetchall()
-            column_names = [desc[0] for desc in cursor.description]
-
-            # Create a new workbook and select the active worksheet
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Deductions"
-
-            # Write column headers
-            ws.append(column_names)
-
-            # Write data rows
-            for row in result:
-                ws.append(row)
-
-            # Prompt the user to choose a file location and name
-            file_name, _ = QFileDialog.getSaveFileName(self.dialog, "Save File", "", "Excel Files (*.xlsx);;All Files (*)")
-            if file_name:
-                # Save the workbook
-                wb.save(file_name)
-                QMessageBox.information(self.dialog, "Export Successful", "Deductions Data was exported successfully!")
-                print(f"Data exported successfully to {file_name}")
-
-        except Error as e:
-            print(f"Error fetching or processing deduction data: {e}")
-
-        finally:
-            if cursor:
-                cursor.close()
-            if connection:
-                connection.close()
 
     def importTxt(self):
         fileName, _ = QFileDialog.getOpenFileName(self.dialog, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")

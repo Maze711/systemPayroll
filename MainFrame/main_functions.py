@@ -1,12 +1,12 @@
 import functools
 import psutil
 
+from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 # Import classes
 from MainFrame.Resources.lib import *
 from MainFrame.FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
 from MainFrame.TimeKeeping.datImporter.dialogLoader import dialogModal
-from MainFrame.Payroll.payTimeSheetImporter.payTimeSheetImporter import PayrollDialog
 from MainFrame.TimeKeeping.dateChange.dateChange import DateChange
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_auth import UserAuthentication
@@ -250,15 +250,16 @@ class MainWindowFunctions(QMainWindow):
 
     def openPayRoll(self):
         if self.payroll_window is not None:
-            self.payroll_window.close()  # Close the previous window if it exists
-        self.payroll_window = PayrollDialog(self)
+            self.payroll_window.close()
+        user_role = self.session_at_main.get("user_role")
+        self.payroll_window = PaytimeSheet(self, self.session_at_main, user_role)
         self.open_dialogs.append(self.payroll_window)
+
         if self.payroll_window.isVisible():
             self.payroll_window.activateWindow()
         else:
             self.payroll_window.show()
             self.print_user_name()
-
 
     def openBugReportModal(self):
         if self.bugReportModal is None:

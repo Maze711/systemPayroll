@@ -1,5 +1,8 @@
 import sys
 import os
+
+from MainFrame.systemFunctions import globalFunction, FileProcessor
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
@@ -13,63 +16,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyT
 class PaytimeSheetFunctions:
     def __init__(self, parent):
         self.parent = parent
-
-    def populatePaytimeSheetTable(self, data):
-        self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
-        for row in range(self.parent.paytimesheetTable.rowCount()):
-            self.parent.paytimesheetTable.setRowHidden(row, False)
-
-        # Define column names in the Excel file
-        column_names = {
-            'Emp Number': 'empnumber',
-            'Bio Num': 'empnumber',
-            'Employee Name': 'empname',
-            'CostCenter': 'costcenter',
-            #'DaysWork': 'actual days',
-            'DaysWork': 'dayswork',
-            #'DaysPresent': 'dayspresent',
-            'DaysPresent': 'daypresent',
-            'RestDay': 'restday',
-            'Holiday': 'holiday',
-            'RestHoliday': 'rsthlyday',
-            'OrdinaryDayNight': 'orddaynite',
-            'RestDayNight': 'rstdaynite',
-            'HolidayNight': 'hlydaynite',
-            'RestHolidayNight': 'rsthlydayn',
-            'OrdinaryDayOT': 'orddayot',
-            'RestDayOT': 'rstdayot',
-            'HolidayOT': 'hlydayot',
-            'RestHolidayOT': 'rsthlydayo',
-            'Late': 'late',
-            'Undertime': 'undertime',
-            'Absent': 'absent',
-            'DatePosted': 'dateposted',
-            'Remarks': 'remarks',
-            'EmpCompany': 'empcompany',
-            'LegalHoliday': 'legalholid'
-        }
-
-        # Extract column indices from the header row
-        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
-        col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
-
-        if not col_indices:
-            logging.error("No matching columns found in headers.")
-            return
-
-        for i, row in enumerate(data[1:]):  # Skip header row
-            for field_name, col_name in column_names.items():
-                col_idx = col_indices.get(field_name)
-                if col_idx is not None:
-                    item = QTableWidgetItem(str(row[col_idx]))
-                    if field_name in column_names:
-                        item.setTextAlignment(Qt.AlignCenter)
-                    if field_name == 'Employee Name':
-                        item.setToolTip(row[col_idx])
-                    self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
-                else:
-                    logging.warning(f"Column '{field_name}' not found in data.")
-            logging.info(f"Adding row {i}: {row}")
 
     def readRatesFromExcel(self, file_path):
         bio_num_to_rate = {}
@@ -163,3 +109,105 @@ class PaytimeSheetFunctions:
     def showNewListEmployee(self):
         payAddEmployee_dialog = payAddEmployee()
         payAddEmployee_dialog.exec_()
+
+    def buttonImport(self):
+        fileName, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
+        if not fileName:
+            return
+
+        # Load the showNotification.ui
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        self.import_dialog = QDialog(self.parent)
+        loadUi(ui_file, self.import_dialog)
+
+        # Set up and start the file processing
+        self.thread = QThread()
+        self.file_processor = FileProcessor(fileName)
+        self.file_processor.moveToThread(self.thread)
+        self.file_processor.progressChanged.connect(self.updateProgressBar)
+        self.file_processor.finished.connect(self.importFinished)
+        self.file_processor.error.connect(self.importError)
+        self.thread.started.connect(self.file_processor.process)
+
+        self.import_dialog.show()
+        self.thread.start()
+
+    def updateProgressBar(self, value):
+        if self.import_dialog:
+            self.import_dialog.progressBar.setValue(value)
+            QApplication.processEvents()
+
+    def importFinished(self, content):
+        self.thread.quit()
+        self.thread.wait()
+        if self.import_dialog:
+            self.import_dialog.close()
+
+        if content:
+            # Update the paytimesheetTable with the new data
+            self.populatePaytimeSheetTable(content)
+            QMessageBox.information(self.parent, "Import Successful", "Data imported successfully!")
+        else:
+            QMessageBox.warning(self.parent, "Import Failed", "No data was imported.")
+
+    def importError(self, error_message):
+        self.thread.quit()
+        self.thread.wait()
+        if self.import_dialog:
+            self.import_dialog.close()
+        QMessageBox.critical(self.parent, "Import Error", f"An error occurred during import:\n{error_message}")
+
+    def populatePaytimeSheetTable(self, data):
+        self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
+        for row in range(self.parent.paytimesheetTable.rowCount()):
+            self.parent.paytimesheetTable.setRowHidden(row, False)
+
+        # Define column names in the Excel file
+        column_names = {
+            'Emp Number': 'empnumber',
+            'Bio Num': 'empnumber',
+            'Employee Name': 'empname',
+            'CostCenter': 'costcenter',
+            'DaysWork': 'dayswork',
+            'DaysPresent': 'daypresent',
+            'RestDay': 'restday',
+            'Holiday': 'holiday',
+            'RestHoliday': 'rsthlyday',
+            'OrdinaryDayNight': 'orddaynite',
+            'RestDayNight': 'rstdaynite',
+            'HolidayNight': 'hlydaynite',
+            'RestHolidayNight': 'rsthlydayn',
+            'OrdinaryDayOT': 'orddayot',
+            'RestDayOT': 'rstdayot',
+            'HolidayOT': 'hlydayot',
+            'RestHolidayOT': 'rsthlydayo',
+            'Late': 'late',
+            'Undertime': 'undertime',
+            'Absent': 'absent',
+            'DatePosted': 'dateposted',
+            'Remarks': 'remarks',
+            'EmpCompany': 'empcompany',
+            'LegalHoliday': 'legalholid'
+        }
+
+        # Extract column indices from the header row
+        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
+        col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
+
+        if not col_indices:
+            logging.error("No matching columns found in headers.")
+            return
+
+        for i, row in enumerate(data[1:]):  # Skip header row
+            for field_name, col_name in column_names.items():
+                col_idx = col_indices.get(field_name)
+                if col_idx is not None:
+                    item = QTableWidgetItem(str(row[col_idx]))
+                    if field_name in column_names:
+                        item.setTextAlignment(Qt.AlignCenter)
+                    if field_name == 'Employee Name':
+                        item.setToolTip(row[col_idx])
+                    self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
+                else:
+                    logging.warning(f"Column '{field_name}' not found in data.")
+            logging.info(f"Adding row {i}: {row}")
