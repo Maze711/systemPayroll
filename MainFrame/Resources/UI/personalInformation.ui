@@ -227,14 +227,17 @@ border: 1px solid black
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="lblViewImg">
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>10</y>
-      <width>161</width>
-      <height>181</height>
+      <y>20</y>
+      <width>160</width>
+      <height>160</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true">border: none; background: none</string>
@@ -247,6 +250,9 @@ border: 1px solid black
     </property>
     <property name="scaledContents">
      <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="lblTitle_2">
@@ -808,6 +814,53 @@ font-family: Poppins;
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnUploadImg">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>140</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Upload an Image</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#btnUploadImg{
+	background-color: #334173;
+	border: 2px solid white;
+border-radius:5px
+}
+
+#btnUploadImg:hover{
+	background-color: #485994;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../Icons/upload-photo.svg</normaloff>../Icons/upload-photo.svg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
@@ -846,7 +899,7 @@ font-family: Poppins;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-698</y>
+      <y>0</y>
       <width>1218</width>
       <height>2318</height>
      </rect>
@@ -1747,7 +1800,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="maxLength">
-          <number>11</number>
+          <number>50</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblCitizenship">
@@ -1787,7 +1840,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="maxLength">
-          <number>11</number>
+          <number>50</number>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtEmail">
@@ -1806,7 +1859,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="maxLength">
-          <number>11</number>
+          <number>50</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblEmail">
@@ -3431,7 +3484,7 @@ background-color: #DCE5FE
            <x>0</x>
            <y>0</y>
            <width>769</width>
-           <height>588</height>
+           <height>193</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">

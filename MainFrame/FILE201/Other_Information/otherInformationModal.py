@@ -21,11 +21,14 @@ class personalModal(QDialog):
         current_date = QtCore.QDate.currentDate()
         self.set_current_date_to_all_date_edits(current_date)
 
+        self.lblViewImg = self.findChild(QLabel, 'lblViewImg')
+
         self.editBTN.setText("Edit")
 
         self.setup_initial_state()
         self.install_event_filters()
 
+        self.btnUploadImg.clicked.connect(self.functions.upload_img)
         self.addBTN.clicked.connect(self.functions.add_Employee)
         self.editBTN.clicked.connect(self.on_edit_clicked)
         self.saveBTN.clicked.connect(self.functions.save_Employee)
@@ -49,6 +52,7 @@ class personalModal(QDialog):
         self.set_button_styles()
 
     def install_event_filters(self):
+        self.btnUploadImg.installEventFilter(self)
         self.addBTN.installEventFilter(self)
         self.editBTN.installEventFilter(self)
         self.saveBTN.installEventFilter(self)
@@ -70,6 +74,8 @@ class personalModal(QDialog):
             self.editBTN.setText("Cancel")
             self.saveBTN.setEnabled(True)
             self.revertBTN.setEnabled(True)
+            self.btnUploadImg.setEnabled(True)
+
             self.set_button_styles()
         else:
             self.cancel_edit()
@@ -93,6 +99,27 @@ class personalModal(QDialog):
             background-color: "#485994";
         }
         '''
+        enabled_imgBtn_style = '''
+        #btnUploadImg{
+            background-color: #334173;
+            border: 2px solid white;
+            border-radius:5px
+        }
+
+        #btnUploadImg:hover{
+            background-color: #485994;
+        }
+        '''
+        disabled_imgBtn_style = '''
+        QPushButton {
+            background-color: #cccccc; 
+            border: 2px solid white;
+            border-radius:5px
+        }
+        QPushButton:hover {
+            background-color: "#485994";
+        }
+        '''
 
         self.addBTN.setStyleSheet(enabled_style if self.mode == 'add' else disabled_style)
         self.editBTN.setStyleSheet(enabled_style if self.mode == 'view' else disabled_style)
@@ -101,17 +128,17 @@ class personalModal(QDialog):
             self.editBTN.setStyleSheet("background-color: #a12c23; color: white;")
             self.saveBTN.setStyleSheet(enabled_style)
             self.revertBTN.setStyleSheet(enabled_style)
-            self.saveBTN.setEnabled(True)
-            self.revertBTN.setEnabled(True)
+            self.btnUploadImg.setStyleSheet(enabled_imgBtn_style)
+            self.btnUploadImg.setToolTip("Upload an image")
         else:
             self.saveBTN.setStyleSheet(disabled_style)
             self.revertBTN.setStyleSheet(disabled_style)
-            self.saveBTN.setEnabled(False)
-            self.revertBTN.setEnabled(False)
+            self.btnUploadImg.setStyleSheet(enabled_imgBtn_style if self.mode == 'add' else disabled_imgBtn_style)
+            self.btnUploadImg.setToolTip("")
 
+        self.btnUploadImg.setEnabled(self.mode == 'add' or self.editBTN.text() == "Cancel")
         self.addBTN.setEnabled(self.mode == 'add')
         self.editBTN.setEnabled(self.mode == 'view')
-
     def cancel_edit(self):
         self.editBTN.setText("Edit")
         self.set_button_styles()
