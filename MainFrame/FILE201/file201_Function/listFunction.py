@@ -14,6 +14,8 @@ class ListFunction:
     def __init__(self, main_window):
         self.main_window = main_window
 
+        self.main_window.employeeListTable.cellDoubleClicked.connect(self.on_emp_double_click)
+
     # Displays Current Date and Time
     def timeClock(self):
         time_format = strftime("%I:%M:%S %p")
@@ -354,3 +356,11 @@ class ListFunction:
             logging.error(f"Exception occurred while loading pixmap: {e}")
             return None
         return pixmap
+
+    def on_emp_double_click(self, row, column):
+        empl_id = self.main_window.employeeListTable.item(row, 0).text()
+
+        if empl_id:
+            self.open_otherInformationMODAL_view()
+        else:
+            QMessageBox.warning(self.main_window, "No Employee Selected", "Please select a valid employee.")

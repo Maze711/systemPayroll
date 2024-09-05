@@ -899,7 +899,7 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-51</y>
       <width>1218</width>
       <height>2318</height>
      </rect>
@@ -910,7 +910,7 @@ border-radius:5px
        <property name="minimumSize">
         <size>
          <width>1200</width>
-         <height>2300</height>
+         <height>2180</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -1400,7 +1400,7 @@ font-family: Poppins;
           <bool>false</bool>
          </property>
          <property name="maxLength">
-          <number>15</number>
+          <number>100</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblFirstName">
@@ -1440,7 +1440,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="maxLength">
-          <number>15</number>
+          <number>101</number>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtMiddleName">
@@ -1459,7 +1459,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="maxLength">
-          <number>15</number>
+          <number>100</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblMiddleName">
@@ -1759,8 +1759,11 @@ font-family: Poppins;
            <pointsize>10</pointsize>
           </font>
          </property>
+         <property name="inputMask">
+          <string notr="true"/>
+         </property>
          <property name="maxLength">
-          <number>11</number>
+          <number>100</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblReligion">
@@ -2263,7 +2266,47 @@ font-family: Poppins;
          </property>
          <item>
           <property name="text">
-           <string>A</string>
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>A+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>A-</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>B+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>B-</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AB+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AB-</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>O+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>O-</string>
           </property>
          </item>
         </widget>
@@ -2733,7 +2776,7 @@ color: white;
           <bool>false</bool>
          </property>
          <property name="maxLength">
-          <number>15</number>
+          <number>100</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblDependent">
@@ -2797,7 +2840,7 @@ color: white;
           <bool>false</bool>
          </property>
          <property name="maxLength">
-          <number>15</number>
+          <number>100</number>
          </property>
         </widget>
         <widget class="QLabel" name="lblEmergency">
@@ -3958,7 +4001,7 @@ border: 1px solid black;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1910</y>
+          <y>1780</y>
           <width>371</width>
           <height>321</height>
          </rect>
@@ -4159,7 +4202,7 @@ font-family: Poppins;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1890</y>
+          <y>1760</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -4178,7 +4221,7 @@ font-family: Poppins;
         <property name="geometry">
          <rect>
           <x>400</x>
-          <y>1890</y>
+          <y>1760</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -4197,7 +4240,7 @@ font-family: Poppins;
         <property name="geometry">
          <rect>
           <x>400</x>
-          <y>1910</y>
+          <y>1780</y>
           <width>381</width>
           <height>321</height>
          </rect>
@@ -4513,44 +4556,47 @@ font-family: Poppins;
   <tabstop>companyTextEdit_4</tabstop>
   <tabstop>addressTextEdit_4</tabstop>
   <tabstop>positionTextEdit_4</tabstop>
+  <tabstop>techSkillTextEdit</tabstop>
+  <tabstop>certiTextEdit1</tabstop>
   <tabstop>validationDate1</tabstop>
+  <tabstop>techSkillTextEdit_2</tabstop>
+  <tabstop>certiTextEdit1_2</tabstop>
   <tabstop>validationDate1_2</tabstop>
-  <tabstop>editBTN</tabstop>
-  <tabstop>saveBTN</tabstop>
-  <tabstop>revertBTN</tabstop>
-  <tabstop>cmbResigned_2</tabstop>
+  <tabstop>techSkillTextEdit_3</tabstop>
+  <tabstop>certiTextEdit1_3</tabstop>
+  <tabstop>validationDate1_3</tabstop>
+  <tabstop>collegeTextEdit</tabstop>
+  <tabstop>addressTextEdit</tabstop>
+  <tabstop>courseTextEdit</tabstop>
+  <tabstop>schoolYear</tabstop>
+  <tabstop>highTextEdit</tabstop>
+  <tabstop>addressTextEdit2</tabstop>
+  <tabstop>courseTextEdit2</tabstop>
+  <tabstop>schoolYear2</tabstop>
+  <tabstop>elemTextEdit</tabstop>
+  <tabstop>addressTextEdit3</tabstop>
+  <tabstop>courseTextEdit3</tabstop>
+  <tabstop>schoolYear3</tabstop>
+  <tabstop>txtPos</tabstop>
+  <tabstop>txtDept</tabstop>
+  <tabstop>cmbSchedIn</tabstop>
+  <tabstop>cmbSchedOut</tabstop>
+  <tabstop>txtRPH</tabstop>
+  <tabstop>txtRate</tabstop>
+  <tabstop>txtMonthSalary</tabstop>
+  <tabstop>txtDailyAllow</tabstop>
+  <tabstop>txtMonthAllow</tabstop>
+  <tabstop>btnUploadImg</tabstop>
   <tabstop>txtStatus</tabstop>
+  <tabstop>cmbResigned_2</tabstop>
   <tabstop>dateHired_2</tabstop>
   <tabstop>dateResigned</tabstop>
   <tabstop>txtVacn</tabstop>
-  <tabstop>validationDate1_3</tabstop>
-  <tabstop>techSkillTextEdit</tabstop>
-  <tabstop>techSkillTextEdit_2</tabstop>
-  <tabstop>techSkillTextEdit_3</tabstop>
-  <tabstop>certiTextEdit1</tabstop>
-  <tabstop>certiTextEdit1_2</tabstop>
-  <tabstop>certiTextEdit1_3</tabstop>
-  <tabstop>schoolYear</tabstop>
-  <tabstop>schoolYear2</tabstop>
   <tabstop>txtSick</tabstop>
   <tabstop>addBTN</tabstop>
-  <tabstop>schoolYear3</tabstop>
-  <tabstop>courseTextEdit3</tabstop>
-  <tabstop>collegeTextEdit</tabstop>
-  <tabstop>highTextEdit</tabstop>
-  <tabstop>elemTextEdit</tabstop>
-  <tabstop>addressTextEdit</tabstop>
-  <tabstop>addressTextEdit2</tabstop>
-  <tabstop>addressTextEdit3</tabstop>
-  <tabstop>courseTextEdit</tabstop>
-  <tabstop>courseTextEdit2</tabstop>
-  <tabstop>txtDept</tabstop>
-  <tabstop>txtPos</tabstop>
-  <tabstop>txtRate</tabstop>
-  <tabstop>txtRPH</tabstop>
-  <tabstop>txtDailyAllow</tabstop>
-  <tabstop>txtMonthSalary</tabstop>
-  <tabstop>txtMonthAllow</tabstop>
+  <tabstop>editBTN</tabstop>
+  <tabstop>saveBTN</tabstop>
+  <tabstop>revertBTN</tabstop>
  </tabstops>
  <resources/>
  <connections/>
