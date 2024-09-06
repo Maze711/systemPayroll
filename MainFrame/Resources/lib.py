@@ -15,7 +15,10 @@ from functools import wraps
 import traceback
 import bcrypt
 import openpyxl
-from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+from email import encoders
 import ssl
 import smtplib
 import warnings
@@ -30,7 +33,8 @@ from PyQt5.QtGui import QFont, QFontDatabase, QIntValidator, QStandardItemModel,
 from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
-    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox, QStackedWidget
+    QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox, QStackedWidget,
+    QHBoxLayout
 )
 from PyQt5.uic import loadUi
 from MainFrame.systemFunctions import single_function_logger

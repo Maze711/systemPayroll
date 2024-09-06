@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>370</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,51 @@
    <iconset>
     <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
+    min-height: 48px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}</string>
+  </property>
   <widget class="QPushButton" name="btnSendReport">
    <property name="geometry">
     <rect>
      <x>410</x>
-     <y>320</y>
+     <y>430</y>
      <width>140</width>
      <height>40</height>
     </rect>
@@ -38,9 +78,15 @@
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
-    <string notr="true">	background-color: &quot;#344273&quot;;
+    <string notr="true">#btnSendReport{
+	background-color: #344273;
 	color: white;
-border-radius: 5px;</string>
+	border-radius: 5px;
+}
+
+#btnSendReport:hover{
+	background-color: rgb(64, 83, 143);
+}</string>
    </property>
    <property name="text">
     <string>Send Report</string>
@@ -60,8 +106,8 @@ border-radius: 5px;</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>320</y>
-     <width>241</width>
+     <y>430</y>
+     <width>211</width>
      <height>41</height>
     </rect>
    </property>
@@ -74,7 +120,7 @@ border-radius: 5px;</string>
     </font>
    </property>
    <property name="text">
-    <string>Message will be sent once reported.</string>
+    <string>Message will be sent to developers once reported.</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignJustify|Qt::AlignVCenter</set>
@@ -89,7 +135,7 @@ border-radius: 5px;</string>
      <x>0</x>
      <y>0</y>
      <width>591</width>
-     <height>71</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -107,15 +153,15 @@ border-radius: 5px;</string>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>10</y>
+      <y>0</y>
       <width>401</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Poppins</family>
-      <pointsize>20</pointsize>
+      <pointsize>16</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -137,7 +183,7 @@ background-color: transparent;
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>320</y>
+     <y>430</y>
      <width>140</width>
      <height>40</height>
     </rect>
@@ -154,10 +200,16 @@ background-color: transparent;
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: #cccccc;
-color: black;
-border: 1px solid #666666;
-border-radius: 5px;</string>
+    <string notr="true">#btnCancel{
+	background-color: #cccccc;
+	color: black;
+	border: 1px solid #666666;
+	border-radius: 5px;
+}
+
+#btnCancel:hover{
+	background-color: rgb(191, 191, 191);
+}</string>
    </property>
    <property name="text">
     <string>Cancel</string>
@@ -177,9 +229,9 @@ border-radius: 5px;</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>90</y>
+     <y>110</y>
      <width>531</width>
-     <height>211</height>
+     <height>154</height>
     </rect>
    </property>
    <property name="font">
@@ -195,26 +247,160 @@ border-radius: 5px;</string>
     <string>Write your message here. Please include at least 10 characters.</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLineEdit" name="subjectTxt">
    <property name="geometry">
     <rect>
-     <x>510</x>
-     <y>260</y>
-     <width>31</width>
+     <x>20</x>
+     <y>70</y>
+     <width>531</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string/>
    </property>
-   <property name="pixmap">
-    <pixmap>../Icons/attachment.svg</pixmap>
+   <property name="placeholderText">
+    <string>Subject</string>
    </property>
-   <property name="scaledContents">
+  </widget>
+  <widget class="QScrollArea" name="attachment_scroll_area">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>320</y>
+     <width>531</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }
+
+#attachment_scroll_area{
+	border: 1px solid #666666;
+}
+
+#attachment_widget{
+	background-color: white;
+}</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="widgetResizable">
     <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scroll_contents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>529</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="attachMessage">
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <italic>true</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#attachMessage{
+	color:rgb(159, 159, 159);
+}</string>
+       </property>
+       <property name="text">
+        <string>Attached Files will be placed here. (Maximum of 3 files)</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="btnAttachFiles">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>270</y>
+     <width>531</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="toolTip">
+    <string>Attach Files</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#btnAttachFiles{ 
+	background-color: white;
+	border: 1px solid #666666;
+	border-radius: 5px;
+}
+
+#btnAttachFiles:hover {
+	background-color: rgb(238, 238, 238);
+}</string>
+   </property>
+   <property name="text">
+    <string>  Attach Files</string>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../Icons/attachment.svg</normaloff>../Icons/attachment.svg</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="default">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>subjectTxt</tabstop>
+  <tabstop>bugReportInputTxt</tabstop>
+  <tabstop>btnAttachFiles</tabstop>
+  <tabstop>attachment_scroll_area</tabstop>
+  <tabstop>btnSendReport</tabstop>
+  <tabstop>btnCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

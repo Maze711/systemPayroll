@@ -279,6 +279,7 @@ class MainWindowFunctions(QMainWindow):
         if self.bugReportModal.isVisible():
             self.bugReportModal.activateWindow()
         else:
+            self.bugReportModal.finished.connect(self.bugReportModal.cancelBtn)
             self.bugReportModal.show()
 
     def resource_path(self, relative_path):
