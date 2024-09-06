@@ -1,20 +1,15 @@
 from MainFrame.Resources.lib import *
 from MainFrame.main_functions import MainWindowFunctions
+from MainFrame.Database_Connection.notification_listener import NotificationService
+import threading
 
 class MainWindow(MainWindowFunctions):
     def __init__(self):
         super(MainWindow, self).__init__()
-
-        start_time = time.time()
-
-        # Log initial memory usage before UI loads
         self.log_memory_usage("Before UI load")
 
         ui_file = self.resource_path("MainFrame/Resources/UI/Main.ui")
         loadUi(ui_file, self)
-
-        # Log memory usage after UI loads
-        self.log_memory_usage("After UI load")
 
         self.setFixedSize(800, 600)
         self.initialize_widgets()
@@ -22,10 +17,14 @@ class MainWindow(MainWindowFunctions):
         self.setup_page_buttons()
         self.load_fonts()
 
-        self.log_memory_usage("After initialization")
+    def closeEvent(self, event):
+        """ Stop the notification service when the MainWindow is closed """
+        if self.notification_thread.is_alive():
+            self.notification_service.stop()
+            self.notification_thread.join()
+        logging.info("NotificationService has stopped.")
+        event.accept()
 
-        def keyPressEvent(self, event):
-            MainWindowFunctions.keyPressEvent(self, event)
 
 
 if __name__ == "__main__":

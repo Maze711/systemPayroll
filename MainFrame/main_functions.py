@@ -1,6 +1,8 @@
 import functools
 import psutil
 
+import threading
+from MainFrame.Database_Connection.notification_listener import NotificationService
 from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 # Import classes
 from MainFrame.Resources.lib import *
@@ -17,6 +19,12 @@ from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 class MainWindowFunctions(QMainWindow):
     def __init__(self):
         super(MainWindowFunctions, self).__init__()
+        self.notification_service = NotificationService()
+        self.notification_thread = threading.Thread(target=self.notification_service.poll_notifications)
+        self.server_thread = threading.Thread(target=self.notification_service.start_server)
+        self.notification_thread.start()
+        self.server_thread.start()
+
     @functools.cache
     def get_button_stylesheet(self, enabled=True):
         return '''
@@ -251,8 +259,11 @@ class MainWindowFunctions(QMainWindow):
     def openPayRoll(self):
         if self.payroll_window is not None:
             self.payroll_window.close()
+
         user_role = self.session_at_main.get("user_role")
-        self.payroll_window = PaytimeSheet(self, self.session_at_main, user_role)
+
+        # Pass notification_service to PaytimeSheet
+        self.payroll_window = PaytimeSheet(self, self.session_at_main, user_role, self.notification_service)
         self.open_dialogs.append(self.payroll_window)
 
         if self.payroll_window.isVisible():
