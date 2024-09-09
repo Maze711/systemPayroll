@@ -40,6 +40,7 @@ class timecard(QDialog):
 
             self.btnCCSched.clicked.connect(self.buttonFunctions.updateSchedule)
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)
+            self.btnImport.clicked.connect(self.handle_import_button_click)
             self.btnTimeSheet.clicked.connect(self.buttonFunctions.createTimeSheet)
             self.btnCheckSched.clicked.connect(self.buttonFunctions.CheckSched)
             self.TimeListTable.doubleClicked.connect(self.buttonFunctions.on_row_double_clicked)
@@ -54,3 +55,9 @@ class timecard(QDialog):
         except Exception as e:
             logging.error(f"Error in setupTimecardUI: {e}")
 
+    def handle_import_button_click(self):
+        """Handle the import button click event."""
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select .dat File", "", "DAT Files (*.dat);;All Files (*)", options=options)
+        if file_path:
+            self.populateComboBox.import_dat_file(file_path)

@@ -746,18 +746,28 @@ background-color: #c75657;
 	border-radius: 5px;
 }
 
-#btnTimeSheet, #btnExport{
+#btnTimeSheet, #btnImport{
 border-radius: 5px;
 	color: white;
 background-color: &quot;#30d977&quot;;
+}
+
+#btnExport{
+background-color: rgb(255, 110, 112);
+	color: white;
+	border-radius: 5px;
 }
 
 #btnCheckSched:hover, #btnFilter:hover{
 background-color: #485ba1;
 }
 
-#btnTimeSheet:hover, #btnExport:hover{
+#btnTimeSheet:hover, #btnImport:hover{
 	background-color: &quot;#26ad5f&quot;;
+}
+
+#btnExport:hover{
+background-color: #c75657;
 }
 
 </string>
@@ -871,6 +881,45 @@ background-color: #485ba1;
        </property>
        <property name="text">
         <string>PROCESS TIMESHEET</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnImport">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>IMPORT</string>
        </property>
        <property name="iconSize">
         <size>
