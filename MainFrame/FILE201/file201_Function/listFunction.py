@@ -149,16 +149,10 @@ class ListFunction:
                    t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                    t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
-                   e.highschoolYear, e.elemYear, ps.pos_descr, ps.sched_in, ps.sched_out, ps.dept_name, r.rph, r.rate,
-                   r.mth_salary, r.dailyallow, r.mntlyallow, s.compcode, s.dept_code, s.position, s.emp_stat, s.date_hired,
-                   s.resigned, s.dtresign, vcs.max_vacn, vcs.max_sick, img.empl_img
+                   e.highschoolYear, e.elemYear, img.empl_img
             FROM emp_info p
             LEFT JOIN educ_information e ON p.empl_id = e.empl_id
             LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
-            LEFT JOIN emp_posnsched ps ON p.empl_id = ps.empl_id
-            LEFT JOIN emp_rate r ON p.empl_id = r.empl_id
-            LEFT JOIN emp_status s ON p.empl_id = s.empl_id
-            LEFT JOIN vacn_sick_count vcs ON p.empl_id = vcs.empl_id
             LEFT JOIN family_background f ON p.empl_id = f.empl_id
             LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
             LEFT JOIN work_exp w ON p.empl_id = w.empl_id
@@ -266,27 +260,6 @@ class ListFunction:
                 "schoolYear": QDate.fromString(data['collegeYear'], "MM-dd-yyyy"),
                 "schoolYear2": QDate.fromString(data['highschoolYear'], "MM-dd-yyyy"),
                 "schoolYear3": QDate.fromString(data['elemYear'], "MM-dd-yyyy"),
-                # EMP_POSNSCHED TABLE
-                "txtPos": data['pos_descr'],
-                "txtDept": data['dept_name'],
-                "cmbSchedIn": data['sched_in'],
-                "cmbSchedOut": data['sched_out'],
-                # EMP_RATE TABLE
-                "txtRPH": data['rph'],
-                "txtRate": data['rate'],
-                "txtMonthSalary": data['mth_salary'],
-                "txtDailyAllow": data['dailyallow'],
-                "txtMonthAllow": data['mntlyallow'],
-                # EMP_STATUS TABLE
-                "lblComp": data['compcode'],
-                "lblDept_2": data['dept_code'],
-                "txtStatus": data['emp_stat'],
-                "dateHired_2": QDate.fromString(data['date_hired'], "MM-dd-yyyy"),
-                "dateResigned": QDate.fromString(data['dtresign'], "MM-dd-yyyy"),
-                "cmbResigned_2": data['resigned'],
-                # VACN_SICK_COUNT TABLE
-                "txtVacn": data['max_vacn'],
-                "txtSick": data['max_sick'],
                 # EMP_IMAGES TABLE
                 "lblViewImg": data['empl_img']
             }

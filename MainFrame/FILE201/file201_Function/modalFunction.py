@@ -128,30 +128,7 @@ class modalFunction:
 
                 ('College Graduate Year', self.main_window.schoolYear.date().toString("MM-dd-yyyy")),
                 ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM-dd-yyyy")),
-                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
-
-                # PosNSched text inputs
-                ('Description', self.main_window.txtPos.text()),
-                ('Department Name', self.main_window.txtDept.text()),
-                ('Sched In', self.main_window.cmbSchedIn.text()),
-                ('Sched Out', self.main_window.cmbSchedOut.text()),
-
-                # Employee Rate text inputs
-                ('RPH', self.main_window.txtRPH.text()),
-                ('Rate', self.main_window.txtRate.text()),
-                ('Month Salary', self.main_window.txtMonthSalary.text()),
-                ('Daily Allowance', self.main_window.txtDailyAllow.text()),
-                ('Monthly Allowance', self.main_window.txtMonthAllow.text()),
-
-                # Employee Status text inputs
-                ('Status', self.main_window.txtStatus.text()),
-                ('Resigned', self.main_window.cmbResigned_2.currentText()),
-                ('Date Hired', self.main_window.dateHired_2.date().toString("MM-dd-yyyy")),
-                ('Date Resign', self.main_window.dateResigned.date().toString("MM-dd-yyyy")),
-
-                # Vacation sick count text inputs
-                ('Max Vacation', self.main_window.txtVacn.text()),
-                ('Max sick', self.main_window.txtSick.text()),
+                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy"))
             ]
 
             not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
@@ -301,26 +278,7 @@ class modalFunction:
 
             'College Graduate Year': self.main_window.schoolYear.date().toString("MM-dd-yyyy"),
             'High-School Graduate Year': self.main_window.schoolYear2.date().toString("MM-dd-yyyy"),
-            'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy"),
-
-            'Description': self.main_window.txtPos.text(),
-            'Department Name': self.main_window.txtDept.text(),
-            'Sched In': self.main_window.cmbSchedIn.text(),
-            'Sched Out': self.main_window.cmbSchedOut.text(),
-
-            'RPH': self.main_window.txtRPH.text(),
-            'Rate': self.main_window.txtRate.text(),
-            'Month Salary': self.main_window.txtMonthSalary.text(),
-            'Daily Allowance': self.main_window.txtDailyAllow.text(),
-            'Monthly Allowance': self.main_window.txtMonthAllow.text(),
-
-            'Status': self.main_window.txtStatus.text(),
-            'Resigned': self.main_window.cmbResigned_2.currentText(),
-            'Date Hired': self.main_window.dateHired_2.date().toString("MM-dd-yyyy"),
-            'Date Resign': self.main_window.dateResigned.date().toString("MM-dd-yyyy"),
-
-            'Max Vacation': self.main_window.txtVacn.text(),
-            'Max sick': self.main_window.txtSick.text(),
+            'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy")
         }
         return data
 
