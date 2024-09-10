@@ -2,6 +2,8 @@ import sys
 import os
 import logging
 
+from MainFrame.notificationMaker import notificationLoader
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
@@ -17,113 +19,27 @@ class populateList:
     def __init__(self, parent):
         self.parent = parent
 
-    def import_dat_file(self, file_path):
-        """
-        Import data from a .dat file and update the existing data in the time list table.
-        """
+    def import_dat_file(self):
         try:
-            # Read the .dat file
-            if not os.path.exists(file_path):
-                logging.error(f"File not found: {file_path}")
-                return
+            # Open file dialog to select a .DAT file
+            fileName, _ = QFileDialog.getOpenFileName(self.parent, "Open DAT File", "", "DAT Files (*.DAT)")
+            if fileName:
+                logging.info(f"Selected file: {fileName}")
 
-            with open(file_path, 'r') as file:
-                data_lines = file.readlines()
-
-            # Process data from the .dat file
-            imported_data = self.process_dat_file(data_lines)
-
-            # Update existing data with new data
-            self.update_time_list_table(imported_data)
-
-            # Refresh the table display with the updated data
-            self.populate_time_list_table()
-
-            QMessageBox.information(self.parent, "Import Successful",
-                                    "Data has been successfully imported and updated.")
-
-        except Exception as e:
-            logging.error(f"Error importing .dat file: {e}")
-            QMessageBox.critical(self.parent, "Import Error",
-                                 f"An error occurred while importing the .dat file: {str(e)}")
-
-    def process_dat_file(self, data_lines):
-        """
-        Process the data lines from the .dat file.
-        Returns a list of processed data entries.
-        """
-        processed_data = []
-        for line in data_lines:
-            # Assuming the .dat file has tab-separated values
-            # Adjust the splitting logic if the format is different
-            fields = line.strip().split('\t')
-            if len(fields) >= 6:  # Ensure we have all required fields
-                bioNum, emp_name, trans_date, mach_code, check_in, check_out = fields[:6]
-                schedule = fields[6] if len(fields) > 6 else "N/A"
-                processed_data.append([bioNum, emp_name, trans_date, mach_code, check_in, check_out, schedule])
-        return processed_data
-
-    def update_time_list_table(self, imported_data):
-        """
-        Update the time list table with new data, updating existing entries or adding new ones.
-        """
-        # Create a dictionary of existing data for quick lookup
-        existing_data = {(row[0], row[2]): row for row in self.parent.original_data}
-
-        for entry in imported_data:
-            key = (entry[0], entry[2])  # BioNum and trans_date as key
-            if key in existing_data:
-                # Update existing entry
-                existing_data[key] = entry
+                notification_dialog = notificationLoader(fileName)
+                notification_dialog.importSuccessful.connect(self.update_after_import)
+                notification_dialog.exec_()
             else:
-                # Add new entry
-                existing_data[key] = entry
-
-        # Update original_data with the merged data
-        self.parent.original_data = list(existing_data.values())
-
-        # Update the database with the new data
-        self.update_database(self.parent.original_data)
-
-    def update_database(self, data):
-        """
-        Update the database with the new data.
-        """
-        connection = create_connection('NTP_LOG_IMPORTS')
-        if not connection:
-            return
-
-        try:
-            cursor = connection.cursor()
-
-            # Assuming you're using a single table for all data
-            table_name = "NTP_LOG_IMPORTS"
-
-            logging.info(f"Updating table: {table_name}")
-
-            # Insert the new data (replace or ignore existing data)
-            sql = f"""
-                INSERT INTO {table_name} (bioNum, trans_date, mach_code, time_in, time_out, schedule)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                mach_code = VALUES(mach_code),
-                time_in = VALUES(time_in),
-                time_out = VALUES(time_out),
-                schedule = VALUES(schedule)
-            """
-            cursor.executemany(sql, data)
-            connection.commit()
-
-            logging.info("Database updated successfully.")
-
+                QMessageBox.information(self.parent, "No File Selected", "Please select a DAT file to import.")
         except Exception as e:
-            logging.error(f"Error updating database: {e}")
-            QMessageBox.critical(self.parent, "Database Update Error",
-                                 f"An error occurred while updating the database: {str(e)}")
+            # Log any errors
+            logging.error(f"Error in import_dat_file: {e}")
+            QMessageBox.critical(self.parent, "File Import Error", f"An error occurred: {e}")
 
-        finally:
-            cursor.close()
-            connection.close()
+    def update_after_import(self):
+        # Update the necessary UI elements
+        self.populate_year_combo_box()
+        self.populate_date_combo_boxes()
 
     def populate_year_combo_box(self):
         """Populate the year combo box with available year-month combinations from table names."""
