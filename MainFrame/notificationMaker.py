@@ -171,6 +171,8 @@ class FileProcessor(QObject):
 
 
 class notificationLoader(QDialog):
+    importSuccessful = pyqtSignal()  # New signal for successful import
+
     def __init__(self, fileName):
         super(notificationLoader, self).__init__()
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
@@ -206,6 +208,7 @@ class notificationLoader(QDialog):
         self.thread.wait()
 
         QMessageBox.information(self, "File Processing Complete", "The file has been successfully imported.")
+        self.importSuccessful.emit()  # Emit the signal when import is successful
         self.close()
 
     def fileProcessingError(self, error):
