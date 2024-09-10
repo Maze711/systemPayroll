@@ -26,7 +26,6 @@ def add_employee(data):
         insert_work_exp(cursor, generated_id, data)
         insert_educ_information(cursor, generated_id, data)
         insert_tech_skills(cursor, generated_id, data)
-        insert_emp_rate(cursor, generated_id, data)
         insert_emp_img(cursor, generated_id, data)
 
         # Commit the changes to the FILE201 database
@@ -155,18 +154,6 @@ def insert_tech_skills(cursor, empl_id, data):
     cursor.execute(query, values)
     logging.info("Inserted into tech_skills table")
 
-
-def insert_emp_rate(cursor, empl_id, data):
-    query = """
-    INSERT INTO emp_rate(empl_id, rph, rate, mth_salary, dailyallow, mntlyallow)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    """
-    values = (
-        empl_id, data.get('RPH', ''), data.get('Rate', ''), data.get('Month Salary', ''),
-        data.get('Daily Allowance', ''), data.get('Monthly Allowance', '')
-    )
-    cursor.execute(query, values)
-    logging.info("Inserted into emp_rate table")
 
 def insert_emp_img(cursor, empl_id, data):
     query = """

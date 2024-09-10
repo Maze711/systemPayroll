@@ -179,13 +179,6 @@ class personalModal(QDialog):
         self.pagibigTextEdit.setValidator(int_validator)
         self.philHealthTextEdit.setValidator(int_validator)
         self.tinTextEdit.setValidator(int_validator)
-        self.txtRPH.setValidator(int_validator)
-        self.txtRate.setValidator(int_validator)
-        self.txtMonthSalary.setValidator(int_validator)
-        self.txtDailyAllow.setValidator(int_validator)
-        self.txtMonthAllow.setValidator(int_validator)
-        self.txtVacn.setValidator(int_validator)
-        self.txtSick.setValidator(int_validator)
 
     def set_keyboard_shortcut(self):
         self.shortcut = QtWidgets.QShortcut(Qt.Key_Escape, self)
