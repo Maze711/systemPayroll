@@ -1,0 +1,45 @@
+HRTPAYMS SYSTEM UPDATE BEFORE DRY RUN:
+
+HR Application side:
+ - Center table data
+ - EMP image is not in required fields
+ - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL)
+ - Remove uneccesary UI in Employee Info modal
+
+Timekeeper Side Application:
+ - Filter button stills open even there's no data within the table (BUG\Unresolved)
+ - Drop down for every row (Time in and Time out column)
+ - Loader when fetching the value from selecting YEAR, DAY FROM AND TO
+ - It said if it's already used it should not editable and only view (for the populated_table)
+
+Paytimesheet Side Application: 
+ - Computation of hours/day is not yet done
+ - Export button into excel not yet implemented
+ - The data we should have to compare if it's receive is not yet given
+ - It should importing also into archive DB
+ - Search field doesn't working
+ - Hours work should be I think 2 decimal places only?
+ - Cost center should be Department
+
+Paymaster 1 Side Application:
+ - Already created a row even though there's no data yet
+ - Under notification it should be have the value right away not when it load up
+ - UI Changes
+ - Crashing the application when the create paytrans is clicked since there's no data yet
+ 
+Paytrans Side application:
+ - BASIC, DAILYRATE, DAYSWORK, OT_Earn, REGULARND, Late, Undertime this columns already have a computation
+ - When importing the deductions from database it's crashing the application
+ - Pay_ded naming should be renamed
+
+PayDeduction (Paymaster2) Side Application:
+ - Already created a row even though there's no data yet
+ - Window still not a fixed 
+
+
+OVERALL SIDE:
+ - When closing the application it should off the notification also
+ - Integer Input Validation
+ - Font loader make it work
+ - Always return a QMessageBox instead of crashing the application (When we validate the application again)
+ - Testing and Documentation

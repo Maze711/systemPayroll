@@ -480,51 +480,6 @@ class buttonTimecardFunction:
                 "Please select a row from the table first!"
             )
 
-    def on_row_double_clicked(self, index):
-        try:
-            logging.debug("Row double-clicked in TimeListTable.")
-            selected_row = index.row()
-
-            if selected_row != -1:
-                bioNum = self.parent.TimeListTable.item(selected_row, 0).text() if self.parent.TimeListTable.item(
-                    selected_row, 0) else "N/A"
-                empName = self.parent.TimeListTable.item(selected_row, 1).text() if self.parent.TimeListTable.item(
-                    selected_row, 1) else "N/A"
-                trans_date = self.parent.TimeListTable.item(selected_row, 2).text() if self.parent.TimeListTable.item(
-                    selected_row, 2) else "N/A"
-                checkIn = self.parent.TimeListTable.item(selected_row, 4).text() if self.parent.TimeListTable.item(
-                    selected_row, 4) else "Missing"
-                checkOut = self.parent.TimeListTable.item(selected_row, 5).text() if self.parent.TimeListTable.item(
-                    selected_row, 5) else "Missing"
-                sched = self.parent.TimeListTable.item(selected_row, 6).text() if self.parent.TimeListTable.item(
-                    selected_row, 6) else "N/A"
-
-                total_hours = self.getTotalHoursWorked(checkIn, checkOut)
-
-                empNum = "DefaultEmpNum"  # Replace with the actual employee number if available
-                data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours]
-
-                if len(data) == 8:
-                    logging.debug(f"Data is valid. Opening chkSched dialog with data: {data}")
-                    dialog = chkSched(data)  # Ensure chkSched is defined/imported
-                    dialog.exec_()
-                else:
-                    logging.warning("Insufficient data to process. Please check the row data.")
-                    QMessageBox.warning(
-                        self.parent,
-                        "Data Error",
-                        "Insufficient data to process. Please check the row data."
-                    )
-            else:
-                logging.warning("No row selected in TimeListTable.")
-                QMessageBox.warning(
-                    self.parent,
-                    "No Row Selected",
-                    "Please select a row from the table first!"
-                )
-        except Exception as e:
-            logging.error(f"Error in on_row_double_clicked: {e}", exc_info=True)
-
     def getTotalHoursWorked(self, time_start, time_end):
         # Ensure time is in correct format
         try:

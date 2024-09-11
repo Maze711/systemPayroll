@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1065</width>
-    <height>506</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="font">
@@ -23,9 +23,20 @@
     <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">*{
-background-color: white;
-font-family: poppins;
+   <string notr="true">#employeeRate, #scrollAreaWidgetContents_2{
+background-color: #DCE5FE;
+border: 1px solid black;
+}
+
+#employeeDetails{
+background-color: #DCE5FE;
+}
+
+QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
 }
 
 /* VERTICAL SCROLLBAR */
@@ -86,346 +97,105 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
      <property name="styleSheet">
       <string notr="true"/>
      </property>
-     <widget class="QLabel" name="lblName">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>171</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Employee Name:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblBio">
-      <property name="geometry">
-       <rect>
-        <x>480</x>
-        <y>20</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Bio No.:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="bioNumTxt">
-      <property name="geometry">
-       <rect>
-        <x>570</x>
-        <y>20</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblBio_2">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>20</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Time In:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblBio_3">
-      <property name="geometry">
-       <rect>
-        <x>860</x>
-        <y>20</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Time Out:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="timeInTxt">
-      <property name="geometry">
-       <rect>
-        <x>780</x>
-        <y>20</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="timeOutTxt">
-      <property name="geometry">
-       <rect>
-        <x>970</x>
-        <y>20</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="holidayNameTxt">
-      <property name="geometry">
-       <rect>
-        <x>850</x>
-        <y>60</y>
-        <width>181</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblType">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>60</y>
-        <width>151</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Holiday Name:</string>
-      </property>
-     </widget>
-     <widget class="QDateEdit" name="dateOfWork">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>70</y>
-        <width>181</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="displayFormat">
-       <string>yyyy-MM-dd</string>
-      </property>
-      <property name="calendarPopup">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblType_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Date of Work:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="empNameTxt">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>10</y>
-        <width>291</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>70</y>
-        <width>151</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Hours Worked:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="hoursWorkedTxt">
-      <property name="geometry">
-       <rect>
-        <x>500</x>
-        <y>70</y>
-        <width>181</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>poppins</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="font">
-      <font>
-       <family>poppins</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QScrollBar:vertical {
-	border: none;
-    background: rgba(217, 217, 217, 1);
- }</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOn</enum>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
+     <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>1035</width>
-        <height>500</height>
+        <y>120</y>
+        <width>1041</width>
+        <height>381</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>500</height>
-       </size>
-      </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">#frame{
+border-top: 2px solid black;
+}
+
+QLabel{
+border: none;
+}
+
+QComboBox{
+border-radius: 4px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <property name="styleSheet">
-          <string notr="true">QComboBox{
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="geometry">
+        <rect>
+         <x>509</x>
+         <y>10</y>
+         <width>531</width>
+         <height>311</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>519</width>
+          <height>370</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>370</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QWidget" name="widget_3" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QComboBox{
 border: 1px solid black;
 border-radius: 5px;
 }
@@ -434,100 +204,221 @@ QLineEdit {
 border: 1px solid black;
 border-radius: 5px;
 }</string>
-         </property>
-         <widget class="QLabel" name="lblBio_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>20</y>
-            <width>101</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Schedule:</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblType_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>70</y>
-            <width>151</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Type of Day:</string>
-          </property>
-         </widget>
-         <widget class="QPlainTextEdit" name="plainTextEdit">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>140</y>
-            <width>450</width>
-            <height>300</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblType_4">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>110</y>
-            <width>151</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Validation Note:</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton">
-          <property name="geometry">
-           <rect>
-            <x>530</x>
-            <y>400</y>
-            <width>470</width>
-            <height>40</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">#pushButton{
+           </property>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="lblName_2">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>16</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Absent/Leave</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="payDed1_2">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Max Vacation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="txtVacn">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="payDed1_3">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Max Sick</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="txtSick">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="payDed1">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Emergency Leave</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="txtEmerLeave"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="payDed2">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Magda Carta</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="txtMagda"/>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="payDed3">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maternity Leave</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLineEdit" name="txtMaternity"/>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="payDed4">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Paternity leave</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLineEdit" name="txtPaternity"/>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="payDed5">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Sole Ferenen</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QLineEdit" name="txtSole"/>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="payDed6">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Specialy for women</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QLineEdit" name="txtSpecialy"/>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="payDed6_2">
+              <property name="font">
+               <font>
+                <family>poppins</family>
+                <pointsize>12</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>SIL/BL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QLineEdit" name="txtSIL"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>330</y>
+         <width>470</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#pushButton{
 	background-color: &quot;#344273&quot;;
 	color: white;
 }
@@ -535,565 +426,710 @@ border-radius: 5px;
 #pushButton:hover{
 background-color: &quot;#2d3963&quot;
 }</string>
-          </property>
-          <property name="text">
-           <string> Update</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../../MainFrame/Resources/Icons/update.svg</normaloff>../../MainFrame/Resources/Icons/update.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="typeOfDayCb">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>70</y>
-            <width>201</width>
-            <height>22</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
-          <item>
-           <property name="text">
-            <string>Ordinary Day</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Regular Holiday</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Special Holiday</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QComboBox" name="costCenterFrom">
-          <property name="geometry">
-           <rect>
-            <x>120</x>
-            <y>20</y>
-            <width>99</width>
-            <height>22</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <item>
-           <property name="text">
-            <string>00:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>01:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>02:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>03:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>04:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>05:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>06:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>07:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>08:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>09:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>10:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>11:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>12:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>13:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>14:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>15:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>16:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>17:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>18:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>19:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>20:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>21:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>22:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>23:00</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QComboBox" name="costCenterFrom_2">
-          <property name="geometry">
-           <rect>
-            <x>230</x>
-            <y>20</y>
-            <width>99</width>
-            <height>22</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <item>
-           <property name="text">
-            <string>00:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>01:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>02:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>03:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>04:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>05:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>06:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>07:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>08:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>09:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>10:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>11:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>12:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>13:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>14:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>15:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>16:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>17:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>18:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>19:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>20:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>21:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>22:00</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>23:00</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QLineEdit" name="txtSpecialy">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>300</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtEmerLeave">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>50</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed3">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>150</y>
-            <width>141</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Maternity Leave</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSole">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>250</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed1">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>50</y>
-            <width>161</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Emergency Leave</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtPaternity">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>200</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed4">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>200</y>
-            <width>131</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Paternity leave</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed2">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>100</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Magda Carta</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtMagda">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>100</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed5">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>250</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Sole Ferenen</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblName_2">
-          <property name="geometry">
-           <rect>
-            <x>520</x>
-            <y>10</y>
-            <width>151</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>16</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Absent/Leave</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtMaternity">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>150</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed6">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>300</y>
-            <width>171</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Specialy for women</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSIL">
-          <property name="geometry">
-           <rect>
-            <x>730</x>
-            <y>350</y>
-            <width>270</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed6_2">
-          <property name="geometry">
-           <rect>
-            <x>525</x>
-            <y>350</y>
-            <width>171</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>SIL/BL</string>
-          </property>
-         </widget>
-        </widget>
+       </property>
+       <property name="text">
+        <string> Update</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../MainFrame/Resources/Icons/update.svg</normaloff>../../MainFrame/Resources/Icons/update.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblType_4">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>90</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Validation Note:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblType_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Type of Day:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="costCenterFrom_2">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>10</y>
+         <width>99</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>00:00</string>
+        </property>
        </item>
-      </layout>
+       <item>
+        <property name="text">
+         <string>01:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>02:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>03:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>04:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>05:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>06:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>07:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>08:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>09:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>11:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>12:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>13:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>14:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>15:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>16:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>17:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>18:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>19:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>21:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>22:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>23:00</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="lblBio_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Schedule:</string>
+       </property>
+      </widget>
+      <widget class="QPlainTextEdit" name="plainTextEdit">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>109</y>
+         <width>450</width>
+         <height>260</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="costCenterFrom">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>10</y>
+         <width>99</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>01:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>02:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>03:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>04:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>05:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>06:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>07:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>08:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>09:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>11:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>12:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>13:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>14:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>15:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>16:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>17:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>18:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>19:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>21:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>22:00</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>23:00</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="typeOfDayCb">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>50</y>
+         <width>201</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>Ordinary Day</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Regular Holiday</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Special Holiday</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="employeeDetails" native="true">
+      <property name="geometry">
+       <rect>
+        <x>-20</x>
+        <y>-10</y>
+        <width>1071</width>
+        <height>130</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>130</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>poppins</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <widget class="QLabel" name="lblName">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>171</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Employee Name:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="empNameTxt">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>20</y>
+         <width>291</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QDateEdit" name="dateOfWork">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>100</y>
+         <width>181</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="displayFormat">
+        <string>yyyy-MM-dd</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblType_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>100</y>
+         <width>141</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Date of Work:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="bioNumTxt">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>60</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblBio">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>60</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bio No.:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="timeOutTxt">
+       <property name="geometry">
+        <rect>
+         <x>860</x>
+         <y>30</y>
+         <width>110</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="timeInTxt">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>30</y>
+         <width>110</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblBio_2">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>30</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Time In:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblBio_3">
+       <property name="geometry">
+        <rect>
+         <x>760</x>
+         <y>30</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Time Out:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="holidayNameTxt">
+       <property name="geometry">
+        <rect>
+         <x>860</x>
+         <y>100</y>
+         <width>181</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="hoursWorkedTxt">
+       <property name="geometry">
+        <rect>
+         <x>510</x>
+         <y>100</y>
+         <width>181</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>100</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Hours Worked:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblType">
+       <property name="geometry">
+        <rect>
+         <x>700</x>
+         <y>100</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>poppins</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Holiday Name:</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>

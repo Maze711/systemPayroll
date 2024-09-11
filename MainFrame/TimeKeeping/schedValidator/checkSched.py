@@ -10,7 +10,7 @@ from MainFrame.systemFunctions import globalFunction, timekeepingFunction
 class chkSched(QDialog):
     def __init__(self, data):
         super(chkSched, self).__init__()
-        self.setFixedSize(1065, 506)
+        self.setFixedSize(1065, 515)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\Schedule.ui")
         loadUi(ui_file, self)
 
