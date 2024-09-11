@@ -39,7 +39,7 @@ PayDeduction (Paymaster2) Side Application:
 
 OVERALL SIDE:
  - When closing the application it should off the notification also
- - Integer Input Validation
+ - Integer Input Validation * DONE *
  - Font loader make it work
  - Always return a QMessageBox instead of crashing the application (When we validate the application again)
  - Testing and Documentation
