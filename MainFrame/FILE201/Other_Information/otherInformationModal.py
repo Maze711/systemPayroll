@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, ValidInteger
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
@@ -33,8 +33,13 @@ class personalModal(QDialog):
         self.editBTN.clicked.connect(self.on_edit_clicked)
         self.saveBTN.clicked.connect(self.functions.save_Employee)
         self.revertBTN.clicked.connect(self.functions.revert_Employee)
+        
+        validator = ValidInteger()
 
-        self.set_validators()
+        validator.set_validators(self.txtZip, self.txtPhone, self.txtHeight,
+                                 self.txtWeight, self.sssTextEdit,
+                                 self.pagibigTextEdit, self.philHealthTextEdit, self.tinTextEdit)
+
         self.set_keyboard_shortcut()
 
     def setup_initial_state(self):
@@ -168,17 +173,6 @@ class personalModal(QDialog):
         for widget in self.findChildren(QtWidgets.QDateEdit):
             widget.setDate(current_date)
 
-    def set_validators(self):
-        int_validator = QIntValidator()
-
-        self.txtZip.setValidator(int_validator)
-        self.txtPhone.setValidator(int_validator)
-        self.txtHeight.setValidator(int_validator)
-        self.txtWeight.setValidator(int_validator)
-        self.sssTextEdit.setValidator(int_validator)
-        self.pagibigTextEdit.setValidator(int_validator)
-        self.philHealthTextEdit.setValidator(int_validator)
-        self.tinTextEdit.setValidator(int_validator)
 
     def set_keyboard_shortcut(self):
         self.shortcut = QtWidgets.QShortcut(Qt.Key_Escape, self)

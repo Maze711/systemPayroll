@@ -171,7 +171,7 @@ font-family: Poppins;
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-59</y>
           <width>519</width>
           <height>370</height>
          </rect>
