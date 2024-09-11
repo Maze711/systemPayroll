@@ -2,7 +2,7 @@ HRTPAYMS SYSTEM UPDATE BEFORE DRY RUN:
 
 HR Application side:
  - Center table data
- - EMP image is not in required fields
+ - EMP image is not in required fields * DONE *
  - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL)
  - Remove uneccesary UI in Employee Info modal
 

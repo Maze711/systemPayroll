@@ -175,14 +175,25 @@ def send_notification(empl_id, data):
 
         notification_cursor = notification_connection.cursor()
 
-        query = """
-        INSERT INTO paymaster_notification_user(empl_id, surname, firstname, mi)
-        VALUES (%s, %s, %s, %s)
+        # Retrieve the current maximum notif_count from the database (global, not specific to empl_id)
+        get_count_query = """
+        SELECT MAX(notif_count) FROM paymaster_notification_user
+        """
+        notification_cursor.execute(get_count_query)
+        current_notif_count = notification_cursor.fetchone()[0]
+
+        # Increment the notif_count, start at 1 if there's no existing notification
+        new_notif_count = 1 if current_notif_count is None else current_notif_count + 1
+
+        # Insert the new notification for the given empl_id with the incremented global notif_count
+        insert_query = """
+        INSERT INTO paymaster_notification_user(empl_id, notif_count, surname, firstname, mi)
+        VALUES (%s, %s, %s, %s, %s)
         """
         values = (
-            empl_id, data.get('Last Name', ''), data.get('First Name', ''), data.get('Middle Name', '')
+            empl_id, new_notif_count, data.get('Last Name', ''), data.get('First Name', ''), data.get('Middle Name', '')
         )
-        notification_cursor.execute(query, values)
+        notification_cursor.execute(insert_query, values)
         logging.info("Inserted into paymaster_notification_user table")
 
         notification_connection.commit()
@@ -198,7 +209,6 @@ def send_notification(empl_id, data):
         if notification_connection is not None and notification_connection.is_connected():
             notification_connection.close()
             logging.info("Notification database connection closed")
-
 
 def get_generated_employee_id(employee_id):
     # Convert the employee_id to a string and pad with zeros if necessary
