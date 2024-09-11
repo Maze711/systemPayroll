@@ -1,5 +1,5 @@
 from MainFrame.Resources.lib import *
-from MainFrame.systemFunctions import globalFunction
+from MainFrame.systemFunctions import globalFunction, ValidInteger
 from MainFrame.Database_Connection.notification_listener import NotificationService
 from MainFrame.Payroll.payroll_functions.payaddEmpFunction import PayAddEmpFunction
 import mysql.connector
@@ -13,6 +13,12 @@ class payAddEmployee(QDialog):
         self.setFixedSize(1065, 506)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\employeeList_Accountant.ui")
         loadUi(ui_file, self)
+        validator = ValidInteger()
+
+        validator.set_validators(self.dailyAllowTxt, self.monthlyAllowanceTxt, self.monthlySalaryTxt,
+                                 self.rateTxt, self.rphTxt, self.sssTextEdit, self.pagibigTextEdit,
+                                 self.philHealthTextEdit, self.tinTextEdit, self.txtTaxstat, self.txtAccount,
+                                 self.txtBank, self.txtCola)
 
         self.notification_service = NotificationService()
         self.emp_functionality = PayAddEmpFunction(self.notification_service, self)
@@ -109,7 +115,7 @@ class payAddEmployee(QDialog):
                 self.bioNumTxt.clear()
                 self.empNameTxt.clear()
                 self.dailyAllowTxt.clear()
-                self.monthlyAllowTxt.clear()
+                self.monthlyAllowanceTxt.clear()
                 self.monthlySalaryTxt.clear()
                 self.rateTxt.clear()
                 self.rphTxt.clear()

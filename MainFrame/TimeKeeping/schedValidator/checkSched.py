@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
 from MainFrame.Database_Connection.DBConnection import create_connection
-from MainFrame.systemFunctions import globalFunction, timekeepingFunction
+from MainFrame.systemFunctions import globalFunction, timekeepingFunction, ValidInteger
 
 
 class chkSched(QDialog):
@@ -16,6 +16,12 @@ class chkSched(QDialog):
 
         self.data = data
         self.populate_schedule_with_data(data)
+
+        validator = ValidInteger()
+
+        validator.set_validators(self.txtVacn, self.txtSick, self.txtEmerLeave,
+                                 self.txtMagda, self.txtMaternity,
+                                 self.txtPaternity, self.txtSole, self.txtSpecialy, self.txtSIL)
 
     def populate_schedule_with_data(self, data):
         (empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours) = data

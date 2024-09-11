@@ -274,3 +274,12 @@ class timekeepingFunction():
                 instance.populatePaytimeSheetTable(filtered_data)
             elif hasattr(instance, 'populatePayTransTable'):
                 instance.populatePayTransTable(filtered_data)
+
+class ValidInteger:
+    def __init__(self):
+        self.int_validator = QIntValidator()
+
+    def set_validators(self, *text_fields):
+        """Sets integer validators for provided text fields."""
+        for field in text_fields:
+            field.setValidator(self.int_validator)

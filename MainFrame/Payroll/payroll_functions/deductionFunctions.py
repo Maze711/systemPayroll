@@ -5,7 +5,7 @@ from openpyxl.workbook import Workbook
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
-from MainFrame.systemFunctions import globalFunction, FileProcessor
+from MainFrame.systemFunctions import globalFunction, FileProcessor, ValidInteger
 from MainFrame.Payroll.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 
@@ -84,40 +84,35 @@ class DeductionFunctions:
             bio_num_item = self.parent.paytimesheetTable.item(selected_row, 1)
 
             # Fetch all deductions
-            late_absent_item = self.parent.paytimesheetTable.item(selected_row, 3)
-            sss_loan_item = self.parent.paytimesheetTable.item(selected_row, 4)
-            pagibig_loan_item = self.parent.paytimesheetTable.item(selected_row, 5)
-            cash_advance_item = self.parent.paytimesheetTable.item(selected_row, 6)
-            canteen_item = self.parent.paytimesheetTable.item(selected_row, 7)
-            tax_item = self.parent.paytimesheetTable.item(selected_row, 8)
-            sss_item = self.parent.paytimesheetTable.item(selected_row, 9)
-            medicare_philhealth_item = self.parent.paytimesheetTable.item(selected_row, 10)
-            pagibig_item = self.parent.paytimesheetTable.item(selected_row, 11)
-            clinic_item = self.parent.paytimesheetTable.item(selected_row, 12)
-            arayata_annual_item = self.parent.paytimesheetTable.item(selected_row, 13)
-            hmi_item = self.parent.paytimesheetTable.item(selected_row, 14)
-            funeral_item = self.parent.paytimesheetTable.item(selected_row, 15)
-            voluntary_item = self.parent.paytimesheetTable.item(selected_row, 16)
-
-            # Each column/cell values
-            emp_name = emp_name_item.text() if emp_name_item else ""
-            bio_num = bio_num_item.text() if bio_num_item else ""
-
             deduction_values_mapping = {
-                1: late_absent_item.text() if late_absent_item else "",
-                2: sss_loan_item.text() if sss_loan_item else "",
-                3: pagibig_loan_item.text() if pagibig_loan_item else "",
-                4: cash_advance_item.text() if cash_advance_item else "",
-                5: canteen_item.text() if canteen_item else "",
-                6: tax_item.text() if tax_item else "",
-                7: sss_item.text() if sss_item else "",
-                8: medicare_philhealth_item.text() if medicare_philhealth_item else "",
-                9: pagibig_item.text() if pagibig_item else "",
-                10: clinic_item.text() if clinic_item else "",
-                11: arayata_annual_item.text() if arayata_annual_item else "",
-                12: hmi_item.text() if hmi_item else "",
-                13: funeral_item.text() if funeral_item else "",
-                14: voluntary_item.text() if voluntary_item else ""
+                1: self.parent.paytimesheetTable.item(selected_row, 3).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 3) else "",
+                2: self.parent.paytimesheetTable.item(selected_row, 4).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 4) else "",
+                3: self.parent.paytimesheetTable.item(selected_row, 5).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 5) else "",
+                4: self.parent.paytimesheetTable.item(selected_row, 6).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 6) else "",
+                5: self.parent.paytimesheetTable.item(selected_row, 7).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 7) else "",
+                6: self.parent.paytimesheetTable.item(selected_row, 8).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 8) else "",
+                7: self.parent.paytimesheetTable.item(selected_row, 9).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 9) else "",
+                8: self.parent.paytimesheetTable.item(selected_row, 10).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 10) else "",
+                9: self.parent.paytimesheetTable.item(selected_row, 11).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 11) else "",
+                10: self.parent.paytimesheetTable.item(selected_row, 12).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 12) else "",
+                11: self.parent.paytimesheetTable.item(selected_row, 13).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 13) else "",
+                12: self.parent.paytimesheetTable.item(selected_row, 14).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 14) else "",
+                13: self.parent.paytimesheetTable.item(selected_row, 15).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 15) else "",
+                14: self.parent.paytimesheetTable.item(selected_row, 16).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 16) else ""
             }
 
             ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\deduction.ui")
@@ -129,14 +124,22 @@ class DeductionFunctions:
             bioNumTxt = self.deductionQDialog.findChild(QLabel, 'bioNumTxt')
 
             if empNameTxt:
-                empNameTxt.setText(emp_name)
+                empNameTxt.setText(emp_name_item.text() if emp_name_item else "")
             if bioNumTxt:
-                bioNumTxt.setText(bio_num)
+                bioNumTxt.setText(bio_num_item.text() if bio_num_item else "")
 
-            # Adding the values to each input fields (if there's any)
+            # Set the deduction values to the input fields
             for i in range(1, 15):
-                self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}').setText(deduction_values_mapping[i])
+                field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
+                if field:
+                    field.setText(deduction_values_mapping[i])
 
+            # Now apply the integer validator to the deduction fields
+            validator = ValidInteger()
+            ded_fields = [self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}') for i in range(1, 15)]
+            validator.set_validators(*ded_fields)
+
+            # Connect the placeBTN if exists
             self.placeBTN = self.deductionQDialog.findChild(QPushButton, 'placeBTN')
             if self.placeBTN:
                 self.placeBTN.clicked.connect(lambda: self.placeDeductions(self.deductionQDialog))
