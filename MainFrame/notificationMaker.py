@@ -73,7 +73,7 @@ class FileProcessor(QObject):
             return 'Unknown'
 
     def combineTimeInOut(self):
-        """Combines Time IN and Time OUT into a single DataFrame."""
+        """Combines Time IN and Time OUT into a single DataFrame, using 'N/A' for missing entries."""
         combined_data = []
 
         for bio_no, group in self.data.groupby(['bio_no', 'date']):
@@ -81,19 +81,23 @@ class FileProcessor(QObject):
             time_out_data = group[group['sched'] == 'Time OUT']
 
             # Get the last Time IN and last Time OUT for the day
-            if not time_in_data.empty:
-                last_time_in = time_in_data.sort_values(by='time').iloc[-1]
-                if not time_out_data.empty:
-                    last_time_out = time_out_data.sort_values(by='time').iloc[-1]
-                    combined_data.append([
-                        last_time_in['bio_no'],
-                        last_time_in['date'],
-                        last_time_in['mach_code'],
-                        last_time_in['time'],
-                        last_time_out['time']
-                    ])
+            last_time_in = time_in_data.sort_values(by='time').iloc[-1] if not time_in_data.empty else None
+            last_time_out = time_out_data.sort_values(by='time').iloc[-1] if not time_out_data.empty else None
+            # iloc means integer location
+
+            if last_time_in is not None or last_time_out is not None:
+                combined_data.append([
+                    last_time_in['bio_no'] if last_time_in is not None else last_time_out['bio_no'],
+                    last_time_in['date'] if last_time_in is not None else last_time_out['date'],
+                    last_time_in['mach_code'] if last_time_in is not None else last_time_out['mach_code'],
+                    last_time_in['time'] if last_time_in is not None else 'N/A',
+                    last_time_out['time'] if last_time_out is not None else 'N/A'
+                ])
 
         combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
+        # Replace NaN values with 'N/A'
+        # fillna is a method in pandas that is used to fill missing values (NA or NaN)
+        combined_df = combined_df.fillna('N/A')
         return combined_df
 
     def chunkDataByMonth(self):
@@ -110,7 +114,7 @@ class FileProcessor(QObject):
         return chunks
 
     def importChunkToDatabase(self, chunk_file, chunk_name):
-        """Imports the chunk data into the database."""
+        """Imports the chunk data into the database, handling 'N/A' values."""
         connection = create_connection('NTP_LOG_IMPORTS')
         if connection is None:
             self.error.emit("Failed to connect to LIST_LOG_IMPORT database.")
@@ -119,7 +123,7 @@ class FileProcessor(QObject):
         cursor = connection.cursor()
 
         # Create table name based on chunk name
-        table_name = chunk_name  # No need to replace '-' with '_'
+        table_name = chunk_name
 
         create_table_query = f"""
             CREATE TABLE IF NOT EXISTS {table_name} (
@@ -127,8 +131,8 @@ class FileProcessor(QObject):
                 bioNum INT,
                 date DATE,
                 machCode VARCHAR(225),
-                time_in TIME,
-                time_out TIME,
+                time_in VARCHAR(225),
+                time_out VARCHAR(225),
                 edited_by VARCHAR(225),
                 edited_by_when DATETIME,
                 UNIQUE KEY unique_entry (bioNum, date, machCode)
@@ -142,7 +146,8 @@ class FileProcessor(QObject):
             return
 
         try:
-            chunk_data = pd.read_csv(chunk_file, sep='\t', header=None)
+            chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, na_values=['N/A'], keep_default_na=False)
+            chunk_data = chunk_data.fillna('N/A')
             for _, entry in chunk_data.iterrows():
                 insert_query = f"""
                     INSERT INTO {table_name} (bioNum, date, machCode, time_in, time_out)
