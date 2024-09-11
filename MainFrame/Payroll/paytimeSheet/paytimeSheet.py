@@ -24,7 +24,7 @@ class PaytimeSheet(QMainWindow):
         self.original_data = content
         self.user_role = user_role
         self.notification_service = notification_service
-
+        self.setFixedSize(1699, 663)
 
         # Load different UI based on user_role
         if user_role == "Pay Master 2":
