@@ -44,7 +44,7 @@ class timecard(QDialog):
             self.btnImport.clicked.connect(self.populateComboBox.import_dat_file)
             self.btnTimeSheet.clicked.connect(self.buttonFunctions.createTimeSheet)
             self.btnCheckSched.clicked.connect(self.buttonFunctions.CheckSched)
-            self.TimeListTable.doubleClicked.connect(self.buttonFunctions.on_row_double_clicked)
+            self.TimeListTable.cellDoubleClicked.connect(self.buttonFunctions.CheckSched)
 
             self.searchBioNum.textChanged.connect(self.searchFunction.search_bioNum)
 
