@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>23</number>
+     <number>24</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -219,67 +219,72 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Payded_1</string>
+      <string>Late/Absent</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_2</string>
+      <string>SSS_Loan</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_3</string>
+      <string>Pagibig_Loan</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_4</string>
+      <string>Cash_Advance</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_5</string>
+      <string>Canteen</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_6</string>
+      <string>Tax</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_7</string>
+      <string>SSS</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_8</string>
+      <string>Medicare/Philhealth</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_9</string>
+      <string>Pagibig</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_10</string>
+      <string>Clinic</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_11</string>
+      <string>Arayata_Annual</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_12</string>
+      <string>HMI</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Payded_14</string>
+      <string>Funeral</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Voluntary</string>
      </property>
     </column>
    </widget>

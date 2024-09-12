@@ -259,7 +259,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>17</number>
+    <number>25</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -351,52 +351,92 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Ordinary Day</string>
+     <string>OrdDay</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Ordinary Day OT</string>
+     <string>OrdDay OT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Ordinary Day ND</string>
+     <string>OrdDay ND</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Ordinary Day ND OT</string>
+     <string>OrdDay NDOT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Regular Holiday</string>
+     <string>RD</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Regular Holiday ND</string>
+     <string>RD OT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Regular Holiday ND OT</string>
+     <string>RD ND</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Late</string>
+     <string>RD NDOT</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Absent</string>
+     <string>SHLDy</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Date Posted</string>
+     <string>SHLDy OT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SHLDy ND</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SHLDy NDOT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldy</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldy OT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SHLDyRD </string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SHLDyRD OT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRD</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRD OT</string>
     </property>
    </column>
   </widget>
