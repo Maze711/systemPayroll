@@ -147,7 +147,7 @@ class ListFunction:
                    p.citizenship, p.blood_type, p.email, f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, 
                    f.mothersLastName, f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                    f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
-                   f.dependentsName, m.emer_name, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+                   f.dependentsName, m.emer_name, w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
                    t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                    t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
