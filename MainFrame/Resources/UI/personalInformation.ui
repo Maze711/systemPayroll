@@ -412,9 +412,9 @@ font-family: Poppins;
      </property>
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>80</y>
-       <width>51</width>
+       <x>10</x>
+       <y>170</y>
+       <width>131</width>
        <height>31</height>
       </rect>
      </property>
@@ -466,7 +466,7 @@ font-family: Poppins;
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>90</y>
        <width>131</width>
        <height>31</height>
       </rect>
@@ -509,7 +509,7 @@ font-family: Poppins;
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>70</y>
        <width>131</width>
        <height>21</height>
       </rect>
@@ -532,8 +532,8 @@ font-family: Poppins;
     <widget class="QLabel" name="lblTitle_7">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>60</y>
+       <x>10</x>
+       <y>150</y>
        <width>131</width>
        <height>21</height>
       </rect>
@@ -634,8 +634,8 @@ font-family: Poppins;
     <widget class="QLabel" name="lblTitle_8">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>130</y>
+       <x>170</x>
+       <y>70</y>
        <width>131</width>
        <height>21</height>
       </rect>
@@ -659,7 +659,7 @@ font-family: Poppins;
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>130</y>
+       <y>150</y>
        <width>131</width>
        <height>21</height>
       </rect>
@@ -682,8 +682,8 @@ font-family: Poppins;
     <widget class="QDateEdit" name="dateHired_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>150</y>
+       <x>170</x>
+       <y>90</y>
        <width>131</width>
        <height>27</height>
       </rect>
@@ -708,7 +708,7 @@ font-family: Poppins;
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>150</y>
+       <y>170</y>
        <width>131</width>
        <height>27</height>
       </rect>
@@ -727,80 +727,6 @@ font-family: Poppins;
      </property>
      <property name="calendarPopup">
       <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lblTitle_10">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>190</y>
-       <width>131</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: white; border: none; background: none;</string>
-     </property>
-     <property name="text">
-      <string>Max Vacation</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lblTitle_11">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>190</y>
-       <width>131</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: white; border: none; background: none;</string>
-     </property>
-     <property name="text">
-      <string>Max Sick</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="txtVacn">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>210</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="txtSick">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>210</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </widget>
@@ -899,9 +825,9 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1517</y>
+      <y>-1137</y>
       <width>1218</width>
-      <height>2198</height>
+      <height>1818</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -910,7 +836,7 @@ border-radius:5px
        <property name="minimumSize">
         <size>
          <width>1200</width>
-         <height>1800</height>
+         <height>1550</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -982,223 +908,10 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
          <string>Other Information</string>
         </property>
        </widget>
-       <widget class="QFrame" name="groupIdNum">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>820</y>
-          <width>235</width>
-          <height>311</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QFrame{
-border: 1px solid black;
-}
-QLabel{
-border: none;
-}
-
-QLineEdit{
-background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;
-}</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLabel" name="sssLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>SSS</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="pagibigLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>88</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>PAGIBIG</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="sssTextEdit">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>40</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="pagibigTextEdit">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>110</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="tinLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>222</y>
-           <width>211</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>TIN</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="philHealthTextEdit">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>180</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="philHealthLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>150</y>
-           <width>211</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>PhilHealth</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="tinTextEdit">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>250</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QLabel" name="idNumLabel">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>800</y>
-          <width>211</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Poppins</family>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>ID Number</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="hrNoteLabel">
         <property name="geometry">
          <rect>
-          <x>510</x>
+          <x>520</x>
           <y>800</y>
           <width>211</width>
           <height>21</height>
@@ -1218,8 +931,8 @@ border: 1px solid black;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1150</y>
-          <width>211</width>
+          <y>800</y>
+          <width>200</width>
           <height>21</height>
          </rect>
         </property>
@@ -1237,7 +950,7 @@ border: 1px solid black;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1379</y>
+          <y>1120</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -2869,7 +2582,7 @@ color: white;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1400</y>
+          <y>1141</y>
           <width>770</width>
           <height>340</height>
          </rect>
@@ -3495,9 +3208,9 @@ border: 1px solid black;</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1170</y>
-          <width>771</width>
-          <height>195</height>
+          <y>820</y>
+          <width>500</width>
+          <height>291</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -3526,8 +3239,8 @@ background-color: #DCE5FE
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>769</width>
-           <height>193</height>
+           <width>498</width>
+           <height>289</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -3562,8 +3275,8 @@ background-color: rgb(255, 255, 255);
               <rect>
                <x>7</x>
                <y>3</y>
-               <width>741</width>
-               <height>171</height>
+               <width>470</width>
+               <height>261</height>
               </rect>
              </property>
              <property name="styleSheet">
@@ -3754,9 +3467,9 @@ color: black;</string>
        <widget class="QFrame" name="groupHRNote">
         <property name="geometry">
          <rect>
-          <x>510</x>
+          <x>513</x>
           <y>820</y>
-          <width>271</width>
+          <width>265</width>
           <height>311</height>
          </rect>
         </property>
@@ -3778,9 +3491,9 @@ border: none;
         <widget class="QPlainTextEdit" name="hrNoteTextEdit">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>251</width>
+           <x>9</x>
+           <y>11</y>
+           <width>250</width>
            <height>290</height>
           </rect>
          </property>
@@ -3800,216 +3513,6 @@ border: 1px solid black;</string>
          </property>
         </widget>
        </widget>
-       <widget class="QFrame" name="groupIdNum_2">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>820</y>
-          <width>235</width>
-          <height>311</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QFrame{
-border: 1px solid black;
-}
-QLabel{
-border: none;
-}
-
-QLineEdit{
-background-color: rgb(255, 255, 255);
-border-radius: 5px;
-border: 1px solid black;
-}</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLabel" name="taxstatLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>Taxstat</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="accountLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>88</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Account no.</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="txtTaxstat">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>40</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="txtAccount">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>110</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="colaLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>222</y>
-           <width>211</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Cola</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="txtBank">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>180</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="bankLabel">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>150</y>
-           <width>211</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>13</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Bank code</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="txtCola">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>250</y>
-           <width>214</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Poppins</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="maxLength">
-          <number>15</number>
-         </property>
-        </widget>
-       </widget>
-       <zorder>otherInfLabel</zorder>
-       <zorder>idNumLabel</zorder>
-       <zorder>groupIdNum</zorder>
-       <zorder>hrNoteLabel</zorder>
-       <zorder>workExpLabel</zorder>
-       <zorder>educInfoLabel</zorder>
-       <zorder>lblTitle</zorder>
-       <zorder>frmInfo</zorder>
-       <zorder>wgtInfo</zorder>
-       <zorder>groupEduInfo</zorder>
-       <zorder>scrollWorkExpArea</zorder>
-       <zorder>groupHRNote</zorder>
-       <zorder>groupIdNum_2</zorder>
       </widget>
      </item>
     </layout>
@@ -4056,14 +3559,6 @@ border: 1px solid black;
   <tabstop>txtDependent</tabstop>
   <tabstop>btnAddDependent</tabstop>
   <tabstop>txtEmergency</tabstop>
-  <tabstop>sssTextEdit</tabstop>
-  <tabstop>pagibigTextEdit</tabstop>
-  <tabstop>philHealthTextEdit</tabstop>
-  <tabstop>tinTextEdit</tabstop>
-  <tabstop>txtTaxstat</tabstop>
-  <tabstop>txtAccount</tabstop>
-  <tabstop>txtBank</tabstop>
-  <tabstop>txtCola</tabstop>
   <tabstop>hrNoteTextEdit</tabstop>
   <tabstop>scrollWorkExpArea</tabstop>
   <tabstop>dateStart_4</tabstop>
@@ -4097,8 +3592,6 @@ border: 1px solid black;
   <tabstop>cmbResigned_2</tabstop>
   <tabstop>dateHired_2</tabstop>
   <tabstop>dateResigned</tabstop>
-  <tabstop>txtVacn</tabstop>
-  <tabstop>txtSick</tabstop>
   <tabstop>addBTN</tabstop>
   <tabstop>editBTN</tabstop>
   <tabstop>saveBTN</tabstop>

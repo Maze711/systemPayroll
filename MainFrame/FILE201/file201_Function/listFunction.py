@@ -42,7 +42,10 @@ class ListFunction:
                 self.main_window.employeeListTable.insertRow(rowNum)
                 # Assuming eachRow contains (empl_id, surname, firstname, mi)
                 for column, data in enumerate(eachRow):
-                    self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+                    item = QTableWidgetItem(str(data))
+                    item.setTextAlignment(Qt.AlignCenter)  # Center the text
+                    self.main_window.employeeListTable.setItem(rowNum, column, item)
+
         except DatabaseConnectionError as dce:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(self.main_window, "Database Connection Error",
@@ -144,8 +147,7 @@ class ListFunction:
                    p.citizenship, p.blood_type, p.email, f.fathersLastName, f.fathersFirstName, f.fathersMiddleName, 
                    f.mothersLastName, f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                    f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
-                   f.dependentsName, m.emer_name, i.sss, i.tin, i.pagibig, i.philhealth, i.taxstat, i.account_no, 
-                   i.bank_code, i.cola, w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+                   f.dependentsName, m.emer_name, w.toDate, w.companyName, w.companyAdd, w.empPosition,
                    t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                    t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
@@ -154,7 +156,6 @@ class ListFunction:
             LEFT JOIN educ_information e ON p.empl_id = e.empl_id
             LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
             LEFT JOIN family_background f ON p.empl_id = f.empl_id
-            LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
             LEFT JOIN work_exp w ON p.empl_id = w.empl_id
             LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
             LEFT JOIN emp_images img ON p.empl_id = img.empl_id
@@ -223,15 +224,6 @@ class ListFunction:
                 "txtBeneMiddle": data['beneficiaryMiddleName'],
                 "txtDependent": data['dependentsName'],
                 "txtEmergency": data['emer_name'],
-                # EMP_LIST_ID TABLE
-                "sssTextEdit": data['sss'],
-                "pagibigTextEdit": data['pagibig'],
-                "philHealthTextEdit": data['philhealth'],
-                "tinTextEdit": data['tin'],
-                "txtTaxstat": data['taxstat'],
-                "txtAccount": data['account_no'],
-                "txtBank": data['bank_code'],
-                "txtCola": data['cola'],
                 # WORK_EXP TABLE
                 "dateStart_4": QDate.fromString(data['fromDate'], "MM-dd-yyyy"),
                 "dateEnd_4": QDate.fromString(data['toDate'], "MM-dd-yyyy"),
@@ -294,7 +286,6 @@ class ListFunction:
 
         except Exception as e:
             logging.error(f"Error populating modal with employee data: {e}")
-
 
     def open_otherInformationMODAL_add(self):
         modal = personalModal(mode='add')

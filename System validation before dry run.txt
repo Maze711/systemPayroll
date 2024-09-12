@@ -1,16 +1,17 @@
 HRTPAYMS SYSTEM UPDATE BEFORE DRY RUN:
 
 HR Application side:
- - Center table data
+ - Center table data * DONE *
  - EMP image is not in required fields * DONE *
  - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL)
- - Remove uneccesary UI in Employee Info modal
+ - Remove uneccesary UI in Employee Info modal * DONE *
 
 Timekeeper Side Application:
  - Filter button stills open even there's no data within the table (BUG\Unresolved)
  - Drop down for every row (Time in and Time out column)
  - Loader when fetching the value from selecting YEAR, DAY FROM AND TO
  - It said if it's already used it should not editable and only view (for the populated_table)
+ - Cost center should be Department * DONE *
 
 Paytimesheet Side Application: 
  - Computation of hours/day is not yet done
@@ -19,7 +20,6 @@ Paytimesheet Side Application:
  - It should importing also into archive DB
  - Search field doesn't working
  - Hours work should be I think 2 decimal places only?
- - Cost center should be Department
 
 Paymaster 1 Side Application:
  - Already created a row even though there's no data yet
@@ -34,7 +34,7 @@ Paytrans Side application:
 
 PayDeduction (Paymaster2) Side Application:
  - Already created a row even though there's no data yet
- - Window still not a fixed 
+ - Window still not a fixed * DONE *
 
 
 OVERALL SIDE:
