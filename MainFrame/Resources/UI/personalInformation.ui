@@ -825,7 +825,7 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1137</y>
+      <y>-609</y>
       <width>1218</width>
       <height>1818</height>
      </rect>
@@ -3273,8 +3273,8 @@ background-color: rgb(255, 255, 255);
             <widget class="QFrame" name="groupExp1">
              <property name="geometry">
               <rect>
-               <x>7</x>
-               <y>3</y>
+               <x>0</x>
+               <y>0</y>
                <width>470</width>
                <height>261</height>
               </rect>
@@ -3297,12 +3297,99 @@ border: none;
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" name="gridLayout">
-              <item row="0" column="2">
-               <widget class="QDateEdit" name="dateStart_4">
+              <item row="1" column="0">
+               <widget class="QLabel" name="companyLabel_4">
                 <property name="font">
                  <font>
                   <family>Poppins</family>
                   <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Company</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="dateLabel_4">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Date</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="addressLabel_4">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Address</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="toLabel_4">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>To</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QDateEdit" name="dateStart_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color: black;</string>
+                </property>
+                <property name="displayFormat">
+                 <string>yyyy-MM-dd</string>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="QDateEdit" name="dateEnd_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>11</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -3330,109 +3417,8 @@ color: black;</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="addressLabel_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Address</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="fromLabel_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>From</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="QDateEdit" name="dateEnd_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);
-color: black;</string>
-                </property>
-                <property name="displayFormat">
-                 <string>yyyy-MM-dd</string>
-                </property>
-                <property name="calendarPopup">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
               <item row="1" column="2" colspan="3">
                <widget class="QLineEdit" name="companyTextEdit_4">
-                <property name="minimumSize">
-                 <size>
-                  <width>312</width>
-                  <height>33</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLabel" name="toLabel_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>To</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="companyLabel_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Company</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="dateLabel_4">
-                <property name="font">
-                 <font>
-                  <family>Poppins</family>
-                  <pointsize>13</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Date</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2" colspan="3">
-               <widget class="QLineEdit" name="addressTextEdit_4">
                 <property name="minimumSize">
                  <size>
                   <width>312</width>
@@ -3454,6 +3440,32 @@ color: black;</string>
                 </property>
                 <property name="text">
                  <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2" colspan="3">
+               <widget class="QLineEdit" name="addressTextEdit_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>312</width>
+                  <height>33</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="fromLabel_4">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>From</string>
                 </property>
                </widget>
               </item>

@@ -36,9 +36,7 @@ class personalModal(QDialog):
         
         validator = ValidInteger()
 
-        validator.set_validators(self.txtZip, self.txtPhone, self.txtHeight,
-                                 self.txtWeight, self.sssTextEdit,
-                                 self.pagibigTextEdit, self.philHealthTextEdit, self.tinTextEdit)
+        validator.set_validators(self.txtZip, self.txtPhone, self.txtHeight, self.txtWeight)
 
         self.set_keyboard_shortcut()
 
