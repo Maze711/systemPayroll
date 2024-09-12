@@ -644,7 +644,7 @@ background-color: #c75657;
       </font>
      </property>
      <property name="text">
-      <string>Select Cost Center</string>
+      <string>Select Department</string>
      </property>
     </widget>
     <widget class="QComboBox" name="costCenterBox">
