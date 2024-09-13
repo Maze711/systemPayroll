@@ -200,14 +200,14 @@ class populateList:
 
             for bioNum, trans_date, time_in, time_out, mach_code in records:
                 if time_in:  # Consider `time_in` as Check_In
-                    check_in_time = (trans_date, str(time_in))
+                    check_in_time = (time_in, str(time_in))
                 else:
-                    check_in_time = ("Missing",)
+                    check_in_time = ("00:00:00",)
 
                 if time_out:  # Consider `time_out` as Check_Out
-                    check_out_time = (trans_date, str(time_out))
+                    check_out_time = (time_out, str(time_out))
                 else:
-                    check_out_time = ("Missing",)
+                    check_out_time = ("00:00:00",)
 
                 # Query to get employee information and schedule from FILE201
                 employee_query = (
@@ -243,7 +243,7 @@ class populateList:
 
                 if check_in_time or check_out_time:
                     time_data.append(
-                        [bioNum, emp_name, trans_date, mach_code, check_in_time[1], check_out_time[1], schedule])
+                        [bioNum, emp_name, trans_date, mach_code, check_in_time[0], check_out_time[0], schedule])
 
             self.parent.original_data = time_data
             # Populate the table with time_data
