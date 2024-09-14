@@ -47,8 +47,11 @@ class TimeSheet(QDialog):
             days_work_item = QTableWidgetItem(str(row['Days_Work']))
             days_present_item = QTableWidgetItem(str(row['Days_Present']))
             total_hours_work = QTableWidgetItem(str(row['Total_Hours_Worked']))
+            ordday_nd = QTableWidgetItem(str(row['Night_Differential']))
+            ordday_nd_ot = QTableWidgetItem(str(row['Night_Differential_OT']))
 
-            for item in [bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, total_hours_work]:
+            for item in [bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, total_hours_work,
+                         ordday_nd, ordday_nd_ot]:
                 item.setTextAlignment(Qt.AlignCenter)
 
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
@@ -57,6 +60,8 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Sum of days of work
             self.TimeSheetTable.setItem(i, 5, days_present_item)  # Sum of days of work
             self.TimeSheetTable.setItem(i, 6, total_hours_work)  # Sum of days of work
+            self.TimeSheetTable.setItem(i, 9, ordday_nd)  # Sum of days of work
+            self.TimeSheetTable.setItem(i, 10, ordday_nd_ot)  # Sum of days of work
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')

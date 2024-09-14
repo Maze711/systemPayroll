@@ -183,7 +183,7 @@ class populateList:
                 logging.error(f"Error: Table does not exist: {table_name}")
                 return
 
-            # Query to fetch time records including machCode from LIST_LOG_IMPORT
+            # Fetch time records
             query_list_log = f"""
                 SELECT bioNum, date, time_in, time_out, machCode
                 FROM `{table_name}`
@@ -193,50 +193,37 @@ class populateList:
             cursor_list_log.execute(query_list_log)
             records = cursor_list_log.fetchall()
 
-            # Set row count in advance for better performance
-            self.parent.TimeListTable.setRowCount(len(records))
+            # Fetch employee data
+            bio_nums = set(record[0] for record in records)
+            emp_query = f"""
+                SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
+                FROM emp_info pi
+                JOIN emp_posnsched ps ON pi.empid = ps.empid
+                WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
+            """
+            cursor_file201.execute(emp_query)
+            emp_records = cursor_file201.fetchall()
+            emp_data_cache = {record[0]: record[1:] for record in emp_records}
 
+            # Prepare time data
             time_data = []
-
             for bioNum, trans_date, time_in, time_out, mach_code in records:
-                # Default times if no time_in or time_out is found
-                check_in_time = time_in if time_in else "00:00:00"
-                check_out_time = time_out if time_out else "00:00:00"
+                check_in_time = time_in or "00:00:00"
+                check_out_time = time_out or "00:00:00"
+                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
+                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
+                sched_in = employee_data[3] or "00:00:00"
+                sched_out = employee_data[4] or "00:00:00"
 
-                # Query to get employee information and schedule from FILE201
-                employee_query = (
-                    "SELECT pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out "
-                    "FROM emp_info pi "
-                    "JOIN emp_posnsched ps ON pi.empid = ps.empid "
-                    f"WHERE pi.empid = {bioNum}"
-                )
+                time_data.append([
+                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
+                ])
 
-                try:
-                    # Fetch employee data and schedule info
-                    cursor_file201.execute(employee_query)
-                    employee_data = cursor_file201.fetchone()
-
-                    if employee_data:
-                        emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                        sched_in = employee_data[3] if employee_data[3] else "00:00:00"  # Default sched_in
-                        sched_out = employee_data[4] if employee_data[4] else "00:00:00"  # Default sched_out
-                    else:
-                        emp_name = "Unknown"
-
-                    logging.info(f"Employee: {emp_name}, sched_in: {sched_in}, sched_out: {sched_out}")
-
-                except Exception as e:
-                    logging.error(f"Error fetching employee data for bioNum {bioNum}: {e}")
-                    emp_name = "Error"
-
-                # Prepare the data for the row
-                time_data.append(
-                    [bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out])
-
-            # Disable UI updates until population is complete
+            # Update table
             self.parent.TimeListTable.setUpdatesEnabled(False)
             self.populate_table_with_data(time_data)
             self.parent.TimeListTable.setUpdatesEnabled(True)
+            self.parent.original_data = time_data
 
         except Exception as e:
             logging.error(f"Error populating time list table: {e}")
@@ -252,41 +239,54 @@ class populateList:
         try:
             logging.info("Populating table with data.")
 
-            # Function to create a ComboBox with times in 15-minute intervals (hh:mm format)
             def create_time_combobox(initial_value):
                 combo = QComboBox()
                 for hour in range(24):
-                    for minute in range(0, 60, 15):  # 15-minute intervals
-                        time_str = f"{hour:02d}:{minute:02d}"  # Use hh:mm format
+                    for minute in range(0, 60, 15):
+                        time_str = f"{hour:02d}:{minute:02d}"
                         combo.addItem(time_str)
                 combo.setCurrentText(initial_value)
                 return combo
 
-            self.parent.TimeListTable.setRowCount(len(data))  # Set all rows at once
+            self.parent.TimeListTable.setUpdatesEnabled(False)
+            self.parent.TimeListTable.setRowCount(len(data))
+
+            items = []
+            widgets = []
 
             for row_position, row_data in enumerate(data):
+                row_items = []
                 for col, value in enumerate(row_data):
-                    if col in [6, 7]:  # Columns 6 and 7 for sched_in and sched_out
+                    if col in [6, 7]:
                         sched_time = str(value)
-                        if len(sched_time) == 8:  # Handles hh:mm:ss format (e.g., 06:00:00)
-                            sched_time = sched_time[:5]  # Truncate to hh:mm
-                        combo = create_time_combobox(sched_time)  # Set sched_in/sched_out as default
-                        self.parent.TimeListTable.setCellWidget(row_position, col, combo)
+                        if len(sched_time) == 8:
+                            sched_time = sched_time[:5]
+                        combo = create_time_combobox(sched_time)
+                        widgets.append((row_position, col, combo))
                     else:
                         item = QTableWidgetItem(str(value))
                         item.setTextAlignment(Qt.AlignCenter)
-                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Make cell read-only
-                        self.parent.TimeListTable.setItem(row_position, col, item)
+                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                        row_items.append(item)
+                items.append(row_items)
 
-            logging.info(f"Table populated with {len(data)} rows.")
+            for row_position, row_items in enumerate(items):
+                for col, item in enumerate(row_items):
+                    self.parent.TimeListTable.setItem(row_position, col, item)
+            for row_position, col, widget in widgets:
+                self.parent.TimeListTable.setCellWidget(row_position, col, widget)
 
-            # Prevent resizing by setting the resize mode to Fixed
             header = self.parent.TimeListTable.horizontalHeader()
             header.setSectionResizeMode(QHeaderView.Fixed)
+
+            logging.info(f"Table populated with {len(data)} rows.")
 
         except Exception as e:
             logging.error(f"Error populating table with data: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
+
+        finally:
+            self.parent.TimeListTable.setUpdatesEnabled(True)
 
 
 class buttonTimecardFunction:
@@ -393,7 +393,6 @@ class buttonTimecardFunction:
             QMessageBox.warning(self.parent, "No Data", "There is no data to export.")
 
     def createTimeSheet(self, checked=False):
-        # Access TimeListTable through self.parent
         if self.parent.TimeListTable.rowCount() == 0:
             QMessageBox.warning(
                 self.parent,
@@ -402,13 +401,11 @@ class buttonTimecardFunction:
             )
             return
 
-        # Dictionary to store aggregated data for each unique BioNum
         aggregated_data = {}
         date_from = self.parent.dateFromCC.currentText()
         date_to = self.parent.dateToCC.currentText()
 
         for row in range(self.parent.TimeListTable.rowCount()):
-            # Fetch data from the table for each row
             bioNum = self.parent.TimeListTable.item(row, 0).text()
             emp_name = self.parent.TimeListTable.item(row, 1).text()
             trans_date = self.parent.TimeListTable.item(row, 2).text()
@@ -417,40 +414,80 @@ class buttonTimecardFunction:
             check_out = self.parent.TimeListTable.item(row, 5).text()
 
             try:
-                hours_worked = self.getTotalHoursWorked(check_in, check_out)
-                formatted_hours = f"{hours_worked:.2f}"  # Format to always show 2 decimal places
+                hours_worked, nd_hours, ndot_hours = self.getTotalHoursWorked(check_in, check_out)
+                formatted_hours = f"{hours_worked:.2f}"
+                formatted_nd_hours = f"{nd_hours:.2f}"
+                formatted_ndot_hours = f"{ndot_hours:.2f}"
             except AttributeError as e:
                 logging.error(f"Error: {e} - Please make sure getTotalHoursWorked is defined.")
                 formatted_hours = "0.00"
+                formatted_nd_hours = "0.00"
+                formatted_ndot_hours = "0.00"
 
-            # Aggregate the data for the current BioNum
             if bioNum not in aggregated_data:
                 aggregated_data[bioNum] = {
                     'BioNum': bioNum,
                     'EmpNumber': bioNum,
                     'Employee': emp_name,
                     'Total_Hours_Worked': 0.0,
+                    'Night_Differential': 0.0,
+                    'Night_Differential_OT': 0.0,
                     'Days_Work': 0,
-                    'Days_Present': 0  # You can increment this if needed
+                    'Days_Present': 0
                 }
 
-            # Add the current row's data to the aggregate
             aggregated_data[bioNum]['Total_Hours_Worked'] += float(formatted_hours)
+            aggregated_data[bioNum]['Night_Differential'] += float(formatted_nd_hours)
+            aggregated_data[bioNum]['Night_Differential_OT'] += float(formatted_ndot_hours)
             aggregated_data[bioNum]['Days_Work'] += 1
 
         dataMerge = list(aggregated_data.values())
 
         for data in dataMerge:
-            # Format Total_Hours_Worked to always show 2 decimal places
             data['Total_Hours_Worked'] = f"{data['Total_Hours_Worked']:.2f}"
+            data['Night_Differential'] = f"{data['Night_Differential']:.2f}"
+            data['Night_Differential_OT'] = f"{data['Night_Differential_OT']:.2f}"
             logging.info(data)
 
-        # Pass date and mach_code along with the dataMerge to TimeSheet dialog
         try:
-            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)  # Ensure TimeSheet is defined/imported
+            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
+
+    def getTotalHoursWorked(self, time_start, time_end):
+        # Define ND and NDO times
+        nd_start = datetime.strptime("22:00:00", "%H:%M:%S").time()
+        nd_end = datetime.strptime("06:00:00", "%H:%M:%S").time()
+        ndot_start = datetime.strptime("02:00:00", "%H:%M:%S").time()
+        ndot_end = datetime.strptime("06:00:00", "%H:%M:%S").time()
+
+        # Parse times
+        time_in = datetime.strptime(time_start, "%H:%M:%S")
+        time_out = datetime.strptime(time_end, "%H:%M:%S")
+
+        # Handle overnight shifts
+        if time_out <= time_in:
+            time_out += timedelta(days=1)
+
+        # Calculate total hours worked
+        total_hours = (time_out - time_in).total_seconds() / 3600
+
+        # Calculate ND and NDO hours
+        nd_hours = 0
+        ndot_hours = 0
+        current_time = time_in
+        while current_time < time_out:
+            if nd_start <= current_time.time() or current_time.time() < nd_end:
+                nd_hours += 1
+            if ndot_start <= current_time.time() < ndot_end:
+                ndot_hours += 1
+            current_time += timedelta(hours=1)
+
+        nd_hours /= 60  # Convert minutes to hours
+        ndot_hours /= 60  # Convert minutes to hours
+
+        return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
 
     def CheckSched(self, checked=False):
         # Access TimeListTable through self.parent
@@ -491,39 +528,14 @@ class buttonTimecardFunction:
                 "Please select a row from the table first!"
             )
 
-    def getTotalHoursWorked(self, time_start, time_end):
-        # Ensure time is in correct format
-        try:
-            timeIn = datetime.strptime(time_start, "%H:%M:%S")
-            timeOut = datetime.strptime(time_end, "%H:%M:%S")
-        except ValueError as e:
-            logging.error(f"Time format error: {e}")
-            return "Unknown"
-
-        # Converting time into seconds
-        seconds_in_a_day = 24 * 60 * 60
-        time_in_seconds = (timeIn.hour * 3600) + (timeIn.minute * 60) + timeIn.second
-        time_out_seconds = (timeOut.hour * 3600) + (timeOut.minute * 60) + timeOut.second
-
-        # Handle crossing midnight
-        if time_out_seconds < time_in_seconds:
-            time_out_seconds += seconds_in_a_day
-
-        time_difference = time_out_seconds - time_in_seconds
-        work_duration_in_hours = time_difference / 3600
-
-        # Use round() function with 2 decimal places
-        return round(work_duration_in_hours, 2)
 
 class searchBioNum:
     def __init__(self, parent):
         self.parent = parent
+        self.populate_list_instance = populateList(self.parent)  # Create instance of populateList
 
     def search_bioNum(self):
-        # Instance creation to use populateList Functions
-        self.populateList = populateList(self.parent)
-        self.populate_table_with_data = self.populateList.populate_table_with_data
-
+        """Search for a specific bioNum and update the table with filtered data."""
         search_text = self.parent.searchBioNum.text().strip().lower()
         logging.info(f"Search text: '{search_text}'")
 
@@ -534,7 +546,8 @@ class searchBioNum:
 
         if not search_text:
             logging.info("Search text is empty. Restoring original data.")
-            self.populate_table_with_data(self.parent.original_data)
+            self.populate_list_instance.populate_table_with_data(self.parent.original_data)
+            self.parent.TimeListTable.repaint()  # Force UI update
             return
 
         # Ensure original_data is a list of lists/tuples
@@ -550,7 +563,9 @@ class searchBioNum:
         if not filtered_data:
             logging.warning("No matching records found.")
 
-        self.populate_table_with_data(filtered_data)
+        # Update the table with filtered data
+        self.populate_list_instance.populate_table_with_data(filtered_data)
+        self.parent.TimeListTable.repaint()  # Force UI update
 
 
 class FilterDialog(QDialog):
