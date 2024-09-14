@@ -33,15 +33,29 @@ class PayTransFunctions:
             late_earn_item = QTableWidgetItem(str(row['LateUndertime']))
             undertime_earn_item = QTableWidgetItem(str(row['undertime']))
 
-            # Adding deduction items to the table
-            pay_ded_items = []
-            for j in range(1, 15):
-                deduction = row.get(f'Pay Ded {j}', 0)
-                pay_ded_items.append(QTableWidgetItem(str(deduction)))
+            # deduction items
+            absent_earn_item = QTableWidgetItem(str(row.get('late_absent', '0')))
+            sss_loan_earn_item = QTableWidgetItem(str(row.get('sss_loan', '0')))
+            pagibig_loan_earn_item = QTableWidgetItem(str(row.get('pag_ibig_loan', '0')))
+            cash_earn_item = QTableWidgetItem(str(row.get('cash_advance', '0')))
+            canteen_earn_item = QTableWidgetItem(str(row.get('canteen', '0')))
+            tax_earn_item = QTableWidgetItem(str(row.get('tax', '0')))
+            sss_earn_item = QTableWidgetItem(str(row.get('sss', '0')))
+            philhealth_earn_item = QTableWidgetItem(str(row.get('medicare_philhealth', '0')))
+            pagibig_earn_item = QTableWidgetItem(str(row.get('pag_ibig', '0')))
+            clinic_earn_item = QTableWidgetItem(str(row.get('clinic', '0')))
+            arayata_earn_item = QTableWidgetItem(str(row.get('arayata_manual', '0')))
+            hmi_earn_item = QTableWidgetItem(str(row.get('hmi', '0')))
+            funeral_earn_item = QTableWidgetItem(str(row.get('funeral', '0')))
+            voluntary_earn_item = QTableWidgetItem(str(row.get('voluntary', '0')))
 
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
-                        ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item] + pay_ded_items:
+                         ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item,
+                         absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item, cash_earn_item,
+                         canteen_earn_item, tax_earn_item, sss_earn_item, philhealth_earn_item, pagibig_earn_item,
+                         clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
+                         voluntary_earn_item]:
                 item.setTextAlignment(Qt.AlignCenter)
 
             # Set items in the table. Adjust the column indices as needed.
@@ -55,10 +69,20 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 7, reg_day_night_diff_item)
             self.parent.paytransTable.setItem(i, 8, late_earn_item)
             self.parent.paytransTable.setItem(i, 9, undertime_earn_item)
-
-            # Add deduction items to the table in subsequent columns
-            for j, pay_ded_item in enumerate(pay_ded_items, start=9): # Pay Ded columns starts at index 9
-                self.parent.paytransTable.setItem(i, j, pay_ded_item)
+            self.parent.paytransTable.setItem(i, 10, absent_earn_item)
+            self.parent.paytransTable.setItem(i, 11, sss_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 12, pagibig_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 13, cash_earn_item)
+            self.parent.paytransTable.setItem(i, 14, canteen_earn_item)
+            self.parent.paytransTable.setItem(i, 15, tax_earn_item)
+            self.parent.paytransTable.setItem(i, 16, sss_earn_item)
+            self.parent.paytransTable.setItem(i, 17, philhealth_earn_item)
+            self.parent.paytransTable.setItem(i, 18, pagibig_earn_item)
+            self.parent.paytransTable.setItem(i, 19, clinic_earn_item)
+            self.parent.paytransTable.setItem(i, 20, arayata_earn_item)
+            self.parent.paytransTable.setItem(i, 21, hmi_earn_item)
+            self.parent.paytransTable.setItem(i, 22, funeral_earn_item)
+            self.parent.paytransTable.setItem(i, 23, voluntary_earn_item)
 
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved
@@ -131,15 +155,22 @@ class PayTransFunctions:
 
             for index, row in enumerate(self.parent.original_data):
                 emp_no = row['EmpNo']
-                query = f""" SELECT payDed1, payDed2, payDed3, payDed4, payDed5, payDed6, payDed7, payDed8, payDed9, 
-                             payDed10, payDed11, payDed12, payDed13, payDed14 FROM deductions WHERE empNum = %s
+                query = f""" SELECT late_absent, sss_loan, pag_ibig_loan, cash_advance, canteen, tax, sss, 
+                                medicare_philhealth, pag_ibig, clinic, arayata_manual, hmi, funeral, voluntary 
+                             FROM deductions WHERE empNum = %s
                 """
                 cursor.execute(query, (emp_no,))
                 result = cursor.fetchone()
 
+                # Mapping deduction items to their respective fields
+                deduction_items = ['late_absent', 'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax',
+                                   'sss', 'medicare_philhealth', 'pag_ibig', 'clinic', 'arayata_manual', 'hmi',
+                                   'funeral', 'voluntary']
+
                 # Adds the deductions to each dictionary
-                for i in range(0, 14):
-                    row.update({f'Pay Ded {i + 1}': result[i]})
+                for i, deduction_key in enumerate(deduction_items):
+                    row[deduction_key] = result[i] if result and result[
+                        i] is not None else 0  # Assign 0 if deduction is None or missing
 
             self.hideAdditionalButtons()
 
@@ -321,7 +352,9 @@ class FileProcessor(QObject):
             # Fetch the headers from the DataFrame
             headers = sheet.columns.tolist()
 
-            required_columns = ['ID', 'empNum', 'bioNum', 'empName'] + [f'payDed{i}' for i in range(1, 15)]
+            required_columns = ['ID', 'empNum', 'bioNum', 'empName', 'late_absent', 'sss_loan', 'pag_ibig_loan',
+                                'cash_advance', 'canteen', 'tax', 'sss', 'medicare_philhealth', 'pag_ibig', 'clinic',
+                                'arayata_manual', 'hmi', 'funeral', 'voluntary']
 
             missing_columns = [col for col in required_columns if
                                col not in headers[:18]]  # excludes the deduction placed by and date
@@ -346,8 +379,12 @@ class FileProcessor(QObject):
 
                 if not matching_rows.empty:
                     # Update the Pay Ded keys for this EmpNo
-                    for j in range(1, 15):
-                        row[f'Pay Ded {j}'] = int(matching_rows.iloc[0][f'payDed{j}'])
+                    deduction_items = ['late_absent', 'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax',
+                                       'sss', 'medicare_philhealth', 'pag_ibig', 'clinic', 'arayata_manual', 'hmi',
+                                       'funeral', 'voluntary']
+
+                    for deduction in deduction_items:
+                        row[deduction] = int(matching_rows.iloc[0][deduction])
 
                 # Navigates the current progress
                 progress = int(((i + 1) / total_rows) * 100)
