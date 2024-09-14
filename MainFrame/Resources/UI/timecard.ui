@@ -75,7 +75,7 @@ QTableWidget {
 }</string>
    </property>
    <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
+    <enum>Qt::ScrollBarAsNeeded</enum>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -114,7 +114,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>7</number>
+    <number>8</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -183,7 +183,12 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Schedule</string>
+     <string>Time_In</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Time_Out</string>
     </property>
    </column>
   </widget>
