@@ -8,7 +8,7 @@ HR Application side:
 
 Timekeeper Side Application:
  - Filter button stills open even there's no data within the table (BUG\Unresolved)
- - Drop down for every row (Time in and Time out column)
+ - Drop down for every row (Time in and Time out column) * DONE *
  - Loader when fetching the value from selecting YEAR, DAY FROM AND TO
  - It said if it's already used it should not editable and only view (for the populated_table)
  - Cost center should be Department * DONE *
@@ -19,7 +19,7 @@ Paytimesheet Side Application:
  - The data we should have to compare if it's receive is not yet given
  - It should importing also into archive DB
  - Search field doesn't working
- - Hours work should be I think 2 decimal places only?
+ - Hours work should be I think 2 decimal places only?  * DONE *
 
 Paymaster 1 Side Application:
  - Already created a row even though there's no data yet
@@ -30,7 +30,7 @@ Paymaster 1 Side Application:
 Paytrans Side application:
  - BASIC, DAILYRATE, DAYSWORK, OT_Earn, REGULARND, Late, Undertime this columns already have a computation
  - When importing the deductions from database it's crashing the application
- - Pay_ded naming should be renamed
+ - Pay_ded naming should be renamed * DONE *
 
 PayDeduction (Paymaster2) Side Application:
  - Already created a row even though there's no data yet

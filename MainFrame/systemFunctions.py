@@ -190,11 +190,9 @@ class timekeepingFunction():
         super(timekeepingFunction, self).__init__()
 
     def getTypeOfDate(trans_date):
-        logger = logging.getLogger('SingleFunctionLogger')
         try:
             connection = create_connection('NTP_HOLIDAY_LIST')
             if connection is None:
-                logger.error("Error: Could not establish database connection.")
                 return "Ordinary Day"  # Return default value on connection failure
 
             cursor = connection.cursor()
@@ -209,14 +207,12 @@ class timekeepingFunction():
             return "Ordinary Day"  # Default to Ordinary Day if no match found
 
         except Error as e:
-            logger.error(f"Error fetching type of date: {e}")
             return "Ordinary Day"  # Return default value on error
 
         finally:
             if 'connection' in locals() and connection.is_connected():
                 cursor.close()
                 connection.close()
-                logger.info("Database connection closed")
 
     def appendDate(fromCalendar, toCalendar, data):
         from_date = fromCalendar.date().toString("yyyy-MM-dd")
