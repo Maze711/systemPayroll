@@ -39,20 +39,20 @@ class StoringDeductionProcessor(QObject):
                         empNum INT(11),
                         bioNum INT(11),
                         empName VARCHAR(225),
-                        payDed1 INT(11),
-                        payDed2 INT(11),
-                        payDed3 INT(11),
-                        payDed4 INT(11),
-                        payDed5 INT(11),
-                        payDed6 INT(11),
-                        payDed7 INT(11),
-                        payDed8 INT(11),
-                        payDed9 INT(11),
-                        payDed10 INT(11),
-                        payDed11 INT(11),
-                        payDed12 INT(11),
-                        payDed13 INT(11),
-                        payDed14 INT(11),
+                        late_absent INT(11),
+                        sss_loan INT(11),
+                        pag_ibig_loan INT(11),
+                        cash_advance INT(11),
+                        canteen INT(11),
+                        tax INT(11),
+                        sss INT(11),
+                        medicare_philhealth INT(11),
+                        pag_ibig INT(11),
+                        clinic INT(11),
+                        arayata_manual INT(11),
+                        hmi INT(11),
+                        funeral INT(11),
+                        voluntary INT(11),
                         deduction_placed_by VARCHAR(225),
                         deduction_placed_date DATETIME,
                         UNIQUE KEY unique_entry (empNum, bioNum, empName)
@@ -97,17 +97,17 @@ class StoringDeductionProcessor(QObject):
 
                     insert_query = f"""
                                    INSERT INTO {table_name} (
-                                    empNum, bioNum, empName, payDed1, payDed2, payDed3, payDed4, 
-                                    payDed5, payDed6, payDed7, payDed8, payDed9, payDed10, 
-                                    payDed11, payDed12, payDed13, payDed14, deduction_placed_by, deduction_placed_date
+                                    empNum, bioNum, empName, late_absent, sss_loan, pag_ibig_loan, cash_advance, 
+                                    canteen, tax, sss, medicare_philhealth, pag_ibig, clinic, 
+                                    arayata_manual, hmi, funeral, voluntary, deduction_placed_by, deduction_placed_date
                                 ) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW()) 
                                 ON DUPLICATE KEY UPDATE 
-                                    payDed1 = VALUES(payDed1), payDed2 = VALUES(payDed2), payDed3 = VALUES(payDed3),
-                                    payDed4 = VALUES(payDed4), payDed5 = VALUES(payDed5), payDed6 = VALUES(payDed6),
-                                    payDed7 = VALUES(payDed7), payDed8 = VALUES(payDed8), payDed9 = VALUES(payDed9),
-                                    payDed10 = VALUES(payDed10), payDed11 = VALUES(payDed11), payDed12 = VALUES(payDed12), 
-                                    payDed13 = VALUES(payDed13), payDed14 = VALUES(payDed14), 
+                                    late_absent = VALUES(late_absent), sss_loan = VALUES(sss_loan), pag_ibig_loan = VALUES(pag_ibig_loan),
+                                    cash_advance = VALUES(cash_advance), canteen = VALUES(canteen), tax = VALUES(tax),
+                                    sss = VALUES(sss), medicare_philhealth = VALUES(medicare_philhealth), pag_ibig = VALUES(pag_ibig),
+                                    clinic = VALUES(clinic), arayata_manual = VALUES(arayata_manual), hmi = VALUES(hmi), 
+                                    funeral = VALUES(funeral), voluntary = VALUES(voluntary), 
                                     deduction_placed_by = VALUES(deduction_placed_by), deduction_placed_date = NOW()
                             """
 
