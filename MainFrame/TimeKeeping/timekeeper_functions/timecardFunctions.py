@@ -1,3 +1,4 @@
+import operator
 import sys
 import os
 import logging
@@ -18,108 +19,93 @@ import re
 class populateList:
     def __init__(self, parent):
         self.parent = parent
+        self.data_cache = {}
+        self.cost_center_cache = None
 
     def import_dat_file(self):
         try:
-            # Open file dialog to select a .DAT file
             fileName, _ = QFileDialog.getOpenFileName(self.parent, "Open DAT File", "", "DAT Files (*.DAT)")
             if fileName:
                 logging.info(f"Selected file: {fileName}")
-
                 notification_dialog = notificationLoader(fileName)
                 notification_dialog.importSuccessful.connect(self.update_after_import)
                 notification_dialog.exec_()
             else:
                 QMessageBox.information(self.parent, "No File Selected", "Please select a DAT file to import.")
         except Exception as e:
-            # Log any errors
             logging.error(f"Error in import_dat_file: {e}")
             QMessageBox.critical(self.parent, "File Import Error", f"An error occurred: {e}")
 
     def update_after_import(self):
-        # Update the necessary UI elements
         self.populate_year_combo_box()
         self.populate_date_combo_boxes()
 
     def populate_year_combo_box(self):
-        """Populate the year combo box with available year-month combinations from table names."""
         connection = create_connection('NTP_LOG_IMPORTS')
         if not connection:
             return
 
         try:
             cursor = connection.cursor()
-            cursor.execute("SHOW TABLES")
+            cursor.execute("SHOW TABLES LIKE 'table_%'")
             tables = cursor.fetchall()
 
-            # Extract year-month combinations from table names
             year_months = set()
-            year_month_pattern = re.compile(r'table_(\d{4})_(\d{2})')
-
             for (table_name,) in tables:
-                match = year_month_pattern.search(table_name)
+                match = re.search(r'table_(\d{4})_(\d{2})', table_name)
                 if match:
-                    year_month = f"{match.group(1)}_{match.group(2)}"
-                    year_months.add(year_month)
+                    year_months.add(f"{match.group(1)}_{match.group(2)}")
 
-            # Add year-month combinations to the combo box
-            self.parent.yearCC.clear()  # Clear previous items
-            self.parent.yearCC.addItems(sorted(year_months))
+            self.parent.yearCC.clear()
+            self.parent.yearCC.addItems(sorted(year_months, reverse=True))
             self.parent.yearCC.setCurrentIndex(-1)
 
         except Exception as e:
             logging.error(f"Error populating year combo box: {e}")
-
         finally:
             cursor.close()
             connection.close()
 
     def populate_date_combo_boxes(self):
-        """Populate the date combo boxes based on the selected year-month."""
         selected_year_month = self.parent.yearCC.currentText()
         if not selected_year_month:
             return
 
-        connection = create_connection('NTP_LOG_IMPORTS')
-        if not connection:
-            return
-
-        try:
-            cursor = connection.cursor()
-            table_name = f"table_{selected_year_month}"
-
-            # Check if table exists
-            cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-            if not cursor.fetchone():
+        if selected_year_month in self.data_cache:
+            days = self.data_cache[selected_year_month]
+        else:
+            connection = create_connection('NTP_LOG_IMPORTS')
+            if not connection:
                 return
 
-            # Extract days from the records in the selected year-month table
-            days_set = set()
+            try:
+                cursor = connection.cursor()
+                table_name = f"table_{selected_year_month}"
+                cursor.execute(f"SELECT DISTINCT DATE_FORMAT(date, '%d') AS day FROM {table_name}")
+                days = [day[0] for day in cursor.fetchall()]
+                self.data_cache[selected_year_month] = days
+            except Exception as e:
+                logging.error(f"Error populating date combo boxes: {e}")
+                return
+            finally:
+                cursor.close()
+                connection.close()
 
-            cursor.execute(f"""
-                SELECT DISTINCT DATE_FORMAT(date, '%d') AS day
-                FROM {table_name}
-            """)
-            days = cursor.fetchall()
-
-            for (day,) in days:
-                days_set.add(day)
-
-            # Update date combo boxes
-            self.parent.dateFromCC.clear()  # Clear previous items
-            self.parent.dateToCC.clear()  # Clear previous items
-            self.parent.dateFromCC.addItems(sorted(days_set))
-            self.parent.dateToCC.addItems(sorted(days_set))
-
-        except Exception as e:
-            logging.error(f"Error populating date combo boxes: {e}")
-
-        finally:
-            cursor.close()
-            connection.close()
+        self.parent.dateFromCC.clear()
+        self.parent.dateToCC.clear()
+        self.parent.dateFromCC.addItems(sorted(days))
+        self.parent.dateToCC.addItems(sorted(days))
 
     def populateCostCenterBox(self):
-        """Populate the costCenterBox with values from the pos_descr column in the emp_posnsched table."""
+        """Populate the costCenterBox with values from the dept_name column in the emp_posnsched table."""
+        if self.cost_center_cache is not None:
+            # Use cached data if available
+            self.parent.costCenterBox.clear()
+            self.parent.costCenterBox.addItems(self.cost_center_cache)
+            self.parent.costCenterBox.setCurrentIndex(-1)
+            logging.info("Cost center box populated from cache.")
+            return
+
         connection = create_connection('NTP_EMP_LIST')
         if not connection:
             logging.error("Error: Unable to connect to FILE201 database.")
@@ -128,20 +114,20 @@ class populateList:
         try:
             cursor = connection.cursor()
 
-            # Query to fetch distinct dept_name values
+            # Optimized query to fetch distinct dept_name values
             query = "SELECT DISTINCT dept_name FROM emp_posnsched ORDER BY dept_name"
             cursor.execute(query)
 
-            # Fetch all results
-            pos_descr_list = cursor.fetchall()
+            # Fetch all results at once
+            dept_names = [row[0] for row in cursor.fetchall()]
+
+            # Cache the results
+            self.cost_center_cache = dept_names
 
             # Clear the current items in the QComboBox
             self.parent.costCenterBox.clear()
+            self.parent.costCenterBox.addItems(dept_names)
             self.parent.costCenterBox.setCurrentIndex(-1)
-
-            # Add items to the QComboBox
-            for pos_descr in pos_descr_list:
-                self.parent.costCenterBox.addItem(pos_descr[0])  # pos_descr is a tuple, so get the first element
 
             logging.info("Cost center box populated successfully.")
 
@@ -152,9 +138,13 @@ class populateList:
             cursor.close()
             connection.close()
 
+    def clear_cache(self):
+        """Clear all cached data"""
+        self.data_cache.clear()
+        self.cost_center_cache = None
+        logging.info("All caches cleared.")
+
     def populate_table_loader(self):
-        """Pops out the TablePopulationLoader Dialog"""
-        # Check if the TablePopulationLoader is still visible
         if hasattr(self, 'TablePopulationLoader') and self.TablePopulationLoader.isVisible():
             return
 
@@ -162,62 +152,45 @@ class populateList:
         self.TablePopulationLoader.show()
 
     def populate_table_with_data(self, data):
-        """Populate the table with employee time data, using ComboBoxes for sched_in and sched_out."""
         try:
             logging.info("Populating table with data.")
-
-            def create_time_combobox(initial_value):
-                combo = QComboBox()
-                for hour in range(24):
-                    for minute in range(0, 60, 15):
-                        time_str = f"{hour:02d}:{minute:02d}"
-                        combo.addItem(time_str)
-                combo.setCurrentText(initial_value)
-                return combo
-
             self.parent.TimeListTable.setUpdatesEnabled(False)
-            self.parent.TimeListTable.setRowCount(len(data))
 
-            items = []
-            widgets = []
+            # Sort data alphabetically by employee name (assuming it's the second column)
+            sorted_data = sorted(data, key=operator.itemgetter(1))
 
-            for row_position, row_data in enumerate(data):
-                row_items = []
+            self.parent.TimeListTable.setRowCount(len(sorted_data))
+
+            for row_position, row_data in enumerate(sorted_data):
                 for col, value in enumerate(row_data):
-                    if col in [6, 7]:
-                        sched_time = str(value)
-                        if len(sched_time) == 8:
-                            sched_time = sched_time[:5]
-                        combo = create_time_combobox(sched_time)
-                        widgets.append((row_position, col, combo))
+                    if col in [6, 7]:  # sched_in and sched_out columns
+                        combo = QComboBox()
+                        for hour in range(24):
+                            for minute in range(0, 60, 15):
+                                time_str = f"{hour:02d}:{minute:02d}:00"
+                                combo.addItem(time_str)
+                        combo.setCurrentText(str(value))
+                        combo.setStyleSheet("QComboBox { qproperty-alignment: AlignCenter; }")
+                        self.parent.TimeListTable.setCellWidget(row_position, col, combo)
                     else:
                         item = QTableWidgetItem(str(value))
                         item.setTextAlignment(Qt.AlignCenter)
-                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)
-                        row_items.append(item)
-                items.append(row_items)
-
-            for row_position, row_items in enumerate(items):
-                for col, item in enumerate(row_items):
-                    self.parent.TimeListTable.setItem(row_position, col, item)
-            for row_position, col, widget in widgets:
-                self.parent.TimeListTable.setCellWidget(row_position, col, widget)
+                        self.parent.TimeListTable.setItem(row_position, col, item)
 
             header = self.parent.TimeListTable.horizontalHeader()
             header.setSectionResizeMode(QHeaderView.Fixed)
 
-            logging.info(f"Table populated with {len(data)} rows.")
-
+            logging.info(f"Table populated with {len(sorted_data)} rows.")
         except Exception as e:
             logging.error(f"Error populating table with data: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
-
         finally:
             self.parent.TimeListTable.setUpdatesEnabled(True)
 
 
 class TablePopulationLoader(QDialog):
     """Displays a dialog with progress bar for visualization of populating table with data"""
+
     def __init__(self, data, timeCardWindow=None):
         super(TablePopulationLoader, self).__init__(timeCardWindow)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
@@ -281,6 +254,7 @@ class TablePopulationLoader(QDialog):
         # Closes and reset the instance of dialog
         self.close()
         self.parent.TablePopulationLoader = None
+
 
 class FetchDataToPopulateTableProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -360,7 +334,6 @@ class FetchDataToPopulateTableProcessor(QObject):
             time_data = []
 
             for i, (bioNum, trans_date, time_in, time_out, mach_code) in enumerate(records):
-
                 check_in_time = time_in or "00:00:00"
                 check_out_time = time_out or "00:00:00"
                 employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
@@ -388,7 +361,6 @@ class FetchDataToPopulateTableProcessor(QObject):
             cursor_file201.close()
             connection_list_log.close()
             connection_file201.close()
-
 
 
 class buttonTimecardFunction:
@@ -634,10 +606,9 @@ class buttonTimecardFunction:
 class searchBioNum:
     def __init__(self, parent):
         self.parent = parent
-        self.populate_list_instance = populateList(self.parent)  # Create instance of populateList
+        self.populate_list_instance = populateList(self.parent)
 
     def search_bioNum(self):
-        """Search for a specific bioNum and update the table with filtered data."""
         search_text = self.parent.searchBioNum.text().strip().lower()
         logging.info(f"Search text: '{search_text}'")
 
@@ -649,26 +620,12 @@ class searchBioNum:
         if not search_text:
             logging.info("Search text is empty. Restoring original data.")
             self.populate_list_instance.populate_table_with_data(self.parent.original_data)
-            self.parent.TimeListTable.repaint()  # Force UI update
             return
 
-        # Ensure original_data is a list of lists/tuples
-        if not all(isinstance(row, (list, tuple)) for row in self.parent.original_data):
-            logging.error("Original data is not in the expected format.")
-            QMessageBox.critical(self.parent, "Error", "Original data format is incorrect.")
-            return
-
-        # Perform the search
         filtered_data = [row for row in self.parent.original_data if search_text in str(row[0]).lower()]
         logging.info(f"Filtered data contains {len(filtered_data)} rows.")
 
-        if not filtered_data:
-            logging.warning("No matching records found.")
-
-        # Update the table with filtered data
         self.populate_list_instance.populate_table_with_data(filtered_data)
-        self.parent.TimeListTable.repaint()  # Force UI update
-
 
 class FilterDialog(QDialog):
     def __init__(self, parent=None):
