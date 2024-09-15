@@ -36,8 +36,8 @@ class timecard(QDialog):
             self.populateComboBox.populate_year_combo_box()
             self.populateComboBox.populateCostCenterBox()
             self.yearCC.currentTextChanged.connect(self.populateComboBox.populate_date_combo_boxes)
-            self.dateFromCC.currentTextChanged.connect(self.populateComboBox.populate_time_list_table)
-            self.dateToCC.currentTextChanged.connect(self.populateComboBox.populate_time_list_table)
+            self.dateFromCC.currentTextChanged.connect(self.populateComboBox.populate_table_loader)
+            self.dateToCC.currentTextChanged.connect(self.populateComboBox.populate_table_loader)
 
             self.btnCCSched.clicked.connect(self.buttonFunctions.updateSchedule)
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)

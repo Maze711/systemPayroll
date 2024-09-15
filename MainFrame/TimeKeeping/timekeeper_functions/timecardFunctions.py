@@ -152,87 +152,14 @@ class populateList:
             cursor.close()
             connection.close()
 
-    def populate_time_list_table(self, checked=False):
-        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
-        selected_year_month = self.parent.yearCC.currentText()
-        from_day = self.parent.dateFromCC.currentText()
-        to_day = self.parent.dateToCC.currentText()
-
-        if not selected_year_month or not from_day or not to_day:
+    def populate_table_loader(self):
+        """Pops out the TablePopulationLoader Dialog"""
+        # Check if the TablePopulationLoader is still visible
+        if hasattr(self, 'TablePopulationLoader') and self.TablePopulationLoader.isVisible():
             return
 
-        logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
-
-        from_date = f"{selected_year_month}-{from_day.zfill(2)}"
-        to_date = f"{selected_year_month}-{to_day.zfill(2)}"
-        table_name = f"table_{selected_year_month.replace('-', '_')}"
-
-        connection_list_log = create_connection('NTP_LOG_IMPORTS')
-        connection_file201 = create_connection('NTP_EMP_LIST')
-
-        if not connection_list_log or not connection_file201:
-            return
-
-        try:
-            cursor_list_log = connection_list_log.cursor()
-            cursor_file201 = connection_file201.cursor()
-
-            # Check if the table exists
-            cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
-            if not cursor_list_log.fetchone():
-                logging.error(f"Error: Table does not exist: {table_name}")
-                return
-
-            # Fetch time records
-            query_list_log = f"""
-                SELECT bioNum, date, time_in, time_out, machCode
-                FROM `{table_name}`
-                WHERE date BETWEEN '{from_date}' AND '{to_date}'
-                ORDER BY bioNum, date, time_in
-            """
-            cursor_list_log.execute(query_list_log)
-            records = cursor_list_log.fetchall()
-
-            # Fetch employee data
-            bio_nums = set(record[0] for record in records)
-            emp_query = f"""
-                SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
-                FROM emp_info pi
-                JOIN emp_posnsched ps ON pi.empid = ps.empid
-                WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
-            """
-            cursor_file201.execute(emp_query)
-            emp_records = cursor_file201.fetchall()
-            emp_data_cache = {record[0]: record[1:] for record in emp_records}
-
-            # Prepare time data
-            time_data = []
-            for bioNum, trans_date, time_in, time_out, mach_code in records:
-                check_in_time = time_in or "00:00:00"
-                check_out_time = time_out or "00:00:00"
-                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
-                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                sched_in = employee_data[3] or "00:00:00"
-                sched_out = employee_data[4] or "00:00:00"
-
-                time_data.append([
-                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
-                ])
-
-            # Update table
-            self.parent.TimeListTable.setUpdatesEnabled(False)
-            self.populate_table_with_data(time_data)
-            self.parent.TimeListTable.setUpdatesEnabled(True)
-            self.parent.original_data = time_data
-
-        except Exception as e:
-            logging.error(f"Error populating time list table: {e}")
-
-        finally:
-            cursor_list_log.close()
-            cursor_file201.close()
-            connection_list_log.close()
-            connection_file201.close()
+        self.TablePopulationLoader = TablePopulationLoader(self.parent.original_data, self.parent)
+        self.TablePopulationLoader.show()
 
     def populate_table_with_data(self, data):
         """Populate the table with employee time data, using ComboBoxes for sched_in and sched_out."""
@@ -287,6 +214,181 @@ class populateList:
 
         finally:
             self.parent.TimeListTable.setUpdatesEnabled(True)
+
+
+class TablePopulationLoader(QDialog):
+    """Displays a dialog with progress bar for visualization of populating table with data"""
+    def __init__(self, data, timeCardWindow=None):
+        super(TablePopulationLoader, self).__init__(timeCardWindow)
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        loadUi(ui_file, self)
+        self.setFixedSize(400, 124)
+        self.setModal(True)
+        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+
+        try:
+
+            self.data = data
+            self.parent = timeCardWindow
+
+            self.functions = populateList(self.parent)
+
+            # Get UI elements
+            self.progressBar = self.findChild(QProgressBar, 'progressBar')
+
+            self.progressBar.setVisible(True)
+            self.progressBar.setValue(0)
+
+            self.thread = QThread()
+            self.worker = FetchDataToPopulateTableProcessor(self.parent, self.data)
+            self.worker.moveToThread(self.thread)
+            self.worker.progressChanged.connect(self.updateProgressBar)
+            self.worker.finished.connect(self.fetchingDataFinished)
+            self.worker.error.connect(self.fetchingDataError)
+            self.thread.started.connect(self.worker.process_populate_time_list_table)
+            self.thread.start()
+        except Exception as e:
+            print("Error Showing TablePopulationLoader: ", e)
+
+    def updateProgressBar(self, value):
+        self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.setFormat("Finishing Up..")
+        QApplication.processEvents()
+
+    def fetchingDataFinished(self, time_data):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        # Update table
+        self.parent.TimeListTable.setUpdatesEnabled(False)
+        self.functions.populate_table_with_data(time_data)
+        self.parent.TimeListTable.setUpdatesEnabled(True)
+        self.parent.original_data = time_data
+
+        # Closes and reset the instance of dialog
+        self.close()
+        self.parent.TablePopulationLoader = None
+
+    def fetchingDataError(self, error):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        QMessageBox.critical(self.parent, "Populating Table with Data Error", error)
+
+        # Closes and reset the instance of dialog
+        self.close()
+        self.parent.TablePopulationLoader = None
+
+class FetchDataToPopulateTableProcessor(QObject):
+    progressChanged = pyqtSignal(int)
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+
+    def __init__(self, timeCardWindow, data):
+        super().__init__()
+        self.parent = timeCardWindow
+        self.data = data
+
+    def process_populate_time_list_table(self):
+        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
+        selected_year_month = self.parent.yearCC.currentText()
+        from_day = self.parent.dateFromCC.currentText()
+        to_day = self.parent.dateToCC.currentText()
+
+        if not selected_year_month or not from_day or not to_day:
+            return
+
+        logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
+
+        from_date = f"{selected_year_month}-{from_day.zfill(2)}"
+        to_date = f"{selected_year_month}-{to_day.zfill(2)}"
+        table_name = f"table_{selected_year_month.replace('-', '_')}"
+
+        connection_list_log = create_connection('NTP_LOG_IMPORTS')
+        connection_file201 = create_connection('NTP_EMP_LIST')
+
+        if not connection_list_log or not connection_file201:
+            self.error.emit("Failed to connect to database.")
+            return
+
+        try:
+            cursor_list_log = connection_list_log.cursor()
+            cursor_file201 = connection_file201.cursor()
+
+            # Check if the table exists
+            cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
+            if not cursor_list_log.fetchone():
+                self.error.emit(f"Error: Table does not exist: {table_name}")
+                return
+
+            # Fetch time records
+            query_list_log = f"""
+                   SELECT bioNum, date, time_in, time_out, machCode
+                   FROM `{table_name}`
+                   WHERE date BETWEEN '{from_date}' AND '{to_date}'
+                   ORDER BY bioNum, date, time_in
+               """
+            cursor_list_log.execute(query_list_log)
+            records = cursor_list_log.fetchall()
+
+            # Fetch employee data
+            bio_nums = set(record[0] for record in records)
+            if not bio_nums:
+                self.finished.emit([])
+                return
+
+            emp_query = f"""
+                   SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
+                   FROM emp_info pi
+                   JOIN emp_posnsched ps ON pi.empid = ps.empid
+                   WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
+               """
+            cursor_file201.execute(emp_query)
+            emp_records = cursor_file201.fetchall()
+            emp_data_cache = {record[0]: record[1:] for record in emp_records}
+
+            # Total records retrieved
+            total_records = len(records)
+            if total_records == 0:
+                self.finished.emit([])
+                return
+
+            # Prepare time data
+            time_data = []
+
+            for i, (bioNum, trans_date, time_in, time_out, mach_code) in enumerate(records):
+
+                check_in_time = time_in or "00:00:00"
+                check_out_time = time_out or "00:00:00"
+                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
+                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
+                sched_in = employee_data[3] or "00:00:00"
+                sched_out = employee_data[4] or "00:00:00"
+
+                time_data.append([
+                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
+                ])
+
+                # Navigates the current progress
+                progress = int(((i + 1) / total_records) * 100)
+                self.progressChanged.emit(progress)
+                QThread.msleep(1)
+
+            self.finished.emit(time_data)
+
+        except Exception as e:
+            print(f"Error populating time list table: {e}")
+            self.error.emit(f"Error populating time list table: {e}")
+
+        finally:
+            cursor_list_log.close()
+            cursor_file201.close()
+            connection_list_log.close()
+            connection_file201.close()
+
 
 
 class buttonTimecardFunction:
