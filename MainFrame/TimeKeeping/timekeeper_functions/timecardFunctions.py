@@ -156,7 +156,6 @@ class populateList:
             logging.info("Populating table with data.")
             self.parent.TimeListTable.setUpdatesEnabled(False)
 
-            # Sort data alphabetically by employee name (assuming it's the second column)
             sorted_data = sorted(data, key=operator.itemgetter(1))
 
             self.parent.TimeListTable.setRowCount(len(sorted_data))
@@ -186,181 +185,6 @@ class populateList:
             QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
         finally:
             self.parent.TimeListTable.setUpdatesEnabled(True)
-
-
-class TablePopulationLoader(QDialog):
-    """Displays a dialog with progress bar for visualization of populating table with data"""
-
-    def __init__(self, data, timeCardWindow=None):
-        super(TablePopulationLoader, self).__init__(timeCardWindow)
-        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
-        loadUi(ui_file, self)
-        self.setFixedSize(400, 124)
-        self.setModal(True)
-        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
-
-        try:
-
-            self.data = data
-            self.parent = timeCardWindow
-
-            self.functions = populateList(self.parent)
-
-            # Get UI elements
-            self.progressBar = self.findChild(QProgressBar, 'progressBar')
-
-            self.progressBar.setVisible(True)
-            self.progressBar.setValue(0)
-
-            self.thread = QThread()
-            self.worker = FetchDataToPopulateTableProcessor(self.parent, self.data)
-            self.worker.moveToThread(self.thread)
-            self.worker.progressChanged.connect(self.updateProgressBar)
-            self.worker.finished.connect(self.fetchingDataFinished)
-            self.worker.error.connect(self.fetchingDataError)
-            self.thread.started.connect(self.worker.process_populate_time_list_table)
-            self.thread.start()
-        except Exception as e:
-            print("Error Showing TablePopulationLoader: ", e)
-
-    def updateProgressBar(self, value):
-        self.progressBar.setValue(value)
-        if value == 100:
-            self.progressBar.setFormat("Finishing Up..")
-        QApplication.processEvents()
-
-    def fetchingDataFinished(self, time_data):
-        self.progressBar.setVisible(False)
-        self.thread.quit()
-        self.thread.wait()
-
-        # Update table
-        self.parent.TimeListTable.setUpdatesEnabled(False)
-        self.functions.populate_table_with_data(time_data)
-        self.parent.TimeListTable.setUpdatesEnabled(True)
-        self.parent.original_data = time_data
-
-        # Closes and reset the instance of dialog
-        self.close()
-        self.parent.TablePopulationLoader = None
-
-    def fetchingDataError(self, error):
-        self.progressBar.setVisible(False)
-        self.thread.quit()
-        self.thread.wait()
-
-        QMessageBox.critical(self.parent, "Populating Table with Data Error", error)
-
-        # Closes and reset the instance of dialog
-        self.close()
-        self.parent.TablePopulationLoader = None
-
-
-class FetchDataToPopulateTableProcessor(QObject):
-    progressChanged = pyqtSignal(int)
-    finished = pyqtSignal(list)
-    error = pyqtSignal(str)
-
-    def __init__(self, timeCardWindow, data):
-        super().__init__()
-        self.parent = timeCardWindow
-        self.data = data
-
-    def process_populate_time_list_table(self):
-        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
-        selected_year_month = self.parent.yearCC.currentText()
-        from_day = self.parent.dateFromCC.currentText()
-        to_day = self.parent.dateToCC.currentText()
-
-        if not selected_year_month or not from_day or not to_day:
-            return
-
-        logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
-
-        from_date = f"{selected_year_month}-{from_day.zfill(2)}"
-        to_date = f"{selected_year_month}-{to_day.zfill(2)}"
-        table_name = f"table_{selected_year_month.replace('-', '_')}"
-
-        connection_list_log = create_connection('NTP_LOG_IMPORTS')
-        connection_file201 = create_connection('NTP_EMP_LIST')
-
-        if not connection_list_log or not connection_file201:
-            self.error.emit("Failed to connect to database.")
-            return
-
-        try:
-            cursor_list_log = connection_list_log.cursor()
-            cursor_file201 = connection_file201.cursor()
-
-            # Check if the table exists
-            cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
-            if not cursor_list_log.fetchone():
-                self.error.emit(f"Error: Table does not exist: {table_name}")
-                return
-
-            # Fetch time records
-            query_list_log = f"""
-                   SELECT bioNum, date, time_in, time_out, machCode
-                   FROM `{table_name}`
-                   WHERE date BETWEEN '{from_date}' AND '{to_date}'
-                   ORDER BY bioNum, date, time_in
-               """
-            cursor_list_log.execute(query_list_log)
-            records = cursor_list_log.fetchall()
-
-            # Fetch employee data
-            bio_nums = set(record[0] for record in records)
-            if not bio_nums:
-                self.finished.emit([])
-                return
-
-            emp_query = f"""
-                   SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
-                   FROM emp_info pi
-                   JOIN emp_posnsched ps ON pi.empid = ps.empid
-                   WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
-               """
-            cursor_file201.execute(emp_query)
-            emp_records = cursor_file201.fetchall()
-            emp_data_cache = {record[0]: record[1:] for record in emp_records}
-
-            # Total records retrieved
-            total_records = len(records)
-            if total_records == 0:
-                self.finished.emit([])
-                return
-
-            # Prepare time data
-            time_data = []
-
-            for i, (bioNum, trans_date, time_in, time_out, mach_code) in enumerate(records):
-                check_in_time = time_in or "00:00:00"
-                check_out_time = time_out or "00:00:00"
-                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
-                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                sched_in = employee_data[3] or "00:00:00"
-                sched_out = employee_data[4] or "00:00:00"
-
-                time_data.append([
-                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
-                ])
-
-                # Navigates the current progress
-                progress = int(((i + 1) / total_records) * 100)
-                self.progressChanged.emit(progress)
-                QThread.msleep(1)
-
-            self.finished.emit(time_data)
-
-        except Exception as e:
-            print(f"Error populating time list table: {e}")
-            self.error.emit(f"Error populating time list table: {e}")
-
-        finally:
-            cursor_list_log.close()
-            cursor_file201.close()
-            connection_list_log.close()
-            connection_file201.close()
 
 
 class buttonTimecardFunction:
@@ -475,7 +299,7 @@ class buttonTimecardFunction:
             )
             return
 
-        aggregated_data = {}
+        timesheet_data = []
         date_from = self.parent.dateFromCC.currentText()
         date_to = self.parent.dateToCC.currentText()
 
@@ -486,88 +310,155 @@ class buttonTimecardFunction:
             mach_code = self.parent.TimeListTable.item(row, 3).text()
             check_in = self.parent.TimeListTable.item(row, 4).text()
             check_out = self.parent.TimeListTable.item(row, 5).text()
+            sched_in = self.parent.TimeListTable.cellWidget(row, 6).currentText()
+            sched_out = self.parent.TimeListTable.cellWidget(row, 7).currentText()
 
-            try:
-                hours_worked, nd_hours, ndot_hours = self.getTotalHoursWorked(check_in, check_out)
-                formatted_hours = f"{hours_worked:.2f}"
-                formatted_nd_hours = f"{nd_hours:.2f}"
-                formatted_ndot_hours = f"{ndot_hours:.2f}"
-            except AttributeError as e:
-                logging.error(f"Error: {e} - Please make sure getTotalHoursWorked is defined.")
-                formatted_hours = "0.00"
-                formatted_nd_hours = "0.00"
-                formatted_ndot_hours = "0.00"
+            timesheet_data.append((bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out))
 
-            if bioNum not in aggregated_data:
-                aggregated_data[bioNum] = {
-                    'BioNum': bioNum,
-                    'EmpNumber': bioNum,
-                    'Employee': emp_name,
-                    'Total_Hours_Worked': 0.0,
-                    'Night_Differential': 0.0,
-                    'Night_Differential_OT': 0.0,
-                    'Days_Work': 0,
-                    'Days_Present': 0
-                }
+        results = self.process_timesheet(timesheet_data)
 
-            aggregated_data[bioNum]['Total_Hours_Worked'] += float(formatted_hours)
-            aggregated_data[bioNum]['Night_Differential'] += float(formatted_nd_hours)
-            aggregated_data[bioNum]['Night_Differential_OT'] += float(formatted_ndot_hours)
-            aggregated_data[bioNum]['Days_Work'] += 1
+        # Aggregate the data by summing the total hours, ND, NDOT, and counting unique days
+        total_hours_worked = 0
+        total_nd = 0
+        total_ndot = 0
+        unique_dates = set()  # To track distinct workdays
 
-        dataMerge = list(aggregated_data.values())
+        for result in results:
+            total_hours_worked += result['total_hours']
+            total_nd += result['nd_hours']
+            total_ndot += result['ndot_hours']
+            unique_dates.add(result['trans_date'])  # Ensure each date is only counted once
 
-        for data in dataMerge:
-            data['Total_Hours_Worked'] = f"{data['Total_Hours_Worked']:.2f}"
-            data['Night_Differential'] = f"{data['Night_Differential']:.2f}"
-            data['Night_Differential_OT'] = f"{data['Night_Differential_OT']:.2f}"
-            logging.info(data)
+        # Prepare the merged data
+        dataMerge = [{
+            'BioNum': results[0]['bio_num'],  # Assuming one employee, as it's aggregated
+            'EmpNumber': results[0]['bio_num'],
+            'Employee': results[0]['emp_name'],
+            'Total_Hours_Worked': f"{total_hours_worked:.2f}",
+            'Night_Differential': f"{total_nd:.2f}",
+            'Night_Differential_OT': f"{total_ndot:.2f}",
+            'Days_Work': len(unique_dates),  # Count of distinct days
+            'Days_Present': len(unique_dates)
+        }]
 
         try:
             dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
             dialog.exec_()
         except Exception as e:
             logging.error(f"Error opening TimeSheet dialog: {e}")
+            QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the TimeSheet dialog: {e}") 
 
-    def getTotalHoursWorked(self, time_start, time_end):
-        # Define ND and NDO times
-        nd_start = datetime.strptime("22:00:00", "%H:%M:%S").time()
-        nd_end = datetime.strptime("06:00:00", "%H:%M:%S").time()
-        ndot_start = datetime.strptime("02:00:00", "%H:%M:%S").time()
-        ndot_end = datetime.strptime("06:00:00", "%H:%M:%S").time()
+    def calculate_nd_ndot(self, check_in, check_out, schedule_in, schedule_out):
+        check_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
+        check_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
+        schedule_in = datetime.strptime(schedule_in, "%H:%M:%S").time()
+        schedule_out = datetime.strptime(schedule_out, "%H:%M:%S").time()
 
-        # Parse times
-        time_in = datetime.strptime(time_start, "%H:%M:%S")
-        time_out = datetime.strptime(time_end, "%H:%M:%S")
+        if check_out <= check_in:
+            check_out += timedelta(days=1)
 
-        # Handle overnight shifts
+        nd_ranges = [
+            (datetime.combine(check_in.date(), datetime.strptime("22:00:00", "%H:%M:%S").time()),
+             datetime.combine(check_in.date(), datetime.strptime("23:59:59", "%H:%M:%S").time())),
+            (datetime.combine(check_in.date(), datetime.strptime("00:00:00", "%H:%M:%S").time()),
+             datetime.combine(check_in.date(), datetime.strptime("06:00:00", "%H:%M:%S").time()))
+        ]
+        ndot_range = (
+            datetime.combine(check_in.date(), datetime.strptime("02:00:00", "%H:%M:%S").time()),
+            datetime.combine(check_in.date(), datetime.strptime("06:00:00", "%H:%M:%S").time())
+        )
+
+        nd_minutes = 0
+        ndot_minutes = 0
+        current = check_in
+        while current < check_out:
+            next_minute = current + timedelta(minutes=1)
+
+            for nd_start, nd_end in nd_ranges:
+                if nd_start <= current < nd_end or nd_start <= next_minute < nd_end:
+                    nd_minutes += 1
+                    break
+
+            if ndot_range[0] <= current < ndot_range[1] or ndot_range[0] <= next_minute < ndot_range[1]:
+                ndot_minutes += 1
+
+            current = next_minute
+
+        return nd_minutes / 60, ndot_minutes / 60
+
+    def process_timesheet(self, timesheet_data):
+        results = []
+        for entry in timesheet_data:
+            bio_num, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out = entry
+
+            check_in_datetime = f"{trans_date} {check_in}"
+            check_out_datetime = f"{trans_date} {check_out}"
+
+            if datetime.strptime(check_out, "%H:%M:%S") < datetime.strptime(check_in, "%H:%M:%S"):
+                check_out_date = datetime.strptime(trans_date, "%Y-%m-%d") + timedelta(days=1)
+                check_out_datetime = f"{check_out_date.strftime('%Y-%m-%d')} {check_out}"
+
+            nd_hours, ndot_hours = self.calculate_nd_ndot(check_in_datetime, check_out_datetime, sched_in, sched_out)
+            total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
+                           datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
+
+            sched_total_hours, sched_nd_hours, sched_ndot_hours = self.calculate_sched_combo_nd_ndot(sched_in,
+                                                                                                     sched_out)
+
+            results.append({
+                'bio_num': bio_num,
+                'emp_name': emp_name,
+                'trans_date': trans_date,
+                'check_in': check_in,
+                'check_out': check_out,
+                'total_hours': round(total_hours, 2),
+                'nd_hours': round(nd_hours, 2),
+                'ndot_hours': round(ndot_hours, 2),
+                'sched_total_hours': sched_total_hours,
+                'sched_nd_hours': sched_nd_hours,
+                'sched_ndot_hours': sched_ndot_hours
+            })
+        return results
+
+    def calculate_sched_combo_nd_ndot(self, sched_in, sched_out):
+        time_in = datetime.strptime(sched_in, "%H:%M:%S")
+        time_out = datetime.strptime(sched_out, "%H:%M:%S")
+
         if time_out <= time_in:
             time_out += timedelta(days=1)
 
-        # Calculate total hours worked
         total_hours = (time_out - time_in).total_seconds() / 3600
+        nd_hours, ndot_hours = self.calculate_nd_ndot(
+            time_in.strftime("%Y-%m-%d %H:%M:%S"),
+            time_out.strftime("%Y-%m-%d %H:%M:%S"),
+            sched_in,
+            sched_out
+        )
 
-        # Calculate ND and NDO hours
-        nd_hours = 0
-        ndot_hours = 0
-        current_time = time_in
-        while current_time < time_out:
-            if nd_start <= current_time.time() or current_time.time() < nd_end:
-                nd_hours += 1
-            if ndot_start <= current_time.time() < ndot_end:
-                ndot_hours += 1
-            current_time += timedelta(hours=1)
+        return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
 
-        nd_hours /= 60  # Convert minutes to hours
-        ndot_hours /= 60  # Convert minutes to hours
+    def getTotalHoursWorked(self, check_in, check_out):
+        time_in = datetime.strptime(check_in, "%H:%M:%S")
+        time_out = datetime.strptime(check_out, "%H:%M:%S")
+
+        if time_out <= time_in:
+            time_out += timedelta(days=1)
+
+        total_hours = (time_out - time_in).total_seconds() / 3600
+        nd_hours, ndot_hours = self.calculate_nd_ndot(
+            time_in.strftime("%Y-%m-%d %H:%M:%S"),
+            time_out.strftime("%Y-%m-%d %H:%M:%S"),
+            time_in.strftime("%H:%M:%S"),
+            time_out.strftime("%H:%M:%S")
+        )
 
         return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
 
     def CheckSched(self, checked=False):
-        # Access TimeListTable through self.parent
         selected_row = self.parent.TimeListTable.currentRow()
 
         if selected_row != -1:
+            # Extract employee data from the selected row
             bioNum = self.parent.TimeListTable.item(selected_row, 0).text() if self.parent.TimeListTable.item(
                 selected_row, 0) else "N/A"
             empName = self.parent.TimeListTable.item(selected_row, 1).text() if self.parent.TimeListTable.item(
@@ -578,29 +469,25 @@ class buttonTimecardFunction:
                 selected_row, 4) else "Missing"
             checkOut = self.parent.TimeListTable.item(selected_row, 5).text() if self.parent.TimeListTable.item(
                 selected_row, 5) else "Missing"
-            sched = self.parent.TimeListTable.item(selected_row, 6).text() if self.parent.TimeListTable.item(
-                selected_row, 6) else "N/A"
 
-            total_hours = self.getTotalHoursWorked(checkIn, checkOut)
+            # Extract schedule times from comboBoxes
+            sched_in_combo = self.parent.TimeListTable.cellWidget(selected_row, 6).currentText()
+            sched_out_combo = self.parent.TimeListTable.cellWidget(selected_row, 7).currentText()
+
+            total_hours, nd_hours, ndot_hours = self.calculate_sched_combo_nd_ndot(sched_in_combo, sched_out_combo)
 
             empNum = "DefaultEmpNum"
-            data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours]
+            data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched_in_combo, sched_out_combo,
+                    total_hours, nd_hours, ndot_hours]
 
-            if len(data) == 8:
-                dialog = chkSched(data)  # Ensure chkSched is defined/imported
+            if len(data) == 11:
+                dialog = chkSched(data)  # Assuming `chkSched` is a valid dialog class to show schedule info
                 dialog.exec_()
             else:
-                QMessageBox.warning(
-                    self.parent,
-                    "Data Error",
-                    "Insufficient data to process. Please check the row data."
-                )
+                QMessageBox.warning(self.parent, "Data Error",
+                                    "Insufficient data to process. Please check the row data.")
         else:
-            QMessageBox.warning(
-                self.parent,
-                "No Row Selected",
-                "Please select a row from the table first!"
-            )
+            QMessageBox.warning(self.parent, "No Row Selected", "Please select a row from the table first!")
 
 
 class searchBioNum:
@@ -626,6 +513,7 @@ class searchBioNum:
         logging.info(f"Filtered data contains {len(filtered_data)} rows.")
 
         self.populate_list_instance.populate_table_with_data(filtered_data)
+
 
 class FilterDialog(QDialog):
     def __init__(self, parent=None):
@@ -743,3 +631,174 @@ class FilterDialog(QDialog):
         except Exception as e:
             logging.error(f"Error in filterModal: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while opening the filter dialog: {str(e)}")
+
+
+class TablePopulationLoader(QDialog):
+    """Displays a dialog with progress bar for visualization of populating table with data"""
+
+    def __init__(self, data, timeCardWindow=None):
+        super(TablePopulationLoader, self).__init__(timeCardWindow)
+        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
+        loadUi(ui_file, self)
+        self.setFixedSize(400, 124)
+        self.setModal(True)
+        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+
+        try:
+
+            self.data = data
+            self.parent = timeCardWindow
+
+            self.functions = populateList(self.parent)
+
+            # Get UI elements
+            self.progressBar = self.findChild(QProgressBar, 'progressBar')
+
+            self.progressBar.setVisible(True)
+            self.progressBar.setValue(0)
+
+            self.thread = QThread()
+            self.worker = FetchDataToPopulateTableProcessor(self.parent, self.data)
+            self.worker.moveToThread(self.thread)
+            self.worker.progressChanged.connect(self.updateProgressBar)
+            self.worker.finished.connect(self.fetchingDataFinished)
+            self.worker.error.connect(self.fetchingDataError)
+            self.thread.started.connect(self.worker.process_populate_time_list_table)
+            self.thread.start()
+        except Exception as e:
+            print("Error Showing TablePopulationLoader: ", e)
+
+    def updateProgressBar(self, value):
+        self.progressBar.setValue(value)
+        if value == 100:
+            self.progressBar.setFormat("Finishing Up..")
+        QApplication.processEvents()
+
+    def fetchingDataFinished(self, time_data):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        # Update table
+        self.parent.TimeListTable.setUpdatesEnabled(False)
+        self.functions.populate_table_with_data(time_data)
+        self.parent.TimeListTable.setUpdatesEnabled(True)
+        self.parent.original_data = time_data
+
+        # Closes and reset the instance of dialog
+        self.close()
+        self.parent.TablePopulationLoader = None
+
+    def fetchingDataError(self, error):
+        self.progressBar.setVisible(False)
+        self.thread.quit()
+        self.thread.wait()
+
+        QMessageBox.critical(self.parent, "Populating Table with Data Error", error)
+
+        # Closes and reset the instance of dialog
+        self.close()
+        self.parent.TablePopulationLoader = None
+
+
+class FetchDataToPopulateTableProcessor(QObject):
+    progressChanged = pyqtSignal(int)
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+
+    def __init__(self, timeCardWindow, data):
+        super().__init__()
+        self.parent = timeCardWindow
+        self.data = data
+
+    def process_populate_time_list_table(self):
+        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
+        selected_year_month = self.parent.yearCC.currentText()
+        from_day = self.parent.dateFromCC.currentText()
+        to_day = self.parent.dateToCC.currentText()
+
+        if not selected_year_month or not from_day or not to_day:
+            return
+
+        logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
+
+        from_date = f"{selected_year_month}-{from_day.zfill(2)}"
+        to_date = f"{selected_year_month}-{to_day.zfill(2)}"
+        table_name = f"table_{selected_year_month.replace('-', '_')}"
+
+        connection_list_log = create_connection('NTP_LOG_IMPORTS')
+        connection_file201 = create_connection('NTP_EMP_LIST')
+
+        if not connection_list_log or not connection_file201:
+            self.error.emit("Failed to connect to database.")
+            return
+
+        try:
+            cursor_list_log = connection_list_log.cursor()
+            cursor_file201 = connection_file201.cursor()
+
+            # Check if the table exists
+            cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
+            if not cursor_list_log.fetchone():
+                self.error.emit(f"Error: Table does not exist: {table_name}")
+                return
+
+            # Fetch time records (filtered by bioNum 7635)
+            query_list_log = f"""
+                   SELECT bioNum, date, time_in, time_out, machCode
+                   FROM `{table_name}`
+                   WHERE date BETWEEN '{from_date}' AND '{to_date}' AND bioNum = 7635
+                   ORDER BY bioNum, date, time_in
+               """
+            cursor_list_log.execute(query_list_log)
+            records = cursor_list_log.fetchall()
+
+            # Fetch employee data (filtered by empid 7635)
+            emp_query = """
+                   SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
+                   FROM emp_info pi
+                   JOIN emp_posnsched ps ON pi.empid = ps.empid
+                   WHERE pi.empid = 7635
+               """
+            cursor_file201.execute(emp_query)
+            emp_records = cursor_file201.fetchall()
+            emp_data_cache = {record[0]: record[1:] for record in emp_records}
+
+            # Total records retrieved
+            total_records = len(records)
+            if total_records == 0:
+                self.finished.emit([])  # No data to process
+                return
+
+            # Prepare time data
+            time_data = []
+
+            for i, (bioNum, trans_date, time_in, time_out, mach_code) in enumerate(records):
+                check_in_time = time_in or "00:00:00"
+                check_out_time = time_out or "00:00:00"
+                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
+                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
+                sched_in = employee_data[3] or "00:00:00"
+                sched_out = employee_data[4] or "00:00:00"
+
+                time_data.append([
+                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
+                ])
+
+                # Navigates the current progress
+                progress = int(((i + 1) / total_records) * 100)
+                self.progressChanged.emit(progress)
+                QThread.msleep(1)
+
+            self.finished.emit(time_data)
+
+        except Exception as e:
+            print(f"Error populating time list table: {e}")
+            self.error.emit(f"Error populating time list table: {e}")
+
+        finally:
+            cursor_list_log.close()
+            cursor_file201.close()
+            connection_list_log.close()
+            connection_file201.close()
+
