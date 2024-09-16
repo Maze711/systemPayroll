@@ -155,36 +155,68 @@ class populateList:
         try:
             logging.info("Populating table with data.")
             self.parent.TimeListTable.setUpdatesEnabled(False)
+            self.parent.TimeListTable.setSortingEnabled(False)
 
+            # Sort data alphabetically by employee name (assuming it's the second column)
             sorted_data = sorted(data, key=operator.itemgetter(1))
 
             self.parent.TimeListTable.setRowCount(len(sorted_data))
 
+            # Prepopulate combo box options (same for all rows)
+            combo_items = [f"{hour:02d}:{minute:02d}:00" for hour in range(24) for minute in range(0, 60, 15)]
+
+            # Set the custom delegate for the sched_in and sched_out columns (6 and 7)
+            combo_delegate = ComboBoxDelegate(combo_items, self.parent.TimeListTable)
+
+            # Setting delegate outside the loop
+            self.parent.TimeListTable.setItemDelegateForColumn(6, combo_delegate)
+            self.parent.TimeListTable.setItemDelegateForColumn(7, combo_delegate)
+
+            # Populate table data
             for row_position, row_data in enumerate(sorted_data):
                 for col, value in enumerate(row_data):
-                    if col in [6, 7]:  # sched_in and sched_out columns
-                        combo = QComboBox()
-                        for hour in range(24):
-                            for minute in range(0, 60, 15):
-                                time_str = f"{hour:02d}:{minute:02d}:00"
-                                combo.addItem(time_str)
-                        combo.setCurrentText(str(value))
-                        combo.setStyleSheet("QComboBox { qproperty-alignment: AlignCenter; }")
-                        self.parent.TimeListTable.setCellWidget(row_position, col, combo)
+                    item = QTableWidgetItem(str(value))
+                    item.setTextAlignment(Qt.AlignCenter)
+
+                    # Allow editing only for columns 6 and 7
+                    if col == 6 or col == 7:
+                        item.setFlags(item.flags() | Qt.ItemIsEditable)
                     else:
-                        item = QTableWidgetItem(str(value))
-                        item.setTextAlignment(Qt.AlignCenter)
-                        self.parent.TimeListTable.setItem(row_position, col, item)
+                        item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Disable editing for other columns
+
+                    self.parent.TimeListTable.setItem(row_position, col, item)
 
             header = self.parent.TimeListTable.horizontalHeader()
             header.setSectionResizeMode(QHeaderView.Fixed)
+            header.setSectionsClickable(False)
 
             logging.info(f"Table populated with {len(sorted_data)} rows.")
         except Exception as e:
             logging.error(f"Error populating table with data: {str(e)}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred while populating the table: {str(e)}")
         finally:
+            self.parent.TimeListTable.setSortingEnabled(True)
             self.parent.TimeListTable.setUpdatesEnabled(True)
+
+        # Ensure the edit triggers are set to make cells easier to edit
+        self.parent.TimeListTable.setEditTriggers(QAbstractItemView.AllEditTriggers)
+
+class ComboBoxDelegate(QStyledItemDelegate):
+    def __init__(self, items, parent=None):
+        super(ComboBoxDelegate, self).__init__(parent)
+        self.items = items
+
+    def createEditor(self, parent, option, index):
+        combo = QComboBox(parent)
+        combo.addItems(self.items)
+        return combo
+
+    def setEditorData(self, editor, index):
+        value = index.data()
+        editor.setCurrentText(value)
+
+    def setModelData(self, editor, model, index):
+        model.setData(index, editor.currentText())
 
 
 class buttonTimecardFunction:
@@ -747,18 +779,24 @@ class FetchDataToPopulateTableProcessor(QObject):
             query_list_log = f"""
                    SELECT bioNum, date, time_in, time_out, machCode
                    FROM `{table_name}`
-                   WHERE date BETWEEN '{from_date}' AND '{to_date}' AND bioNum = 7635
+                   WHERE date BETWEEN '{from_date}' AND '{to_date}'
                    ORDER BY bioNum, date, time_in
                """
             cursor_list_log.execute(query_list_log)
             records = cursor_list_log.fetchall()
 
+            # Fetch employee data
+            bio_nums = set(record[0] for record in records)
+            if not bio_nums:
+                self.finished.emit([])
+                return
+
             # Fetch employee data (filtered by empid 7635)
-            emp_query = """
+            emp_query = f"""
                    SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
                    FROM emp_info pi
                    JOIN emp_posnsched ps ON pi.empid = ps.empid
-                   WHERE pi.empid = 7635
+                   WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
                """
             cursor_file201.execute(emp_query)
             emp_records = cursor_file201.fetchall()

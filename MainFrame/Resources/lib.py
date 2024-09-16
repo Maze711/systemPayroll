@@ -34,7 +34,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, QApplication, QVBoxLayout, QFileDialog, QMessageBox, QHeaderView,
     QPushButton, QTableWidgetItem, QPlainTextEdit, QComboBox, QDateEdit, QLineEdit,
     QDialog, QProgressBar, QLabel, QWidget, QTableWidget, QCheckBox, QStackedWidget,
-    QHBoxLayout
+    QHBoxLayout, QStyledItemDelegate, QAbstractItemView
 )
 from PyQt5.uic import loadUi
 from MainFrame.systemFunctions import single_function_logger
