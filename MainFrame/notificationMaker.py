@@ -73,29 +73,67 @@ class FileProcessor(QObject):
             return 'Unknown'
 
     def combineTimeInOut(self):
-        """Combines Time IN and Time OUT into a single DataFrame, using '00:00:00' for missing entries."""
+        """Combines Time IN and Time OUT into a single DataFrame, handling night shifts and preserving all entries."""
         combined_data = []
 
-        for bio_no, group in self.data.groupby(['bio_no', 'date']):
-            time_in_data = group[group['sched'] == 'Time IN']
-            time_out_data = group[group['sched'] == 'Time OUT']
+        # Sort the data by bio_no, date, and time
+        self.data = self.data.sort_values(['bio_no', 'date', 'time'])
 
-            # Get the last Time IN and last Time OUT for the day
-            last_time_in = time_in_data.sort_values(by='time').iloc[-1] if not time_in_data.empty else None
-            last_time_out = time_out_data.sort_values(by='time').iloc[-1] if not time_out_data.empty else None
+        for bio_no, group in self.data.groupby('bio_no'):
+            time_entries = group.to_dict('records')
+            i = 0
+            while i < len(time_entries):
+                current_entry = time_entries[i]
 
-            if last_time_in is not None or last_time_out is not None:
-                combined_data.append([
-                    last_time_in['bio_no'] if last_time_in is not None else last_time_out['bio_no'],
-                    last_time_in['date'] if last_time_in is not None else last_time_out['date'],
-                    last_time_in['mach_code'] if last_time_in is not None else last_time_out['mach_code'],
-                    last_time_in['time'] if last_time_in is not None else '00:00:00',
-                    last_time_out['time'] if last_time_out is not None else '00:00:00'
-                ])
+                if current_entry['sched'] == 'Time IN':
+                    # Look for the next Time OUT entry
+                    j = i + 1
+                    while j < len(time_entries):
+                        next_entry = time_entries[j]
+                        if next_entry['sched'] == 'Time OUT':
+                            # Found a matching Time OUT
+                            combined_data.append([
+                                bio_no,
+                                current_entry['date'],
+                                current_entry['mach_code'],
+                                current_entry['time'],
+                                next_entry['time']
+                            ])
+                            i = j  # Move to the Time OUT entry
+                            break
+                        elif next_entry['sched'] == 'Time IN':
+                            # Found another Time IN before Time OUT
+                            combined_data.append([
+                                bio_no,
+                                current_entry['date'],
+                                current_entry['mach_code'],
+                                current_entry['time'],
+                                '00:00:00'  # Use default Time OUT
+                            ])
+                            break
+                        j += 1
+
+                    if j == len(time_entries):
+                        # No matching Time OUT found, use default
+                        combined_data.append([
+                            bio_no,
+                            current_entry['date'],
+                            current_entry['mach_code'],
+                            current_entry['time'],
+                            '00:00:00'
+                        ])
+                else:  # It's a Time OUT without a preceding Time IN
+                    combined_data.append([
+                        bio_no,
+                        current_entry['date'],
+                        current_entry['mach_code'],
+                        '00:00:00',  # Use default Time IN
+                        current_entry['time']
+                    ])
+
+                i += 1
 
         combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
-        # Replace NaN values with '00:00:00'
-        combined_df = combined_df.fillna('00:00:00')
         return combined_df
 
     def chunkDataByMonth(self):
@@ -133,7 +171,7 @@ class FileProcessor(QObject):
                 time_out TIME,
                 edited_by VARCHAR(225),
                 edited_by_when DATETIME,
-                UNIQUE KEY unique_entry (bioNum, date, machCode)
+                UNIQUE KEY unique_entry (bioNum, date, machCode, time_in)
             )
         """
         try:
@@ -148,14 +186,8 @@ class FileProcessor(QObject):
             chunk_data = chunk_data.fillna('N/A')
             for _, entry in chunk_data.iterrows():
                 insert_query = f"""
-                    INSERT INTO {table_name} (bioNum, date, machCode, time_in, time_out)
+                    INSERT IGNORE INTO {table_name} (bioNum, date, machCode, time_in, time_out)
                     VALUES (%s, %s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE 
-                        time_in = VALUES(time_in),
-                        time_out = VALUES(time_out),
-                        machCode = VALUES(machCode),
-                        edited_by = '',
-                        edited_by_when = NOW()
                 """
                 cursor.execute(insert_query, (entry[0], entry[1], entry[2], entry[3], entry[4]))
                 connection.commit()
