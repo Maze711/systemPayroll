@@ -24,7 +24,7 @@ class chkSched(QDialog):
                                  self.txtPaternity, self.txtSole, self.txtSpecialy, self.txtSIL)
 
     def populate_schedule_with_data(self, data):
-        (empNum, bioNum, empName, trans_date, checkIn, checkOut, sched, total_hours) = data
+        (empNum, bioNum, empName, trans_date, checkIn, checkOut, total_hours) = data
 
         self.empNameTxt.setText(empName)
         self.bioNumTxt.setText(bioNum)
