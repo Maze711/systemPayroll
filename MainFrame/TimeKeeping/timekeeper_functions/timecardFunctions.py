@@ -201,6 +201,7 @@ class populateList:
         # Ensure the edit triggers are set to make cells easier to edit
         self.parent.TimeListTable.setEditTriggers(QAbstractItemView.AllEditTriggers)
 
+
 class ComboBoxDelegate(QStyledItemDelegate):
     def __init__(self, items, parent=None):
         super(ComboBoxDelegate, self).__init__(parent)
@@ -323,62 +324,80 @@ class buttonTimecardFunction:
             QMessageBox.warning(self.parent, "No Data", "There is no data to export.")
 
     def createTimeSheet(self, checked=False):
-        if self.parent.TimeListTable.rowCount() == 0:
-            QMessageBox.warning(
-                self.parent,
-                "No rows available",
-                "No rows detected, please make sure that there is data available within the table first in order to proceed!"
-            )
-            return
-
-        timesheet_data = []
-        date_from = self.parent.dateFromCC.currentText()
-        date_to = self.parent.dateToCC.currentText()
-
-        for row in range(self.parent.TimeListTable.rowCount()):
-            bioNum = self.parent.TimeListTable.item(row, 0).text()
-            emp_name = self.parent.TimeListTable.item(row, 1).text()
-            trans_date = self.parent.TimeListTable.item(row, 2).text()
-            mach_code = self.parent.TimeListTable.item(row, 3).text()
-            check_in = self.parent.TimeListTable.item(row, 4).text()
-            check_out = self.parent.TimeListTable.item(row, 5).text()
-            sched_in = self.parent.TimeListTable.cellWidget(row, 6).currentText()
-            sched_out = self.parent.TimeListTable.cellWidget(row, 7).currentText()
-
-            timesheet_data.append((bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out))
-
-        results = self.process_timesheet(timesheet_data)
-
-        # Aggregate the data by summing the total hours, ND, NDOT, and counting unique days
-        total_hours_worked = 0
-        total_nd = 0
-        total_ndot = 0
-        unique_dates = set()  # To track distinct workdays
-
-        for result in results:
-            total_hours_worked += result['total_hours']
-            total_nd += result['nd_hours']
-            total_ndot += result['ndot_hours']
-            unique_dates.add(result['trans_date'])  # Ensure each date is only counted once
-
-        # Prepare the merged data
-        dataMerge = [{
-            'BioNum': results[0]['bio_num'],  # Assuming one employee, as it's aggregated
-            'EmpNumber': results[0]['bio_num'],
-            'Employee': results[0]['emp_name'],
-            'Total_Hours_Worked': f"{total_hours_worked:.2f}",
-            'Night_Differential': f"{total_nd:.2f}",
-            'Night_Differential_OT': f"{total_ndot:.2f}",
-            'Days_Work': len(unique_dates),  # Count of distinct days
-            'Days_Present': len(unique_dates)
-        }]
-
         try:
-            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
-            dialog.exec_()
+            if self.parent.TimeListTable.rowCount() == 0:
+                QMessageBox.warning(
+                    self.parent,
+                    "No rows available",
+                    "No rows detected, please make sure that there is data available within the table first in order to proceed!"
+                )
+                return
+
+            timesheet_data = []
+            date_from = self.parent.dateFromCC.currentText()
+            date_to = self.parent.dateToCC.currentText()
+
+            for row in range(self.parent.TimeListTable.rowCount()):
+                try:
+                    bioNum = self.parent.TimeListTable.item(row, 0).text()
+                    emp_name = self.parent.TimeListTable.item(row, 1).text()
+                    trans_date = self.parent.TimeListTable.item(row, 2).text()
+                    mach_code = self.parent.TimeListTable.item(row, 3).text()
+                    check_in = self.parent.TimeListTable.item(row, 4).text()
+                    check_out = self.parent.TimeListTable.item(row, 5).text()
+                    sched_in = self.parent.TimeListTable.cellWidget(row, 6).text()
+                    sched_out = self.parent.TimeListTable.cellWidget(row, 7).text()
+
+                    timesheet_data.append(
+                        (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out))
+                except Exception as e:
+                    logging.error(f"Error processing row {row}: {e}")
+                    QMessageBox.warning(self.parent, "Row Processing Error", f"Error processing row {row}: {e}")
+
+            if not timesheet_data:
+                QMessageBox.warning(self.parent, "No Data", "No valid data could be extracted from the table.")
+                return
+
+            results = self.process_timesheet(timesheet_data)
+
+            if not results:
+                QMessageBox.warning(self.parent, "No Results", "No results were generated from the timesheet data.")
+                return
+
+            # Aggregate the data
+            total_hours_worked = 0
+            total_nd = 0
+            total_ndot = 0
+            unique_dates = set()
+
+            for result in results:
+                total_hours_worked += result['total_hours']
+                total_nd += result['nd_hours']
+                total_ndot += result['ndot_hours']
+                unique_dates.add(result['trans_date'])
+
+            # Prepare the merged data
+            dataMerge = [{
+                'BioNum': results[0]['bio_num'],
+                'EmpNumber': results[0]['bio_num'],
+                'Employee': results[0]['emp_name'],
+                'Total_Hours_Worked': f"{total_hours_worked:.2f}",
+                'Night_Differential': f"{total_nd:.2f}",
+                'Night_Differential_OT': f"{total_ndot:.2f}",
+                'Days_Work': len(unique_dates),
+                'Days_Present': len(unique_dates)
+            }]
+
+            try:
+                dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
+                dialog.exec_()
+            except Exception as e:
+                logging.error(f"Error opening TimeSheet dialog: {e}")
+                QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the TimeSheet dialog: {e}")
+
         except Exception as e:
-            logging.error(f"Error opening TimeSheet dialog: {e}")
-            QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the TimeSheet dialog: {e}") 
+            logging.error(f"Unexpected error in createTimeSheet: {e}")
+            QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
 
     def calculate_nd_ndot(self, check_in, check_out, schedule_in, schedule_out):
         check_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
@@ -487,39 +506,54 @@ class buttonTimecardFunction:
         return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
 
     def CheckSched(self, checked=False):
-        selected_row = self.parent.TimeListTable.currentRow()
+        try:
+            selected_row = self.parent.TimeListTable.currentRow()
 
-        if selected_row != -1:
-            # Extract employee data from the selected row
-            bioNum = self.parent.TimeListTable.item(selected_row, 0).text() if self.parent.TimeListTable.item(
-                selected_row, 0) else "N/A"
-            empName = self.parent.TimeListTable.item(selected_row, 1).text() if self.parent.TimeListTable.item(
-                selected_row, 1) else "N/A"
-            trans_date = self.parent.TimeListTable.item(selected_row, 2).text() if self.parent.TimeListTable.item(
-                selected_row, 2) else "N/A"
-            checkIn = self.parent.TimeListTable.item(selected_row, 4).text() if self.parent.TimeListTable.item(
-                selected_row, 4) else "Missing"
-            checkOut = self.parent.TimeListTable.item(selected_row, 5).text() if self.parent.TimeListTable.item(
-                selected_row, 5) else "Missing"
+            if selected_row == -1:
+                QMessageBox.warning(self.parent, "No Row Selected", "Please select a row from the table first!")
+                return
 
-            # Extract schedule times from comboBoxes
-            sched_in_combo = self.parent.TimeListTable.cellWidget(selected_row, 6).currentText()
-            sched_out_combo = self.parent.TimeListTable.cellWidget(selected_row, 7).currentText()
+            def get_cell_value(row, col):
+                cell_widget = self.parent.TimeListTable.cellWidget(row, col)
+                if isinstance(cell_widget, QComboBox):
+                    return cell_widget.currentText()
+                item = self.parent.TimeListTable.item(row, col)
+                return item.text() if item else "N/A"
 
-            total_hours, nd_hours, ndot_hours = self.calculate_sched_combo_nd_ndot(sched_in_combo, sched_out_combo)
+            bioNum = get_cell_value(selected_row, 0)
+            empName = get_cell_value(selected_row, 1)
+            trans_date = get_cell_value(selected_row, 2)
+            checkIn = get_cell_value(selected_row, 4)
+            checkOut = get_cell_value(selected_row, 5)
+
+            logging.info(f"Extracted data: bioNum={bioNum}, empName={empName}, trans_date={trans_date}, "
+                         f"checkIn={checkIn}, checkOut={checkOut}")
+
+            try:
+                # Calculate total_hours only
+                total_hours, _, _ = self.getTotalHoursWorked(checkIn, checkOut)
+            except Exception as e:
+                logging.error(f"Error calculating hours: {e}")
+                QMessageBox.warning(self.parent, "Calculation Error", f"Error calculating hours: {e}")
+                return
 
             empNum = "DefaultEmpNum"
-            data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, sched_in_combo, sched_out_combo,
-                    total_hours, nd_hours, ndot_hours]
+            data = [empNum, bioNum, empName, trans_date, checkIn, checkOut, total_hours]
 
-            if len(data) == 11:
-                dialog = chkSched(data)  # Assuming `chkSched` is a valid dialog class to show schedule info
-                dialog.exec_()
+            if len(data) == 7:
+                try:
+                    dialog = chkSched(data)
+                    dialog.exec_()
+                except Exception as e:
+                    logging.error(f"Error opening chkSched dialog: {e}")
+                    QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the chkSched dialog: {e}")
             else:
                 QMessageBox.warning(self.parent, "Data Error",
-                                    "Insufficient data to process. Please check the row data.")
-        else:
-            QMessageBox.warning(self.parent, "No Row Selected", "Please select a row from the table first!")
+                                    f"Insufficient data to process. Expected 7 items, got {len(data)}. Please check the row data.")
+
+        except Exception as e:
+            logging.error(f"Unexpected error in CheckSched: {e}")
+            QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
 
 
 class searchBioNum:
@@ -839,4 +873,3 @@ class FetchDataToPopulateTableProcessor(QObject):
             cursor_file201.close()
             connection_list_log.close()
             connection_file201.close()
-
