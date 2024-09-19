@@ -2,7 +2,6 @@ import operator
 import sys
 import os
 import logging
-
 from MainFrame.notificationMaker import notificationLoader
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -326,11 +325,7 @@ class buttonTimecardFunction:
     def createTimeSheet(self, checked=False):
         try:
             if self.parent.TimeListTable.rowCount() == 0:
-                QMessageBox.warning(
-                    self.parent,
-                    "No rows available",
-                    "No rows detected, please make sure that there is data available within the table first in order to proceed!"
-                )
+                QMessageBox.warning(self.parent, "No rows available", "No rows detected!")
                 return
 
             timesheet_data = []
@@ -345,97 +340,144 @@ class buttonTimecardFunction:
                     mach_code = self.parent.TimeListTable.item(row, 3).text()
                     check_in = self.parent.TimeListTable.item(row, 4).text()
                     check_out = self.parent.TimeListTable.item(row, 5).text()
-                    sched_in = self.parent.TimeListTable.cellWidget(row, 6).text()
-                    sched_out = self.parent.TimeListTable.cellWidget(row, 7).text()
+                    sched_in = self.parent.TimeListTable.item(row, 6).text()
+                    sched_out = self.parent.TimeListTable.item(row, 7).text()
 
                     timesheet_data.append(
                         (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out))
+
                 except Exception as e:
                     logging.error(f"Error processing row {row}: {e}")
                     QMessageBox.warning(self.parent, "Row Processing Error", f"Error processing row {row}: {e}")
 
             if not timesheet_data:
-                QMessageBox.warning(self.parent, "No Data", "No valid data could be extracted from the table.")
+                QMessageBox.warning(self.parent, "No Data", "No valid data could be extracted.")
                 return
 
+            # Process timesheet data
             results = self.process_timesheet(timesheet_data)
 
             if not results:
-                QMessageBox.warning(self.parent, "No Results", "No results were generated from the timesheet data.")
+                QMessageBox.warning(self.parent, "No Results", "No results generated.")
                 return
 
-            # Aggregate the data
+            # Aggregate totals
             total_hours_worked = 0
-            total_nd = 0
-            total_ndot = 0
-            unique_dates = set()
+            total_nd_hours = 0
+            total_ndot_hours = 0
+            aggregated_results = {}
 
             for result in results:
+                bio_num = result['bio_num']
                 total_hours_worked += result['total_hours']
-                total_nd += result['nd_hours']
-                total_ndot += result['ndot_hours']
-                unique_dates.add(result['trans_date'])
+                total_nd_hours += result['nd_hours']
+                total_ndot_hours += result['ndot_hours']
 
-            # Prepare the merged data
-            dataMerge = [{
-                'BioNum': results[0]['bio_num'],
-                'EmpNumber': results[0]['bio_num'],
-                'Employee': results[0]['emp_name'],
-                'Total_Hours_Worked': f"{total_hours_worked:.2f}",
-                'Night_Differential': f"{total_nd:.2f}",
-                'Night_Differential_OT': f"{total_ndot:.2f}",
-                'Days_Work': len(unique_dates),
-                'Days_Present': len(unique_dates)
-            }]
+                # Print accumulated totals for debug
+                print(
+                    f"Running Total -> Hours Worked: {total_hours_worked}, ND: {total_nd_hours}, NDOT: {total_ndot_hours}")
 
-            try:
-                dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
-                dialog.exec_()
-            except Exception as e:
-                logging.error(f"Error opening TimeSheet dialog: {e}")
-                QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the TimeSheet dialog: {e}")
+                if bio_num not in aggregated_results:
+                    aggregated_results[bio_num] = {
+                        'emp_name': result['emp_name'],
+                        'total_hours_worked': 0,
+                        'nd_hours': 0,
+                        'ndot_hours': 0,
+                        'days_work': set()
+                    }
+                aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
+                aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
+                aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
+                aggregated_results[bio_num]['days_work'].add(result['trans_date'])
+
+            # Print final totals
+            print(f"Final Totals -> Hours Worked: {total_hours_worked}, ND: {total_nd_hours}, NDOT: {total_ndot_hours}")
+
+            # Prepare data for display
+            dataMerge = []
+            for bio_num, data in aggregated_results.items():
+                dataMerge.append({
+                    'BioNum': bio_num,
+                    'EmpNumber': bio_num,
+                    'Employee': data['emp_name'],
+                    'Total_Hours_Worked': f"{data['total_hours_worked']:.2f}",
+                    'Night_Differential': f"{data['nd_hours']:.2f}",
+                    'Night_Differential_OT': f"{data['ndot_hours']:.2f}",
+                    'Days_Work': len(data['days_work']),
+                    'Days_Present': len(data['days_work'])
+                })
+
+            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
+            dialog.exec_()
 
         except Exception as e:
             logging.error(f"Unexpected error in createTimeSheet: {e}")
             QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
 
-    def calculate_nd_ndot(self, check_in, check_out, schedule_in, schedule_out):
-        check_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
-        check_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
-        schedule_in = datetime.strptime(schedule_in, "%H:%M:%S").time()
-        schedule_out = datetime.strptime(schedule_out, "%H:%M:%S").time()
+    def calculate_hours(self, check_in_str, check_out_str):
+        # Convert strings to datetime objects
+        check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
+        check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
 
+        # Adjust check_out for midnight crossing
         if check_out <= check_in:
             check_out += timedelta(days=1)
 
-        nd_ranges = [
-            (datetime.combine(check_in.date(), datetime.strptime("22:00:00", "%H:%M:%S").time()),
-             datetime.combine(check_in.date(), datetime.strptime("23:59:59", "%H:%M:%S").time())),
-            (datetime.combine(check_in.date(), datetime.strptime("00:00:00", "%H:%M:%S").time()),
-             datetime.combine(check_in.date(), datetime.strptime("06:00:00", "%H:%M:%S").time()))
-        ]
-        ndot_range = (
-            datetime.combine(check_in.date(), datetime.strptime("02:00:00", "%H:%M:%S").time()),
-            datetime.combine(check_in.date(), datetime.strptime("06:00:00", "%H:%M:%S").time())
-        )
+        # Define ND and NDOT periods using datetime.time
+        nd_start = datetime.strptime("22:00", "%H:%M").time()  # 10:00 PM
+        nd_start_early = datetime.strptime("21:00", "%H:%M").time()  # 9:00 PM
+        midnight = datetime.strptime("00:00", "%H:%M").time()  # 12:00 AM
+        nd_end = datetime.strptime("06:00", "%H:%M").time()  # 6:00 AM
+        ndot_start = datetime.strptime("02:00", "%H:%M").time()  # 2:00 AM
 
-        nd_minutes = 0
-        ndot_minutes = 0
-        current = check_in
-        while current < check_out:
-            next_minute = current + timedelta(minutes=1)
+        total_hours = (check_out - check_in).total_seconds() / 3600
+        nd_hours = 0
+        ndot_hours = 0
+        current_time = check_in
 
-            for nd_start, nd_end in nd_ranges:
-                if nd_start <= current < nd_end or nd_start <= next_minute < nd_end:
-                    nd_minutes += 1
-                    break
+        while current_time < check_out:
+            # Move to the next hour or the check-out time
+            next_hour = (current_time + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
+            if next_hour > check_out:
+                next_hour = check_out
 
-            if ndot_range[0] <= current < ndot_range[1] or ndot_range[0] <= next_minute < ndot_range[1]:
-                ndot_minutes += 1
+            # Calculate the fraction of the hour between current_time and next_hour
+            hour_fraction = (next_hour - current_time).total_seconds() / 3600
 
-            current = next_minute
+            current_time_struct = current_time.time()
 
-        return nd_minutes / 60, ndot_minutes / 60
+            # ND hours calculation
+            if check_in.time() > nd_start_early and current_time_struct >= nd_start_early:
+                # Compute ND hours from check-in time up to 9 PM
+                if current_time_struct < nd_start:
+                    nd_hours += (datetime.combine(current_time.date(), nd_start) - datetime.combine(current_time.date(),
+                                                                                                    current_time_struct)).total_seconds() / 3600
+                else:
+                    nd_hours += min(hour_fraction, (
+                                datetime.combine(current_time.date(), nd_start) - datetime.combine(current_time.date(),
+                                                                                                   nd_start_early)).total_seconds() / 3600)
+            elif nd_start <= current_time_struct < midnight:
+                # Between 10 PM and midnight
+                nd_hours += min(hour_fraction, (
+                            datetime.combine(current_time.date(), midnight) - datetime.combine(current_time.date(),
+                                                                                               current_time_struct)).total_seconds() / 3600)
+            elif midnight <= current_time_struct < nd_end:
+                # Between midnight and 6 AM
+                nd_hours += min(hour_fraction, (
+                            datetime.combine(current_time.date(), nd_end) - datetime.combine(current_time.date(),
+                                                                                             current_time_struct)).total_seconds() / 3600)
+
+            # NDOT hours calculation
+            if ndot_start <= current_time_struct < nd_end:
+                ndot_hours += hour_fraction
+
+            current_time = next_hour
+
+        # Cap ND hours at 8
+        nd_hours = min(nd_hours, 8)
+
+        # Round and return
+        return round(total_hours, 2), round(nd_hours, 2), round(ndot_hours, 2)
 
     def process_timesheet(self, timesheet_data):
         results = []
@@ -449,12 +491,15 @@ class buttonTimecardFunction:
                 check_out_date = datetime.strptime(trans_date, "%Y-%m-%d") + timedelta(days=1)
                 check_out_datetime = f"{check_out_date.strftime('%Y-%m-%d')} {check_out}"
 
-            nd_hours, ndot_hours = self.calculate_nd_ndot(check_in_datetime, check_out_datetime, sched_in, sched_out)
+            # Calculate ND and NDOT
+            _, nd_hours, ndot_hours = self.calculate_hours(check_in_datetime, check_out_datetime)
             total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
                            datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
 
-            sched_total_hours, sched_nd_hours, sched_ndot_hours = self.calculate_sched_combo_nd_ndot(sched_in,
-                                                                                                     sched_out)
+            # Print debug information
+            print(f"BioNum: {bio_num}, EmpName: {emp_name}, TransDate: {trans_date}, "
+                  f"CheckIn: {check_in}, CheckOut: {check_out}, TotalHours: {round(total_hours, 2)}, "
+                  f"ND_Hours: {round(nd_hours, 2)}, NDOT_Hours: {round(ndot_hours, 2)}")
 
             results.append({
                 'bio_num': bio_num,
@@ -464,46 +509,23 @@ class buttonTimecardFunction:
                 'check_out': check_out,
                 'total_hours': round(total_hours, 2),
                 'nd_hours': round(nd_hours, 2),
-                'ndot_hours': round(ndot_hours, 2),
-                'sched_total_hours': sched_total_hours,
-                'sched_nd_hours': sched_nd_hours,
-                'sched_ndot_hours': sched_ndot_hours
+                'ndot_hours': round(ndot_hours, 2)
             })
         return results
 
-    def calculate_sched_combo_nd_ndot(self, sched_in, sched_out):
-        time_in = datetime.strptime(sched_in, "%H:%M:%S")
-        time_out = datetime.strptime(sched_out, "%H:%M:%S")
-
-        if time_out <= time_in:
-            time_out += timedelta(days=1)
-
-        total_hours = (time_out - time_in).total_seconds() / 3600
-        nd_hours, ndot_hours = self.calculate_nd_ndot(
-            time_in.strftime("%Y-%m-%d %H:%M:%S"),
-            time_out.strftime("%Y-%m-%d %H:%M:%S"),
-            sched_in,
-            sched_out
-        )
-
-        return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
-
     def getTotalHoursWorked(self, check_in, check_out):
-        time_in = datetime.strptime(check_in, "%H:%M:%S")
-        time_out = datetime.strptime(check_out, "%H:%M:%S")
+        # Parse the check-in and check-out times
+        time_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
+        time_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
 
+        # Handle the case where the time crosses midnight
         if time_out <= time_in:
             time_out += timedelta(days=1)
 
+        # Calculate total hours worked
         total_hours = (time_out - time_in).total_seconds() / 3600
-        nd_hours, ndot_hours = self.calculate_nd_ndot(
-            time_in.strftime("%Y-%m-%d %H:%M:%S"),
-            time_out.strftime("%Y-%m-%d %H:%M:%S"),
-            time_in.strftime("%H:%M:%S"),
-            time_out.strftime("%H:%M:%S")
-        )
 
-        return round(total_hours, 3), round(nd_hours, 3), round(ndot_hours, 3)
+        return round(total_hours, 3)
 
     def CheckSched(self, checked=False):
         try:

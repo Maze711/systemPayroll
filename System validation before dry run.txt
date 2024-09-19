@@ -9,14 +9,14 @@ HR Application side:
 Timekeeper Side Application:
  - Filter button stills open even there's no data within the table (BUG\Unresolved)
  - Drop down for every row (Time in and Time out column) * DONE *
- - Loader when fetching the value from selecting YEAR, DAY FROM AND TO
+ - Loader when fetching the value from selecting YEAR, DAY FROM AND TO * DONE *
  - It said if it's already used it should not editable and only view (for the populated_table)
  - Cost center should be Department * DONE *
 
 Paytimesheet Side Application: 
  - Computation of hours/day is not yet done
  - Export button into excel not yet implemented
- - The data we should have to compare if it's receive is not yet given
+ - The data we should have to compare if it's receive is not yet given * DONE *
  - It should importing also into archive DB
  - Search field doesn't working
  - Hours work should be I think 2 decimal places only?  * DONE *
