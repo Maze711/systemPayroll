@@ -28,10 +28,17 @@ class PayTransFunctions:
             basic_item = QTableWidgetItem(str(row['Basic']))
             present_days_item = QTableWidgetItem(row['Present Days'])
             reg_day_night_diff_item = QTableWidgetItem(str(row['RegDayNightDiffEarn']))
+            reg_day_night_diff_ot_item = QTableWidgetItem(str(row['RegDayNightDiffOTEarn']))
             rate_item = QTableWidgetItem(row.get('Rate', 'Missing'))  # Get rate or 'Missing' if not found
             ot_earn_item = QTableWidgetItem(str(row['OT_Earn']))  # Get OT_Earn or '0.00' if not found
             late_earn_item = QTableWidgetItem(str(row['LateUndertime']))
             undertime_earn_item = QTableWidgetItem(str(row['undertime']))
+            rest_day_earn_item = QTableWidgetItem(str(row['RestDay_Earn']))
+            holiday_earn_item = QTableWidgetItem(str(row['HolidayDay_Earn']))
+            rest_day_ot_earn_item = QTableWidgetItem(str(row['RestDayOT_Earn']))
+            holiday_ot_earn_item = QTableWidgetItem(str(row['HolidayDayOT_Earn']))
+            rest_day_nd_earn_item = QTableWidgetItem(str(row['RestDayND_Earn']))
+            holiday_nd_earn_item = QTableWidgetItem(str(row['HolidayDayND_Earn']))
 
             # deduction items
             absent_earn_item = QTableWidgetItem(str(row.get('late_absent', '0')))
@@ -52,9 +59,11 @@ class PayTransFunctions:
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
                          ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item,
-                         absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item, cash_earn_item,
-                         canteen_earn_item, tax_earn_item, sss_earn_item, philhealth_earn_item, pagibig_earn_item,
-                         clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
+                         reg_day_night_diff_ot_item, rest_day_earn_item,
+                         rest_day_ot_earn_item, rest_day_nd_earn_item, holiday_earn_item, holiday_ot_earn_item,
+                         holiday_nd_earn_item, absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item,
+                         cash_earn_item, canteen_earn_item, tax_earn_item, sss_earn_item, philhealth_earn_item,
+                         pagibig_earn_item, clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
                          voluntary_earn_item]:
                 item.setTextAlignment(Qt.AlignCenter)
 
@@ -66,23 +75,30 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 4, rate_item)   # Rate
             self.parent.paytransTable.setItem(i, 5, present_days_item)  # Present Days
             self.parent.paytransTable.setItem(i, 6, ot_earn_item)  # OT Hours (add column index here)
-            self.parent.paytransTable.setItem(i, 7, reg_day_night_diff_item)
-            self.parent.paytransTable.setItem(i, 8, late_earn_item)
-            self.parent.paytransTable.setItem(i, 9, undertime_earn_item)
-            self.parent.paytransTable.setItem(i, 10, absent_earn_item)
-            self.parent.paytransTable.setItem(i, 11, sss_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 12, pagibig_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 13, cash_earn_item)
-            self.parent.paytransTable.setItem(i, 14, canteen_earn_item)
-            self.parent.paytransTable.setItem(i, 15, tax_earn_item)
-            self.parent.paytransTable.setItem(i, 16, sss_earn_item)
-            self.parent.paytransTable.setItem(i, 17, philhealth_earn_item)
-            self.parent.paytransTable.setItem(i, 18, pagibig_earn_item)
-            self.parent.paytransTable.setItem(i, 19, clinic_earn_item)
-            self.parent.paytransTable.setItem(i, 20, arayata_earn_item)
-            self.parent.paytransTable.setItem(i, 21, hmi_earn_item)
-            self.parent.paytransTable.setItem(i, 22, funeral_earn_item)
-            self.parent.paytransTable.setItem(i, 23, voluntary_earn_item)
+            self.parent.paytransTable.setItem(i, 7, reg_day_night_diff_item)    # Regular Night Diff
+            self.parent.paytransTable.setItem(i, 8, reg_day_night_diff_ot_item)    # Regular Night Diff OT
+            self.parent.paytransTable.setItem(i, 9, rest_day_earn_item)    # Rest day earn
+            self.parent.paytransTable.setItem(i, 10, rest_day_ot_earn_item)  # Rest day OT earn
+            self.parent.paytransTable.setItem(i, 11, rest_day_nd_earn_item)  # Rest day ND earn
+            self.parent.paytransTable.setItem(i, 12, holiday_earn_item)   # Holiday earn
+            self.parent.paytransTable.setItem(i, 13, holiday_ot_earn_item)  # Holiday OT earn
+            self.parent.paytransTable.setItem(i, 14, holiday_nd_earn_item)  # Holiday ND earn
+            self.parent.paytransTable.setItem(i, 15, late_earn_item)
+            self.parent.paytransTable.setItem(i, 16, undertime_earn_item)
+            self.parent.paytransTable.setItem(i, 17, absent_earn_item)
+            self.parent.paytransTable.setItem(i, 18, sss_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 19, pagibig_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 20, cash_earn_item)
+            self.parent.paytransTable.setItem(i, 21, canteen_earn_item)
+            self.parent.paytransTable.setItem(i, 22, tax_earn_item)
+            self.parent.paytransTable.setItem(i, 23, sss_earn_item)
+            self.parent.paytransTable.setItem(i, 24, philhealth_earn_item)
+            self.parent.paytransTable.setItem(i, 25, pagibig_earn_item)
+            self.parent.paytransTable.setItem(i, 26, clinic_earn_item)
+            self.parent.paytransTable.setItem(i, 27, arayata_earn_item)
+            self.parent.paytransTable.setItem(i, 28, hmi_earn_item)
+            self.parent.paytransTable.setItem(i, 29, funeral_earn_item)
+            self.parent.paytransTable.setItem(i, 30, voluntary_earn_item)
 
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved

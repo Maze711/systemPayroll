@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>24</number>
+     <number>25</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -215,6 +215,11 @@ QTableWidget {
     <column>
      <property name="text">
       <string>OrdinaryDayNight</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OrdinaryDayNightOT</string>
      </property>
     </column>
     <column>

@@ -61,10 +61,20 @@ class PaytimeSheetFunctions:
             bio_num_item = self.parent.paytimesheetTable.item(row, 1)
             emp_name_item = self.parent.paytimesheetTable.item(row, 2)
             present_days_item = self.parent.paytimesheetTable.item(row, 5)
+            rest_day_item = self.parent.paytimesheetTable.item(row, 6)
+            holiday_item = self.parent.paytimesheetTable.item(row, 7)
+            restholiday_item = self.parent.paytimesheetTable.item(row, 8)
             reg_day_night_diff_item = self.parent.paytimesheetTable.item(row, 9)
-            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 13)
-            late_item = self.parent.paytimesheetTable.item(row, 17)
-            undertime_item = self.parent.paytimesheetTable.item(row, 18)
+            reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 10)
+            rest_day_night_item = self.parent.paytimesheetTable.item(row, 11)
+            holiday_night_item = self.parent.paytimesheetTable.item(row, 12)
+            rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 13)
+            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
+            rest_day_ot_item = self.parent.paytimesheetTable.item(row, 15)
+            holiday_ot_item = self.parent.paytimesheetTable.item(row, 16)
+            restholiday_ot_item = self.parent.paytimesheetTable.item(row, 17)
+            late_item = self.parent.paytimesheetTable.item(row, 18)
+            undertime_item = self.parent.paytimesheetTable.item(row, 19)
 
             if bio_num_item and bio_num_item.text():
                 bio_num = bio_num_item.text()[3:]
@@ -76,8 +86,15 @@ class PaytimeSheetFunctions:
                 'BioNum': bio_num,
                 'EmpName': emp_name_item.text(),
                 'Present Days': present_days_item.text(),
+                'Rest Day Hours': rest_day_item.text(),
+                'Holiday Hours': holiday_item.text(),
                 'Regular Day Night Diff': reg_day_night_diff_item.text(),
+                'Regular Day Night Diff OT': reg_day_night_diff_ot_item.text(),
+                'Rest Day Night Diff Hours': rest_day_night_item.text(),
+                'Holiday Night Diff Hours': holiday_night_item.text(),
                 'OrdinaryDayOT': ordinary_day_ot_item.text(),
+                'Rest Day OT Hours': rest_day_ot_item.text(),
+                'Holiday OT Hours': holiday_ot_item.text(),
                 'Late': late_item.text(),
                 'Undertime': undertime_item.text()
             })
@@ -93,8 +110,17 @@ class PaytimeSheetFunctions:
         pay_computation.basicComputation()
         pay_computation.overtimeComputation()
         pay_computation.regularDayNightDiffComputation()
+        pay_computation.regularDayNightDiffOTComputation()
         pay_computation.lateComputation()
         pay_computation.undertimeComputation()
+        pay_computation.restDayComputation()
+        pay_computation.regularHolidayComputation()
+        pay_computation.restDayOTComputation()
+        pay_computation.regularHolidayOTComputation()
+        pay_computation.restDayNightDiffComputation()
+        pay_computation.regularHolidayNightDiffComputation()
+
+        print("Data with new computation: \n\t", selected_data)
 
         try:
             self.parent.window = PayTrans(from_date, to_date, selected_data)
@@ -173,6 +199,7 @@ class PaytimeSheetFunctions:
             'Holiday': 'holiday',
             'RestHoliday': 'rsthlyday',
             'OrdinaryDayNight': 'orddaynite',
+            'OrdinaryDayNightOT': 'orddaynit2',
             'RestDayNight': 'rstdaynite',
             'HolidayNight': 'hlydaynite',
             'RestHolidayNight': 'rsthlydayn',

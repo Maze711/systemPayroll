@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+    <normaloff>C:/Users/Acer/.designer/Icons/logo.svg</normaloff>C:/Users/Acer/.designer/Icons/logo.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="paytransTable">
@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>24</number>
+     <number>31</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -205,6 +205,41 @@ QTableWidget {
     <column>
      <property name="text">
       <string>Regular Night Diff</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Regular Night Diff OT</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestDay_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestDayOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestDayND_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Holiday_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>HolidayOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>HolidayND_Earn</string>
      </property>
     </column>
     <column>
@@ -489,7 +524,7 @@ background-color: #c75657;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
+          <normaloff>C:/Users/Acer/.designer/Icons/export.svg</normaloff>C:/Users/Acer/.designer/Icons/export.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -559,7 +594,7 @@ background-color: #c75657;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../Icons/mail.svg</normaloff>../Icons/mail.svg</iconset>
+          <normaloff>C:/Users/Acer/.designer/Icons/mail.svg</normaloff>C:/Users/Acer/.designer/Icons/mail.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -647,7 +682,7 @@ background-color: #c75657;
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Icons/search.svg</pixmap>
+       <pixmap>C:/Users/Acer/.designer/Icons/search.svg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
