@@ -79,6 +79,7 @@ class FileProcessor(QObject):
             'holiday': ['holiday'],
             'rsthlyday': ['rsthlyday'],
             'orddaynite': ['orddaynite'],
+            'orddaynit2': ['orddaynit2'],
             'rstdaynite': ['rstdaynite'],
             'hlydaynite': ['hlydaynite'],
             'rsthlydayn': ['rsthlydayn'],
@@ -117,7 +118,7 @@ class FileProcessor(QObject):
                 sheet = workbook.sheet_by_index(0)
                 headers = sheet.row_values(0)
                 total_rows = sheet.nrows
-                for row_idx in range(1, total_rows):  # Skip header row
+                for row_idx in range(0, total_rows):  # Skip header row
                     row = sheet.row_values(row_idx)
                     content.append(row)
                     progress = int((row_idx / total_rows) * 100)
