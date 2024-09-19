@@ -332,6 +332,7 @@ class buttonTimecardFunction:
             date_from = self.parent.dateFromCC.currentText()
             date_to = self.parent.dateToCC.currentText()
 
+            # Collecting timesheet data
             for row in range(self.parent.TimeListTable.rowCount()):
                 try:
                     bioNum = self.parent.TimeListTable.item(row, 0).text()
@@ -362,10 +363,8 @@ class buttonTimecardFunction:
                 return
 
             # Aggregate totals
-            total_hours_worked = 0
-            total_nd_hours = 0
-            total_ndot_hours = 0
             aggregated_results = {}
+            total_hours_worked = total_nd_hours = total_ndot_hours = 0
 
             for result in results:
                 bio_num = result['bio_num']
@@ -373,9 +372,9 @@ class buttonTimecardFunction:
                 total_nd_hours += result['nd_hours']
                 total_ndot_hours += result['ndot_hours']
 
-                # Print accumulated totals for debug
+                # Debugging output for running totals
                 print(
-                    f"Running Total -> Hours Worked: {total_hours_worked}, ND: {total_nd_hours}, NDOT: {total_ndot_hours}")
+                    f"Running Total -> Hours Worked: {total_hours_worked:.2f}, ND: {total_nd_hours:.2f}, NDOT: {total_ndot_hours:.2f}")
 
                 if bio_num not in aggregated_results:
                     aggregated_results[bio_num] = {
@@ -385,13 +384,15 @@ class buttonTimecardFunction:
                         'ndot_hours': 0,
                         'days_work': set()
                     }
+
                 aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
                 aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
                 aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
                 aggregated_results[bio_num]['days_work'].add(result['trans_date'])
 
-            # Print final totals
-            print(f"Final Totals -> Hours Worked: {total_hours_worked}, ND: {total_nd_hours}, NDOT: {total_ndot_hours}")
+            # Final totals output
+            print(
+                f"Final Totals -> Hours Worked: {total_hours_worked:.2f}, ND: {total_nd_hours:.2f}, NDOT: {total_ndot_hours:.2f}")
 
             # Prepare data for display
             dataMerge = []
@@ -404,7 +405,23 @@ class buttonTimecardFunction:
                     'Night_Differential': f"{data['nd_hours']:.2f}",
                     'Night_Differential_OT': f"{data['ndot_hours']:.2f}",
                     'Days_Work': len(data['days_work']),
-                    'Days_Present': len(data['days_work'])
+                    'Days_Present': len(data['days_work']),
+                    'OrdDay': 0,
+                    'OrdDayOT': 0,
+                    'RD': 0,
+                    'RDOT': 0,
+                    'RDND': 0,
+                    'RDNDOT': 0,
+                    'SHLDy': 0,
+                    'SHLDyOT': 0,
+                    'SHLDyND': 0,
+                    'SHLDyNDOT': 0,
+                    'RegHldy': 0,
+                    'RegHldyOT': 0,
+                    'SHLDyRD': 0,
+                    'SHLDyRDOT': 0,
+                    'RegHldyRD': 0,
+                    'RegHldyRDOT': 0
                 })
 
             dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
@@ -496,7 +513,7 @@ class buttonTimecardFunction:
             total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
                            datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
 
-            # Print debug information
+            # Debug output
             print(f"BioNum: {bio_num}, EmpName: {emp_name}, TransDate: {trans_date}, "
                   f"CheckIn: {check_in}, CheckOut: {check_out}, TotalHours: {round(total_hours, 2)}, "
                   f"ND_Hours: {round(nd_hours, 2)}, NDOT_Hours: {round(ndot_hours, 2)}")
