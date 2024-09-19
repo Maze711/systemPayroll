@@ -73,7 +73,7 @@ class FileProcessor(QObject):
             return 'Unknown'
 
     def combineTimeInOut(self):
-        """Combines Time IN and Time OUT into a single DataFrame, handling night shifts and preserving all entries."""
+        """Combines Time IN and Time OUT entries, ensuring no records are missed and default time_out values are set where necessary."""
         combined_data = []
 
         # Sort the data by bio_no, date, and time
@@ -81,57 +81,50 @@ class FileProcessor(QObject):
 
         for bio_no, group in self.data.groupby('bio_no'):
             time_entries = group.to_dict('records')
-            i = 0
-            while i < len(time_entries):
-                current_entry = time_entries[i]
+            time_in_map = {}
+            time_out_entries = []
 
-                if current_entry['sched'] == 'Time IN':
-                    # Look for the next Time OUT entry
-                    j = i + 1
-                    while j < len(time_entries):
-                        next_entry = time_entries[j]
-                        if next_entry['sched'] == 'Time OUT':
-                            # Found a matching Time OUT
-                            combined_data.append([
-                                bio_no,
-                                current_entry['date'],
-                                current_entry['mach_code'],
-                                current_entry['time'],
-                                next_entry['time']
-                            ])
-                            i = j  # Move to the Time OUT entry
-                            break
-                        elif next_entry['sched'] == 'Time IN':
-                            # Found another Time IN before Time OUT
-                            combined_data.append([
-                                bio_no,
-                                current_entry['date'],
-                                current_entry['mach_code'],
-                                current_entry['time'],
-                                '00:00:00'  # Use default Time OUT
-                            ])
-                            break
-                        j += 1
+            for entry in time_entries:
+                if entry['sched'] == 'Time IN':
+                    time_in_map[entry['time']] = {
+                        'date': entry['date'],
+                        'mach_code': entry['mach_code'],
+                        'time_out': '00:00:00'
+                    }
+                elif entry['sched'] == 'Time OUT':
+                    # Track time_out entries
+                    time_out_entries.append({
+                        'date': entry['date'],
+                        'mach_code': entry['mach_code'],
+                        'time': entry['time']
+                    })
 
-                    if j == len(time_entries):
-                        # No matching Time OUT found, use default
-                        combined_data.append([
-                            bio_no,
-                            current_entry['date'],
-                            current_entry['mach_code'],
-                            current_entry['time'],
-                            '00:00:00'
-                        ])
-                else:  # It's a Time OUT without a preceding Time IN
+            # Process Time IN entries and match with Time OUT entries
+            for time_in, details in time_in_map.items():
+                matched = False
+                for time_out in time_out_entries:
+                    if details['date'] == time_out['date']:
+                        details['time_out'] = time_out['time']
+                        matched = True
+                        break
+                combined_data.append([
+                    bio_no,
+                    details['date'],
+                    details['mach_code'],
+                    time_in,
+                    details['time_out']
+                ])
+
+            # Add Time OUT entries that do not have a matching Time IN
+            for time_out in time_out_entries:
+                if not any(details['date'] == time_out['date'] for details in time_in_map.values()):
                     combined_data.append([
                         bio_no,
-                        current_entry['date'],
-                        current_entry['mach_code'],
-                        '00:00:00',  # Use default Time IN
-                        current_entry['time']
+                        time_out['date'],
+                        time_out['mach_code'],
+                        '00:00:00',
+                        time_out['time']
                     ])
-
-                i += 1
 
         combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
         return combined_df
