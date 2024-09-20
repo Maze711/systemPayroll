@@ -154,7 +154,13 @@ class PayComputation:
                 hourly_rate = 0
                 rest_day_ot_hours = 0
 
-            item['RestDayOT_Earn'] = round(0.0, 2)
+            # Rest Day Overtime Rate Computation
+            rest_day_ot_rate = 1.69  # rest day ot rate value (equivalent to 169%)
+            rest_day_ot_rate_per_hour = hourly_rate * rest_day_ot_rate
+
+            rest_day_ot_rate_total = rest_day_ot_hours * rest_day_ot_rate_per_hour
+
+            item['RestDayOT_Earn'] = round(rest_day_ot_rate_total, 2)
             logging.info(f"Calculated rest day ot value for EmpNo {item['EmpNo']}: {item['RestDayOT_Earn']}")
 
     def restDayNightDiffComputation(self):
@@ -200,7 +206,13 @@ class PayComputation:
                 hourly_rate = 0
                 holiday_ot_hours = 0
 
-            item['HolidayDayOT_Earn'] = round(0.0, 2)
+            # Holiday OT Rate Computation
+            holiday_ot_rate = 2.6  # holiday ot rate value (equivalent to 260%)
+            holiday_ot_rate_per_hour = hourly_rate * holiday_ot_rate
+
+            holiday_ot_rate_total = holiday_ot_hours * holiday_ot_rate_per_hour
+
+            item['HolidayDayOT_Earn'] = round(holiday_ot_rate_total, 2)
             logging.info(f"Calculated holiday ot value for EmpNo {item['EmpNo']}: {item['HolidayDayOT_Earn']}")
 
     def regularHolidayNightDiffComputation(self):
