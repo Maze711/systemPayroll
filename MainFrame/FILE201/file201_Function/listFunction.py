@@ -43,7 +43,7 @@ class ListFunction:
                 # Assuming eachRow contains (empl_id, surname, firstname, mi)
                 for column, data in enumerate(eachRow):
                     item = QTableWidgetItem(str(data))
-                    item.setTextAlignment(Qt.AlignCenter)  # Center the text
+                    # item.setTextAlignment(Qt.AlignCenter)  # Center the text
                     self.main_window.employeeListTable.setItem(rowNum, column, item)
 
         except DatabaseConnectionError as dce:
@@ -151,7 +151,8 @@ class ListFunction:
                    t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                    t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
-                   e.highschoolYear, e.elemYear, img.empl_img
+                   e.highschoolYear, e.elemYear, img.empl_img, s.compcode, s.dept_code, s.emp_stat, 
+                   s.date_hired, s.resigned, s.dtresign
             FROM emp_info p
             LEFT JOIN educ_information e ON p.empl_id = e.empl_id
             LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
@@ -159,6 +160,7 @@ class ListFunction:
             LEFT JOIN work_exp w ON p.empl_id = w.empl_id
             LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
             LEFT JOIN emp_images img ON p.empl_id = img.empl_id
+            LEFT JOIN emp_status s ON p.empl_id = s.empl_id
             WHERE p.empl_id = %s
         """
         try:
@@ -202,7 +204,7 @@ class ListFunction:
                 "txtHeight": data['height'],
                 "txtWeight": data['weight'],
                 "cmbCivil": data['status'],
-                "dtDateOfBirth": QDate.fromString(data['birthday'], "yyyy-MM-dd"),
+                "dtDateOfBirth": QDate.fromString(data['birthday'], "dd-MMM-yy"),
                 "txtPlace": data['birthplace'],
                 "cmbGender": data['sex'],
                 "txtReligion": data['religion'],
@@ -223,6 +225,7 @@ class ListFunction:
                 "txtBeneFirst": data['beneficiaryFirstName'],
                 "txtBeneMiddle": data['beneficiaryMiddleName'],
                 "txtDependent": data['dependentsName'],
+                # EMERGENCY_LIST TABLE
                 "txtEmergency": data['emer_name'],
                 # WORK_EXP TABLE
                 "dateStart_4": QDate.fromString(data['fromDate'], "MM-dd-yyyy"),
@@ -253,7 +256,14 @@ class ListFunction:
                 "schoolYear2": QDate.fromString(data['highschoolYear'], "MM-dd-yyyy"),
                 "schoolYear3": QDate.fromString(data['elemYear'], "MM-dd-yyyy"),
                 # EMP_IMAGES TABLE
-                "lblViewImg": data['empl_img']
+                "lblViewImg": data['empl_img'],
+                # EMP_STATUS TABLE
+                "lblComp": data['compcode'],
+                "lblDept_2": data['dept_code'],
+                "txtStatus": data['emp_stat'],
+                "dateHired_2": QDate.fromString(data['date_hired'], "dd-MMM-yy"),
+                "cmbResigned_2": data['resigned'],
+                "dateResigned": QDate.fromString(data['dtresign'], "dd-MMM-yy")
             }
 
             # Populate modal fields
