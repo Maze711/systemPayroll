@@ -61,6 +61,8 @@ class populateList:
 
         except Exception as e:
             logging.error(f"Error populating year combo box: {e}")
+            QMessageBox.critical(self.parent, "Error", f"Failed to populate year combo box: {str(e)}")
+
         finally:
             cursor.close()
             connection.close()
@@ -84,7 +86,8 @@ class populateList:
                 days = [day[0] for day in cursor.fetchall()]
                 self.data_cache[selected_year_month] = days
             except Exception as e:
-                logging.error(f"Error populating date combo boxes: {e}")
+                logging.error(f"Error populating date combo boxes for {selected_year_month}: {e}")
+                QMessageBox.critical(self.parent, "Error", f"Failed to populate date combo boxes: {str(e)}")
                 return
             finally:
                 cursor.close()
@@ -128,10 +131,12 @@ class populateList:
             self.parent.costCenterBox.addItems(dept_names)
             self.parent.costCenterBox.setCurrentIndex(-1)
 
-            logging.info("Cost center box populated successfully.")
+            QMessageBox.information(self.parent, "Success", "Cost center box populated successfully.")
 
         except Exception as e:
-            logging.error(f"Error populating cost center box: {e}")
+            QMessageBox.critical(self.parent, "Error",
+                                 f"An error occurred while populating the cost center box: {e}. "
+                                 "Please try again or contact the system administrator.")
 
         finally:
             cursor.close()
@@ -286,7 +291,10 @@ class buttonTimecardFunction:
                     print("No schedule found for the selected Cost Center Box.")
 
             except Exception as e:
-                logging.error(f"An error occurred while updating schedule: {e}")
+                QMessageBox.critical(self.parent, "Update Error",
+                                     f"An error occurred while updating the schedule: {e}. "
+                                     "Please try again or contact the system administrator.")
+
             finally:
                 connection.close()
         else:
@@ -654,9 +662,10 @@ class FilterDialog(QDialog):
 
                 # Populate the table using the populate_time_list_table method
                 self.parent.populateComboBox.populate_time_list_table(self.parent.filtered_data)
-                logging.info("Filter cleared and table restored to original state.")
+                QMessageBox.information(self.parent, "Success", "Filter cleared and table restored to original state.")
         except Exception as e:
-            logging.error(f"Error in clear_filter: {str(e)}")
+            QMessageBox.critical(self.parent, "Error",
+                                 f"Error in clearing filter: {str(e)}. Please try again or contact the system administrator.")
             logging.error(traceback.format_exc())
         self.accept()
 
@@ -670,7 +679,9 @@ class FilterDialog(QDialog):
             logging.info("Showing missing entries with filter values: %s", filter_values)
             self.apply_filter(filter_values)
         except Exception as e:
-            logging.error(f"Error in show_missing: {str(e)}")
+            QMessageBox.critical(self.parent, "Error",
+                                 f"Error in showing missing entries: {str(e)}. "
+                                 "Please try again or contact the system administrator.")
             logging.error(traceback.format_exc())
         self.accept()
 

@@ -149,8 +149,7 @@ class DeductionFunctions:
             self.deductionQDialog.show()
             logging.info("Deduction UI loaded successfully.")
         except Exception as e:
-            logging.error(f"Failed to load deduction UI: {e}")
-            print(f"Failed to load deduction UI: {e}")
+            QMessageBox.critical(self.parent, "UI Load Error", f"Failed to load deduction UI: {e}")
 
     def placeDeductions(self, dialog):
         try:
@@ -195,8 +194,7 @@ class DeductionFunctions:
 
             QMessageBox.information(dialog, "Added Successfully", "Deduction/s was added successfully")
         except Exception as e:
-            logging.error(f"Failed to place deductions: {e}")
-            print(f"Failed to place deductions: {e}")
+            QMessageBox.critical(self.parent, "Deductions Error", f"Failed to place deductions: {e}")
 
     def get_deduction_table_data(self):
         deduction_data = []

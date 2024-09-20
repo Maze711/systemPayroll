@@ -1,3 +1,4 @@
+import logging
 import sys
 import os
 from email.message import EmailMessage
@@ -400,6 +401,7 @@ class EmailerProcessor(QObject):
             smtp.sendmail(em['From'], em['To'], em.as_string())
         except Exception as e:
             logging.warning(f"Failed to send email to {em['To']}: {e}")
+            QMessageBox.critical(self, "Email Sending Failed", f"Could not send email to {em['To']}: {str(e)}")
             return False
         return True
 

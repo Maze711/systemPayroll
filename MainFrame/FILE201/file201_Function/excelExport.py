@@ -113,13 +113,8 @@ def fetch_personal_information():
             return None
 
         cursor = connection.cursor()
-
-        tables = [
-            "emp_info", "educ_information", "family_background", "emp_list_id",
-            "work_exp", "tech_skills", "emp_posnsched", "emergency_list",
-            "emp_rate", "emp_status", "vacn_sick_count"
-        ]
-
+        tables = ["emp_info", "educ_information", "family_background", "emp_list_id", "work_exp", "tech_skills",
+                  "emp_posnsched", "emergency_list", "emp_rate", "emp_status", "vacn_sick_count"]
         data_dict = {}
 
         for table_name in tables:
@@ -133,7 +128,7 @@ def fetch_personal_information():
         return data_dict
 
     except Exception as e:
-        logging.error(f"Error fetching employee data: {e}")
+        QMessageBox.critical(None, "Fetch Error", f"Error fetching employee data: {e}")
         return None
 
     finally:
@@ -148,4 +143,4 @@ def export_to_excel(data_dict, file_name):
         export_loader = ExportLoader(data_dict, file_name)
         export_loader.exec_()
     except Exception as e:
-        logging.error(f"Error exporting data to Excel: {e}")
+        QMessageBox.critical(None, "Export Error", f"Error exporting data to Excel: {e}")

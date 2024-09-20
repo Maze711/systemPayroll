@@ -45,7 +45,7 @@ class PaytimeSheetFunctions:
             logging.info(f"Processed {sheet.nrows - 1} rows from Excel file.")
 
         except Exception as e:
-            logging.error(f"Error reading Excel file: {e}")
+            QMessageBox.critical(self.parent, "Error Reading File", f"Error reading Excel file: {e}")
             print(f"Error reading Excel file: {e}")
 
         return bio_num_to_rate
@@ -128,7 +128,7 @@ class PaytimeSheetFunctions:
             self.parent.window.show()
             self.parent.close()
         except Exception as e:
-            logging.error(f"Failed to create PayTrans window: {e}")
+            QMessageBox.critical(self.parent, "Error", f"Failed to create PayTrans window: {e}")
             print(f"Failed to create PayTrans window: {e}")
 
     def showNewListEmployee(self):
@@ -224,16 +224,22 @@ class PaytimeSheetFunctions:
             logging.error("No matching columns found in headers.")
             return
 
-        for i, row in enumerate(data[1:]):  # Skip header row
-            for field_name, col_name in column_names.items():
-                col_idx = col_indices.get(field_name)
-                if col_idx is not None:
-                    item = QTableWidgetItem(str(row[col_idx]))
-                    if field_name in column_names:
-                        item.setTextAlignment(Qt.AlignCenter)
-                    if field_name == 'Employee Name':
-                        item.setToolTip(row[col_idx])
-                    self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
-                else:
-                    logging.warning(f"Column '{field_name}' not found in data.")
-            logging.info(f"Adding row {i}: {row}")
+        try:
+            for i, row in enumerate(data[1:]):  # Skip header row
+                for field_name, col_name in column_names.items():
+                    col_idx = col_indices.get(field_name)
+                    if col_idx is not None:
+                        item = QTableWidgetItem(str(row[col_idx]))
+                        if field_name in column_names:
+                            item.setTextAlignment(Qt.AlignCenter)
+                        if field_name == 'Employee Name':
+                            item.setToolTip(row[col_idx])
+                        self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
+                    else:
+                        logging.warning(f"Column '{field_name}' not found in data.")
+                logging.info(f"Adding row {i}: {row}")
+
+            QMessageBox.information(self.parent, "Success", "Paytime sheet table populated successfully.")
+        except Exception as e:
+            logging.error(f"Error populating paytime sheet table: {e}")
+            QMessageBox.critical(self.parent, "Error", f"Failed to populate paytime sheet table: {e}")

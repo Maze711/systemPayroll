@@ -55,3 +55,4 @@ class timecard(QDialog):
 
         except Exception as e:
             logging.error(f"Error in setupTimecardUI: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to set up Timecard UI: {str(e)}")

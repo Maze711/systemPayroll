@@ -17,7 +17,8 @@ def convert_to_24hour(time_str):
             return in_time.strftime("%H:%M")
         return None
     except ValueError:
-        logging.warning(f"Unable to convert time: {time_str}")
+        QMessageBox.warning(None, "Time Conversion Error",
+                            f"Unable to convert time: {time_str}. Please use the correct format (e.g., '02:30 PM' or '230 PM').")
         return None
 
 
@@ -51,7 +52,8 @@ def importIntoDB(parent, display_employees_callback):
     try:
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(
-            parent, "Select Excel File", "", "Excel Files (*.xlsx)", options=options)
+            parent, "Select Excel File", "",
+            "Excel Files (*.xlsx *.xls *.xlsm *.xlsb)", options=options)
         if not file_name:
             QMessageBox.information(parent, "No File Selected", "Please select an Excel file to import.")
             return

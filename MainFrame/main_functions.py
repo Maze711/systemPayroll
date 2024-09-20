@@ -172,6 +172,7 @@ class MainWindowFunctions(QMainWindow):
             elif event.type() == QEvent.Leave:
                 QTimer.singleShot(200, self.checkAndHideAdditionalButtons)
         return super().eventFilter(source, event)
+
     def showAdditionalButtons(self):
         try:
             logging.info("Entering showAdditionalButtons")

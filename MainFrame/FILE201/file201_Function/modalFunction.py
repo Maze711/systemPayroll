@@ -82,15 +82,15 @@ class modalFunction:
                 ("Dependent's Name", self.main_window.txtDependent.text()),
                 ("Emergency Name", self.main_window.txtEmergency.text()),
 
-                # Employee ID inputs
-                ('SSS Number', self.main_window.sssTextEdit.text()),
-                ('Pag-IBIG Number', self.main_window.pagibigTextEdit.text()),
-                ('PhilHealth Number', self.main_window.philHealthTextEdit.text()),
-                ('TIN Number', self.main_window.tinTextEdit.text()),
-                ('Taxstat', self.main_window.txtTaxstat.text()),
-                ('Account no.', self.main_window.txtAccount.text()),
-                ('Bank code', self.main_window.txtBank.text()),
-                ('Cola', self.main_window.txtCola.text()),
+                # # Employee ID inputs
+                # ('SSS Number', self.main_window.sssTextEdit.text()),
+                # ('Pag-IBIG Number', self.main_window.pagibigTextEdit.text()),
+                # ('PhilHealth Number', self.main_window.philHealthTextEdit.text()),
+                # ('TIN Number', self.main_window.tinTextEdit.text()),
+                # ('Taxstat', self.main_window.txtTaxstat.text()),
+                # ('Account no.', self.main_window.txtAccount.text()),
+                # ('Bank code', self.main_window.txtBank.text()),
+                # ('Cola', self.main_window.txtCola.text()),
 
                 # HR Notes Text Input
                 ('HR Notes', self.main_window.hrNoteTextEdit.toPlainText()),
@@ -236,14 +236,14 @@ class modalFunction:
             "Dependent's Name": self.main_window.txtDependent.text(),
             "Emergency Name": self.main_window.txtEmergency.text(),
 
-            'SSS Number': self.main_window.sssTextEdit.text(),
-            'Pag-IBIG Number': self.main_window.pagibigTextEdit.text(),
-            'PhilHealth Number': self.main_window.philHealthTextEdit.text(),
-            'TIN Number': self.main_window.tinTextEdit.text(),
-            'Taxstat': self.main_window.txtTaxstat.text(),
-            'Account no.': self.main_window.txtAccount.text(),
-            'Bank code': self.main_window.txtBank.text(),
-            'Cola': self.main_window.txtCola.text(),
+            # 'SSS Number': self.main_window.sssTextEdit.text(),
+            # 'Pag-IBIG Number': self.main_window.pagibigTextEdit.text(),
+            # 'PhilHealth Number': self.main_window.philHealthTextEdit.text(),
+            # 'TIN Number': self.main_window.tinTextEdit.text(),
+            # 'Taxstat': self.main_window.txtTaxstat.text(),
+            # 'Account no.': self.main_window.txtAccount.text(),
+            # 'Bank code': self.main_window.txtBank.text(),
+            # 'Cola': self.main_window.txtCola.text(),
 
             'HR Notes': self.main_window.hrNoteTextEdit.toPlainText(),
 

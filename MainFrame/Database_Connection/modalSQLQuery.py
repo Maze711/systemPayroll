@@ -38,10 +38,12 @@ def add_employee(data):
         return True
 
     except Error as e:
-        logging.error(f"Error adding employee: {e}")
+        QMessageBox.critical(None, "Error Adding Employee",
+                             f"Error adding employee: {str(e)}")
         return False
     except Exception as ex:
-        logging.error(f"Unexpected error: {ex}")
+        QMessageBox.critical(None, "Unexpected Error",
+                             f"Unexpected error: {str(ex)}")
         return False
     finally:
         if cursor is not None:
@@ -200,15 +202,18 @@ def send_notification(empl_id, data):
         logging.info("Notification sent successfully")
 
     except Error as e:
-        logging.error(f"Error sending notification: {e}")
+        QMessageBox.critical(None, "Error Sending Notification",
+                             f"Error sending notification: {str(e)}")
     except Exception as ex:
-        logging.error(f"Unexpected error: {ex}")
+        QMessageBox.critical(None, "Unexpected Error",
+                             f"Unexpected error: {str(ex)}")
     finally:
         if notification_cursor is not None:
             notification_cursor.close()
         if notification_connection is not None and notification_connection.is_connected():
             notification_connection.close()
             logging.info("Notification database connection closed")
+
 
 def get_generated_employee_id(employee_id):
     # Convert the employee_id to a string and pad with zeros if necessary

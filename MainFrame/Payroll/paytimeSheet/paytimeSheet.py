@@ -74,6 +74,7 @@ class PaytimeSheet(QMainWindow):
 
         except Exception as e:
             logging.error(f"Error in setupPayTimeSheetUI: {e}")
+            QMessageBox.critical(self, "Setup Error", f"Failed to setup Paytime sheet UI: {e}")
 
     def setupDeductionUI(self):
         try:
@@ -91,6 +92,7 @@ class PaytimeSheet(QMainWindow):
             self.populatePaytimeSheetTable(self.original_data)
         except Exception as e:
             logging.error(f"Error in setupDeductionUI: {e}")
+            QMessageBox.critical(self, "Setup Error", f"Failed to setup Deduction UI: {e}")
 
     def update_indication_lbl(self):
         # This method is only called for Pay Master 1
