@@ -54,7 +54,7 @@ class modalFunction:
                 ('Height', self.main_window.txtHeight.text()),
                 ('Weight', self.main_window.txtWeight.text()),
                 ('Civil Status', self.main_window.cmbCivil.currentText()),
-                ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy")),
+                ('Date of Birth', self.main_window.dtDateOfBirth.date().toString("dd-MMM-yy")),
                 ('Place of Birth', self.main_window.txtPlace.text()),
                 ('Gender', self.main_window.cmbGender.currentText()),
                 ('Blood Type', self.main_window.cmbBlood.currentText()),
@@ -128,7 +128,14 @@ class modalFunction:
 
                 ('College Graduate Year', self.main_window.schoolYear.date().toString("MM-dd-yyyy")),
                 ('High-School Graduate Year', self.main_window.schoolYear2.date().toString("MM-dd-yyyy")),
-                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy"))
+                ('Elementary Graduate Year', self.main_window.schoolYear3.date().toString("MM-dd-yyyy")),
+
+                ('Computer Code', self.main_window.lblComp.text()),
+                ('Department Code', self.main_window.lblDept_2.text()),
+                ('Status', self.main_window.txtStatus.text()),
+                ('Date Hired', self.main_window.dateHired_2.date().toString("dd-MMM-yy")),
+                ('Resigned', self.main_window.cmbResigned_2.currentText()),
+                ('Date Resign', self.main_window.dateResigned.date().toString("dd-MMM-yy"))
             ]
 
             not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
@@ -143,7 +150,7 @@ class modalFunction:
                                    'Elementary Address', 'Elementary Graduate Year', 'High-School',
                                    'High-School Address',
                                    'High-School Strand', 'High-School Graduate Year', 'College', 'College Address',
-                                   'College Course', 'College Graduate Year']
+                                   'College Course', 'College Graduate Year', 'Computer Code', 'Department Code']
 
             # Validate required fields
             for field_name, value in required_fields:
@@ -210,7 +217,7 @@ class modalFunction:
             'Height': self.main_window.txtHeight.text(),
             'Weight': self.main_window.txtWeight.text(),
             'Civil Status': self.main_window.cmbCivil.currentText(),
-            'Date of Birth': self.main_window.dtDateOfBirth.date().toString("MM-dd-yyyy"),
+            'Date of Birth': self.main_window.dtDateOfBirth.date().toString("dd-MMM-yy"),
             'Place of Birth': self.main_window.txtPlace.text(),
             'Gender': self.main_window.cmbGender.currentText(),
             'Blood Type': self.main_window.cmbBlood.currentText(),
@@ -278,7 +285,14 @@ class modalFunction:
 
             'College Graduate Year': self.main_window.schoolYear.date().toString("MM-dd-yyyy"),
             'High-School Graduate Year': self.main_window.schoolYear2.date().toString("MM-dd-yyyy"),
-            'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy")
+            'Elementary Graduate Year': self.main_window.schoolYear3.date().toString("MM-dd-yyyy"),
+
+            'Computer Code': self.main_window.lblComp.text(),
+            'Department Code': self.main_window.lblDept_2.text(),
+            'Status': self.main_window.txtStatus.text(),
+            'Date Hired': self.main_window.dateHired_2.date().toString("dd-MMM-yy"),
+            'Resigned': self.main_window.cmbResigned_2.currentText(),
+            'Date Resign': self.main_window.dateResigned.date().toString("dd-MMM-yy")
         }
         return data
 

@@ -698,7 +698,7 @@ font-family: Poppins;
       <string notr="true"/>
      </property>
      <property name="displayFormat">
-      <string>yyyy-MM-dd</string>
+      <string>dd-MMM-yy</string>
      </property>
      <property name="calendarPopup">
       <bool>true</bool>
@@ -723,7 +723,7 @@ font-family: Poppins;
       <string notr="true"/>
      </property>
      <property name="displayFormat">
-      <string>yyyy-MM-dd</string>
+      <string>dd-MMM-yy</string>
      </property>
      <property name="calendarPopup">
       <bool>true</bool>
@@ -825,9 +825,9 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-609</y>
+      <y>0</y>
       <width>1218</width>
-      <height>1818</height>
+      <height>1568</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1790,10 +1790,10 @@ font-family: Poppins;
           <string notr="true"/>
          </property>
          <property name="currentSection">
-          <enum>QDateTimeEdit::YearSection</enum>
+          <enum>QDateTimeEdit::DaySection</enum>
          </property>
          <property name="displayFormat">
-          <string>yyyy-MM-dd</string>
+          <string>dd-MMM-yy</string>
          </property>
          <property name="calendarPopup">
           <bool>true</bool>

@@ -22,11 +22,13 @@ def add_employee(data):
 
         # Insert other related data
         insert_family_background(cursor, generated_id, data)
-        insert_list_of_id(cursor, generated_id, data)
+        insert_emergency_list(cursor, generated_id, data)
+        # insert_list_of_id(cursor, generated_id, data)
         insert_work_exp(cursor, generated_id, data)
         insert_educ_information(cursor, generated_id, data)
         insert_tech_skills(cursor, generated_id, data)
         insert_emp_img(cursor, generated_id, data)
+        insert_emp_status(cursor, generated_id, data)
 
         # Commit the changes to the FILE201 database
         connection.commit()
@@ -56,15 +58,16 @@ def add_employee(data):
 def insert_personal_information(cursor, data):
     query = """
     INSERT INTO emp_info (surname, firstname, mi, suffix, street, barangay, city, province, zipcode, mobile, height, 
-                          weight, status, birthday, birthplace, sex)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                          weight, status, birthday, birthplace, sex, religion, citizenship, email, blood_type )
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (
         data.get('Last Name', ''), data.get('First Name', ''), data.get('Middle Name', ''), data.get('Suffix', ''),
         data.get('Street', ''), data.get('Barangay', ''), data.get('City', ''), data.get('Province', ''),
         data.get('zipcode', ''), data.get('Phone Number', ''), data.get('Height', ''), data.get('Weight', ''),
         data.get('Civil Status', ''), data.get('Date of Birth', ''), data.get('Place of Birth', ''),
-        data.get('Gender', '')
+        data.get('Gender', ''), data.get('Religion', ''), data.get('Citizenship', ''), data.get('Email', ''),
+        data.get('Blood Type', '')
     )
     cursor.execute(query, values)
     logging.info("Inserted into emp_info table")
@@ -98,17 +101,28 @@ def insert_family_background(cursor, empl_id, data):
     logging.info("Inserted into family_background table")
 
 
-def insert_list_of_id(cursor, empl_id, data):
+def insert_emergency_list(cursor, empl_id, data):
     query = """
-    INSERT INTO emp_list_id (empl_id, sss, tin, pagibig, philhealth)
-    VALUES (%s, %s, %s, %s, %s)
+    INSERT INTO emergency_list (empl_id, emer_name)
+    VALUES (%s, %s)
     """
     values = (
-        empl_id, data.get('SSS Number', ''), data.get('TIN Number', ''), data.get('Pag-IBIG Number', ''),
-        data.get('PhilHealth Number', '')
+        empl_id, data.get('Emergency Name', '')
     )
     cursor.execute(query, values)
-    logging.info("Inserted into emp_list_id table")
+    logging.info("Inserted into emergency_list table")
+
+# def insert_list_of_id(cursor, empl_id, data):
+#     query = """
+#     INSERT INTO emp_list_id (empl_id, sss, tin, pagibig, philhealth)
+#     VALUES (%s, %s, %s, %s, %s)
+#     """
+#     values = (
+#         empl_id, data.get('SSS Number', ''), data.get('TIN Number', ''), data.get('Pag-IBIG Number', ''),
+#         data.get('PhilHealth Number', '')
+#     )
+#     cursor.execute(query, values)
+#     logging.info("Inserted into emp_list_id table")
 
 
 def insert_work_exp(cursor, empl_id, data):
@@ -167,6 +181,19 @@ def insert_emp_img(cursor, empl_id, data):
     )
     cursor.execute(query, values)
     logging.info("Inserted into emp_images table")
+
+
+def insert_emp_status(cursor, empl_id, data):
+    query = """
+    INSERT INTO emp_status(empl_id, compcode, dept_code, emp_stat, date_hired, resigned, dtresign)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+    values = (
+        empl_id, data.get('Computer Code', ''), data.get('Department Code', ''), data.get('Status', ''),
+        data.get('Date Hired', ''), data.get('Resigned', ''), data.get('Date Resign', '')
+    )
+    cursor.execute(query, values)
+    logging.info("Inserted into emp_status table")
 
 
 def send_notification(empl_id, data):
@@ -253,7 +280,8 @@ def save_employee(empl_id, data):
         update_personal_information = """
         UPDATE emp_info
         SET surname = %s, firstname = %s, mi = %s, suffix = %s, street = %s, barangay = %s, city = %s, province = %s, 
-            zipcode = %s, mobile = %s, height = %s, weight = %s, status = %s, birthday = %s, birthplace = %s, sex = %s
+            zipcode = %s, mobile = %s, height = %s, weight = %s, status = %s, birthday = %s, birthplace = %s, sex = %s,
+            religion = %s, citizenship = %s, email = %s, blood_type = %s
         WHERE empl_id = %s
         """
         cursor.execute(update_personal_information,
@@ -261,7 +289,8 @@ def save_employee(empl_id, data):
                         data['Street'], data['Barangay'], data['City'], data['Province'],
                         data['zipcode'], data['Phone Number'], data['Height'], data['Weight'],
                         data['Civil Status'], data['Date of Birth'], data['Place of Birth'],
-                        data['Gender'], empl_id))
+                        data['Gender'], data['Religion'], data['Citizenship'], data['Email'], data['Blood Type'],
+                        empl_id))
 
         # Update family_background table
         update_family_background = """
@@ -280,14 +309,23 @@ def save_employee(empl_id, data):
                         data["Beneficiary's Middle Name"],
                         data["Dependent's Name"], empl_id))
 
-        # Update list_of_id table
-        update_list_of_id = """
-        UPDATE emp_list_id
-        SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
-        WHERE empl_id = %s
+        # Update emergency_list table
+        update_emergency_list = """
+        UPDATE emergency_list
+            SET emer_name = %s
+            WHERE empl_id = %s
         """
-        cursor.execute(update_list_of_id, (
-            data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empl_id))
+        cursor.execute(update_emergency_list,
+                       (data['Emergency Name'], empl_id))
+                
+        # # Update list_of_id table
+        # update_list_of_id = """
+        # UPDATE emp_list_id
+        # SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
+        # WHERE empl_id = %s
+        # """
+        # cursor.execute(update_list_of_id, (
+        #     data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empl_id))
 
         # Update work_exp table
         update_work_exp = """
@@ -329,6 +367,14 @@ def save_employee(empl_id, data):
         # Update emp_images table
         update_emp_images = "UPDATE emp_images SET empl_img = %s WHERE empl_id = %s"
         cursor.execute(update_emp_images, (data['Employee Image'], empl_id))
+
+        # Update emp_status table
+        update_emp_status = ("UPDATE emp_status SET compcode = %s, dept_code = %s, emp_stat = %s, date_hired = %s,"
+                             "resigned = %s, dtresign = %s"
+                             "WHERE empl_id = %s")
+        cursor.execute(update_emp_status, (data['Computer Code'], data['Department Code'], data['Status'],
+                                           data['Date Hired'], data['Resigned'], data['Date Resign'],
+                                           empl_id))
 
         # Commit changes to the database
         connection.commit()
