@@ -285,7 +285,9 @@ class ListFunction:
                         logging.warning(f"Unhandled widget type for field: {field}")
 
         except Exception as e:
-            logging.error(f"Error populating modal with employee data: {e}")
+            QMessageBox.critical(self.main_window, "Error Populating Modal",
+                                 f"Error populating modal with employee data: {e}\n"
+                                 "Please check the data provided.")
 
     def open_otherInformationMODAL_add(self):
         modal = personalModal(mode='add')
@@ -317,7 +319,8 @@ class ListFunction:
                 logging.error("Failed to load image from BLOB data.")
                 return None
         except Exception as e:
-            logging.error(f"Exception occurred while loading pixmap: {e}")
+            QMessageBox.critical(self.main_window, "Exception Occurred",
+                                 f"An error occurred while loading the image: {e}")
             return None
         return pixmap
 

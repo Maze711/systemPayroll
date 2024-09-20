@@ -3,6 +3,7 @@ from MainFrame.main_functions import MainWindowFunctions
 from MainFrame.Database_Connection.notification_listener import NotificationService
 import threading
 
+
 class MainWindow(MainWindowFunctions):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -24,7 +25,6 @@ class MainWindow(MainWindowFunctions):
             self.notification_thread.join()
         logging.info("NotificationService has stopped.")
         event.accept()
-
 
 
 if __name__ == "__main__":

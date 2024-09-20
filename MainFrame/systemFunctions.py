@@ -167,7 +167,6 @@ class globalFunction():
 
     @staticmethod
     def export_to_excel(data, file_name):
-
         try:
             if isinstance(data, list) and len(data) > 0 and isinstance(data[0], dict):
                 df = pd.DataFrame(data)
@@ -177,9 +176,11 @@ class globalFunction():
                 raise ValueError("Data should be a list of dictionaries or a DataFrame")
 
             df.to_excel(file_name, index=False, engine='openpyxl')
-            logging.info(f"Data successfully exported to {file_name}")
+            QMessageBox.information(None, "Success", f"Data successfully exported to {file_name}")
+
         except Exception as e:
-            logging.error(f"Failed to export data to Excel: {e}")
+            QMessageBox.critical(None, "Export Failed",
+                                 f"Failed to export data to Excel: {str(e)}. Please try again or check your data.")
             raise
 
 class DatabaseConnectionError(Exception):

@@ -47,7 +47,8 @@ def create_connection(db_key):
             logging.warning(f"Failed to connect to {database} database")
             return None
     except Error as e:
-        logging.error(f"Error while connecting to MySQL {database}: {e}")
+        QMessageBox.critical(None, "Connection Error",
+                             f"Error while connecting to MySQL {database}: {str(e)}")
         return None
 
 def test_databases_connection():

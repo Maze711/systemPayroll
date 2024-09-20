@@ -43,12 +43,18 @@ class FilterDialog(QDialog):
             QMessageBox.critical(self, "Error", f"An error occurred while initializing the FilterDialog: {str(e)}")
 
     def clear_filter(self, checked=False):
-        self.cmbCheckIn.setCurrentIndex(0)
-        self.cmbCheckOut.setCurrentIndex(0)
-        if self.parent():
-            self.parent().clear_filter()
-        self.accept()
-        logging.info("Filter cleared")
+        try:
+            self.cmbCheckIn.setCurrentIndex(0)
+            self.cmbCheckOut.setCurrentIndex(0)
+            if self.parent():
+                self.parent().clear_filter()
+            self.accept()
+            logging.info("Filter successfully cleared.")
+            QMessageBox.information(self, "Filter Cleared", "The filter has been cleared successfully.")
+
+        except Exception as e:
+            logging.error(f"Error clearing filter: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to clear filter: {str(e)}")
 
     def show_missing(self, checked=False):
         if self.parent():
