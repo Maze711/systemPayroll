@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>31</number>
+     <number>37</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -229,6 +229,11 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
+      <string>RestDayNDOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
       <string>Holiday_Earn</string>
      </property>
     </column>
@@ -240,6 +245,31 @@ QTableWidget {
     <column>
      <property name="text">
       <string>HolidayND_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>HolidayNDOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestHoli_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestHoliOT_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestHoliND_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RestHoliNDOT_Earn</string>
      </property>
     </column>
     <column>
@@ -682,7 +712,7 @@ background-color: #c75657;
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>C:/Users/Acer/.designer/Icons/search.svg</pixmap>
+       <pixmap>../Icons/search.svg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>false</bool>

@@ -43,22 +43,26 @@ class PayComputation:
             logging.info(f"Calculated overtime for EmpNo {item['EmpNo']}: {item['OT_Earn']}")
 
     def regularDayNightDiffComputation(self):
-        overtime_rate = 74.844  # Use the same overtime rate defined earlier
-        night_diff = 5.99  # Define the night differential rate
+        # overtime_rate = 74.844  # Use the same overtime rate defined earlier
+        # night_diff = 5.99  # Define the night differential rate
 
         for item in self.data:
-            reg_day_night_diff = item.get('Regular Day Night Diff')
-
+            # reg_day_night_diff = item.get('Regular Day Night Diff')
             try:
-                reg_day_night_diff_float = float(reg_day_night_diff)
+                hourly_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0) / 8
+                reg_day_night_diff_hours = float(
+                    item.get('Regular Day Night Diff') if item.get(
+                        'Regular Day Night Diff') != 'Missing' else 0)
             except ValueError:
-                reg_day_night_diff_float = 0
+                hourly_rate = 0
+                reg_day_night_diff_hours = 0
 
-            # Compute the regular day night differential using the given formula
-            regular_day_night_value = (reg_day_night_diff_float * overtime_rate) + (
-                    reg_day_night_diff_float * night_diff)
+            # Compute the regular day night differential rate
+            night_diff_rate = 1.1  # Night Differential Rate of 10%
+            regular_night_diff_rate_per_hour = hourly_rate * night_diff_rate
+            regular_night_diff_total = reg_day_night_diff_hours * regular_night_diff_rate_per_hour
 
-            item['RegDayNightDiffEarn'] = round(regular_day_night_value, 2)
+            item['RegDayNightDiffEarn'] = round(regular_night_diff_total, 2)
             logging.info(f"Calculated regular day night diff for EmpNo {item['EmpNo']}: {item['RegDayNightDiffEarn']}")
 
     def regularDayNightDiffOTComputation(self):
@@ -83,7 +87,6 @@ class PayComputation:
 
     def lateComputation(self):
         late_rate = 59.875  # Define the late
-        scaling_factor = 10  # Define the scaling factor to adjust 'Late' values
 
         for item in self.data:
             hours = item.get('Late')
@@ -96,16 +99,13 @@ class PayComputation:
                 logging.error(f"Error converting Late value for EmpNo {item['EmpNo']}: {e}")
                 hours_float = 0
 
-            # Adjust the hours value using the scaling factor
-            scaled_hours = hours_float * scaling_factor
-            late_undertime_value = scaled_hours * late_rate
+            late_undertime_value = hours_float * late_rate
 
             item['LateUndertime'] = round(late_undertime_value, 2)
             logging.info(f"Calculated late value for EmpNo {item['EmpNo']}: {item['LateUndertime']}")
 
     def undertimeComputation(self):
         undertime_rate = 59.875  # Define the undertime rate
-        scaling_factor = 10  # Define the scaling factor to adjust 'Late' values
 
         for item in self.data:
             hours = item.get('Undertime')
@@ -118,9 +118,7 @@ class PayComputation:
                 logging.error(f"Error converting Undertime value for EmpNo {item['EmpNo']}: {e}")
                 hours_float = 0
 
-            # Adjust the hours value using the scaling factor
-            scaled_hours = hours_float * scaling_factor
-            Undertime_value = scaled_hours * undertime_rate
+            Undertime_value = hours_float * undertime_rate
 
             item['undertime'] = round(Undertime_value, 2)
             logging.info(f"Calculated late value for EmpNo {item['EmpNo']}: {item['undertime']}")
@@ -174,7 +172,14 @@ class PayComputation:
                 hourly_rate = 0
                 rest_day_nd_hours = 0
 
-            item['RestDayND_Earn'] = round(0.0, 2)
+            # Rest Day Night Differential Rate Computation
+            rest_day_rate = 1.3  # Rest Day Rate value (equivalent to 130%)
+            night_diff_rate = 1.1  # Night Differential Rate of 110%
+            rest_day_nd_rate_per_hour = hourly_rate * rest_day_rate * night_diff_rate
+
+            rest_day_nd_rate_total = rest_day_nd_hours * rest_day_nd_rate_per_hour
+
+            item['RestDayND_Earn'] = round(rest_day_nd_rate_total, 2)
             logging.info(f"Calculated rest day nd value for EmpNo {item['EmpNo']}: {item['RestDayND_Earn']}")
 
     def regularHolidayComputation(self):
@@ -226,5 +231,12 @@ class PayComputation:
                 hourly_rate = 0
                 holiday_nd_hours = 0
 
-            item['HolidayDayND_Earn'] = round(0.0, 2)
+            # Holiday ND Rate Computation
+            holiday_rate = 2  # holiday rate value (equivalent to 200%)
+            night_diff_rate = 1.1  # Night Differential Rate of 110%
+            holiday_nd_rate_per_hour = hourly_rate * holiday_rate * night_diff_rate
+
+            holiday_nd_rate_total = holiday_nd_hours * holiday_nd_rate_per_hour
+
+            item['HolidayDayND_Earn'] = round(holiday_nd_rate_total, 2)
             logging.info(f"Calculated holiday ot value for EmpNo {item['EmpNo']}: {item['HolidayDayOT_Earn']}")
