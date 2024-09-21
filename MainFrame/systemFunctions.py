@@ -81,8 +81,11 @@ class FileProcessor(QObject):
             'orddaynite': ['orddaynite'],
             'orddaynit2': ['orddaynit2'],
             'rstdaynite': ['rstdaynite'],
+            'rstdaynit2': ['rstdaynit2'],
             'hlydaynite': ['hlydaynite'],
+            'hlydaynit2': ['hlydaynit2'],
             'rsthlydayn': ['rsthlydayn'],
+            'rsthlyday2': ['rsthlyday2'],
             'orddayot': ['orddayot'],
             'rstdayot': ['rstdayot'],
             'hlydayot': ['hlydayot'],
@@ -107,7 +110,7 @@ class FileProcessor(QObject):
                 sheet = workbook.active
                 headers = [cell.value for cell in sheet[1]]
                 total_rows = sheet.max_row
-                for row_idx in range(2, total_rows + 1):  # Skip header row
+                for row_idx in range(1, total_rows):
                     row = [sheet.cell(row=row_idx, column=col_idx).value for col_idx in range(1, sheet.max_column + 1)]
                     content.append(row)
                     progress = int((row_idx / total_rows) * 100)

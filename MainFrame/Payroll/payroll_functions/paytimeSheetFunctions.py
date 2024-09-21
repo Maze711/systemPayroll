@@ -63,18 +63,21 @@ class PaytimeSheetFunctions:
             present_days_item = self.parent.paytimesheetTable.item(row, 5)
             rest_day_item = self.parent.paytimesheetTable.item(row, 6)
             holiday_item = self.parent.paytimesheetTable.item(row, 7)
-            restholiday_item = self.parent.paytimesheetTable.item(row, 8)
+            rest_holiday_item = self.parent.paytimesheetTable.item(row, 8)
             reg_day_night_diff_item = self.parent.paytimesheetTable.item(row, 9)
-            reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 10)
-            rest_day_night_item = self.parent.paytimesheetTable.item(row, 11)
-            holiday_night_item = self.parent.paytimesheetTable.item(row, 12)
-            rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 13)
-            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
-            rest_day_ot_item = self.parent.paytimesheetTable.item(row, 15)
-            holiday_ot_item = self.parent.paytimesheetTable.item(row, 16)
-            restholiday_ot_item = self.parent.paytimesheetTable.item(row, 17)
-            late_item = self.parent.paytimesheetTable.item(row, 18)
-            undertime_item = self.parent.paytimesheetTable.item(row, 19)
+            rest_day_night_item = self.parent.paytimesheetTable.item(row, 10)
+            holiday_night_item = self.parent.paytimesheetTable.item(row, 11)
+            rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 12)
+            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 13)
+            rest_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
+            holiday_ot_item = self.parent.paytimesheetTable.item(row, 15)
+            rest_holiday_ot_item = self.parent.paytimesheetTable.item(row, 16)
+            reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 17)
+            rest_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 18)
+            holiday_night_ot_item = self.parent.paytimesheetTable.item(row, 19)
+            rest_holiday_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 20)
+            late_item = self.parent.paytimesheetTable.item(row, 21)
+            undertime_item = self.parent.paytimesheetTable.item(row, 22)
 
             if bio_num_item and bio_num_item.text():
                 bio_num = bio_num_item.text()[3:]
@@ -88,13 +91,19 @@ class PaytimeSheetFunctions:
                 'Present Days': present_days_item.text(),
                 'Rest Day Hours': rest_day_item.text(),
                 'Holiday Hours': holiday_item.text(),
+                'Rest Holiday Hours': rest_holiday_item.text(),
                 'Regular Day Night Diff': reg_day_night_diff_item.text(),
-                'Regular Day Night Diff OT': reg_day_night_diff_ot_item.text(),
                 'Rest Day Night Diff Hours': rest_day_night_item.text(),
                 'Holiday Night Diff Hours': holiday_night_item.text(),
+                'Rest Holiday Night Diff Hours': rest_holiday_night_item.text(),
                 'OrdinaryDayOT': ordinary_day_ot_item.text(),
                 'Rest Day OT Hours': rest_day_ot_item.text(),
                 'Holiday OT Hours': holiday_ot_item.text(),
+                'Rest Holiday OT Hours': rest_holiday_ot_item.text(),
+                'Regular Day Night Diff OT': reg_day_night_diff_ot_item.text(),
+                'Rest Day Night Diff OT': rest_day_night_diff_ot_item.text(),
+                'Holiday Night Diff OT': holiday_night_ot_item.text(),
+                'Rest Holiday Night Diff OT': rest_holiday_night_diff_ot_item.text(),
                 'Late': late_item.text(),
                 'Undertime': undertime_item.text()
             })
@@ -201,7 +210,6 @@ class PaytimeSheetFunctions:
             'Holiday': 'holiday',
             'RestHoliday': 'rsthlyday',
             'OrdinaryDayNight': 'orddaynite',
-            'OrdinaryDayNightOT': 'orddaynit2',
             'RestDayNight': 'rstdaynite',
             'HolidayNight': 'hlydaynite',
             'RestHolidayNight': 'rsthlydayn',
@@ -209,6 +217,10 @@ class PaytimeSheetFunctions:
             'RestDayOT': 'rstdayot',
             'HolidayOT': 'hlydayot',
             'RestHolidayOT': 'rsthlydayo',
+            'OrdinaryDayNightOT': 'orddaynit2',
+            'RestDayNightOT': 'rstdaynit2',
+            'HolidayNightOT': 'hlydaynit2',
+            'RestHolidayNightOT': 'rsthlyday2',
             'Late': 'late',
             'Undertime': 'undertime',
             'Absent': 'absent',

@@ -80,25 +80,27 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 9, rest_day_earn_item)    # Rest day earn
             self.parent.paytransTable.setItem(i, 10, rest_day_ot_earn_item)  # Rest day OT earn
             self.parent.paytransTable.setItem(i, 11, rest_day_nd_earn_item)  # Rest day ND earn
-            self.parent.paytransTable.setItem(i, 12, holiday_earn_item)   # Holiday earn
-            self.parent.paytransTable.setItem(i, 13, holiday_ot_earn_item)  # Holiday OT earn
-            self.parent.paytransTable.setItem(i, 14, holiday_nd_earn_item)  # Holiday ND earn
-            self.parent.paytransTable.setItem(i, 15, late_earn_item)
-            self.parent.paytransTable.setItem(i, 16, undertime_earn_item)
-            self.parent.paytransTable.setItem(i, 17, absent_earn_item)
-            self.parent.paytransTable.setItem(i, 18, sss_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 19, pagibig_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 20, cash_earn_item)
-            self.parent.paytransTable.setItem(i, 21, canteen_earn_item)
-            self.parent.paytransTable.setItem(i, 22, tax_earn_item)
-            self.parent.paytransTable.setItem(i, 23, sss_earn_item)
-            self.parent.paytransTable.setItem(i, 24, philhealth_earn_item)
-            self.parent.paytransTable.setItem(i, 25, pagibig_earn_item)
-            self.parent.paytransTable.setItem(i, 26, clinic_earn_item)
-            self.parent.paytransTable.setItem(i, 27, arayata_earn_item)
-            self.parent.paytransTable.setItem(i, 28, hmi_earn_item)
-            self.parent.paytransTable.setItem(i, 29, funeral_earn_item)
-            self.parent.paytransTable.setItem(i, 30, voluntary_earn_item)
+
+            self.parent.paytransTable.setItem(i, 13, holiday_earn_item)   # Holiday earn
+            self.parent.paytransTable.setItem(i, 14, holiday_ot_earn_item)  # Holiday OT earn
+            self.parent.paytransTable.setItem(i, 15, holiday_nd_earn_item)  # Holiday ND earn
+            self.parent.paytransTable.setItem(i, 21, late_earn_item)
+            self.parent.paytransTable.setItem(i, 22, undertime_earn_item)
+
+            self.parent.paytransTable.setItem(i, 23, absent_earn_item)
+            self.parent.paytransTable.setItem(i, 24, sss_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 25, pagibig_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 26, cash_earn_item)
+            self.parent.paytransTable.setItem(i, 27, canteen_earn_item)
+            self.parent.paytransTable.setItem(i, 28, tax_earn_item)
+            self.parent.paytransTable.setItem(i, 29, sss_earn_item)
+            self.parent.paytransTable.setItem(i, 30, philhealth_earn_item)
+            self.parent.paytransTable.setItem(i, 31, pagibig_earn_item)
+            self.parent.paytransTable.setItem(i, 32, clinic_earn_item)
+            self.parent.paytransTable.setItem(i, 33, arayata_earn_item)
+            self.parent.paytransTable.setItem(i, 34, hmi_earn_item)
+            self.parent.paytransTable.setItem(i, 35, funeral_earn_item)
+            self.parent.paytransTable.setItem(i, 36, voluntary_earn_item)
 
     def export_to_excel(self, checked=False):
         # Define the file name where data will be saved
