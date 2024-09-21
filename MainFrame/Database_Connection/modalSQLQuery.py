@@ -413,7 +413,8 @@ def executeQuery(query, *args):
         return results
 
     except Error as e:
-        logging.error(f"Error executing query: {e}")
+        QMessageBox.critical(None, "Error Executing Query",
+                             f"An error occurred while executing the query: {str(e)}")
         return []
 
     finally:

@@ -183,9 +183,11 @@ class PaytimeSheetFunctions:
         QMessageBox.critical(self.parent, "Import Error", f"An error occurred during import:\n{error_message}")
 
     def populatePaytimeSheetTable(self, data):
-        self.parent.paytimesheetTable.setRowCount(len(data) - 1)  # Exclude header row
-        for row in range(self.parent.paytimesheetTable.rowCount()):
-            self.parent.paytimesheetTable.setRowHidden(row, False)
+        # Ensure data is not empty and contains at least a header and one row of data
+        if not data or len(data) < 2:
+            logging.error("No data or insufficient data to populate the table.")
+            QMessageBox.critical(self.parent, "Error", "No data available to populate the table.")
+            return
 
         # Define column names in the Excel file
         column_names = {
@@ -224,6 +226,9 @@ class PaytimeSheetFunctions:
             logging.error("No matching columns found in headers.")
             return
 
+        # Exclude header row
+        self.parent.paytimesheetTable.setRowCount(len(data) - 1)
+
         try:
             for i, row in enumerate(data[1:]):  # Skip header row
                 for field_name, col_name in column_names.items():
@@ -236,8 +241,8 @@ class PaytimeSheetFunctions:
                             item.setToolTip(row[col_idx])
                         self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
                     else:
-                        logging.warning(f"Column '{field_name}' not found in data.")
-                logging.info(f"Adding row {i}: {row}")
+                        logging.warning(f"Column '{field_name}' not found in data for row {i + 1}")
+                logging.info(f"Added row {i + 1}: {row}")
 
             QMessageBox.information(self.parent, "Success", "Paytime sheet table populated successfully.")
         except Exception as e:
