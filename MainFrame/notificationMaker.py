@@ -6,6 +6,7 @@ from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.user_session import UserSession
+import re
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
@@ -52,55 +53,58 @@ class FileProcessor(QObject):
                 self.fileName, sep='\t', header=None,
                 names=['bio_no', 'date_time', 'mach_code', 'code_1', 'code_2', 'code_3']
             )
+
             # Split 'date_time' into 'date' and 'time'
             self.data['date'] = self.data['date_time'].str.split(' ').str[0]
             self.data['time'] = self.data['date_time'].str.split(' ').str[1]
+
+            # Print the employee IDs being processed
+            for bio_no in self.data['bio_no']:
+                print(f'Processing Bio No: {bio_no}')
+
             # Determine the schedule based on code values
             self.data['sched'] = self.data.apply(
                 lambda row: self.determine_schedule(str(row['code_1']), str(row['code_2']), str(row['code_3'])), axis=1
             )
+
             self.data = self.combineTimeInOut()  # Combine Time IN and Time OUT
         except Exception as e:
             self.error.emit(f"Error processing content: {e}")
 
     def determine_schedule(self, code_1, code_2, code_3):
         """Determines the schedule type based on code values."""
-        if code_1 == '0' and code_2 == '1' and code_3 == '0':
+        if code_1 == '0' and code_2 in ['0', '1'] and code_3 == '0':
             return 'Time IN'
-        elif code_1 in ['1', '5'] and code_2 == '1' and code_3 == '0':
+        elif code_1 in ['1', '5'] and code_2 in ['0', '1'] and code_3 == '0':
             return 'Time OUT'
         else:
             return 'Unknown'
 
     def combineTimeInOut(self):
-        """Combines Time IN and Time OUT entries, correctly handling night shifts and missing entries."""
+        """Combines Time IN and Time OUT entries, removing duplicates if CheckOut times are too close."""
         combined_data = []
         self.data = self.data.sort_values(['bio_no', 'date', 'time'])
 
         for bio_no, group in self.data.groupby('bio_no'):
             time_entries = group.to_dict('records')
             current_time_in = None
+            current_time_out = None
 
             for i, entry in enumerate(time_entries):
                 current_date = entry['date']
                 current_time = entry['time']
 
                 if entry['sched'] == 'Time IN':
-                    if current_time_in:
-                        # Add previous Time IN with default Time OUT
-                        combined_data.append([
-                            bio_no,
-                            current_time_in['date'],
-                            current_time_in['mach_code'],
-                            current_time_in['time'],
-                            '00:00:00'
-                        ])
-                    current_time_in = entry
+                    # Handle duplicate Time IN entries: replace previous one if no Time OUT occurred yet
+                    current_time_in = entry  # Always take the latest Time IN
+                    current_time_out = None  # Clear any potential earlier Time OUT, as we have a new IN
+
                 elif entry['sched'] == 'Time OUT':
+                    # Handle duplicate Time OUT on the same day
                     if current_time_in:
-                        # Check if the Time OUT is on the next day
+                        # We have a valid Time IN, so now we can pair it with this Time OUT
                         if current_date != current_time_in['date']:
-                            # Add entry for the previous day
+                            # If Time OUT is on a different day, split the records
                             combined_data.append([
                                 bio_no,
                                 current_time_in['date'],
@@ -108,7 +112,6 @@ class FileProcessor(QObject):
                                 current_time_in['time'],
                                 '00:00:00'
                             ])
-                            # Add entry for the current day
                             combined_data.append([
                                 bio_no,
                                 current_date,
@@ -117,6 +120,23 @@ class FileProcessor(QObject):
                                 current_time
                             ])
                         else:
+                            # Time IN and Time OUT on the same day, check for duplicate Time OUT
+                            if current_time_out:
+                                # Compare Time OUTs: keep the latest one (or the more accurate one)
+                                previous_time_out = datetime.strptime(current_time_out['time'], '%H:%M:%S')
+                                new_time_out = datetime.strptime(current_time, '%H:%M:%S')
+                                time_diff = abs((new_time_out - previous_time_out).total_seconds())
+
+                                # If the time difference between Time OUTs is small, consider them duplicates
+                                if time_diff < 5:  # e.g., 5 seconds difference
+                                    continue  # Skip the duplicate Time OUT
+                                else:
+                                    # Replace with the latest Time OUT if not considered a duplicate
+                                    current_time_out = entry
+                            else:
+                                current_time_out = entry
+
+                            # After resolving duplicates, append the valid Time IN and Time OUT
                             combined_data.append([
                                 bio_no,
                                 current_date,
@@ -124,19 +144,12 @@ class FileProcessor(QObject):
                                 current_time_in['time'],
                                 current_time
                             ])
-                        current_time_in = None
-                    else:
-                        # Time OUT without a matching Time IN
-                        combined_data.append([
-                            bio_no,
-                            current_date,
-                            entry['mach_code'],
-                            '00:00:00',
-                            current_time
-                        ])
+                            current_time_in = None  # Clear Time IN after pairing
+                            current_time_out = None  # Clear Time OUT after use
 
-            # Handle any remaining Time IN without a Time OUT
+            # Handle remaining unmatched Time IN or OUT entries
             if current_time_in:
+                # If we still have an unpaired Time IN, add it with a default Time OUT of 00:00:00
                 combined_data.append([
                     bio_no,
                     current_time_in['date'],
@@ -144,7 +157,17 @@ class FileProcessor(QObject):
                     current_time_in['time'],
                     '00:00:00'
                 ])
+            elif current_time_out:
+                # If we have a Time OUT with no Time IN, record it with default Time IN of 00:00:00
+                combined_data.append([
+                    bio_no,
+                    current_time_out['date'],
+                    current_time_out['mach_code'],
+                    '00:00:00',
+                    current_time_out['time']
+                ])
 
+        # Return the combined data as a DataFrame
         combined_df = pd.DataFrame(combined_data, columns=['bio_no', 'date', 'mach_code', 'time_in', 'time_out'])
         return combined_df
 
@@ -168,49 +191,86 @@ class FileProcessor(QObject):
             self.error.emit("Failed to connect to LIST_LOG_IMPORT database.")
             return
 
-        cursor = connection.cursor()
-
-        # Create table name based on chunk name
-        table_name = chunk_name
-
-        create_table_query = f"""
-            CREATE TABLE IF NOT EXISTS {table_name} (
-                ID INT AUTO_INCREMENT PRIMARY KEY, 
-                bioNum INT,
-                date DATE,
-                machCode VARCHAR(225),
-                time_in TIME,
-                time_out TIME,
-                edited_by VARCHAR(225),
-                edited_by_when DATETIME,
-                UNIQUE KEY unique_entry (bioNum, date, machCode, time_in)
-            )
-        """
         try:
-            cursor.execute(create_table_query)
-            connection.commit()
-        except Error as e:
-            self.error.emit(f"Error creating table: {e}")
-            return
-
-        try:
-            chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, na_values=['N/A'], keep_default_na=False)
-            chunk_data = chunk_data.fillna('N/A')
-            for _, entry in chunk_data.iterrows():
-                insert_query = f"""
-                    INSERT IGNORE INTO {table_name} (bioNum, date, machCode, time_in, time_out)
-                    VALUES (%s, %s, %s, %s, %s)
+            with connection.cursor() as cursor:
+                # Create table name based on chunk name
+                table_name = chunk_name
+                create_table_query = f"""
+                    CREATE TABLE IF NOT EXISTS {table_name} (
+                        ID INT AUTO_INCREMENT PRIMARY KEY, 
+                        bioNum INT,
+                        date DATE,
+                        machCode VARCHAR(225),
+                        time_in TIME,
+                        time_out TIME,
+                        edited_by VARCHAR(225),
+                        edited_by_when DATETIME,
+                        UNIQUE KEY unique_entry (bioNum, date, machCode, time_in)
+                    )
                 """
-                cursor.execute(insert_query, (entry[0], entry[1], entry[2], entry[3], entry[4]))
+                cursor.execute(create_table_query)
                 connection.commit()
+
+                # Read chunk data from the file
+                chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, na_values=['N/A'], keep_default_na=False)
+                chunk_data = chunk_data.fillna('N/A')
+
+                unique_bio_nums = set()  # To track all unique bioNum entries
+
+                for _, entry in chunk_data.iterrows():
+                    bio_num_cleaned = str(entry[0]).strip() if entry[0] is not None else None
+                    date_cleaned = str(entry[1]).strip() if entry[1] is not None else None
+                    mach_code_cleaned = str(entry[2]).strip() if entry[2] is not None else None
+                    time_in_cleaned = str(entry[3]).strip() if entry[3] is not None else None
+                    time_out_cleaned = str(entry[4]).strip() if entry[4] is not None else None
+
+                    # Track unique bioNum values
+                    if bio_num_cleaned:
+                        unique_bio_nums.add(bio_num_cleaned)
+
+                    # Ensure bio_num_cleaned is not empty or whitespace
+                    if not bio_num_cleaned:
+                        print("Skipping empty bioNum entry.")
+                        continue
+
+                    # Convert bio_num to int if possible
+                    try:
+                        bio_num_cleaned = int(bio_num_cleaned)
+                    except ValueError:
+                        self.error.emit(f"Invalid bioNum: {bio_num_cleaned}")
+                        continue
+
+                    if not date_cleaned or not mach_code_cleaned:
+                        self.error.emit(
+                            f"Invalid data for insertion: bioNum={bio_num_cleaned}, date={date_cleaned}, machCode={mach_code_cleaned}, time_in={time_in_cleaned}, time_out={time_out_cleaned}"
+                        )
+                        continue
+
+                    print(
+                        f"Inserting: {bio_num_cleaned}, {date_cleaned}, {mach_code_cleaned}, {time_in_cleaned}, {time_out_cleaned}")
+
+                    insert_query = f"""
+                        INSERT INTO {table_name} (bioNum, date, machCode, time_in, time_out)
+                        VALUES (%s, %s, %s, %s, %s)
+                        ON DUPLICATE KEY UPDATE
+                        machCode = VALUES(machCode), time_in = VALUES(time_in), time_out = VALUES(time_out)
+                    """
+                    cursor.execute(insert_query, (
+                        bio_num_cleaned, date_cleaned, mach_code_cleaned, time_in_cleaned, time_out_cleaned))
+                    connection.commit()
+
+                    print(
+                        f"Inserted: {bio_num_cleaned}, {date_cleaned}, {mach_code_cleaned}, {time_in_cleaned}, {time_out_cleaned}")
+
+                # After processing all entries, print unique bioNum values
+                print("Unique bioNum values processed:", unique_bio_nums)
+
         except Error as e:
             self.error.emit(f"Error inserting data: {e}")
         finally:
             if connection and connection.is_connected():
-                cursor.close()
                 connection.close()
 
-            # Delete the chunk file after processing
             try:
                 os.remove(chunk_file)
             except OSError as e:
