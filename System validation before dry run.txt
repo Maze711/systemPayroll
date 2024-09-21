@@ -3,7 +3,7 @@ HRTPAYMS SYSTEM UPDATE BEFORE DRY RUN:
 HR Application side:
  - Center table data * DONE *
  - EMP image is not in required fields * DONE *
- - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL)
+ - When importing excel file, should allow old excel format, other excel format (TULAD SA PAYROLL) * DONE *
  - Remove uneccesary UI in Employee Info modal * DONE *
 
 Timekeeper Side Application:
@@ -22,13 +22,13 @@ Paytimesheet Side Application:
  - Hours work should be I think 2 decimal places only?  * DONE *
 
 Paymaster 1 Side Application:
- - Already created a row even though there's no data yet
+ - Already created a row even though there's no data yet * DONE *
  - Under notification it should be have the value right away not when it load up
  - UI Changes
  - Crashing the application when the create paytrans is clicked since there's no data yet
  
 Paytrans Side application:
- - BASIC, DAILYRATE, DAYSWORK, OT_Earn, REGULARND, Late, Undertime this columns already have a computation
+ - BASIC, DAILYRATE, DAYSWORK, OT_Earn, REGULARND, Late, Undertime this columns already have a computation * DONE *
  - When importing the deductions from database it's crashing the application
  - Pay_ded naming should be renamed * DONE *
 

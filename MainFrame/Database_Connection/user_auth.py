@@ -27,8 +27,8 @@ class UserAuthorization:
             return result[0]
 
         except Error as e:
-            logging.error(f"Error fetching user role: {e}")
-
+            QMessageBox.critical(None, "Error Fetching User Role",
+                                 f"An error occurred while fetching the user role: {str(e)}")
         finally:
             if cursor is not None:
                 cursor.close()

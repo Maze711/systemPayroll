@@ -67,14 +67,11 @@ class PaytimeSheet(QMainWindow):
 
             self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
 
-            self.populatePaytimeSheetTable(self.original_data)
-
             # Initially set the indication label
             self.update_indication_lbl()
 
         except Exception as e:
             logging.error(f"Error in setupPayTimeSheetUI: {e}")
-            QMessageBox.critical(self, "Setup Error", f"Failed to setup Paytime sheet UI: {e}")
 
     def setupDeductionUI(self):
         try:
@@ -89,7 +86,6 @@ class PaytimeSheet(QMainWindow):
 
             self.searchBioNum.textChanged.connect(self.deductionFunctions.filterTable)
 
-            self.populatePaytimeSheetTable(self.original_data)
         except Exception as e:
             logging.error(f"Error in setupDeductionUI: {e}")
             QMessageBox.critical(self, "Setup Error", f"Failed to setup Deduction UI: {e}")
