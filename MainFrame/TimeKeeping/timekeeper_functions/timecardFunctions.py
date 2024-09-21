@@ -448,11 +448,11 @@ class buttonTimecardFunction:
         if check_out <= check_in:
             check_out += timedelta(days=1)
 
-        # Define ND and NDOT periods using datetime.time
-        nd_start = datetime.strptime("22:00", "%H:%M").time()  # 10:00 PM
-        nd_start_early = datetime.strptime("21:00", "%H:%M").time()  # 9:00 PM
-        midnight = datetime.strptime("00:00", "%H:%M").time()  # 12:00 AM
-        nd_end = datetime.strptime("06:00", "%H:%M").time()  # 6:00 AM
+        # Define ND and NDOT periods
+        nd_start1 = datetime.strptime("21:00", "%H:%M").time()  # 10:00 PM
+        nd_end1 = datetime.strptime("23:59", "%H:%M").time()  # 11:59 PM
+        nd_start2 = datetime.strptime("01:00", "%H:%M").time()  # 1:00 AM
+        nd_end2 = datetime.strptime("06:00", "%H:%M").time()  # 6:00 AM
         ndot_start = datetime.strptime("02:00", "%H:%M").time()  # 2:00 AM
 
         total_hours = (check_out - check_in).total_seconds() / 3600
@@ -461,48 +461,31 @@ class buttonTimecardFunction:
         current_time = check_in
 
         while current_time < check_out:
-            # Move to the next hour or the check-out time
-            next_hour = (current_time + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
-            if next_hour > check_out:
-                next_hour = check_out
+            next_hour = min(current_time + timedelta(hours=1), check_out)
 
-            # Calculate the fraction of the hour between current_time and next_hour
-            hour_fraction = (next_hour - current_time).total_seconds() / 3600
-
+            # Extract current time for ND/NDOT calculations
             current_time_struct = current_time.time()
 
-            # ND hours calculation
-            if check_in.time() > nd_start_early and current_time_struct >= nd_start_early:
-                # Compute ND hours from check-in time up to 9 PM
-                if current_time_struct < nd_start:
-                    nd_hours += (datetime.combine(current_time.date(), nd_start) - datetime.combine(current_time.date(),
-                                                                                                    current_time_struct)).total_seconds() / 3600
-                else:
-                    nd_hours += min(hour_fraction, (
-                                datetime.combine(current_time.date(), nd_start) - datetime.combine(current_time.date(),
-                                                                                                   nd_start_early)).total_seconds() / 3600)
-            elif nd_start <= current_time_struct < midnight:
-                # Between 10 PM and midnight
-                nd_hours += min(hour_fraction, (
-                            datetime.combine(current_time.date(), midnight) - datetime.combine(current_time.date(),
-                                                                                               current_time_struct)).total_seconds() / 3600)
-            elif midnight <= current_time_struct < nd_end:
-                # Between midnight and 6 AM
-                nd_hours += min(hour_fraction, (
-                            datetime.combine(current_time.date(), nd_end) - datetime.combine(current_time.date(),
-                                                                                             current_time_struct)).total_seconds() / 3600)
+            # ND Hours Calculation
+            if nd_start1 <= current_time_struct <= nd_end1:  # From 10 PM to midnight
+                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end1))
+                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
+            elif nd_start2 <= current_time_struct < nd_end2:  # From 1 AM to 6 AM
+                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
+                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
 
-            # NDOT hours calculation
-            if ndot_start <= current_time_struct < nd_end:
-                ndot_hours += hour_fraction
+            # NDOT Hours Calculation
+            if ndot_start <= current_time_struct < nd_end2:  # 2 AM to 6 AM
+                ndot_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
+                ndot_hours += (ndot_period_end - current_time).total_seconds() / 3600
 
             current_time = next_hour
 
         # Cap ND hours at 8
         nd_hours = min(nd_hours, 8)
 
-        # Round and return
-        return round(total_hours, 2), round(nd_hours, 2), round(ndot_hours, 2)
+        # Round and return total, ND, and NDOT hours
+        return int(total_hours), int(nd_hours), int(ndot_hours)
 
     def process_timesheet(self, timesheet_data):
         results = []
