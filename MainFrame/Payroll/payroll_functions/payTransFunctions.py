@@ -35,10 +35,16 @@ class PayTransFunctions:
             undertime_earn_item = QTableWidgetItem(str(row['undertime']))
             rest_day_earn_item = QTableWidgetItem(str(row['RestDay_Earn']))
             holiday_earn_item = QTableWidgetItem(str(row['HolidayDay_Earn']))
+            rest_holiday_earn_item = QTableWidgetItem(str(row['RestHolidayDay_Earn']))
             rest_day_ot_earn_item = QTableWidgetItem(str(row['RestDayOT_Earn']))
             holiday_ot_earn_item = QTableWidgetItem(str(row['HolidayDayOT_Earn']))
+            rest_holiday_ot_earn_item = QTableWidgetItem(str(row['RestHolidayDayOT_Earn']))
             rest_day_nd_earn_item = QTableWidgetItem(str(row['RestDayND_Earn']))
             holiday_nd_earn_item = QTableWidgetItem(str(row['HolidayDayND_Earn']))
+            rest_holiday_nd_earn_item = QTableWidgetItem(str(row['RestHolidayDayND_Earn']))
+            rest_day_nd_ot_earn_item = QTableWidgetItem(str(row['RestDayNDOT_Earn']))
+            holiday_nd_ot_earn_item = QTableWidgetItem(str(row['HolidayNDOT_Earn']))
+            rest_holiday_nd_ot_earn_item = QTableWidgetItem(str(row['RestHolidayDayNDOT_Earn']))
 
             # deduction items
             absent_earn_item = QTableWidgetItem(str(row.get('late_absent', '0')))
@@ -59,9 +65,11 @@ class PayTransFunctions:
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
                          ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item,
-                         reg_day_night_diff_ot_item, rest_day_earn_item,
-                         rest_day_ot_earn_item, rest_day_nd_earn_item, holiday_earn_item, holiday_ot_earn_item,
-                         holiday_nd_earn_item, absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item,
+                         reg_day_night_diff_ot_item, rest_day_earn_item, rest_day_ot_earn_item, rest_day_nd_earn_item,
+                         holiday_earn_item, holiday_ot_earn_item, holiday_nd_earn_item, rest_day_nd_ot_earn_item,
+                         holiday_nd_ot_earn_item, rest_holiday_earn_item, rest_holiday_ot_earn_item,
+                         rest_holiday_nd_earn_item, rest_holiday_nd_ot_earn_item,
+                         absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item,
                          cash_earn_item, canteen_earn_item, tax_earn_item, sss_earn_item, philhealth_earn_item,
                          pagibig_earn_item, clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
                          voluntary_earn_item]:
@@ -80,13 +88,17 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 9, rest_day_earn_item)    # Rest day earn
             self.parent.paytransTable.setItem(i, 10, rest_day_ot_earn_item)  # Rest day OT earn
             self.parent.paytransTable.setItem(i, 11, rest_day_nd_earn_item)  # Rest day ND earn
-
+            self.parent.paytransTable.setItem(i, 12, rest_day_nd_ot_earn_item)  # Rest day ND OT earn
             self.parent.paytransTable.setItem(i, 13, holiday_earn_item)   # Holiday earn
             self.parent.paytransTable.setItem(i, 14, holiday_ot_earn_item)  # Holiday OT earn
             self.parent.paytransTable.setItem(i, 15, holiday_nd_earn_item)  # Holiday ND earn
+            self.parent.paytransTable.setItem(i, 16, holiday_nd_ot_earn_item)  # Holiday ND OT earn
+            self.parent.paytransTable.setItem(i, 17, rest_holiday_earn_item)  # Rest Holiday earn
+            self.parent.paytransTable.setItem(i, 18, rest_holiday_ot_earn_item)  # Rest Holiday OT earn
+            self.parent.paytransTable.setItem(i, 19, rest_holiday_nd_earn_item)  # Rest Holiday ND earn
+            self.parent.paytransTable.setItem(i, 20, rest_holiday_nd_ot_earn_item)  # Rest Holiday ND OT earn
             self.parent.paytransTable.setItem(i, 21, late_earn_item)
             self.parent.paytransTable.setItem(i, 22, undertime_earn_item)
-
             self.parent.paytransTable.setItem(i, 23, absent_earn_item)
             self.parent.paytransTable.setItem(i, 24, sss_loan_earn_item)
             self.parent.paytransTable.setItem(i, 25, pagibig_loan_earn_item)

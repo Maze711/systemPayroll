@@ -128,8 +128,12 @@ class PaytimeSheetFunctions:
         pay_computation.regularHolidayOTComputation()
         pay_computation.restDayNightDiffComputation()
         pay_computation.regularHolidayNightDiffComputation()
-
-        print("Data with new computation: \n\t", selected_data)
+        pay_computation.restDayNightDiffOTComputation()
+        pay_computation.regularHolidayNightDiffOTComputation()
+        pay_computation.restDayHolidayComputation()
+        pay_computation.restDayHolidayOTComputation()
+        pay_computation.restDayHolidayNDComputation()
+        pay_computation.restDayHolidayNDOTComputation()
 
         try:
             self.parent.window = PayTrans(from_date, to_date, selected_data)
