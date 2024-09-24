@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>28</number>
+     <number>38</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -155,17 +155,17 @@ QTableWidget {
     </attribute>
     <column>
      <property name="text">
-      <string>Emp Number</string>
+      <string>Bio_No.</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Bio Num</string>
+      <string>Emp_Num</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Employee Name</string>
+      <string>Emp_Name</string>
      </property>
      <property name="font">
       <font>
@@ -184,92 +184,142 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>CostCenter</string>
+      <string>Cost_Center</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>DaysWork</string>
+      <string>Days_Work</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>DaysPresent</string>
+      <string>Days_Present</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestDay</string>
+      <string>Hours_Work</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Holiday</string>
+      <string>OrdDay_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestHoliday</string>
+      <string>OrdDayOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>OrdinaryDayNight</string>
+      <string>OrdDayND_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestDayNight</string>
+      <string>OrdDayNDOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayNight</string>
+      <string>RstDay_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestHolidayNight</string>
+      <string>RstDayOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>OrdinaryDayOT</string>
+      <string>RstDayND_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestDayOT</string>
+      <string>RstDayNDOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayOT</string>
+      <string>SplHlyday_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestHolidayOT</string>
+      <string>SplHlydayOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>OrdinaryDayNightOT</string>
+      <string>SplHlydayND_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestDayNightOT</string>
+      <string>SplHlydayNDOT_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayNightOT</string>
+      <string>RegHlyday_Hrs</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>RestHolidayNightOT</string>
+      <string>RegHlydayOT_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHlydayND_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHlydayNDOT_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SplHldyRD_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SplHldyRDOT_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SplHldyRDND_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>SplHldyRDNDOT_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHldyRD_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHldyRDOT_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHldyRDND_Hrs</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>RegHldyRDNDOT_Hrs</string>
      </property>
     </column>
     <column>
@@ -289,7 +339,7 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>DatePosted</string>
+      <string>Date_Posted</string>
      </property>
     </column>
     <column>
@@ -299,12 +349,12 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>EmpCompany</string>
+      <string>Emp_Company</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>LegalHoliday</string>
+      <string>Legal_Holiday</string>
      </property>
     </column>
    </widget>

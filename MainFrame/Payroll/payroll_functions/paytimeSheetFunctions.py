@@ -57,27 +57,27 @@ class PaytimeSheetFunctions:
         # Collect selected data from the table
         selected_data = []
         for row in range(self.parent.paytimesheetTable.rowCount()):
-            emp_no_item = self.parent.paytimesheetTable.item(row, 0)
-            bio_num_item = self.parent.paytimesheetTable.item(row, 1)
+            bio_num_item = self.parent.paytimesheetTable.item(row, 0)
+            emp_no_item = self.parent.paytimesheetTable.item(row, 1)
             emp_name_item = self.parent.paytimesheetTable.item(row, 2)
             present_days_item = self.parent.paytimesheetTable.item(row, 5)
-            rest_day_item = self.parent.paytimesheetTable.item(row, 6)
-            holiday_item = self.parent.paytimesheetTable.item(row, 7)
-            rest_holiday_item = self.parent.paytimesheetTable.item(row, 8)
+            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 8)
             reg_day_night_diff_item = self.parent.paytimesheetTable.item(row, 9)
-            rest_day_night_item = self.parent.paytimesheetTable.item(row, 10)
-            holiday_night_item = self.parent.paytimesheetTable.item(row, 11)
-            rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 12)
-            ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 13)
-            rest_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
-            holiday_ot_item = self.parent.paytimesheetTable.item(row, 15)
-            rest_holiday_ot_item = self.parent.paytimesheetTable.item(row, 16)
-            reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 17)
-            rest_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 18)
-            holiday_night_ot_item = self.parent.paytimesheetTable.item(row, 19)
-            rest_holiday_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 20)
-            late_item = self.parent.paytimesheetTable.item(row, 21)
-            undertime_item = self.parent.paytimesheetTable.item(row, 22)
+            reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 10)
+            rest_day_item = self.parent.paytimesheetTable.item(row, 11)
+            rest_day_ot_item = self.parent.paytimesheetTable.item(row, 12)
+            rest_day_night_item = self.parent.paytimesheetTable.item(row, 13)
+            rest_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 14)
+            holiday_item = self.parent.paytimesheetTable.item(row, 19)
+            holiday_ot_item = self.parent.paytimesheetTable.item(row, 20)
+            holiday_night_item = self.parent.paytimesheetTable.item(row, 21)
+            holiday_night_ot_item = self.parent.paytimesheetTable.item(row, 22)
+            rest_holiday_item = self.parent.paytimesheetTable.item(row, 27)
+            rest_holiday_ot_item = self.parent.paytimesheetTable.item(row, 28)
+            rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 29)
+            rest_holiday_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 30)
+            late_item = self.parent.paytimesheetTable.item(row, 31)
+            undertime_item = self.parent.paytimesheetTable.item(row, 32)
 
             if bio_num_item and bio_num_item.text():
                 bio_num = bio_num_item.text()[3:]
@@ -204,39 +204,40 @@ class PaytimeSheetFunctions:
 
         # Define column names in the Excel file
         column_names = {
-            'Emp Number': 'empnumber',
-            'Bio Num': 'empnumber',
-            'Employee Name': 'empname',
-            'CostCenter': 'costcenter',
-            'DaysWork': 'dayswork',
-            'DaysPresent': 'daypresent',
-            'RestDay': 'restday',
-            'Holiday': 'holiday',
-            'RestHoliday': 'rsthlyday',
-            'OrdinaryDayNight': 'orddaynite',
-            'RestDayNight': 'rstdaynite',
-            'HolidayNight': 'hlydaynite',
-            'RestHolidayNight': 'rsthlydayn',
-            'OrdinaryDayOT': 'orddayot',
-            'RestDayOT': 'rstdayot',
-            'HolidayOT': 'hlydayot',
-            'RestHolidayOT': 'rsthlydayo',
-            'OrdinaryDayNightOT': 'orddaynit2',
-            'RestDayNightOT': 'rstdaynit2',
-            'HolidayNightOT': 'hlydaynit2',
-            'RestHolidayNightOT': 'rsthlyday2',
-            'Late': 'late',
-            'Undertime': 'undertime',
-            'Absent': 'absent',
-            'DatePosted': 'dateposted',
-            'Remarks': 'remarks',
-            'EmpCompany': 'empcompany',
-            'LegalHoliday': 'legalholid'
+            'Bio_No.': ('empnumber', 0),
+            'Emp_Num': ('empnumber', 1),
+            'Emp_Name': ('empname', 2),
+            'Cost_Center': ('costcenter', 3),
+            'Days_Work': ('dayswork', 4),
+            'Days_Present': ('daypresent', 5),
+            'OrdDayOT_Hrs': ('orddayot', 8),
+            'OrdDayND_Hrs': ('orddaynite', 9),
+            'OrdDayNDOT_Hrs': ('orddaynit2', 10),
+            'RstDay_Hrs': ('restday', 11),
+            'RstDayOT_Hrs': ('rstdayot', 12),
+            'RstDayND_Hrs': ('rstdaynite', 13),
+            'RstDayNDOT_Hrs': ('rstdaynit2', 14),
+            'RegHlyday_Hrs': ('holiday', 19),
+            'RegHlydayOT_Hrs': ('hlydayot', 20),
+            'RegHlydayND_Hrs': ('hlydaynite', 21),
+            'RegHlydayNDOT_Hrs': ('hlydaynit2', 22),
+            'RegHldyRD_Hrs': ('rsthlyday', 27),
+            'RegHldyRDOT_Hrs': ('rsthlydayo', 28),
+            'RegHldyRDND_Hrs': ('rsthlydayn', 29),
+            'RegHldyRDNDOT_Hrs': ('rsthlyday2', 30),
+            'Late': ('late', 31),
+            'Undertime': ('undertime', 32),
+            'Absent': ('absent', 33),
+            'Date_Posted': ('dateposted', 34),
+            'Remarks': ('remarks', 35),
+            'Emp_Company': ('empcompany', 36),
+            'Legal_Holiday': ('legalholid', 37)
         }
 
         # Extract column indices from the header row
         headers = [col.lower().strip() if col else 'unknown' for col in data[0]]  # Handle None values
-        col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
+        col_indices = {name: headers.index(xls_col_name) for name, (xls_col_name, widget_col_idx)
+                       in column_names.items() if xls_col_name in headers}
 
         if not col_indices:
             logging.error("No matching columns found in headers.")
@@ -247,7 +248,7 @@ class PaytimeSheetFunctions:
 
         try:
             for i, row in enumerate(data[1:]):  # Skip header row
-                for field_name, col_name in column_names.items():
+                for field_name, (xls_col_name, widget_col_idx) in column_names.items():
                     col_idx = col_indices.get(field_name)
                     if col_idx is not None:
                         item = QTableWidgetItem(str(row[col_idx]))
@@ -255,7 +256,7 @@ class PaytimeSheetFunctions:
                             item.setTextAlignment(Qt.AlignCenter)
                         if field_name == 'Employee Name':
                             item.setToolTip(row[col_idx])
-                        self.parent.paytimesheetTable.setItem(i, list(column_names.keys()).index(field_name), item)
+                        self.parent.paytimesheetTable.setItem(i, widget_col_idx, item)
                     else:
                         logging.warning(f"Column '{field_name}' not found in data for row {i + 1}")
                 logging.info(f"Added row {i + 1}: {row}")
