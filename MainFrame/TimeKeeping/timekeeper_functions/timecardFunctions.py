@@ -1,7 +1,12 @@
+import calendar
 import operator
 import sys
 import os
 import logging
+
+from openpyxl.styles import Alignment
+from openpyxl.workbook import Workbook
+
 from MainFrame.notificationMaker import notificationLoader
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -302,43 +307,111 @@ class buttonTimecardFunction:
 
     def export_to_excel(self):
         try:
-            # Get the number of rows and columns from the table
+            # Create an Excel workbook and sheet
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Timecard Data"
+
+            # Get year, month, start and end day from the UI
+            year, month = self.parent.yearCC.currentText().split('_')
+            start_day = self.parent.dateFromCC.currentText()
+            end_day = self.parent.dateToCC.currentText()
+
+            # Define headers for employee data
+            headers = ["No.", "Names", "Employee No", "BioNum", "Machcode", "Time-In",
+                       "Time-Out"]
+            start_date = datetime(int(year), int(month), int(start_day))
+            end_date = datetime(int(year), int(month), int(end_day))
+
+            # Create date range
+            date_range = pd.date_range(start_date, end_date)
+
+            # Prepare the date headers and day name headers
+            date_headers = []
+            day_name_headers = []
+
+            for date in date_range:
+                formatted_date = date.strftime("%d-%b")  # Format as "01-Aug"
+                day_name = calendar.day_name[date.weekday()][:3].upper()  # Get abbreviated day name (e.g., "THU")
+                date_headers.append(formatted_date)
+                day_name_headers.append(day_name)
+
+            # Write headers to the first row of the Excel sheet
+            ws.append(headers + date_headers)  # Write the static headers for employee data followed by date headers
+
+            # Write the day name headers on the second row, aligned directly under each date
+            ws.append([''] * len(headers) + day_name_headers)  # Fill with empty strings for the first part
+
+            # Initialize employee data dictionary
+            employee_data = {}
+
+            # Get the number of rows from the table
             rows = self.parent.TimeListTable.rowCount()
-            columns = self.parent.TimeListTable.columnCount()
 
-            # Get the headers for each column
-            headers = [self.parent.TimeListTable.horizontalHeaderItem(i).text() for i in range(columns)]
-
-            # Initialize a list to store the table data
-            table_data = []
-
-            # Iterate over rows and columns to gather the data
+            # Loop through the table to collect data per employee
             for row in range(rows):
-                row_data = []
-                for col in range(columns):
-                    # Fetch the table item text for each cell
-                    item = self.parent.TimeListTable.item(row, col)
-                    row_data.append(item.text() if item else "")
-                table_data.append(row_data)
+                # Access each row from the TimeListTable
+                bio_num = self.parent.TimeListTable.item(row, 0).text()  # BioNum
+                emp_name = self.parent.TimeListTable.item(row, 1).text()  # Employee name
+                trans_date = pd.to_datetime(self.parent.TimeListTable.item(row, 2).text())  # Date
+                machcode = self.parent.TimeListTable.item(row, 3).text()  # Machcode
+                check_in = self.parent.TimeListTable.item(row, 4).text()  # Check-in time
+                check_out = self.parent.TimeListTable.item(row, 5).text()  # Check-out time
+                time_in = self.parent.TimeListTable.item(row, 6).text()  # Time-In
+                time_out = self.parent.TimeListTable.item(row, 7).text()  # Time-Out
 
-            # Convert the list into a pandas DataFrame
-            df = pd.DataFrame(table_data, columns=headers)
+                # Initialize employee entry if not already present
+                if bio_num not in employee_data:
+                    employee_data[bio_num] = {
+                        "No": len(employee_data) + 1,
+                        "Names": emp_name,
+                        "Employee No": bio_num,
+                        "BioNum": bio_num,
+                        "Machcode": machcode,
+                        "Time-In": time_in,
+                        "Time-Out": time_out,
+                        "Dates": {str(date.date()): "" for date in date_range}  # Empty slots for each date
+                    }
 
-            # Open file dialog to get save location
+                # Populate check-in and check-out for the corresponding date
+                if check_in and check_out:
+                    # Ensure the date exists in the date range
+                    if str(trans_date.date()) in employee_data[bio_num]["Dates"]:
+                        employee_data[bio_num]["Dates"][str(trans_date.date())] = f"{check_in} - {check_out}"
+
+            # Write employee data to the Excel sheet
+            for emp in employee_data.values():
+                row_data = [
+                    emp["No"], emp["Names"], emp["Employee No"], emp["BioNum"],
+                    emp["Machcode"], emp["Time-In"], emp["Time-Out"]
+                ]
+
+                # Append check-in and check-out times for each date
+                for date in date_range:
+                    row_data.append(emp["Dates"].get(str(date.date()), ""))  # Use date.date() to match keys
+
+                ws.append(row_data)  # Write the data row to the Excel sheet
+
+            # Apply text alignment (center) to all cells
+            for row in ws.iter_rows(min_row=1, max_col=len(headers) + len(date_headers), max_row=ws.max_row):
+                for cell in row:
+                    cell.alignment = Alignment(horizontal="center", vertical="center")
+
+            # Open a QFileDialog to select the file path
             options = QFileDialog.Options()
-            file_path, _ = QFileDialog.getSaveFileName(self.parent, "Save Excel File", "", "Excel Files (*.xlsx)",
-                                                       options=options)
+            excel_file, _ = QFileDialog.getSaveFileName(self.parent, "Save Excel File", "",
+                                                        "Excel Files (*.xlsx);;All Files ()", options=options)
 
-            if file_path:
-                # Save the DataFrame to an Excel file
-                df.to_excel(file_path, index=False, engine='openpyxl')
-                QMessageBox.information(self.parent, "Export Successful", f"Data exported successfully to {file_path}")
-            else:
-                QMessageBox.warning(self.parent, "Export Cancelled", "Export operation was cancelled.")
+            if excel_file:  # Check if a file path was provided
+                wb.save(excel_file)  # Save the file
+
+                # Provide feedback to the user
+                QMessageBox.information(self.parent, "Export Complete",
+                                        f"Timecard data exported successfully to {excel_file}")
 
         except Exception as e:
             logging.error(f"Error in export_to_excel: {e}")
-            QMessageBox.critical(self.parent, "Export Failed", f"Failed to export data to Excel: {str(e)}")
+            QMessageBox.critical(self.parent, "Error", f"Failed to export to Excel: {str(e)}")
 
     def createTimeSheet(self, checked=False):
         try:
