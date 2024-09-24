@@ -241,8 +241,8 @@ class timekeepingFunction():
         search_text = instance.searchBioNum.text().strip().lower()
         logging.info(f"Search text: '{search_text}'")
 
+        # Restore original data if no search term is provided
         if not search_text:
-            # Restore original data based on the instance type
             if hasattr(instance, 'original_data'):
                 if hasattr(instance, 'paytimesheetTable'):
                     instance.populatePaytimeSheetTable(instance.original_data)
@@ -254,25 +254,26 @@ class timekeepingFunction():
                     instance.populateTimeList(instance.original_data)
             return
 
-        # Search logic
+        # Clear the table before populating it with filtered data
+        if hasattr(instance, 'TimeSheetTable'):
+            instance.TimeSheetTable.clearContents()
+
+        # Search logic for PaytimeSheet, PayTrans, TimeSheet, or TimeList
         if hasattr(instance, 'paytimesheetTable'):
-            # Search for PaytimeSheet
             for row in range(instance.paytimesheetTable.rowCount()):
-                item = instance.paytimesheetTable.item(row, 1)  # Bio Num column is at index 1
+                item = instance.paytimesheetTable.item(row, 1)  # Bio Num column at index 1
                 if item and search_text in item.text().lower():
                     instance.paytimesheetTable.setRowHidden(row, False)
                 else:
                     instance.paytimesheetTable.setRowHidden(row, True)
         elif hasattr(instance, 'paytransTable'):
-            # Search for PayTrans
             for row in range(instance.paytransTable.rowCount()):
-                item = instance.paytransTable.item(row, 1)  # Bio Num column is at index 1
+                item = instance.paytransTable.item(row, 1)  # Bio Num column at index 1
                 if item and search_text in item.text().lower():
                     instance.paytransTable.setRowHidden(row, False)
                 else:
                     instance.paytransTable.setRowHidden(row, True)
         elif hasattr(instance, 'filtered_data'):
-            # Search for TimeSheet or TimeList
             filtered_data = [row for row in instance.filtered_data if row['BioNum'].startswith(search_text)]
             if hasattr(instance, 'populateTimeSheet'):
                 instance.populateTimeSheet(filtered_data)
@@ -282,6 +283,12 @@ class timekeepingFunction():
                 instance.populatePaytimeSheetTable(filtered_data)
             elif hasattr(instance, 'populatePayTransTable'):
                 instance.populatePayTransTable(filtered_data)
+
+        elif hasattr(instance, 'data'):
+            # Filter data based on BioNum for TimeSheet
+            filtered_data = [row for row in instance.data if search_text in row['BioNum'].lower()]
+            if hasattr(instance, 'populateTimeSheet'):
+                instance.populateTimeSheet(filtered_data)
 
 
 class ValidInteger:

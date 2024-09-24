@@ -26,7 +26,7 @@ class timecard(QDialog):
 
         # Initialize data attributes
         self.original_data = []
-        self.filtered_data = []
+        self.filtered_data = self.original_data.copy()
 
     def setupTimecardUI(self):
         try:

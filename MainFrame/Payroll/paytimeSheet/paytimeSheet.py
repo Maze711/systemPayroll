@@ -65,7 +65,7 @@ class PaytimeSheet(QMainWindow):
             self.btnNotification.clicked.connect(self.payTimeFunctions.showNewListEmployee)
             self.btnImport.clicked.connect(self.payTimeFunctions.buttonImport)
 
-            self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+            self.searchBioNum.textChanged.connect(lambda: self.payTimeFunctions.filterTable())
 
             # Initially set the indication label
             self.update_indication_lbl()

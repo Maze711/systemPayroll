@@ -264,3 +264,13 @@ class PaytimeSheetFunctions:
         except Exception as e:
             logging.error(f"Error populating paytime sheet table: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to populate paytime sheet table: {e}")
+
+    def filterTable(self):
+        search_text = self.parent.searchBioNum.text().strip().lower()
+
+        for row in range(self.parent.paytimesheetTable.rowCount()):
+            item = self.parent.paytimesheetTable.item(row, 1)  # Bio Num column at index 1
+            if item and search_text in item.text().lower():
+                self.parent.paytimesheetTable.showRow(row)
+            else:
+                self.parent.paytimesheetTable.hideRow(row)
