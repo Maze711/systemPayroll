@@ -23,6 +23,8 @@ class TimeSheet(QDialog):
         self.populateTimeSheet()
         self.setupLabels()
 
+        self.btnExport.clicked.connect(self.export_to_excel)
+
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch_4')
         if self.searchBioNum is not None:
             self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
@@ -125,3 +127,40 @@ class TimeSheet(QDialog):
             lblMach_widget.setText(self.lblMach)
         else:
             logging.error("Error: lblMach QLabel not found in the UI.")
+
+    def export_to_excel(self):
+        try:
+            # Collect data from the table
+            rows = self.TimeSheetTable.rowCount()
+            columns = self.TimeSheetTable.columnCount()
+            data = []
+
+            for i in range(rows):
+                row_data = []
+                for j in range(columns):
+                    item = self.TimeSheetTable.item(i, j)
+                    row_data.append(item.text() if item is not None else "")
+                data.append(row_data)
+
+            # Create a DataFrame from the collected data
+            df = pd.DataFrame(data, columns=[
+                'Bio No.', 'Employee No.', 'Employee Name', 'Cost Center','Ord Day', 'Ord Day OT', 'Total Hours Worked',
+                'Ord Day ND', 'Ord Day ND OT', 'Days Worked', 'Days Present', 'RD', 'RD OT',
+                'RD ND', 'RD ND OT', 'SHLDy', 'SHLDy OT', 'SHLDy ND', 'SHLDy ND OT',
+                'RegHldy', 'RegHldy OT', 'SHLDyRD', 'SHLDyRD OT', 'RegHldyRD', 'RegHldyRD OT'
+            ])
+
+            # Prompt user to select the save location and filename
+            options = QFileDialog.Options()
+            file_path, _ = QFileDialog.getSaveFileName(self, "Save Excel File", "",
+                                                       "Excel Files (*.xlsx);;All Files (*)", options=options)
+
+            if file_path:
+                # Save the DataFrame to an Excel file
+                df.to_excel(file_path, index=False)
+                QMessageBox.information(self, "Success", "Data exported successfully!")
+            else:
+                QMessageBox.warning(self, "Warning", "Export canceled.")
+        except Exception as e:
+            logging.error(f"Export to Excel failed: {str(e)}")
+            QMessageBox.critical(self, "Error", f"An error occurred while exporting the data:\n{str(e)}")

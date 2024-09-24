@@ -300,35 +300,45 @@ class buttonTimecardFunction:
         else:
             print("Update canceled by user.")
 
-    def export_to_excel(self, checked=False):
-        # Access original_data through self.parent
-        if hasattr(self.parent, 'original_data') and self.parent.original_data:
-            try:
-                if isinstance(self.parent.original_data, pd.DataFrame):
-                    data_to_export = self.parent.original_data
-                else:
-                    data_to_export = pd.DataFrame(self.parent.original_data)
+    def export_to_excel(self):
+        try:
+            # Get the number of rows and columns from the table
+            rows = self.parent.TimeListTable.rowCount()
+            columns = self.parent.TimeListTable.columnCount()
 
-                # Use self.parent as the parent for QFileDialog
-                file_dialog = QFileDialog(self.parent, "Save File", "", "Excel Files (*.xlsx)")
-                if file_dialog.exec_():
-                    file_name = file_dialog.selectedFiles()[0]
-                    if not file_name.endswith('.xlsx'):
-                        file_name += '.xlsx'
+            # Get the headers for each column
+            headers = [self.parent.TimeListTable.horizontalHeaderItem(i).text() for i in range(columns)]
 
-                    # Ensure globalFunction.export_to_excel is defined/imported
-                    globalFunction.export_to_excel(data_to_export, file_name)
+            # Initialize a list to store the table data
+            table_data = []
 
-                    QMessageBox.information(self.parent, "Export Successful",
-                                            f"Data has been successfully exported to {file_name}")
-                else:
-                    QMessageBox.warning(self.parent, "Export Cancelled", "Export was cancelled by the user.")
+            # Iterate over rows and columns to gather the data
+            for row in range(rows):
+                row_data = []
+                for col in range(columns):
+                    # Fetch the table item text for each cell
+                    item = self.parent.TimeListTable.item(row, col)
+                    row_data.append(item.text() if item else "")
+                table_data.append(row_data)
 
-            except Exception as e:
-                QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
-                logging.error(f"Export error: {e}")
-        else:
-            QMessageBox.warning(self.parent, "No Data", "There is no data to export.")
+            # Convert the list into a pandas DataFrame
+            df = pd.DataFrame(table_data, columns=headers)
+
+            # Open file dialog to get save location
+            options = QFileDialog.Options()
+            file_path, _ = QFileDialog.getSaveFileName(self.parent, "Save Excel File", "", "Excel Files (*.xlsx)",
+                                                       options=options)
+
+            if file_path:
+                # Save the DataFrame to an Excel file
+                df.to_excel(file_path, index=False, engine='openpyxl')
+                QMessageBox.information(self.parent, "Export Successful", f"Data exported successfully to {file_path}")
+            else:
+                QMessageBox.warning(self.parent, "Export Cancelled", "Export operation was cancelled.")
+
+        except Exception as e:
+            logging.error(f"Error in export_to_excel: {e}")
+            QMessageBox.critical(self.parent, "Export Failed", f"Failed to export data to Excel: {str(e)}")
 
     def createTimeSheet(self, checked=False):
         try:
