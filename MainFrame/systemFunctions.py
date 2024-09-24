@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
@@ -7,7 +8,9 @@ from MainFrame.Database_Connection.DBConnection import create_connection
 
 
 class SingleFunctionLogger:
-     pass
+    pass
+
+
 #     def __init__(self, log_file='file_import.log'):
 #         self.log_file = log_file
 #         self.logger = logging.getLogger('SingleFunctionLogger')
@@ -57,6 +60,7 @@ class SingleFunctionLogger:
 # root_logger.addHandler(SingleFunctionLogger().file_handler)
 
 single_function_logger = SingleFunctionLogger()
+
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -157,6 +161,7 @@ class FileProcessor(QObject):
                 standardized.append(header_lower)  # Keep original if no match found
         return standardized
 
+
 class globalFunction():
     def __init__(self):
         super(globalFunction, self).__init__()
@@ -186,9 +191,11 @@ class globalFunction():
                                  f"Failed to export data to Excel: {str(e)}. Please try again or check your data.")
             raise
 
+
 class DatabaseConnectionError(Exception):
     """Custom Exception Handler for Database Connection Errors"""
     pass
+
 
 class timekeepingFunction():
     def __init__(self):
@@ -275,6 +282,7 @@ class timekeepingFunction():
                 instance.populatePaytimeSheetTable(filtered_data)
             elif hasattr(instance, 'populatePayTransTable'):
                 instance.populatePayTransTable(filtered_data)
+
 
 class ValidInteger:
     def __init__(self):
