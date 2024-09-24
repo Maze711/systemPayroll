@@ -211,60 +211,65 @@ background-color: #DCE5FE
        <string/>
       </property>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="font">
-      <font>
-       <family>Poppins</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QScrollBar:vertical {
-	border: none;
-    background: rgba(217, 217, 217, 1);
- }</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOn</enum>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
+     <widget class="QScrollArea" name="scrollArea">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>750</width>
-        <height>640</height>
+        <y>60</y>
+        <width>371</width>
+        <height>291</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>640</height>
-       </size>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QFrame" name="deductionArea">
-         <property name="minimumSize">
-          <size>
-           <width>378</width>
-           <height>500</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">/* VERTICAL SCROLLBAR */
+      <property name="styleSheet">
+       <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>-349</y>
+         <width>359</width>
+         <height>640</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>640</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QFrame" name="deductionArea">
+          <property name="minimumSize">
+           <size>
+            <width>378</width>
+            <height>500</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* VERTICAL SCROLLBAR */
 QScrollBar:vertical {
     border: none;
     background: rgba(220, 229, 254, 1);
@@ -309,477 +314,810 @@ border: 1px solid black;
 border-radius: 5px;
 }
 </string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLabel" name="lblName_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>10</y>
-            <width>141</width>
-            <height>31</height>
-           </rect>
           </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>16</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-          <property name="text">
-           <string>DEDUCTION</string>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
           </property>
+          <widget class="QLabel" name="lblName_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>10</y>
+             <width>141</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>16</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>DEDUCTION</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed1">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>50</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Late/Absent</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed1">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>50</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed2">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>90</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed2">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>90</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>SSS_Loan</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed3">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>130</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed3">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>130</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Pagibig_Loan</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed4">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>170</y>
+             <width>131</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Cash_Advance</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed4">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>170</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed8">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>330</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed5">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>210</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed7">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>290</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed5">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>210</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Canteen</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed8">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>330</y>
+             <width>170</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Medicare/Philhealth</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed7">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>290</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>SSS</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed6">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>250</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Tax</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed6">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>250</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed9">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>370</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Pagibig</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed10">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>410</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed12">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>490</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed9">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>370</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed10">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>410</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Clinic</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed11">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>450</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed11">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>450</y>
+             <width>170</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Arayata_Annual</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed12">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>490</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>HMI</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed13">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>530</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed13">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>530</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Funeral</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed14">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>570</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+          <widget class="QLabel" name="payDed14">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>570</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Voluntary</string>
+           </property>
+          </widget>
          </widget>
-         <widget class="QLabel" name="payDed1">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>50</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QScrollArea" name="scrollArea_2">
+      <property name="geometry">
+       <rect>
+        <x>375</x>
+        <y>60</y>
+        <width>381</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Poppins</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>369</width>
+         <height>320</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>320</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QFrame" name="deductionArea_2">
+          <property name="minimumSize">
+           <size>
+            <width>378</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
+          <property name="styleSheet">
+           <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background: rgba(220, 229, 254, 1);
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+	background-color: rgba(52, 66, 115, 1);
+    background: rgba(220, 229, 254, 1);
+    min-height: 48px;
+    border-radius: 6px;
+	margin-top: 10x;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: rgba(220, 229, 254, 1);
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+
+QLineEdit {
+border: 1px solid black;
+border-radius: 5px;
+}
+</string>
           </property>
-          <property name="text">
-           <string>Late/Absent</string>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="TYLS">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>10</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>TYLS</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed15">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>10</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed16">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>50</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="OsAllowance">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>50</y>
+             <width>161</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>OS ALLOWANCE</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed17">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>90</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="CbaAllowance">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>90</y>
+             <width>151</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>CBA ALLOWANCE</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="HazardPay">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>130</y>
+             <width>131</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>HAZARD PAY</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed18">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>130</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed19">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>170</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed21">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>250</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="Pa">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>170</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>PA</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="Backpay">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>250</y>
+             <width>120</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>BACKPAY</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="HolEarn_SunND">
+           <property name="geometry">
+            <rect>
+             <x>5</x>
+             <y>210</y>
+             <width>161</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>poppins</family>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>HOL EARN/SUN ND</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="txtDed20">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>210</y>
+             <width>160</width>
+             <height>27</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
-         <widget class="QLineEdit" name="txtDed1">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>50</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed2">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>90</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed2">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>90</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>SSS_Loan</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed3">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>130</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed3">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>130</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Pagibig_Loan</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed4">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>170</y>
-            <width>131</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Cash_Advance</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed4">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>170</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed8">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>330</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed5">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>210</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed7">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>290</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed5">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>210</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Canteen</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed8">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>330</y>
-            <width>170</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Medicare/Philhealth</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed7">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>290</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>SSS</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed6">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>250</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Tax</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed6">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>250</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed9">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>370</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Pagibig</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed10">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>410</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed12">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>490</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed9">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>370</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed10">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>410</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Clinic</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed11">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>450</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed11">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>450</y>
-            <width>170</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Arayata_Annual</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed12">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>490</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>HMI</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed13">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>530</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed13">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>530</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Funeral</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtDed14">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>570</y>
-            <width>160</width>
-            <height>27</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-         <widget class="QLabel" name="payDed14">
-          <property name="geometry">
-           <rect>
-            <x>5</x>
-            <y>570</y>
-            <width>120</width>
-            <height>30</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>poppins</family>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Voluntary</string>
-          </property>
-         </widget>
-        </widget>
-       </item>
-      </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
    </item>
@@ -831,9 +1169,17 @@ border-radius: 5px;
   <tabstop>txtDed11</tabstop>
   <tabstop>txtDed12</tabstop>
   <tabstop>txtDed13</tabstop>
-  <tabstop>txtDed14</tabstop>
   <tabstop>scrollArea</tabstop>
+  <tabstop>scrollArea_2</tabstop>
   <tabstop>placeBTN</tabstop>
+  <tabstop>txtDed14</tabstop>
+  <tabstop>txtDed15</tabstop>
+  <tabstop>txtDed16</tabstop>
+  <tabstop>txtDed17</tabstop>
+  <tabstop>txtDed18</tabstop>
+  <tabstop>txtDed19</tabstop>
+  <tabstop>txtDed21</tabstop>
+  <tabstop>txtDed20</tabstop>
  </tabstops>
  <resources/>
  <connections/>

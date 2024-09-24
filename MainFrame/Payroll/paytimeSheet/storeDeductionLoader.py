@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 
@@ -8,6 +9,7 @@ from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.Database_Connection.DBConnection import create_connection
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class StoringDeductionProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -53,6 +55,15 @@ class StoringDeductionProcessor(QObject):
                         hmi INT(11),
                         funeral INT(11),
                         voluntary INT(11),
+                        
+                        tyls INT(11),
+                        osallow INT(11),
+                        cbaallow INT(11),
+                        hazpay INT(11),
+                        pa INT(11),
+                        holearnsund INT(11),
+                        backpay INT(11),
+                        
                         deduction_placed_by VARCHAR(225),
                         deduction_placed_date DATETIME,
                         UNIQUE KEY unique_entry (empNum, bioNum, empName)
@@ -92,24 +103,53 @@ class StoringDeductionProcessor(QObject):
                         each_data.get('HMI', 0),
                         each_data.get('Funeral', 0),
                         each_data.get('Voluntary', 0),
+                        each_data.get('TYLS', 0),
+                        each_data.get('OS_Allowance', 0),
+                        each_data.get('CBA_Allowance', 0),
+                        each_data.get('Hazard_Pay', 0),
+                        each_data.get('PA', 0),
+                        each_data.get('HolEarn_SunND', 0),
+                        each_data.get('Backpay', 0),
                         user
                     )
 
+                    logging.info(f"Inserting values: {values}")
+
                     insert_query = f"""
-                                   INSERT INTO {table_name} (
-                                    empNum, bioNum, empName, late_absent, sss_loan, pag_ibig_loan, cash_advance, 
-                                    canteen, tax, sss, medicare_philhealth, pag_ibig, clinic, 
-                                    arayata_manual, hmi, funeral, voluntary, deduction_placed_by, deduction_placed_date
-                                ) 
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW()) 
-                                ON DUPLICATE KEY UPDATE 
-                                    late_absent = VALUES(late_absent), sss_loan = VALUES(sss_loan), pag_ibig_loan = VALUES(pag_ibig_loan),
-                                    cash_advance = VALUES(cash_advance), canteen = VALUES(canteen), tax = VALUES(tax),
-                                    sss = VALUES(sss), medicare_philhealth = VALUES(medicare_philhealth), pag_ibig = VALUES(pag_ibig),
-                                    clinic = VALUES(clinic), arayata_manual = VALUES(arayata_manual), hmi = VALUES(hmi), 
-                                    funeral = VALUES(funeral), voluntary = VALUES(voluntary), 
-                                    deduction_placed_by = VALUES(deduction_placed_by), deduction_placed_date = NOW()
-                            """
+                        INSERT INTO {table_name} (
+                            empNum, bioNum, empName, late_absent, sss_loan, pag_ibig_loan, cash_advance, 
+                            canteen, tax, sss, medicare_philhealth, pag_ibig, clinic, 
+                            arayata_manual, hmi, funeral, voluntary, TYLS, osallow, cbaallow,
+                            hazpay, pa, holearnsund, backpay, deduction_placed_by, deduction_placed_date
+                        ) 
+                        VALUES (
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                            %s, %s, %s, %s, %s, NOW()
+                        ) 
+                        ON DUPLICATE KEY UPDATE 
+                            late_absent = VALUES(late_absent), 
+                            sss_loan = VALUES(sss_loan), 
+                            pag_ibig_loan = VALUES(pag_ibig_loan),
+                            cash_advance = VALUES(cash_advance), 
+                            canteen = VALUES(canteen), 
+                            tax = VALUES(tax),
+                            sss = VALUES(sss), 
+                            medicare_philhealth = VALUES(medicare_philhealth), 
+                            pag_ibig = VALUES(pag_ibig),
+                            clinic = VALUES(clinic), 
+                            arayata_manual = VALUES(arayata_manual), 
+                            hmi = VALUES(hmi), 
+                            funeral = VALUES(funeral), 
+                            voluntary = VALUES(voluntary), 
+                            TYLS = VALUES(TYLS),
+                            osallow = VALUES(osallow), 
+                            cbaallow = VALUES(cbaallow), 
+                            hazpay = VALUES(hazpay), 
+                            holearnsund = VALUES(holearnsund), 
+                            backpay = VALUES(backpay), 
+                            deduction_placed_by = VALUES(deduction_placed_by), 
+                            deduction_placed_date = NOW()
+                    """
 
                     cursor.execute(insert_query, values)
                     connection.commit()
@@ -133,6 +173,7 @@ class StoringDeductionProcessor(QObject):
                 cursor.close()
             if connection and connection.is_connected():
                 connection.close()
+
 
 class StoreDeductionLoader(QDialog):
     def __init__(self, data, paytimeSheet_window):

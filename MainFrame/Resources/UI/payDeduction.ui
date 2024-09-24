@@ -218,7 +218,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>17</number>
+     <number>24</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -356,6 +356,41 @@ QTableWidget {
     <column>
      <property name="text">
       <string>Voluntary</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>TYLS</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OS_Allowance</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>CBA_Allowance</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Hazard_Pay</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>PA</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>HolEarn_SunND</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Backpay</string>
      </property>
     </column>
    </widget>

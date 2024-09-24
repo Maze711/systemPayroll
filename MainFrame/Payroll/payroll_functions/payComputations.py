@@ -74,7 +74,7 @@ class PayComputation:
                 reg_day_nd_ot_hours = 0
 
             # Regular Day Night Differential Overtime Computation
-            overtime_rate = 1.25   # Overtime Rate of 120%
+            overtime_rate = 1.25  # Overtime Rate of 120%
             night_diff_rate = 1.1  # Night Differential Rate of 110%
             reg_day_nd_ot_value = hourly_rate * overtime_rate * night_diff_rate * reg_day_nd_ot_hours
 
@@ -130,7 +130,7 @@ class PayComputation:
                 rest_day_hours = 0
 
             # Rest Day Rate Computation
-            rest_day_rate = 1.3 # rest day rate value (equivalent to 130%)
+            rest_day_rate = 1.3  # rest day rate value (equivalent to 130%)
             rest_day_rate_per_hour = hourly_rate * rest_day_rate
 
             rest_day_rate_total = rest_day_hours * rest_day_rate_per_hour
@@ -142,7 +142,8 @@ class PayComputation:
         for item in self.data:
             try:
                 hourly_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0) / 8
-                rest_day_ot_hours = float(item.get('Rest Day OT Hours') if item.get('Rest Day OT Hours') != 'Missing' else 0)
+                rest_day_ot_hours = float(
+                    item.get('Rest Day OT Hours') if item.get('Rest Day OT Hours') != 'Missing' else 0)
             except ValueError as e:
                 logging.error(f"Error converting Rest Day OT and hourly rate value for EmpNo {item['EmpNo']}: {e}")
                 hourly_rate = 0
@@ -222,7 +223,8 @@ class PayComputation:
         for item in self.data:
             try:
                 hourly_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0) / 8
-                holiday_ot_hours = float(item.get('Holiday OT Hours') if item.get('Holiday OT Hours') != 'Missing' else 0)
+                holiday_ot_hours = float(
+                    item.get('Holiday OT Hours') if item.get('Holiday OT Hours') != 'Missing' else 0)
             except ValueError as e:
                 logging.error(f"Error converting Holiday OT and hourly rate value for EmpNo {item['EmpNo']}: {e}")
                 hourly_rate = 0
@@ -326,7 +328,8 @@ class PayComputation:
             try:
                 hourly_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0) / 8
                 rest_holiday_nd_hours = float(
-                    item.get('Rest Holiday Night Diff Hours') if item.get('Rest Holiday Night Diff Hours') != 'Missing' else 0)
+                    item.get('Rest Holiday Night Diff Hours') if item.get(
+                        'Rest Holiday Night Diff Hours') != 'Missing' else 0)
             except ValueError as e:
                 logging.error(f"Error converting rest holiday nd and hourly rate value for EmpNo {item['EmpNo']}: {e}")
                 hourly_rate = 0
@@ -347,7 +350,8 @@ class PayComputation:
             try:
                 hourly_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0) / 8
                 rest_holiday_nd_ot_hours = float(
-                    item.get('Rest Holiday Night Diff OT') if item.get('Rest Holiday Night Diff OT') != 'Missing' else 0)
+                    item.get('Rest Holiday Night Diff OT') if item.get(
+                        'Rest Holiday Night Diff OT') != 'Missing' else 0)
             except ValueError as e:
                 logging.error(
                     f"Error converting rest holiday nd ot and hourly rate value for EmpNo {item['EmpNo']}: {e}")
