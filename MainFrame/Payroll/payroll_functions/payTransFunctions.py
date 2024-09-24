@@ -1,6 +1,8 @@
 import sys
 import os
 
+import pandas as pd
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
@@ -12,7 +14,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyT
 class PayTransFunctions:
     def __init__(self, parent):
         self.parent = parent
-
         self.additional_buttons_container = None
 
     def populatePayTransTable(self, data):
@@ -114,22 +115,46 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 35, funeral_earn_item)
             self.parent.paytransTable.setItem(i, 36, voluntary_earn_item)
 
-    def export_to_excel(self, checked=False):
+    def export_to_excel(self):
+        # Get the number of rows and column from the paytransTable
+        rows = self.parent.paytransTable.rowCount()
+        columns = self.parent.paytransTable.columnCount()
+
+        # Gets the header for each column
+        headers = [self.parent.paytransTable.horizontalHeaderItem(i).text() for i in range(columns)]
+
+        # Initialize a list to store the table data
+        table_data = []
+
+        # Iterate over rows and columns to gather the data
+        for row in range(rows):
+            row_data = []
+            for col in range(columns):
+                # Fetch the table item text for each cell
+                item = self.parent.paytransTable.item(row, col)
+                row_data.append(item.text() if item else "")
+            table_data.append(row_data)
+
+        df = pd.DataFrame(table_data, columns=headers)
+
         # Define the file name where data will be saved
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getSaveFileName(self.parent, "Save As", "",
                                                    "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;CSV Files (*.csv);;All Files (*)",
                                                    options=options)
+
         if file_name:
             try:
-                globalFunction.export_to_excel(self.parent.data, file_name)
+                # Save the DataFrame to an Excel file
+                df.to_excel(file_name, index=False, engine='openpyxl')
+                # globalFunction.export_to_excel(self.parent.data, file_name)
                 QMessageBox.information(self.parent, "Export Successful", f"Data has been successfully exported to {file_name}")
             except Exception as e:
                 QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
                 logging.error(f"Export error: {e}")
-        else:
-            QMessageBox.information(self.parent, "No File Selected", "Please export an excel file.")
-            return
+        # else:
+        #     QMessageBox.information(self.parent, "No File Selected", "Please export an excel file.")
+        #     return
 
     def checkIfDeductionTableNotExist(self):
         connection = create_connection('NTP_STORED_DEDUCTIONS')
