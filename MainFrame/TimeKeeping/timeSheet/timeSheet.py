@@ -47,37 +47,48 @@ class TimeSheet(QDialog):
             bio_num_item = QTableWidgetItem(row['BioNum'])
             emp_num_item = QTableWidgetItem(row['EmpNumber'])
             emp_name_item = QTableWidgetItem(row['Employee'])
+            cost_center = QTableWidgetItem(row.get('Cost_Center', ''))
             days_work_item = QTableWidgetItem(str(row['Days_Work']))
             days_present_item = QTableWidgetItem(str(row['Days_Present']))
             total_hours_work_item = QTableWidgetItem(str(row['Total_Hours_Worked']))
-            ordday_nd_item = QTableWidgetItem(str(row['Night_Differential']))
-            ordday_nd_ot_item = QTableWidgetItem(str(row['Night_Differential_OT']))
+            ordday_nd_hrs_item = QTableWidgetItem(str(row['Night_Differential']))
+            ordday_nd_ot_hrs_item = QTableWidgetItem(str(row['Night_Differential_OT']))
 
             # Additional fields as per your request
-            ordday_item = QTableWidgetItem(str(row.get('OrdDay', 0)))
-            ordday_ot_item = QTableWidgetItem(str(row.get('OrdDayOT', 0)))
-            rd_item = QTableWidgetItem(str(row.get('RD', 0)))
-            rd_ot_item = QTableWidgetItem(str(row.get('RDOT', 0)))
-            rd_nd_item = QTableWidgetItem(str(row.get('RDND', 0)))
-            rd_nd_ot_item = QTableWidgetItem(str(row.get('RDNDOT', 0)))
-            shldy_item = QTableWidgetItem(str(row.get('SHLDy', 0)))
-            shldy_ot_item = QTableWidgetItem(str(row.get('SHLDyOT', 0)))
-            shldy_nd_item = QTableWidgetItem(str(row.get('SHLDyND', 0)))
-            shldy_nd_ot_item = QTableWidgetItem(str(row.get('SHLDyNDOT', 0)))
-            reghldy_item = QTableWidgetItem(str(row.get('RegHldy', 0)))
-            reghldy_ot_item = QTableWidgetItem(str(row.get('RegHldyOT', 0)))
-            shldy_rd_item = QTableWidgetItem(str(row.get('SHLDyRD', 0)))
-            shldy_rd_ot_item = QTableWidgetItem(str(row.get('SHLDyRDOT', 0)))
-            reghldy_rd_item = QTableWidgetItem(str(row.get('RegHldyRD', 0)))
-            reghldy_rd_ot_item = QTableWidgetItem(str(row.get('RegHldyRDOT', 0)))
+            ordday_hrs_item = QTableWidgetItem(str(row.get('OrdDay_Hrs', 0)))
+            ordday_ot_hrs_item = QTableWidgetItem(str(row.get('OrdDayOT_Hrs', 0)))
+            rstday_hrs_item = QTableWidgetItem(str(row.get('RstDay_Hrs', 0)))
+            rstday_ot_hrs_item = QTableWidgetItem(str(row.get('RstDayOT_Hrs', 0)))
+            rstday_nd_hrs_item = QTableWidgetItem(str(row.get('RstDayND_Hrs', 0)))
+            rstday_nd_ot_hrs_item = QTableWidgetItem(str(row.get('RstDayNDOT_Hrs', 0)))
+            spl_hldy_hrs_item = QTableWidgetItem(str(row.get('SplHlyday_Hrs', 0)))
+            spl_hldy_ot_hrs_item = QTableWidgetItem(str(row.get('SplHlydayOT_Hrs', 0)))
+            spl_hldy_nd_hrs_item = QTableWidgetItem(str(row.get('SplHlydayND_Hrs', 0)))
+            spl_hldy_nd_ot_hrs_item = QTableWidgetItem(str(row.get('SplHlydayNDOT_Hrs', 0)))
+            reg_hldy_hrs_item = QTableWidgetItem(str(row.get('RegHlyday_Hrs', 0)))
+            reg_hldy_ot_hrs_item = QTableWidgetItem(str(row.get('RegHlydayOT_Hrs', 0)))
+            reg_hldy_nd_hrs_item = QTableWidgetItem(str(row.get('RegHlydayND_Hrs', 0)))
+            reg_hldy_nd_ot_hrs_item = QTableWidgetItem(str(row.get('RegHlydayNDOT_Hrs', 0)))
+            spl_hldy_rd_hrs_item = QTableWidgetItem(str(row.get('SplHldyRD_Hrs', 0)))
+            spl_hldy_rd_ot_hrs_item = QTableWidgetItem(str(row.get('SplHldyRDOT_Hrs', 0)))
+            spl_hldy_rd_nd_hrs_item = QTableWidgetItem(str(row.get('SplHldyRDND_Hrs', 0)))
+            spl_hldy_rd_nd_ot_hrs_item = QTableWidgetItem(str(row.get('SplHldyRDNDOT_Hrs', 0)))
+            reg_hldy_rd_hrs_item = QTableWidgetItem(str(row.get('RegHldyRD_Hrs', 0)))
+            reg_hldy_rd_ot_hrs_item = QTableWidgetItem(str(row.get('RegHldyRDOT_Hrs', 0)))
+            reg_hldy_rd_nd_hrs_item = QTableWidgetItem(str(row.get('RegHldyRDND_Hrs', 0)))
+            reg_hldy_rd_nd_ot_hrs_item = QTableWidgetItem(str(row.get('RegHldyRDNDOT_Hrs', 0)))
 
-            # Align items to the center
+            # Align all items to the center
             items = [
                 bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, total_hours_work_item,
-                ordday_nd_item, ordday_nd_ot_item, ordday_item, ordday_ot_item, rd_item, rd_ot_item, rd_nd_item,
-                rd_nd_ot_item, shldy_item, shldy_ot_item, shldy_nd_item, shldy_nd_ot_item, reghldy_item,
-                reghldy_ot_item,
-                shldy_rd_item, shldy_rd_ot_item, reghldy_rd_item, reghldy_rd_ot_item
+                cost_center, ordday_hrs_item, ordday_ot_hrs_item, ordday_nd_hrs_item,
+                ordday_nd_ot_hrs_item, rstday_hrs_item, rstday_ot_hrs_item, rstday_nd_hrs_item, rstday_nd_ot_hrs_item,
+                spl_hldy_hrs_item, spl_hldy_ot_hrs_item, spl_hldy_nd_hrs_item, spl_hldy_nd_ot_hrs_item,
+                reg_hldy_hrs_item,
+                reg_hldy_ot_hrs_item, reg_hldy_nd_hrs_item, reg_hldy_nd_ot_hrs_item, spl_hldy_rd_hrs_item,
+                spl_hldy_rd_ot_hrs_item,
+                spl_hldy_rd_nd_hrs_item, spl_hldy_rd_nd_ot_hrs_item, reg_hldy_rd_hrs_item, reg_hldy_rd_ot_hrs_item,
+                reg_hldy_rd_nd_hrs_item, reg_hldy_rd_nd_ot_hrs_item
             ]
             for item in items:
                 item.setTextAlignment(Qt.AlignCenter)
@@ -86,27 +97,34 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
             self.TimeSheetTable.setItem(i, 1, emp_num_item)  # Employee No.
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee Name
+            self.TimeSheetTable.setItem(i, 3, cost_center)  # Employee Name
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Days Worked
             self.TimeSheetTable.setItem(i, 5, days_present_item)  # Days Present
             self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours Worked
-            self.TimeSheetTable.setItem(i, 9, ordday_nd_item)  # Ord Day ND
-            self.TimeSheetTable.setItem(i, 10, ordday_nd_ot_item)  # Ord Day ND OT
-            self.TimeSheetTable.setItem(i, 7, ordday_item)  # Ord Day
-            self.TimeSheetTable.setItem(i, 8, ordday_ot_item)  # Ord Day OT
-            self.TimeSheetTable.setItem(i, 11, rd_item)  # RD
-            self.TimeSheetTable.setItem(i, 12, rd_ot_item)  # RD OT
-            self.TimeSheetTable.setItem(i, 13, rd_nd_item)  # RD ND
-            self.TimeSheetTable.setItem(i, 14, rd_nd_ot_item)  # RD ND OT
-            self.TimeSheetTable.setItem(i, 15, shldy_item)  # SHLDy
-            self.TimeSheetTable.setItem(i, 16, shldy_ot_item)  # SHLDy OT
-            self.TimeSheetTable.setItem(i, 17, shldy_nd_item)  # SHLDy ND
-            self.TimeSheetTable.setItem(i, 18, shldy_nd_ot_item)  # SHLDy ND OT
-            self.TimeSheetTable.setItem(i, 19, reghldy_item)  # RegHldy
-            self.TimeSheetTable.setItem(i, 20, reghldy_ot_item)  # RegHldy OT
-            self.TimeSheetTable.setItem(i, 21, shldy_rd_item)  # SHLDyRD
-            self.TimeSheetTable.setItem(i, 22, shldy_rd_ot_item)  # SHLDyRD OT
-            self.TimeSheetTable.setItem(i, 23, reghldy_rd_item)  # RegHldyRD
-            self.TimeSheetTable.setItem(i, 24, reghldy_rd_ot_item)  # RegHldyRD OT
+            self.TimeSheetTable.setItem(i, 7, ordday_hrs_item)  # Ord Day Hrs
+            self.TimeSheetTable.setItem(i, 8, ordday_ot_hrs_item)  # Ord Day OT Hrs
+            self.TimeSheetTable.setItem(i, 9, ordday_nd_hrs_item)  # Ord Day ND Hrs
+            self.TimeSheetTable.setItem(i, 10, ordday_nd_ot_hrs_item)  # Ord Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 11, rstday_hrs_item)  # Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 12, rstday_ot_hrs_item)  # Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 13, rstday_nd_hrs_item)  # Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 14, rstday_nd_ot_hrs_item)  # Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 15, spl_hldy_hrs_item)  # Special Holiday Hrs
+            self.TimeSheetTable.setItem(i, 16, spl_hldy_ot_hrs_item)  # Special Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 17, spl_hldy_nd_hrs_item)  # Special Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 18, spl_hldy_nd_ot_hrs_item)  # Special Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 19, reg_hldy_hrs_item)  # Regular Holiday Hrs
+            self.TimeSheetTable.setItem(i, 20, reg_hldy_ot_hrs_item)  # Regular Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 21, reg_hldy_nd_hrs_item)  # Regular Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 22, reg_hldy_nd_ot_hrs_item)  # Regular Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 23, spl_hldy_rd_hrs_item)  # Special Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 24, spl_hldy_rd_ot_hrs_item)  # Special Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 25, spl_hldy_rd_nd_hrs_item)  # Special Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 26, spl_hldy_rd_nd_ot_hrs_item)  # Special Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 27, reg_hldy_rd_hrs_item)  # Regular Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 28, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 29, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')
@@ -142,13 +160,10 @@ class TimeSheet(QDialog):
                     row_data.append(item.text() if item is not None else "")
                 data.append(row_data)
 
+            header_columns = [self.TimeSheetTable.horizontalHeaderItem(i).text() for i in range(columns)]
+
             # Create a DataFrame from the collected data
-            df = pd.DataFrame(data, columns=[
-                'Bio No.', 'Employee No.', 'Employee Name', 'Cost Center','Ord Day', 'Ord Day OT', 'Total Hours Worked',
-                'Ord Day ND', 'Ord Day ND OT', 'Days Worked', 'Days Present', 'RD', 'RD OT',
-                'RD ND', 'RD ND OT', 'SHLDy', 'SHLDy OT', 'SHLDy ND', 'SHLDy ND OT',
-                'RegHldy', 'RegHldy OT', 'SHLDyRD', 'SHLDyRD OT', 'RegHldyRD', 'RegHldyRD OT'
-            ])
+            df = pd.DataFrame(data, columns=header_columns)
 
             # Prompt user to select the save location and filename
             options = QFileDialog.Options()

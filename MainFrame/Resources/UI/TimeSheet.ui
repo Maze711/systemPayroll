@@ -259,7 +259,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>25</number>
+    <number>31</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -302,17 +302,17 @@ QTableWidget {
    </attribute>
    <column>
     <property name="text">
-     <string>Bio No.</string>
+     <string>Bio_No.</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Emp Number</string>
+     <string>Emp_Number</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Emp Name</string>
+     <string>Emp_Name</string>
     </property>
     <property name="font">
      <font>
@@ -331,112 +331,142 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Cost Center</string>
+     <string>Cost_Center</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Days Work</string>
+     <string>Days_Work</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Days Present</string>
+     <string>Days_Present</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Hours Work</string>
+     <string>Hours_Work</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>OrdDay</string>
+     <string>OrdDay_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>OrdDay OT</string>
+     <string>OrdDayOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>OrdDay ND</string>
+     <string>OrdDayND_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>OrdDay NDOT</string>
+     <string>OrdDayNDOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RD</string>
+     <string>RstDay_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RD OT</string>
+     <string>RstDayOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RD ND</string>
+     <string>RstDayND_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RD NDOT</string>
+     <string>RstDayNDOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDy</string>
+     <string>SplHlyday_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDy OT</string>
+     <string>SplHlydayOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDy ND</string>
+     <string>SplHlydayND_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDy NDOT</string>
+     <string>SplHlydayNDOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RegHldy</string>
+     <string>RegHlyday_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RegHldy OT</string>
+     <string>RegHlydayOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDyRD </string>
+     <string>RegHlydayND_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SHLDyRD OT</string>
+     <string>RegHlydayNDOT_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RegHldyRD</string>
+     <string>SplHldyRD_Hrs</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>RegHldyRD OT</string>
+     <string>SplHldyRDOT_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SplHldyRDND_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SplHldyRDNDOT_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRD_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRDOT_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRDND_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RegHldyRDNDOT_Hrs</string>
     </property>
    </column>
   </widget>
@@ -589,10 +619,10 @@ background-color: white;
    <widget class="QWidget" name="widget_2" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>200</y>
-      <width>231</width>
-      <height>321</height>
+      <x>10</x>
+      <y>280</y>
+      <width>241</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -630,162 +660,6 @@ background-color: #c75657;
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QPushButton" name="btnFilter">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>FILTER</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnCheckSched">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>CHECK SCHEDULE</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnTimeSheet">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>PROCESS TIMESHEET</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnImport">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>IMPORT</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnExport">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -814,7 +688,7 @@ background-color: #c75657;
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>EXPORT</string>
+        <string>EXPORT TIMESHEET</string>
        </property>
        <property name="iconSize">
         <size>
