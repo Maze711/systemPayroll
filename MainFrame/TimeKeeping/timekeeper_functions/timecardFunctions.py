@@ -171,8 +171,8 @@ class populateList:
 
             self.parent.TimeListTable.setRowCount(len(sorted_data))
 
-            # Prepopulate combo box options (same for all rows)
-            combo_items = [f"{hour:02d}:{minute:02d}:00" for hour in range(24) for minute in range(0, 60, 15)]
+            # Prepopulate combo box options with hour-only format
+            combo_items = [f"{hour:02d}:00:00" for hour in range(24)]
 
             # Set the custom delegate for the sched_in and sched_out columns (6 and 7)
             combo_delegate = ComboBoxDelegate(combo_items, self.parent.TimeListTable)

@@ -23,10 +23,17 @@ class timecard(QDialog):
         self.searchFunction = searchBioNum(self)
         self.filteringFunction = FilterDialog(self)
         self.setupTimecardUI()
+        self.setup_initial_state()
 
         # Initialize data attributes
         self.original_data = []
         self.filtered_data = self.original_data.copy()
+
+    def setup_initial_state(self):
+        self.btnFilter.setVisible(False)
+        self.btnCheckSched.setVisible(False)
+
+
 
     def setupTimecardUI(self):
         try:

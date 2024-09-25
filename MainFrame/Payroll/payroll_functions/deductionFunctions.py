@@ -204,7 +204,7 @@ class DeductionFunctions:
                 21: 'Backpay'
             }
 
-            for i in range(1, 20):
+            for i in range(1, 22):
                 deduction_field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
                 if deduction_field:
                     deduction_value = deduction_field.text()

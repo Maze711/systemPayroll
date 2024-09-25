@@ -409,10 +409,11 @@ class FileProcessor(QObject):
 
             required_columns = ['ID', 'empNum', 'bioNum', 'empName', 'late_absent', 'sss_loan', 'pag_ibig_loan',
                                 'cash_advance', 'canteen', 'tax', 'sss', 'medicare_philhealth', 'pag_ibig', 'clinic',
-                                'arayata_manual', 'hmi', 'funeral', 'voluntary']
+                                'arayata_manual', 'hmi', 'funeral', 'voluntary', 'tyls','osallow','cbaallow','hazpay',
+                                'pa','holearnsund', 'backpay']
 
             missing_columns = [col for col in required_columns if
-                               col not in headers[:18]]  # excludes the deduction placed by and date
+                               col not in headers[:25]]  # excludes the deduction placed by and date
 
             if missing_columns:
                 self.error.emit(f"Missing required columns: {', '.join(missing_columns)}")
@@ -427,16 +428,17 @@ class FileProcessor(QObject):
 
             # Iterate over the original_data and update payDed keys based on empNum
             for i, row in enumerate(self.data):
-                emp_no = str(row['EmpNo'])
+                emp_no = str(row['EmpNo']).strip()
 
                 # Check if this EmpNo is in the imported sheet
                 matching_rows = sheet[sheet['empNum'] == emp_no]
 
                 if not matching_rows.empty:
-                    # Update the Pay Ded keys for this EmpNo
+                    # Update the EmpNo with deductions
                     deduction_items = ['late_absent', 'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax',
                                        'sss', 'medicare_philhealth', 'pag_ibig', 'clinic', 'arayata_manual', 'hmi',
-                                       'funeral', 'voluntary']
+                                       'funeral', 'voluntary', 'tyls','osallow','cbaallow','hazpay','pa','holearnsund',
+                                       'backpay']
 
                     for deduction in deduction_items:
                         row[deduction] = int(matching_rows.iloc[0][deduction])

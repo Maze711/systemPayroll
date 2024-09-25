@@ -353,21 +353,15 @@ class modalFunction:
                                                        Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
                     self.main_window.lblViewImg.setPixmap(scaled_pixmap)
 
-                    file_to_bytes = self.convertFileToBLOB(file_name)
+                    image_pixmap_to_bytes = self.getImageByte()
 
-                    self.set_employee_img(file_to_bytes)
+                    self.set_employee_img(image_pixmap_to_bytes)
 
 
         except Exception as e:
             print("Error Uploading an image: ", e)
             QMessageBox.critical(self.main_window, "Upload Error",
                                 "Something went wrong while uploading an image, please try again later.")
-
-    def convertFileToBLOB(self, file_name):
-        """Converts Image file into BLOB"""
-        with open(file_name, 'rb') as file:
-            binary_data = file.read()
-        return binary_data
 
     def set_employee_img(self, blob):
         self.image_value = blob
