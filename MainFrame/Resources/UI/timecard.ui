@@ -926,6 +926,10 @@ background-color: #c75657;
        <property name="text">
         <string>IMPORT</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Icons/import.svg</normaloff>../Icons/import.svg</iconset>
+       </property>
        <property name="iconSize">
         <size>
          <width>22</width>
@@ -964,6 +968,10 @@ background-color: #c75657;
        </property>
        <property name="text">
         <string>EXPORT</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
