@@ -1,15 +1,10 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.Database_Connection.DBConnection import create_connection
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class SingleFunctionLogger:
     pass
-
 
 #     def __init__(self, log_file='file_import.log'):
 #         self.log_file = log_file
@@ -166,6 +161,7 @@ class globalFunction():
     def __init__(self):
         super(globalFunction, self).__init__()
 
+    @staticmethod
     def resource_path(relative_path):
         try:
             base_path = sys._MEIPASS2

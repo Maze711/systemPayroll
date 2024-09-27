@@ -1,23 +1,14 @@
-import calendar
-import operator
-import sys
-import os
-import logging
-
+from MainFrame.Resources.lib import *
 from openpyxl.styles import Alignment
 from openpyxl.workbook import Workbook
-
 from MainFrame.notificationMaker import notificationLoader
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timeCardMaker.filter import FilterDialog
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.systemFunctions import timekeepingFunction, globalFunction
 
-import re
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class populateList:
@@ -136,13 +127,10 @@ class populateList:
             self.parent.costCenterBox.addItems(dept_names)
             self.parent.costCenterBox.setCurrentIndex(-1)
 
-            QMessageBox.information(self.parent, "Success", "Cost center box populated successfully.")
-
         except Exception as e:
             QMessageBox.critical(self.parent, "Error",
                                  f"An error occurred while populating the cost center box: {e}. "
                                  "Please try again or contact the system administrator.")
-
         finally:
             cursor.close()
             connection.close()
@@ -299,7 +287,6 @@ class buttonTimecardFunction:
                 QMessageBox.critical(self.parent, "Update Error",
                                      f"An error occurred while updating the schedule: {e}. "
                                      "Please try again or contact the system administrator.")
-
             finally:
                 connection.close()
         else:
@@ -408,7 +395,6 @@ class buttonTimecardFunction:
                 # Provide feedback to the user
                 QMessageBox.information(self.parent, "Export Complete",
                                         f"Timecard data exported successfully to {excel_file}")
-
         except Exception as e:
             logging.error(f"Error in export_to_excel: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to export to Excel: {str(e)}")
@@ -856,6 +842,7 @@ class TablePopulationLoader(QDialog):
             self.thread.started.connect(self.worker.process_populate_time_list_table)
             self.thread.start()
         except Exception as e:
+            QMessageBox.critical(self, "Error", f"Showing TablePopulationLoader:\n{str(e)}")
             print("Error Showing TablePopulationLoader: ", e)
 
     def updateProgressBar(self, value):

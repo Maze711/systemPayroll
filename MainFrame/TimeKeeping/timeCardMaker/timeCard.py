@@ -1,14 +1,11 @@
-import sys
-import os
-
+from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timekeeper_functions.dialogFunctions import import_dat_file
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.TimeKeeping.timekeeper_functions.timecardFunctions import populateList, buttonTimecardFunction, \
     searchBioNum, FilterDialog
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class timecard(QDialog):
@@ -33,8 +30,6 @@ class timecard(QDialog):
         self.btnFilter.setVisible(False)
         self.btnCheckSched.setVisible(False)
 
-
-
     def setupTimecardUI(self):
         try:
             self.TimeListTable.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -55,7 +50,7 @@ class timecard(QDialog):
 
             self.searchBioNum.textChanged.connect(self.searchFunction.search_bioNum)
 
-            self.btnFilter.clicked.connect(self.filteringFunction.filterModal)
+            # self.btnFilter.clicked.connect(self.filteringFunction.filterModal)
 
             self.original_data = []
             self.filtered_data = self.original_data.copy()

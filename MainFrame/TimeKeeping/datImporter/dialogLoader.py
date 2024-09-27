@@ -1,14 +1,11 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.timeCardMaker.timeCard import timecard
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.TimeKeeping.timekeeper_functions.dialogFunctions import import_dat_file, check_if_table_exists
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class dialogModal(QDialog):
     def __init__(self):

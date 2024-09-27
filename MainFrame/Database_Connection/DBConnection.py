@@ -1,9 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def resource_path(relative_path):
     try:
@@ -11,7 +8,6 @@ def resource_path(relative_path):
     except AttributeError:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
-
 
 # Load environment variables from .env file
 dotenv_path = resource_path("MainFrame\\Database_Connection\\.env")
@@ -47,9 +43,9 @@ def create_connection(db_key):
             logging.warning(f"Failed to connect to {database} database")
             return None
     except Error as e:
-        QMessageBox.critical(None, "Connection Error",
-                             f"Error while connecting to MySQL {database}: {str(e)}")
+        logging.warning(f"Error while connecting to MySQL {database}: {str(e)}")
         return None
+
 
 def test_databases_connection():
     """Test Databases Connection (for Debugging)"""

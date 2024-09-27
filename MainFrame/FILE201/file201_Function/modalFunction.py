@@ -1,9 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.modalSQLQuery import add_employee, save_employee
 from MainFrame.systemFunctions import DatabaseConnectionError
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def set_fields_non_editable(modal):
@@ -172,8 +171,9 @@ class modalFunction:
                 QMessageBox.critical(self.main_window, "Adding Employee Error", f"{message} "
                                                                                 f"Please check your network connection or contact the "
                                                                                 f"system administrator.")
-        except Exception as e:
-            QMessageBox.critical(self.main_window, "Adding Employee Error", f"An error occurred: {e}")
+        except Exception:
+            QMessageBox.critical(self.main_window, "Adding Employee Error",
+                                 f"Please check your network connection or contact the " f"system administrator.")
 
     def edit_Employee(self):
         self.set_fields_editable()
@@ -326,7 +326,6 @@ class modalFunction:
                 QMessageBox.critical(self.main_window, "Saving Employee Data Error",
                                      "An unexpected error occurred while saving employee data.")
 
-
     def revert_Employee(self):
         set_fields_non_editable(self.main_window)
         print("Revert")
@@ -356,7 +355,6 @@ class modalFunction:
                     image_pixmap_to_bytes = self.getImageByte()
 
                     self.set_employee_img(image_pixmap_to_bytes)
-
 
         except Exception as e:
             print("Error Uploading an image: ", e)

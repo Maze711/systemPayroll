@@ -1,10 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.systemFunctions import globalFunction, timekeepingFunction, ValidInteger
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class chkSched(QDialog):
@@ -35,7 +33,7 @@ class chkSched(QDialog):
         self.holidayNameTxt.setText(self.getHolidayName(trans_date))
         self.typeOfDayCb.setCurrentText(timekeepingFunction.getTypeOfDate(trans_date))
 
-    def getHolidayName(self, trans_date):
+    def getHolidayName(self, trans_date, parent):
         try:
             connection = create_connection('NTP_HOLIDAY_LIST')
             if connection is None:
@@ -54,6 +52,8 @@ class chkSched(QDialog):
             return "Normal Day"
 
         except Error as e:
+            QMessageBox.critical(parent, "Error",
+                                 "An error occurred while fetching the holiday information. Please try again.")
             logging.error(f"Error fetching holiday name: {e}")
             return
         finally:

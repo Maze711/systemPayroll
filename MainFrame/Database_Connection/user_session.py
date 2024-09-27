@@ -1,6 +1,7 @@
-import sys
-import os
+from MainFrame.Resources.lib import *
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 class UserSession:
     _instance = None

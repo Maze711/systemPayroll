@@ -1,13 +1,10 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.Database_Connection.modalSQLQuery import executeQuery
 from MainFrame.FILE201.Other_Information.otherInformationModal import personalModal
 from MainFrame.systemFunctions import DatabaseConnectionError
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class ListFunction:
@@ -119,6 +116,9 @@ class ListFunction:
             logging.error(f"Database Connection Error: {dce}")
             QMessageBox.critical(self.main_window, "Database Connection Error",
                                  "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")
+        except Exception as e:
+            QMessageBox.critical(self.main_window, "Error", "An unexpected disconnection has occurred. Please check your network connection or "
                                  "contact the system administrator.")
 
     def set_fields_non_editable(self, modal):
@@ -335,9 +335,14 @@ class ListFunction:
         return pixmap
 
     def on_emp_double_click(self, row, column):
-        empl_id = self.main_window.employeeListTable.item(row, 0).text()
+        try:
+            empl_id = self.main_window.employeeListTable.item(row, 0).text()
 
-        if empl_id:
-            self.open_otherInformationMODAL_view()
-        else:
-            QMessageBox.warning(self.main_window, "No Employee Selected", "Please select a valid employee.")
+            if empl_id:
+                self.open_otherInformationMODAL_view()
+            else:
+                QMessageBox.warning(self.main_window, "No Employee Selected", "Please select a valid employee.")
+
+        except Exception as e:
+            QMessageBox.critical(self.main_window, "Error", "An unexpected disconnection has occurred. Please check your network connection or "
+                                 "contact the system administrator.")

@@ -1,11 +1,8 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.systemFunctions import DatabaseConnectionError
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def add_employee(data):
@@ -42,10 +39,6 @@ def add_employee(data):
     except Error as e:
         QMessageBox.critical(None, "Error Adding Employee",
                              f"Error adding employee: {str(e)}")
-        return False
-    except Exception as ex:
-        QMessageBox.critical(None, "Unexpected Error",
-                             f"Unexpected error: {str(ex)}")
         return False
     finally:
         if cursor is not None:
