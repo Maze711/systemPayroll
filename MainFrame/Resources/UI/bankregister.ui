@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1471</width>
+    <width>1070</width>
     <height>666</height>
    </rect>
   </property>
@@ -17,12 +17,12 @@
    <iconset>
     <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
-  <widget class="QTableWidget" name="bankregistrarTable">
+  <widget class="QTableWidget" name="bankregisterTable">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>60</y>
-     <width>1211</width>
+     <width>811</width>
      <height>551</height>
     </rect>
    </property>
@@ -111,7 +111,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>8</number>
+    <number>5</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -154,17 +154,17 @@ QTableWidget {
    </attribute>
    <column>
     <property name="text">
-     <string>Account No</string>
+     <string>Emp_Num</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Bio Num</string>
+     <string>Bio_Num</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Employee Name</string>
+     <string>Emp_Name</string>
     </property>
     <property name="font">
      <font>
@@ -183,34 +183,19 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>NetPay</string>
+     <string>Account_No</string>
     </property>
    </column>
    <column>
     <property name="text">
      <string>NetPay</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>NetPay</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>NetPay</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Total</string>
     </property>
    </column>
   </widget>
   <widget class="QFrame" name="sideBar">
    <property name="geometry">
     <rect>
-     <x>1210</x>
+     <x>810</x>
      <y>0</y>
      <width>261</width>
      <height>671</height>
@@ -368,7 +353,7 @@ background-color: #c75657;
     <rect>
      <x>0</x>
      <y>607</y>
-     <width>1211</width>
+     <width>811</width>
      <height>61</height>
     </rect>
    </property>
@@ -400,16 +385,16 @@ border: 1px solid black;
    <widget class="QLabel" name="lblTitle">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>10</y>
-      <width>181</width>
-      <height>41</height>
+      <x>380</x>
+      <y>0</y>
+      <width>161</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Poppins</family>
-      <pointsize>20</pointsize>
+      <pointsize>18</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -466,10 +451,10 @@ background-color: #DCE5FE
    <widget class="QLabel" name="grandTotal">
     <property name="geometry">
      <rect>
-      <x>930</x>
-      <y>10</y>
-      <width>261</width>
-      <height>41</height>
+      <x>540</x>
+      <y>0</y>
+      <width>251</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -484,13 +469,13 @@ background-color: #DCE5FE
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: white; border: none; background: none;</string>
+     <string notr="true"> border: none; background: none;</string>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -499,7 +484,7 @@ background-color: #DCE5FE
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1211</width>
+     <width>811</width>
      <height>61</height>
     </rect>
    </property>
@@ -512,10 +497,10 @@ background-color: &quot;#DCE5FE&quot;;
    <widget class="QLabel" name="lblDateFrom">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>20</y>
+      <x>60</x>
+      <y>0</y>
       <width>121</width>
-      <height>21</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -533,10 +518,10 @@ background-color: &quot;#DCE5FE&quot;;
    <widget class="QLabel" name="lblFrom">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>20</y>
-      <width>181</width>
-      <height>21</height>
+      <x>190</x>
+      <y>0</y>
+      <width>141</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -557,10 +542,10 @@ background-color: &quot;#DCE5FE&quot;;
    <widget class="QLabel" name="lblTo">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>20</y>
+      <x>550</x>
+      <y>0</y>
       <width>181</width>
-      <height>21</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -581,10 +566,10 @@ background-color: &quot;#DCE5FE&quot;;
    <widget class="QLabel" name="lblDateTo">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>20</y>
+      <x>410</x>
+      <y>0</y>
       <width>91</width>
-      <height>21</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -600,7 +585,7 @@ background-color: &quot;#DCE5FE&quot;;
     </property>
    </widget>
   </widget>
-  <zorder>bankregistrarTable</zorder>
+  <zorder>bankregisterTable</zorder>
   <zorder>widgetBTN</zorder>
   <zorder>widget</zorder>
   <zorder>sideBar</zorder>

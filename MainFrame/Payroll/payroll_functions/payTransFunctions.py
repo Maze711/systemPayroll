@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
-from MainFrame.Payroll.payTrans.bankRegistrar import bankRegistrar
+from MainFrame.Payroll.payTrans.bankRegister import bankRegister
 from MainFrame.Payroll.payTrans.payTransMailer import EmailerLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -153,9 +153,6 @@ class PayTransFunctions:
             except Exception as e:
                 QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
                 logging.error(f"Export error: {e}")
-        # else:
-        #     QMessageBox.information(self.parent, "No File Selected", "Please export an excel file.")
-        #     return
 
     def checkIfDeductionTableNotExist(self):
         connection = create_connection('NTP_STORED_DEDUCTIONS')
@@ -316,10 +313,61 @@ class PayTransFunctions:
         self.ImportFromExcelLoader = ImportFromExcelLoader(file_name, self.parent.original_data, self.parent)
         self.ImportFromExcelLoader.show()
 
-    def open_bankRegistrar(self):
-        self.bankRegistrar = bankRegistrar()
-        self.bankRegistrar.setWindowModality(Qt.ApplicationModal)
-        self.bankRegistrar.exec_()
+    def getAccountNumber(self, paytrans_data):
+        """Retrieves the account_no from emp_list_id table"""
+        connection = create_connection('NTP_EMP_LIST')
+        if connection is None:
+            print("Failed to connect to NTP_EMP_LIST database.")
+            self.hideAdditionalButtons()
+            QMessageBox.warning(self.parent, "Connection Error",
+                                "Failed to connect to database. Please check your "
+                                "connection or contact the system administrator")
+            return
+
+        cursor = connection.cursor()
+        query = 'SELECT account_no FROM emp_list_id WHERE empl_id = %s'
+        try:
+            for i, row in enumerate(paytrans_data):
+                bio_num = int(row['BioNum'].strip())
+                cursor.execute(query, (bio_num,))
+                result = cursor.fetchone()
+                row['AccountNo'] = result[0] if result is not None else 0
+
+        except Exception as e:
+            QMessageBox.warning(self.parent, "Fetch Error", f"Error fetching "
+                                                                           f"Account number: {e}")
+        finally:
+            if cursor:
+                cursor.close()
+            if connection and connection.is_connected():
+                connection.close()
+
+    def createBankRegister(self):
+        from_date = self.parent.lblFrom.text()
+        to_date = self.parent.lblTo.text()
+
+        # Collects the data from paytranstable
+        paytrans_data = []
+
+        for row in range(self.parent.paytransTable.rowCount()):
+            emp_num = self.parent.paytransTable.item(row, 0).text()
+            bio_num = self.parent.paytransTable.item(row, 1).text()
+            emp_name = self.parent.paytransTable.item(row, 2).text()
+
+            paytrans_data.append({
+                'EmpNum': emp_num,
+                'BioNum': bio_num,
+                'EmpName': emp_name,
+                'NetPay': 0 #  Static Data for NetPay
+            })
+
+        self.getAccountNumber(paytrans_data)
+        try:
+            self.bankRegister = bankRegister(from_date, to_date, paytrans_data)
+            self.bankRegister.setWindowModality(Qt.ApplicationModal)
+            self.bankRegister.exec_()
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Error", f"Failed to create Bank Register window: {e}")
 
 
 class ImportFromExcelLoader(QDialog):
