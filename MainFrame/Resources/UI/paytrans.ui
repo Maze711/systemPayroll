@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>C:/Users/Acer/.designer/Icons/logo.svg</normaloff>C:/Users/Acer/.designer/Icons/logo.svg</iconset>
+    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="paytransTable">
@@ -509,6 +509,17 @@ background-color: rgb(255, 110, 112);
 
 #btnSendToEmail:hover{
 background-color: #c75657;
+}
+
+#btnBank{
+background-color: &quot;#546aba&quot;;
+color: white;
+border: none;
+border-radius: 5px;
+}
+
+#btnBank:hover{
+background-color: #485ba1;
 }</string>
     </property>
     <property name="frameShape">
@@ -521,9 +532,9 @@ background-color: #c75657;
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>200</y>
+       <y>180</y>
        <width>241</width>
-       <height>241</height>
+       <height>301</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -554,7 +565,7 @@ background-color: #c75657;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>C:/Users/Acer/.designer/Icons/export.svg</normaloff>C:/Users/Acer/.designer/Icons/export.svg</iconset>
+          <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -587,7 +598,44 @@ background-color: #c75657;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>INSERT DEDUCTION</string>
+         <string>INSERT OTHER PAYABLE</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnBank">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>BANK REGISTRY</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../../../../Acer/.designer/Icons/mail.svg</normaloff>../../../../../../Acer/.designer/Icons/mail.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -624,7 +672,7 @@ background-color: #c75657;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>C:/Users/Acer/.designer/Icons/mail.svg</normaloff>C:/Users/Acer/.designer/Icons/mail.svg</iconset>
+          <normaloff>../Icons/mail.svg</normaloff>../Icons/mail.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

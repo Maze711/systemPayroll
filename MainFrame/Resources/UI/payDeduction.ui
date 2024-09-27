@@ -426,13 +426,23 @@ border-radius: 5px;
 background-color: #485ba1;
 }
 
-#btnStore{
+#btnImport{
+border-radius: 5px;
+color: white;
+background-color: &quot;#30d977&quot;;
+}
+
+#btnImport:hover{
+	background-color: &quot;#26ad5f&quot;;
+}
+
+#btnStore, #btnExport{
 border-radius: 5px;
 color: white;
 background-color: rgb(255, 110, 112);
 }
 
-#btnStore:hover{
+#btnStore:hove,#btnExport:hoverr{
 background-color: #c75657;
 }</string>
     </property>
@@ -476,6 +486,10 @@ background-color: #c75657;
         </property>
         <property name="text">
          <string>Import</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/import.svg</normaloff>../Icons/import.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -542,6 +556,10 @@ background-color: #c75657;
         </property>
         <property name="text">
          <string>Export in excel</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

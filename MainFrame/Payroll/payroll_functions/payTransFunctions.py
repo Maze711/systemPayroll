@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
+from MainFrame.Payroll.payTrans.bankRegistrar import bankRegistrar
 from MainFrame.Payroll.payTrans.payTransMailer import EmailerLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -314,6 +315,12 @@ class PayTransFunctions:
         self.hideAdditionalButtons()
         self.ImportFromExcelLoader = ImportFromExcelLoader(file_name, self.parent.original_data, self.parent)
         self.ImportFromExcelLoader.show()
+
+    def open_bankRegistrar(self):
+        self.bankRegistrar = bankRegistrar()
+        self.bankRegistrar.setWindowModality(Qt.ApplicationModal)
+        self.bankRegistrar.exec_()
+
 
 class ImportFromExcelLoader(QDialog):
     def __init__(self, file, data, payTrans_window):

@@ -31,6 +31,7 @@ class PayTrans(QMainWindow):
 
         self.populatePayTransTable(self.data)
         self.btnInsertDeduction.installEventFilter(self)
+        self.btnBank.clicked.connect(self.functions.open_bankRegistrar)
         self.btnPayTrans.clicked.connect(self.functions.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.functions.openEmailLoader)
 

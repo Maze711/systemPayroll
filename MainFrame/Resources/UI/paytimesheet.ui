@@ -506,14 +506,24 @@ background-color: &quot;#dce5fe&quot;;
 	background-color: qlineargradient(spread:pad, x1:0.508, y1:0.0340909, x2:0.503051, y2:1, stop:0 rgba(33, 44, 89, 255), stop:0.497175 rgba(52, 66, 115, 255), stop:0.847458 rgba(72, 87, 142, 255))
 }
 
-#btnPayTrans{
+#btnPayTrans, #btnImport{
 border-radius: 5px;
 color: white;
 background-color: &quot;#30d977&quot;;
 }
 
-#btnPayTrans:hover{
+#btnPayTrans:hover, #btnImport:hover{
 	background-color: &quot;#26ad5f&quot;;
+}
+
+#btnNotification {
+	background-color: &quot;#546aba&quot;;
+	color: white;
+	border-radius: 5px;
+}
+
+#btnNotification:hover{
+background-color: #485ba1;
 }
 </string>
     </property>
@@ -590,6 +600,10 @@ background-color: &quot;#30d977&quot;;
         </property>
         <property name="text">
          <string>Import</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../Icons/import.svg</normaloff>../Icons/import.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

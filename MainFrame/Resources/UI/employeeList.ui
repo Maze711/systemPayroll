@@ -568,7 +568,7 @@ QTableWidget {
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../Resources/Icons/arrow-right.svg</normaloff>../Resources/Icons/arrow-right.svg</iconset>
+       <normaloff>../Icons/arrow-right.svg</normaloff>../Icons/arrow-right.svg</iconset>
      </property>
      <property name="iconSize">
       <size>

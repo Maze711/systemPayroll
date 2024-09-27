@@ -690,6 +690,10 @@ background-color: #c75657;
        <property name="text">
         <string>EXPORT TIMESHEET</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Icons/export.svg</normaloff>../Icons/export.svg</iconset>
+       </property>
        <property name="iconSize">
         <size>
          <width>22</width>
