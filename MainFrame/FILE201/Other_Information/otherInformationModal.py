@@ -1,10 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
 from MainFrame.systemFunctions import globalFunction, ValidInteger
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -170,7 +168,6 @@ class personalModal(QDialog):
     def set_current_date_to_all_date_edits(self, current_date):
         for widget in self.findChildren(QtWidgets.QDateEdit):
             widget.setDate(current_date)
-
 
     def set_keyboard_shortcut(self):
         self.shortcut = QtWidgets.QShortcut(Qt.Key_Escape, self)

@@ -1,10 +1,5 @@
-import logging
-
 from flask import Flask, request, jsonify
-import mysql.connector
-import requests
-import time
-import threading
+from MainFrame.Resources.lib import *
 
 
 class NotificationService:

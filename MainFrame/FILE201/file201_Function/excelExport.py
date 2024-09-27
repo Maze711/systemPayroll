@@ -1,12 +1,8 @@
-import sys
-import os
-
 from MainFrame.systemFunctions import globalFunction
+from MainFrame.Resources.lib import *
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from MainFrame.Resources.lib import *
-
-from MainFrame.Database_Connection.DBConnection import create_connection
 
 
 class ExportProcessor(QObject):
@@ -44,6 +40,7 @@ class ExportProcessor(QObject):
 
         except Exception as e:
             self.error.emit(f"Error exporting data to Excel: {e}")
+
 
 class ExportLoader(QDialog):
     def __init__(self, data_dict, file_name):
@@ -105,11 +102,12 @@ class ExportLoader(QDialog):
 
         self.move(x, y)
 
+
 def fetch_personal_information():
     try:
         connection = create_connection('NTP_EMP_LIST')
         if connection is None:
-            logging.error("Could not establish database connection.")
+            QMessageBox.critical(None, "Database Connection Error", f"Could not establish database connection.")
             return None
 
         cursor = connection.cursor()
@@ -136,6 +134,7 @@ def fetch_personal_information():
             cursor.close()
             connection.close()
             logging.info("Database connection closed")
+
 
 def export_to_excel(data_dict, file_name):
     try:

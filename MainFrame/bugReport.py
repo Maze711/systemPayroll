@@ -1,5 +1,3 @@
-import os.path
-
 from MainFrame.Resources.lib import *
 from email.utils import formataddr
 from MainFrame.Database_Connection.user_session import UserSession
@@ -11,7 +9,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyT
 class BugReportModal(QDialog):
     def __init__(self):
         super(BugReportModal, self).__init__()
-        ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\bugReport.ui")
+        ui_file = (globalFunction.resource_path("MainFrame\\Resources\\UI\\bugReport.ui"))
         loadUi(ui_file, self)
         self.setFixedSize(570, 480)
 

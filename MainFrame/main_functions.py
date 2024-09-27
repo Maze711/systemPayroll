@@ -1,11 +1,7 @@
-import functools
-import psutil
-
-import threading
-from MainFrame.Database_Connection.notification_listener import NotificationService
-from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 # Import classes
 from MainFrame.Resources.lib import *
+from MainFrame.Database_Connection.notification_listener import NotificationService
+from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.FILE201.Employee_List.employeeList import EmployeeList
 from MainFrame.fontLoader import load_fonts
 from MainFrame.TimeKeeping.datImporter.dialogLoader import dialogModal
@@ -15,6 +11,7 @@ from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 from MainFrame.FILE201.file201_Function.listFunction import ListFunction
+
 
 class MainWindowFunctions(QMainWindow):
     def __init__(self):
@@ -112,7 +109,6 @@ class MainWindowFunctions(QMainWindow):
         QMessageBox.information(self, "Log out", "You have been logged out.")
         self.btnLogin.setEnabled(True)
 
-
     def showPassword(self, state, page):
         passwordFields = {
             'login': ['txtPassword'],
@@ -161,7 +157,7 @@ class MainWindowFunctions(QMainWindow):
             if event.type() == QEvent.Enter:
                 self.showAdditionalButtons()
             elif event.type() == QEvent.Leave:
-                QTimer.singleShot(200, self.checkAndHideAdditionalButtons)
+                QTimer.singleShot(10, self.checkAndHideAdditionalButtons)
         elif self.additional_buttons_container and source in self.additional_buttons_container.children():
             if event.type() == QEvent.HoverEnter:
                 source.setStyleSheet("background-color: #344273; color: white; font-family: Poppins;")
@@ -170,25 +166,17 @@ class MainWindowFunctions(QMainWindow):
             if event.type() == QEvent.Enter:
                 return True
             elif event.type() == QEvent.Leave:
-                QTimer.singleShot(200, self.checkAndHideAdditionalButtons)
+                QTimer.singleShot(10, self.checkAndHideAdditionalButtons)
         return super().eventFilter(source, event)
 
     def showAdditionalButtons(self):
         try:
-            logging.info("Entering showAdditionalButtons")
-
-            # If the container already exists and is visible, do nothing
             if self.additional_buttons_container and self.additional_buttons_container.isVisible():
-                logging.info("additional_buttons_container is already shown")
                 return
 
-            # If the container exists but is hidden, just show it
             if self.additional_buttons_container:
-                logging.info("additional_buttons_container exists but is hidden")
                 self.additional_buttons_container.show()
             else:
-                # Create the container if it doesn't exist
-                logging.info("additional_buttons_container does not exist, creating new container")
                 button_width = 150
                 button_height = 40
                 frame_width = button_width + 20
@@ -209,7 +197,6 @@ class MainWindowFunctions(QMainWindow):
                     button.installEventFilter(self)
                     button.clicked.connect(self.open_dialog(text))
 
-                logging.info("Showing additional_buttons_container")
                 self.additional_buttons_container.show()
         except Exception as e:
             logging.error(f"Error in showAdditionalButtons: {str(e)}")
@@ -227,6 +214,7 @@ class MainWindowFunctions(QMainWindow):
             if self.additional_buttons_container:
                 if not self.additional_buttons_container.geometry().contains(cursor_pos):
                     self.hideAdditionalButtons()
+
     def hideAdditionalButtons(self):
         if self.additional_buttons_container:
             self.additional_buttons_container.hide()

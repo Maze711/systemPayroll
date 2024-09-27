@@ -1,10 +1,8 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.DBConnection import create_connection
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def convert_to_24hour(time_str):
@@ -62,9 +60,11 @@ def importIntoDB(parent, display_employees_callback):
         excelImporterLoader = ExcelImporterLoader(parent, file_name, display_employees_callback)
         excelImporterLoader.exec_()
     except Exception as e:
+        QMessageBox.critical(parent, "Import Error", f"Error importing data from Excel:\n{str(e)}")
         print(f"Error importing data from Excel: {e}")
 
-def get_empl_ids_from_db():
+
+def get_empl_ids_from_db(parent):
     """
     Fetch `empl_id` values from the database tables and return as a set of integers.
     """
@@ -96,6 +96,7 @@ def get_empl_ids_from_db():
             return empl_ids
 
     except Exception as e:
+        QMessageBox.critical(parent, "Error", f"An error occurred while fetching empl_ids:\n{str(e)}")
         logging.error(f"An error occurred while fetching empl_ids: {str(e)}", exc_info=True)
         return set()
 
@@ -323,6 +324,7 @@ def update_db_for_missing_row_columns(parent):
         if connection:
             connection.close()
 
+
 class ImportProcessor(QObject):
     progressChanged = pyqtSignal(int)
     finished = pyqtSignal(str)
@@ -472,6 +474,7 @@ class ImportProcessor(QObject):
             if connection is not None:
                 connection.close()
 
+
 class ExcelImporterLoader(QDialog):
     def __init__(self, hr_window, file_name, display_employees_callback):
         super(ExcelImporterLoader, self).__init__()
@@ -521,8 +524,8 @@ class ExcelImporterLoader(QDialog):
             self.thread.quit()
             self.thread.wait()
 
-            QMessageBox.critical(self.hr_window, "Import Error",
-                                 f"An unexpected error occurred while importing data:\n{error}")
+            QMessageBox.critical(self.hr_window, "Error",
+                                 f"An error occurred while processing the import error. Please contact support.")
             self.close()
         except Exception as e:
             print("Error in importProcessingError: ", e)

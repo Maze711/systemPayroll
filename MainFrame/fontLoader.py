@@ -1,19 +1,10 @@
-import sys
-import os
+from MainFrame.Resources.lib import *
 from PIL import ImageFont
-
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS2
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+from MainFrame.systemFunctions import globalFunction
 
 
 def load_fonts():
-    font_dir = resource_path("MainFrame\\Resources\\Fonts")
+    font_dir = (globalFunction.resource_path("MainFrame\\Resources\\Fonts"))
 
     # List all font files in the directory
     font_files = [os.path.join(font_dir, f) for f in os.listdir(font_dir) if f.endswith('.ttf') or f.endswith('.otf')]

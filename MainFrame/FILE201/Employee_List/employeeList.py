@@ -1,16 +1,12 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
 from MainFrame.FILE201.file201_Function.pieGraph import MplCanvas, graphLoader
 from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 from MainFrame.FILE201.file201_Function.modalFunction import modalFunction
 from MainFrame.FILE201.file201_Function.excelExport import fetch_personal_information, export_to_excel
 from MainFrame.FILE201.file201_Function.excelImporter import importIntoDB, update_db_for_missing_row_columns
-
 from MainFrame.systemFunctions import globalFunction
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 

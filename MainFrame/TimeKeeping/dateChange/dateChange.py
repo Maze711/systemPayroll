@@ -1,10 +1,8 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.systemFunctions import globalFunction
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -35,7 +33,6 @@ class DateChange(QDialog):
 
         self.original_items = [self.cmbHoliday.itemText(i) for i in range(self.cmbHoliday.count())]
 
-
     def load_holidays(self):
         try:
             cursor = self.connection.cursor()
@@ -65,7 +62,6 @@ class DateChange(QDialog):
         self.cmbHoliday.setCurrentIndex(0)
         self.dateEdit.setDate(QDate.currentDate())
         self.cmbDateType.setCurrentIndex(1)
-
 
     def fetch_holiday_data(self, index=None):
         if self.add_mode:
@@ -128,7 +124,6 @@ class DateChange(QDialog):
         self.btnUpdate.setEnabled(False)
         self.reset_selection()
 
-
     def save_new_holiday(self):
         holiday_name = self.cmbHoliday.currentText()
         date_type = self.cmbDateType.currentText()
@@ -155,7 +150,6 @@ class DateChange(QDialog):
         except Error as e:
             logging.exception("Error while adding new holiday to MySQL: %s", e)
             QMessageBox.critical(self, "Error", "Failed to add new holiday")
-
 
     def update_holiday_date(self, checked=False):
         holiday_name = self.cmbHoliday.currentText()

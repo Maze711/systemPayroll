@@ -1,7 +1,8 @@
 from MainFrame.Resources.lib import *
 from MainFrame.main_functions import MainWindowFunctions
 from MainFrame.Database_Connection.notification_listener import NotificationService
-import threading
+
+import time
 
 
 class MainWindow(MainWindowFunctions):
