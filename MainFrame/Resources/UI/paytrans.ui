@@ -112,7 +112,7 @@ QTableWidget {
      <bool>false</bool>
     </property>
     <property name="columnCount">
-     <number>37</number>
+     <number>38</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -199,17 +199,22 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>OT_Earn</string>
+      <string>OrdDay_Earn</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Regular Night Diff</string>
+      <string>OrdDayOT_Earn</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Regular Night Diff OT</string>
+      <string>OrdDayND_Earn</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>OrdDayNDOT_Earn</string>
      </property>
     </column>
     <column>
@@ -234,22 +239,22 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
-      <string>Holiday_Earn</string>
+      <string>RegHldy_Earn</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayOT_Earn</string>
+      <string>RegHldyOT_Earn</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayND_Earn</string>
+      <string>RegHldyND_Earn</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>HolidayNDOT_Earn</string>
+      <string>RegHldyNDOT_Earn</string>
      </property>
     </column>
     <column>
@@ -635,7 +640,7 @@ background-color: #485ba1;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../../../Acer/.designer/Icons/mail.svg</normaloff>../../../../../../Acer/.designer/Icons/mail.svg</iconset>
+          <normaloff>../../../../../Acer/.designer/Icons/mail.svg</normaloff>../../../../../Acer/.designer/Icons/mail.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
