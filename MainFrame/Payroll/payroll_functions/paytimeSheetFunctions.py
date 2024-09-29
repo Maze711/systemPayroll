@@ -117,6 +117,7 @@ class PaytimeSheetFunctions:
         # Perform automated calculations
         pay_computation = PayComputation(selected_data)
         pay_computation.basicComputation()
+        pay_computation.regularDayEarnComputation()
         pay_computation.overtimeComputation()
         pay_computation.regularDayNightDiffComputation()
         pay_computation.regularDayNightDiffOTComputation()
@@ -254,7 +255,7 @@ class PaytimeSheetFunctions:
                         item = QTableWidgetItem(str(row[col_idx]))
                         if field_name in column_names:
                             item.setTextAlignment(Qt.AlignCenter)
-                        if field_name == 'Employee Name':
+                        if field_name == 'Emp_Name':
                             item.setToolTip(row[col_idx])
                         self.parent.paytimesheetTable.setItem(i, widget_col_idx, item)
                     else:

@@ -28,6 +28,23 @@ class PayComputation:
             item['Basic'] = basic
             logging.info(f"Calculated basic for EmpNo {item['EmpNo']}: {basic}")
 
+    def regularDayEarnComputation(self):
+        for item in self.data:
+            try:
+                daily_rate = float(item.get('Rate') if item.get('Rate') != 'Missing' else 0)
+                days_work = float(
+                    item.get('Present Days') if item.get(
+                        'Present Days') != 'Missing' else 0)
+            except ValueError:
+                daily_rate = 0
+                days_work = 0
+
+            # Compute the regular day earn
+            regular_day_earn = daily_rate * days_work
+
+            item['RegDay_Earn'] = round(regular_day_earn, 2)
+            logging.info(f"Calculated regular day  for EmpNo {item['EmpNo']}: {item['RegDay_Earn']}")
+
     def overtimeComputation(self):
         overtime_rate = 74.844  # Define the overtime rate
         for item in self.data:

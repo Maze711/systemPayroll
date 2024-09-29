@@ -23,5 +23,7 @@ class bankRegister(QDialog):
 
         self.functions.populateBankRegisterTable(self.data)
 
+        self.grandTotal.setText(format(self.functions.getGrandTotal(self.data), ','))
+
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
         self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))

@@ -29,6 +29,7 @@ class PayTransFunctions:
             emp_name_item = QTableWidgetItem(row['EmpName'])
             basic_item = QTableWidgetItem(str(row['Basic']))
             present_days_item = QTableWidgetItem(row['Present Days'])
+            reg_day_earn_item = QTableWidgetItem(str(row['RegDay_Earn']))
             reg_day_night_diff_item = QTableWidgetItem(str(row['RegDayNightDiffEarn']))
             reg_day_night_diff_ot_item = QTableWidgetItem(str(row['RegDayNightDiffOTEarn']))
             rate_item = QTableWidgetItem(row.get('Rate', 'Missing'))  # Get rate or 'Missing' if not found
@@ -48,7 +49,7 @@ class PayTransFunctions:
             holiday_nd_ot_earn_item = QTableWidgetItem(str(row['HolidayNDOT_Earn']))
             rest_holiday_nd_ot_earn_item = QTableWidgetItem(str(row['RestHolidayDayNDOT_Earn']))
 
-            # deduction items
+            # other payable items
             absent_earn_item = QTableWidgetItem(str(row.get('late_absent', '0')))
             sss_loan_earn_item = QTableWidgetItem(str(row.get('sss_loan', '0')))
             pagibig_loan_earn_item = QTableWidgetItem(str(row.get('pag_ibig_loan', '0')))
@@ -66,7 +67,7 @@ class PayTransFunctions:
 
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
-                         ot_earn_item, late_earn_item, undertime_earn_item, reg_day_night_diff_item,
+                         ot_earn_item, late_earn_item, undertime_earn_item, reg_day_earn_item, reg_day_night_diff_item,
                          reg_day_night_diff_ot_item, rest_day_earn_item, rest_day_ot_earn_item, rest_day_nd_earn_item,
                          holiday_earn_item, holiday_ot_earn_item, holiday_nd_earn_item, rest_day_nd_ot_earn_item,
                          holiday_nd_ot_earn_item, rest_holiday_earn_item, rest_holiday_ot_earn_item,
@@ -76,6 +77,9 @@ class PayTransFunctions:
                          pagibig_earn_item, clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
                          voluntary_earn_item]:
                 item.setTextAlignment(Qt.AlignCenter)
+                # set tool tip for employee name item
+                if item == emp_name_item:
+                    item.setToolTip(row['EmpName'])
 
             # Set items in the table. Adjust the column indices as needed.
             self.parent.paytransTable.setItem(i, 0, emp_no_item)
@@ -84,37 +88,38 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 3, basic_item)  # Basic
             self.parent.paytransTable.setItem(i, 4, rate_item)   # Rate
             self.parent.paytransTable.setItem(i, 5, present_days_item)  # Present Days
-            self.parent.paytransTable.setItem(i, 6, ot_earn_item)  # OT Hours (add column index here)
-            self.parent.paytransTable.setItem(i, 7, reg_day_night_diff_item)    # Regular Night Diff
-            self.parent.paytransTable.setItem(i, 8, reg_day_night_diff_ot_item)    # Regular Night Diff OT
-            self.parent.paytransTable.setItem(i, 9, rest_day_earn_item)    # Rest day earn
-            self.parent.paytransTable.setItem(i, 10, rest_day_ot_earn_item)  # Rest day OT earn
-            self.parent.paytransTable.setItem(i, 11, rest_day_nd_earn_item)  # Rest day ND earn
-            self.parent.paytransTable.setItem(i, 12, rest_day_nd_ot_earn_item)  # Rest day ND OT earn
-            self.parent.paytransTable.setItem(i, 13, holiday_earn_item)   # Holiday earn
-            self.parent.paytransTable.setItem(i, 14, holiday_ot_earn_item)  # Holiday OT earn
-            self.parent.paytransTable.setItem(i, 15, holiday_nd_earn_item)  # Holiday ND earn
-            self.parent.paytransTable.setItem(i, 16, holiday_nd_ot_earn_item)  # Holiday ND OT earn
-            self.parent.paytransTable.setItem(i, 17, rest_holiday_earn_item)  # Rest Holiday earn
-            self.parent.paytransTable.setItem(i, 18, rest_holiday_ot_earn_item)  # Rest Holiday OT earn
-            self.parent.paytransTable.setItem(i, 19, rest_holiday_nd_earn_item)  # Rest Holiday ND earn
-            self.parent.paytransTable.setItem(i, 20, rest_holiday_nd_ot_earn_item)  # Rest Holiday ND OT earn
-            self.parent.paytransTable.setItem(i, 21, late_earn_item)
-            self.parent.paytransTable.setItem(i, 22, undertime_earn_item)
-            self.parent.paytransTable.setItem(i, 23, absent_earn_item)
-            self.parent.paytransTable.setItem(i, 24, sss_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 25, pagibig_loan_earn_item)
-            self.parent.paytransTable.setItem(i, 26, cash_earn_item)
-            self.parent.paytransTable.setItem(i, 27, canteen_earn_item)
-            self.parent.paytransTable.setItem(i, 28, tax_earn_item)
-            self.parent.paytransTable.setItem(i, 29, sss_earn_item)
-            self.parent.paytransTable.setItem(i, 30, philhealth_earn_item)
-            self.parent.paytransTable.setItem(i, 31, pagibig_earn_item)
-            self.parent.paytransTable.setItem(i, 32, clinic_earn_item)
-            self.parent.paytransTable.setItem(i, 33, arayata_earn_item)
-            self.parent.paytransTable.setItem(i, 34, hmi_earn_item)
-            self.parent.paytransTable.setItem(i, 35, funeral_earn_item)
-            self.parent.paytransTable.setItem(i, 36, voluntary_earn_item)
+            self.parent.paytransTable.setItem(i, 6, reg_day_earn_item)  # Regular/Ordinary Day Earn
+            self.parent.paytransTable.setItem(i, 7, ot_earn_item)  # OT Earn (add column index here)
+            self.parent.paytransTable.setItem(i, 8, reg_day_night_diff_item)    # Regular Night Diff
+            self.parent.paytransTable.setItem(i, 9, reg_day_night_diff_ot_item)    # Regular Night Diff OT
+            self.parent.paytransTable.setItem(i, 10, rest_day_earn_item)    # Rest day earn
+            self.parent.paytransTable.setItem(i, 11, rest_day_ot_earn_item)  # Rest day OT earn
+            self.parent.paytransTable.setItem(i, 12, rest_day_nd_earn_item)  # Rest day ND earn
+            self.parent.paytransTable.setItem(i, 13, rest_day_nd_ot_earn_item)  # Rest day ND OT earn
+            self.parent.paytransTable.setItem(i, 14, holiday_earn_item)   # Holiday earn
+            self.parent.paytransTable.setItem(i, 15, holiday_ot_earn_item)  # Holiday OT earn
+            self.parent.paytransTable.setItem(i, 16, holiday_nd_earn_item)  # Holiday ND earn
+            self.parent.paytransTable.setItem(i, 17, holiday_nd_ot_earn_item)  # Holiday ND OT earn
+            self.parent.paytransTable.setItem(i, 18, rest_holiday_earn_item)  # Rest Holiday earn
+            self.parent.paytransTable.setItem(i, 19, rest_holiday_ot_earn_item)  # Rest Holiday OT earn
+            self.parent.paytransTable.setItem(i, 20, rest_holiday_nd_earn_item)  # Rest Holiday ND earn
+            self.parent.paytransTable.setItem(i, 21, rest_holiday_nd_ot_earn_item)  # Rest Holiday ND OT earn
+            self.parent.paytransTable.setItem(i, 22, late_earn_item)
+            self.parent.paytransTable.setItem(i, 23, undertime_earn_item)
+            self.parent.paytransTable.setItem(i, 24, absent_earn_item)
+            self.parent.paytransTable.setItem(i, 25, sss_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 26, pagibig_loan_earn_item)
+            self.parent.paytransTable.setItem(i, 27, cash_earn_item)
+            self.parent.paytransTable.setItem(i, 28, canteen_earn_item)
+            self.parent.paytransTable.setItem(i, 29, tax_earn_item)
+            self.parent.paytransTable.setItem(i, 30, sss_earn_item)
+            self.parent.paytransTable.setItem(i, 31, philhealth_earn_item)
+            self.parent.paytransTable.setItem(i, 32, pagibig_earn_item)
+            self.parent.paytransTable.setItem(i, 33, clinic_earn_item)
+            self.parent.paytransTable.setItem(i, 34, arayata_earn_item)
+            self.parent.paytransTable.setItem(i, 35, hmi_earn_item)
+            self.parent.paytransTable.setItem(i, 36, funeral_earn_item)
+            self.parent.paytransTable.setItem(i, 37, voluntary_earn_item)
 
     def export_to_excel(self):
         # Get the number of rows and column from the paytransTable
@@ -313,59 +318,13 @@ class PayTransFunctions:
         self.ImportFromExcelLoader = ImportFromExcelLoader(file_name, self.parent.original_data, self.parent)
         self.ImportFromExcelLoader.show()
 
-    def getAccountNumber(self, paytrans_data):
-        """Retrieves the account_no from emp_list_id table"""
-        connection = create_connection('NTP_EMP_LIST')
-        if connection is None:
-            print("Failed to connect to NTP_EMP_LIST database.")
-            self.hideAdditionalButtons()
-            QMessageBox.warning(self.parent, "Connection Error",
-                                "Failed to connect to database. Please check your "
-                                "connection or contact the system administrator")
-            return
-
-        cursor = connection.cursor()
-        query = 'SELECT account_no FROM emp_list_id WHERE empl_id = %s'
-        try:
-            for i, row in enumerate(paytrans_data):
-                bio_num = int(row['BioNum'].strip())
-                cursor.execute(query, (bio_num,))
-                result = cursor.fetchone()
-                row['AccountNo'] = result[0] if result is not None else 0
-
-        except Exception as e:
-            QMessageBox.warning(self.parent, "Fetch Error", f"Error fetching "
-                                                                           f"Account number: {e}")
-        finally:
-            if cursor:
-                cursor.close()
-            if connection and connection.is_connected():
-                connection.close()
-
     def createBankRegister(self):
         from_date = self.parent.lblFrom.text()
         to_date = self.parent.lblTo.text()
 
-        # Collects the data from paytranstable
-        paytrans_data = []
-
-        for row in range(self.parent.paytransTable.rowCount()):
-            emp_num = self.parent.paytransTable.item(row, 0).text()
-            bio_num = self.parent.paytransTable.item(row, 1).text()
-            emp_name = self.parent.paytransTable.item(row, 2).text()
-
-            paytrans_data.append({
-                'EmpNum': emp_num,
-                'BioNum': bio_num,
-                'EmpName': emp_name,
-                'NetPay': 0 #  Static Data for NetPay
-            })
-
-        self.getAccountNumber(paytrans_data)
         try:
-            self.bankRegister = bankRegister(from_date, to_date, paytrans_data)
-            self.bankRegister.setWindowModality(Qt.ApplicationModal)
-            self.bankRegister.exec_()
+            self.bankRegister = bankRegister(from_date, to_date, self.parent.original_data)
+            self.bankRegister.show()
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to create Bank Register window: {e}")
 
