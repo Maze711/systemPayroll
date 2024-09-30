@@ -27,3 +27,5 @@ class bankRegister(QDialog):
 
         self.searchBioNum = self.findChild(QLineEdit, 'searchBioNum')
         self.searchBioNum.textChanged.connect(lambda: timekeepingFunction.searchBioNumFunction(self))
+
+        self.btnExportBankRegister.clicked.connect(self.functions.exportBankRegisterToExcel)
