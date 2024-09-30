@@ -636,7 +636,7 @@ background-color: #485ba1;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>BANK REGISTRY</string>
+         <string>BANK REGISTER</string>
         </property>
         <property name="icon">
          <iconset>

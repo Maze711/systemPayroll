@@ -7,6 +7,7 @@ import os
 import os.path
 import mysql.connector
 import pandas as pd
+import xlsxwriter
 import logging
 import xlrd
 import time
