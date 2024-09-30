@@ -13,7 +13,8 @@ class NotificationService:
             'port': 3306
         }
         self.last_checked = 0
-        self.polling = True  # Control flag for polling
+        self.polling = True
+        self.server = None
         self.app.add_url_rule('/notifications', 'get_notifications', self.get_notifications, methods=['GET'])
         self.app.add_url_rule('/notification_count', 'get_notification_count', self.get_notification_count,
                               methods=['GET'])
@@ -167,7 +168,17 @@ class NotificationService:
         self.last_checked = 0
 
     def start_server(self):
-        self.app.run(port=5000)
+        self.server = self.app.run(port=5000, threaded=True)
+
+    def stop(self):
+        self.polling = False
+        if self.server:
+            # Shutdown the Flask server
+            func = request.environ.get('werkzeug.server.shutdown')
+            if func is None:
+                raise RuntimeError('Not running with the Werkzeug Server')
+            func()
+        logging.info("NotificationService is stopping...")
 
     def poll_notifications(self):
         while self.polling:
@@ -181,11 +192,6 @@ class NotificationService:
 
             except requests.RequestException as e:
                 time.sleep(10)
-
-    def stop(self):
-        """Stop the notification polling."""
-        self.polling = False  # Set polling flag to False to stop the loop
-        logging.info("NotificationService is stopping...")
 
     def get_last_checked(self):
         return self.last_checked

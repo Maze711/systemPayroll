@@ -48,6 +48,8 @@ class TimeSheet(QDialog):
             days_work_item = QTableWidgetItem(str(row['Days_Work']))
             days_present_item = QTableWidgetItem(str(row['Days_Present']))
             total_hours_work_item = QTableWidgetItem(str(row['Total_Hours_Worked']))
+            late_item = QTableWidgetItem(str(row['Late']))
+            undertime_item = QTableWidgetItem(str(row['Undertime']))
             ordday_nd_hrs_item = QTableWidgetItem(str(row['Night_Differential']))
             ordday_nd_ot_hrs_item = QTableWidgetItem(str(row['Night_Differential_OT']))
 
@@ -77,8 +79,8 @@ class TimeSheet(QDialog):
 
             # Align all items to the center
             items = [
-                bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, total_hours_work_item,
-                cost_center, ordday_hrs_item, ordday_ot_hrs_item, ordday_nd_hrs_item,
+                bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, late_item, undertime_item,
+                total_hours_work_item, cost_center, ordday_hrs_item, ordday_ot_hrs_item, ordday_nd_hrs_item,
                 ordday_nd_ot_hrs_item, rstday_hrs_item, rstday_ot_hrs_item, rstday_nd_hrs_item, rstday_nd_ot_hrs_item,
                 spl_hldy_hrs_item, spl_hldy_ot_hrs_item, spl_hldy_nd_hrs_item, spl_hldy_nd_ot_hrs_item,
                 reg_hldy_hrs_item,
@@ -97,31 +99,33 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 3, cost_center)  # Employee Name
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Days Worked
             self.TimeSheetTable.setItem(i, 5, days_present_item)  # Days Present
-            self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours Worked
-            self.TimeSheetTable.setItem(i, 7, ordday_hrs_item)  # Ord Day Hrs
-            self.TimeSheetTable.setItem(i, 8, ordday_ot_hrs_item)  # Ord Day OT Hrs
-            self.TimeSheetTable.setItem(i, 9, ordday_nd_hrs_item)  # Ord Day ND Hrs
-            self.TimeSheetTable.setItem(i, 10, ordday_nd_ot_hrs_item)  # Ord Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 11, rstday_hrs_item)  # Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 12, rstday_ot_hrs_item)  # Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 13, rstday_nd_hrs_item)  # Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 14, rstday_nd_ot_hrs_item)  # Rest Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 15, spl_hldy_hrs_item)  # Special Holiday Hrs
-            self.TimeSheetTable.setItem(i, 16, spl_hldy_ot_hrs_item)  # Special Holiday OT Hrs
-            self.TimeSheetTable.setItem(i, 17, spl_hldy_nd_hrs_item)  # Special Holiday ND Hrs
-            self.TimeSheetTable.setItem(i, 18, spl_hldy_nd_ot_hrs_item)  # Special Holiday ND OT Hrs
-            self.TimeSheetTable.setItem(i, 19, reg_hldy_hrs_item)  # Regular Holiday Hrs
-            self.TimeSheetTable.setItem(i, 20, reg_hldy_ot_hrs_item)  # Regular Holiday OT Hrs
-            self.TimeSheetTable.setItem(i, 21, reg_hldy_nd_hrs_item)  # Regular Holiday ND Hrs
-            self.TimeSheetTable.setItem(i, 22, reg_hldy_nd_ot_hrs_item)  # Regular Holiday ND OT Hrs
-            self.TimeSheetTable.setItem(i, 23, spl_hldy_rd_hrs_item)  # Special Holiday Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 24, spl_hldy_rd_ot_hrs_item)  # Special Holiday Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 25, spl_hldy_rd_nd_hrs_item)  # Special Holiday Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 26, spl_hldy_rd_nd_ot_hrs_item)  # Special Holiday Rest Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 27, reg_hldy_rd_hrs_item)  # Regular Holiday Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 28, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 29, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours work
+            self.TimeSheetTable.setItem(i, 7, late_item)  # Late
+            self.TimeSheetTable.setItem(i, 8, undertime_item)  # Undertime
+            self.TimeSheetTable.setItem(i, 9, ordday_hrs_item)  # Ord Day Hrs
+            self.TimeSheetTable.setItem(i, 10, ordday_ot_hrs_item)  # Ord Day OT Hrs
+            self.TimeSheetTable.setItem(i, 11, ordday_nd_hrs_item)  # Ord Day ND Hrs
+            self.TimeSheetTable.setItem(i, 12, ordday_nd_ot_hrs_item)  # Ord Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 13, rstday_hrs_item)  # Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 14, rstday_ot_hrs_item)  # Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 15, rstday_nd_hrs_item)  # Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 16, rstday_nd_ot_hrs_item)  # Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 17, spl_hldy_hrs_item)  # Special Holiday Hrs
+            self.TimeSheetTable.setItem(i, 18, spl_hldy_ot_hrs_item)  # Special Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 19, spl_hldy_nd_hrs_item)  # Special Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 20, spl_hldy_nd_ot_hrs_item)  # Special Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 21, reg_hldy_hrs_item)  # Regular Holiday Hrs
+            self.TimeSheetTable.setItem(i, 22, reg_hldy_ot_hrs_item)  # Regular Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 23, reg_hldy_nd_hrs_item)  # Regular Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 24, reg_hldy_nd_ot_hrs_item)  # Regular Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 25, spl_hldy_rd_hrs_item)  # Special Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 26, spl_hldy_rd_ot_hrs_item)  # Special Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 27, spl_hldy_rd_nd_hrs_item)  # Special Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 28, spl_hldy_rd_nd_ot_hrs_item)  # Special Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 29, reg_hldy_rd_hrs_item)  # Regular Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 31, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 32, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')

@@ -183,12 +183,12 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>Time_In</string>
+     <string>Sched_In</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Time_Out</string>
+     <string>Sched_Out</string>
     </property>
    </column>
   </widget>

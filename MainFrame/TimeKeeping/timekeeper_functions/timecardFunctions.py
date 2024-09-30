@@ -220,6 +220,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
 class buttonTimecardFunction:
     def __init__(self, parent):
         self.parent = parent  # Reference to the main UI class
+        self.time_computation = TimeComputation(parent)
 
     def updateSchedule(self):
         # Access UI elements through self.parent
@@ -344,8 +345,8 @@ class buttonTimecardFunction:
                 machcode = self.parent.TimeListTable.item(row, 3).text()  # Machcode
                 check_in = self.parent.TimeListTable.item(row, 4).text()  # Check-in time
                 check_out = self.parent.TimeListTable.item(row, 5).text()  # Check-out time
-                time_in = self.parent.TimeListTable.item(row, 6).text()  # Time-In
-                time_out = self.parent.TimeListTable.item(row, 7).text()  # Time-Out
+                sched_in = self.parent.TimeListTable.item(row, 6).text()  # Time-In
+                sched_out = self.parent.TimeListTable.item(row, 7).text()  # Time-Out
 
                 # Initialize employee entry if not already present
                 if bio_num not in employee_data:
@@ -355,8 +356,8 @@ class buttonTimecardFunction:
                         "Employee No": bio_num,
                         "BioNum": bio_num,
                         "Machcode": machcode,
-                        "Time-In": time_in,
-                        "Time-Out": time_out,
+                        "Sched-In": sched_in,
+                        "Sched-Out": sched_out,
                         "Dates": {str(date.date()): "" for date in date_range}  # Empty slots for each date
                     }
 
@@ -421,8 +422,17 @@ class buttonTimecardFunction:
                     sched_in = self.parent.TimeListTable.item(row, 6).text()
                     sched_out = self.parent.TimeListTable.item(row, 7).text()
 
+                    # Validate the schedule before adding to timesheet data
+                    if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum, trans_date):
+                        return  # Stop the process if validation fails
+
+                    # Calculate late and undertime
+                    late, undertime = self.time_computation.calculate_late_and_undertime(sched_in, sched_out, check_in, check_out)
+
                     timesheet_data.append(
-                        (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out))
+                        (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out, late,
+                         undertime)
+                    )
 
                 except Exception as e:
                     logging.error(f"Error processing row {row}: {e}")
@@ -441,17 +451,15 @@ class buttonTimecardFunction:
 
             # Aggregate totals
             aggregated_results = {}
-            total_hours_worked = total_nd_hours = total_ndot_hours = 0
+            total_hours_worked = total_nd_hours = total_ndot_hours = total_late = total_undertime = 0
 
             for result in results:
                 bio_num = result['bio_num']
                 total_hours_worked += result['total_hours']
                 total_nd_hours += result['nd_hours']
                 total_ndot_hours += result['ndot_hours']
-
-                # Debugging output for running totals
-                print(
-                    f"Running Total -> Hours Worked: {total_hours_worked:.2f}, ND: {total_nd_hours:.2f}, NDOT: {total_ndot_hours:.2f}")
+                total_late += result['late']
+                total_undertime += result['undertime']
 
                 if bio_num not in aggregated_results:
                     aggregated_results[bio_num] = {
@@ -459,17 +467,17 @@ class buttonTimecardFunction:
                         'total_hours_worked': 0,
                         'nd_hours': 0,
                         'ndot_hours': 0,
+                        'late': 0,
+                        'undertime': 0,
                         'days_work': set()
                     }
 
                 aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
                 aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
                 aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
+                aggregated_results[bio_num]['late'] += result['late']
+                aggregated_results[bio_num]['undertime'] += result['undertime']
                 aggregated_results[bio_num]['days_work'].add(result['trans_date'])
-
-            # Final totals output
-            print(
-                f"Final Totals -> Hours Worked: {total_hours_worked:.2f}, ND: {total_nd_hours:.2f}, NDOT: {total_ndot_hours:.2f}")
 
             # Prepare data for display
             dataMerge = []
@@ -483,6 +491,8 @@ class buttonTimecardFunction:
                     'Night_Differential_OT': f"{data['ndot_hours']:.2f}",
                     'Days_Work': len(data['days_work']),
                     'Days_Present': len(data['days_work']),
+                    'Late': f"{data['late']:.2f}",
+                    'Undertime': f"{data['undertime']:.2f}",
                     'OrdDay_Hrs': 0,
                     'OrdDayOT_Hrs': 0,
                     'OrdDayND_Hrs': 0,
@@ -516,58 +526,10 @@ class buttonTimecardFunction:
             logging.error(f"Unexpected error in createTimeSheet: {e}")
             QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
 
-    def calculate_hours(self, check_in_str, check_out_str):
-        # Convert strings to datetime objects
-        check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
-        check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
-
-        # Adjust check_out for midnight crossing
-        if check_out <= check_in:
-            check_out += timedelta(days=1)
-
-        # Define ND and NDOT periods
-        nd_start1 = datetime.strptime("21:00", "%H:%M").time()  # 10:00 PM
-        nd_end1 = datetime.strptime("23:59", "%H:%M").time()  # 11:59 PM
-        nd_start2 = datetime.strptime("01:00", "%H:%M").time()  # 1:00 AM
-        nd_end2 = datetime.strptime("06:00", "%H:%M").time()  # 6:00 AM
-        ndot_start = datetime.strptime("02:00", "%H:%M").time()  # 2:00 AM
-
-        total_hours = (check_out - check_in).total_seconds() / 3600
-        nd_hours = 0
-        ndot_hours = 0
-        current_time = check_in
-
-        while current_time < check_out:
-            next_hour = min(current_time + timedelta(hours=1), check_out)
-
-            # Extract current time for ND/NDOT calculations
-            current_time_struct = current_time.time()
-
-            # ND Hours Calculation
-            if nd_start1 <= current_time_struct <= nd_end1:  # From 10 PM to midnight
-                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end1))
-                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
-            elif nd_start2 <= current_time_struct < nd_end2:  # From 1 AM to 6 AM
-                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
-                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
-
-            # NDOT Hours Calculation
-            if ndot_start <= current_time_struct < nd_end2:  # 2 AM to 6 AM
-                ndot_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
-                ndot_hours += (ndot_period_end - current_time).total_seconds() / 3600
-
-            current_time = next_hour
-
-        # Cap ND hours at 8
-        nd_hours = min(nd_hours, 8)
-
-        # Round and return total, ND, and NDOT hours
-        return int(total_hours), int(nd_hours), int(ndot_hours)
-
     def process_timesheet(self, timesheet_data):
         results = []
         for entry in timesheet_data:
-            bio_num, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out = entry
+            bio_num, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out, late, undertime = entry
 
             check_in_datetime = f"{trans_date} {check_in}"
             check_out_datetime = f"{trans_date} {check_out}"
@@ -577,7 +539,7 @@ class buttonTimecardFunction:
                 check_out_datetime = f"{check_out_date.strftime('%Y-%m-%d')} {check_out}"
 
             # Calculate ND and NDOT
-            _, nd_hours, ndot_hours = self.calculate_hours(check_in_datetime, check_out_datetime)
+            _, nd_hours, ndot_hours = self.time_computation.calculate_hours(check_in_datetime, check_out_datetime)
             total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
                            datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
 
@@ -594,23 +556,11 @@ class buttonTimecardFunction:
                 'check_out': check_out,
                 'total_hours': round(total_hours, 2),
                 'nd_hours': round(nd_hours, 2),
-                'ndot_hours': round(ndot_hours, 2)
+                'ndot_hours': round(ndot_hours, 2),
+                'late': round(late, 2),
+                'undertime': round(undertime, 2)
             })
         return results
-
-    def getTotalHoursWorked(self, check_in, check_out):
-        # Parse the check-in and check-out times
-        time_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
-        time_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
-
-        # Handle the case where the time crosses midnight
-        if time_out <= time_in:
-            time_out += timedelta(days=1)
-
-        # Calculate total hours worked
-        total_hours = (time_out - time_in).total_seconds() / 3600
-
-        return round(total_hours, 3)
 
     def CheckSched(self, checked=False):
         try:
@@ -661,6 +611,139 @@ class buttonTimecardFunction:
         except Exception as e:
             logging.error(f"Unexpected error in CheckSched: {e}")
             QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
+
+
+class TimeComputation:
+    def __init__(self, parent):
+        self.parent = parent
+
+    def validate_schedule(self, sched_in, sched_out, check_in, check_out, bio_num, trans_date):
+        """
+        Validate if Sched_In and Sched_Out are within acceptable tolerance of Check_In and Check_Out.
+        """
+        # Tolerance for schedule validation (60 minutes)
+        time_tolerance = timedelta(minutes=60)
+
+        try:
+            sched_in_time = datetime.strptime(sched_in, '%H:%M:%S')
+            sched_out_time = datetime.strptime(sched_out, '%H:%M:%S')
+            check_in_time = datetime.strptime(check_in, '%H:%M:%S')
+            check_out_time = datetime.strptime(check_out, '%H:%M:%S')
+
+            # Log the parsed times for debugging
+            logging.debug(f"BioNum: {bio_num}, TransDate: {trans_date}, Sched_In: {sched_in_time}, "
+                          f"Check_In: {check_in_time}, Sched_Out: {sched_out_time}, "
+                          f"Check_Out: {check_out_time}")
+
+            # Compare Sched_In and Check_In
+            in_match = abs(sched_in_time - check_in_time) <= time_tolerance
+            out_match = abs(sched_out_time - check_out_time) <= time_tolerance
+
+            if not in_match or not out_match:
+                # Log the mismatches for debugging
+                if not in_match:
+                    logging.debug(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
+
+                if not out_match:
+                    logging.debug(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
+
+                QMessageBox.warning(self.parent, "Validation Error",
+                                    f"BioNum: {bio_num}, TransDate: {trans_date} has unmatched schedule.")
+                return False
+        except Exception as e:
+            logging.error(f"Error in schedule validation for {bio_num} on {trans_date}: {e}")
+            QMessageBox.critical(self.parent, "Validation Error", f"Error validating schedule: {e}")
+            return False
+
+        # Schedule is valid
+        return True
+
+    def calculate_hours(self, check_in_str, check_out_str):
+        # Convert strings to datetime objects
+        check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
+        check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
+
+        # Adjust check_out for midnight crossing
+        if check_out <= check_in:
+            check_out += timedelta(days=1)
+
+        # Define ND and NDOT periods
+        nd_start1 = datetime.strptime("21:00", "%H:%M").time()  # 10:00 PM
+        nd_end1 = datetime.strptime("23:59", "%H:%M").time()  # 11:59 PM
+        nd_start2 = datetime.strptime("01:00", "%H:%M").time()  # 1:00 AM
+        nd_end2 = datetime.strptime("06:00", "%H:%M").time()  # 6:00 AM
+        ndot_start = datetime.strptime("02:00", "%H:%M").time()  # 2:00 AM
+
+        total_hours = (check_out - check_in).total_seconds() / 3600
+        nd_hours = 0
+        ndot_hours = 0
+        current_time = check_in
+
+        while current_time < check_out:
+            next_hour = min(current_time + timedelta(hours=1), check_out)
+
+            # Extract current time for ND/NDOT calculations
+            current_time_struct = current_time.time()
+
+            # ND Hours Calculation
+            if nd_start1 <= current_time_struct <= nd_end1:  # From 10 PM to midnight
+                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end1))
+                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
+            elif nd_start2 <= current_time_struct < nd_end2:  # From 1 AM to 6 AM
+                nd_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
+                nd_hours += (nd_period_end - current_time).total_seconds() / 3600
+
+            # NDOT Hours Calculation
+            if ndot_start <= current_time_struct < nd_end2:  # 2 AM to 6 AM
+                ndot_period_end = min(next_hour, datetime.combine(current_time.date(), nd_end2))
+                ndot_hours += (ndot_period_end - current_time).total_seconds() / 3600
+
+            current_time = next_hour
+
+        # Cap ND hours at 8
+        nd_hours = min(nd_hours, 8)
+
+        # Round and return total, ND, and NDOT hours
+        return int(total_hours), int(nd_hours), int(ndot_hours)
+
+    def calculate_late_and_undertime(self, sched_in, sched_out, check_in, check_out):
+        """
+        Calculate late and undertime based on scheduled times and actual times.
+        """
+        late = 0
+        undertime = 0
+        try:
+            sched_in_time = datetime.strptime(sched_in, '%H:%M:%S')
+            sched_out_time = datetime.strptime(sched_out, '%H:%M:%S')
+            check_in_time = datetime.strptime(check_in, '%H:%M:%S')
+            check_out_time = datetime.strptime(check_out, '%H:%M:%S')
+
+            # Calculate late (if check_in is after sched_in)
+            if check_in_time > sched_in_time:
+                late = (check_in_time - sched_in_time).total_seconds() / 3600
+
+            # Calculate undertime (if check_out is before sched_out)
+            if check_out_time < sched_out_time:
+                undertime = (sched_out_time - check_out_time).total_seconds() / 3600
+
+        except Exception as e:
+            logging.error(f"Error in calculating late/undertime: {e}")
+
+        return late, undertime
+
+    def get_total_hours_worked(self, check_in, check_out):
+        # Parse the check-in and check-out times
+        time_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
+        time_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
+
+        # Handle the case where the time crosses midnight
+        if time_out <= time_in:
+            time_out += timedelta(days=1)
+
+        # Calculate total hours worked
+        total_hours = (time_out - time_in).total_seconds() / 3600
+
+        return round(total_hours, 3)
 
 
 class searchBioNum:
