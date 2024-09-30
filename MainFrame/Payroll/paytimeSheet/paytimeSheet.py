@@ -1,10 +1,5 @@
 import sys
 import os
-import threading
-
-import requests
-
-from MainFrame.Database_Connection.notification_listener import NotificationService
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

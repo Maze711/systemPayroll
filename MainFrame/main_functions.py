@@ -16,11 +16,6 @@ from MainFrame.FILE201.file201_Function.listFunction import ListFunction
 class MainWindowFunctions(QMainWindow):
     def __init__(self):
         super(MainWindowFunctions, self).__init__()
-        self.notification_service = NotificationService()
-        self.notification_thread = threading.Thread(target=self.notification_service.poll_notifications)
-        self.server_thread = threading.Thread(target=self.notification_service.start_server)
-        self.notification_thread.start()
-        self.server_thread.start()
 
     @functools.cache
     def get_button_stylesheet(self, enabled=True):
