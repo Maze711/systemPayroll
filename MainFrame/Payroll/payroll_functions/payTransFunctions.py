@@ -152,7 +152,7 @@ class PayTransFunctions:
         if file_name:
             try:
                 # Save the DataFrame to an Excel file
-                df.to_excel(file_name, index=False, engine='openpyxl')
+                df.to_excel(file_name, index=False, engine='openpyxl', sheet_name='PayTrans')
                 # globalFunction.export_to_excel(self.parent.data, file_name)
                 QMessageBox.information(self.parent, "Export Successful", f"Data has been successfully exported to {file_name}")
             except Exception as e:
