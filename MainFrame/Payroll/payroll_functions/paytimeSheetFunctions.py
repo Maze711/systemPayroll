@@ -1,15 +1,10 @@
-import sys
-import os
-
-from MainFrame.systemFunctions import globalFunction, FileProcessor
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
+from MainFrame.systemFunctions import globalFunction, FileProcessor
 from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
 from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -262,7 +257,6 @@ class PaytimeSheetFunctions:
                         logging.warning(f"Column '{field_name}' not found in data for row {i + 1}")
                 logging.info(f"Added row {i + 1}: {row}")
 
-            QMessageBox.information(self.parent, "Success", "Paytime sheet table populated successfully.")
         except Exception as e:
             logging.error(f"Error populating paytime sheet table: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to populate paytime sheet table: {e}")

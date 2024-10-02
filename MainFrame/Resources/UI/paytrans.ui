@@ -496,13 +496,13 @@ border-radius: 5px;
 background-color: #485ba1;
 }
 
-#btnPayTrans{
+#btnPayTrans, #btnEarnings{
 border-radius: 5px;
 color: white;
 background-color: &quot;#30d977&quot;;
 }
 
-#btnPayTrans:hover{
+#btnPayTrans:hover, #btnEarnings:hover{
 	background-color: &quot;#26ad5f&quot;;
 }
 
@@ -581,6 +581,39 @@ background-color: #485ba1;
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnEarnings">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>EARNINGS</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnInsertDeduction">
         <property name="minimumSize">
          <size>
@@ -636,7 +669,7 @@ background-color: #485ba1;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>BANK REGISTER</string>
+         <string>BANK REGISTRY</string>
         </property>
         <property name="icon">
          <iconset>

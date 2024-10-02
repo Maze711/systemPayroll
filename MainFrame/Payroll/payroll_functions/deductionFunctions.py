@@ -1,15 +1,12 @@
-import sys
-import os
-from openpyxl.workbook import Workbook
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
+from openpyxl.workbook import Workbook
 from MainFrame.systemFunctions import globalFunction, FileProcessor, ValidInteger
 from MainFrame.Payroll.paytimeSheet.storeDeductionLoader import StoreDeductionLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Database_Connection.user_session import UserSession
+
 
 class DeductionFunctions:
     def __init__(self, parent):

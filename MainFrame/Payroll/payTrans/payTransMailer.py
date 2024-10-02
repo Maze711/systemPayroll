@@ -1,14 +1,9 @@
-import logging
-import sys
-import os
-from email.message import EmailMessage
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
+from email.message import EmailMessage
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Database_Connection.user_session import UserSession
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -404,6 +399,7 @@ class EmailerProcessor(QObject):
             QMessageBox.critical(self, "Email Sending Failed", f"Could not send email to {em['To']}: {str(e)}")
             return False
         return True
+
 
 class EmailerLoader(QDialog):
     def __init__(self, data, paytrans_window):
