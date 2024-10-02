@@ -2,7 +2,6 @@ from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, ValidInteger
 from MainFrame.Database_Connection.notification_listener import NotificationService
 from MainFrame.Payroll.payroll_functions.payaddEmpFunction import PayAddEmpFunction
-import mysql.connector
 
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 

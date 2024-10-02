@@ -1,14 +1,10 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
 from MainFrame.Payroll.payroll_functions.deductionFunctions import DeductionFunctions
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Payroll.payroll_functions.paytimeSheetFunctions import PaytimeSheetFunctions
 from MainFrame.systemFunctions import timekeepingFunction
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
 
 
@@ -66,7 +62,7 @@ class PaytimeSheet(QMainWindow):
             self.update_indication_lbl()
 
         except Exception as e:
-            logging.error(f"Error in setupPayTimeSheetUI: {e}")
+            QMessageBox.critical(None, "Setup Error", f"Error in setupPayTimeSheetUI: {str(e)}")
 
     def setupDeductionUI(self):
         try:

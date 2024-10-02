@@ -1,13 +1,10 @@
-import sys
-import os
-
-from openpyxl.workbook import Workbook
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from MainFrame.Resources.lib import *
-
+from openpyxl.workbook import Workbook
 from MainFrame.Payroll.paytimeSheet.paytimeSheet import PaytimeSheet
 from MainFrame.Database_Connection.DBConnection import create_connection
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 class FileProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -104,11 +101,11 @@ class FileProcessor(QObject):
                 standardized.append(header_lower)  # Keep original if no match found
         return standardized
 
+
 class PayrollImporterFunctions:
     def __init__(self, dialog, user_role):
         self.dialog = dialog
         self.user_role = user_role
-
 
     def importTxt(self):
         fileName, _ = QFileDialog.getOpenFileName(self.dialog, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")

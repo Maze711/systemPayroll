@@ -1,0 +1,1292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1065</width>
+    <height>515</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Earnings</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#employeeRate{
+background-color: #DCE5FE;
+border: 1px solid black;
+}
+
+#employeeDetails{
+background-color: #DCE5FE;
+}
+
+QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
+    min-height: 48px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>0</y>
+     <width>1047</width>
+     <height>497</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>130</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>poppins</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QWidget" name="employeeDetails" native="true">
+    <property name="geometry">
+     <rect>
+      <x>-20</x>
+      <y>10</y>
+      <width>1071</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>poppins</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <widget class="QLabel" name="lblName">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>171</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Employee Name:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="empNameTxt">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>20</y>
+       <width>291</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bioNumTxt">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>20</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblBio">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>20</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Bio No.:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>90</y>
+      <width>1041</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#frame{
+border-top: 2px solid black;
+}
+
+QLabel{
+border: none;
+}
+
+QComboBox{
+border-radius: 4px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="geometry">
+      <rect>
+       <x>509</x>
+       <y>4</y>
+       <width>531</width>
+       <height>321</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>519</width>
+        <height>370</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>370</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QWidget" name="widget_3" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QComboBox{
+border: 1px solid black;
+border-radius: 5px;
+}
+
+QLineEdit {
+border: 1px solid black;
+border-radius: 5px;
+}</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblName_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>16</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Deductions</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="payDed1_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>SSS</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="payDed1_3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Pag-Ibig</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="payDed1">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>PhilHealth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="payDed2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Tax</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="payDed3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>SSS Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="payDed4">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Pag-Ibig Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="payDed5">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="payDed6">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="payDed6_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="lblSSS">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="lblPagIbig">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="lblPhilHealth">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="lblTax">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="lblSSSLoan">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="lblPagIbigLoan">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="lblLoan">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QLabel" name="lblLoan_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLabel" name="lblLoan_3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QScrollArea" name="scrollArea_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>501</width>
+       <height>301</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QScrollBar:vertical {
+	border: none;
+    background: rgba(217, 217, 217, 1);
+ }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>489</width>
+        <height>370</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>370</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QWidget" name="widget_4" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QComboBox{
+border: 1px solid black;
+border-radius: 5px;
+}
+
+QLineEdit {
+border: 1px solid black;
+border-radius: 5px;
+}</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblName_3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>16</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Earnings</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="payDed1_4">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Regular Day (#days)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="lblReg">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="payDed1_5">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Regular OT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="lblRegOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="payDed1_6">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Regular ND (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="lblRegND">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="payDed2_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Regular NDOT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="lblRegNDOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="payDed3_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Special Hldy Restday (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="lblSpclRD">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="payDed4_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Restday OT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="lblRDOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="payDed5_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Restday ND (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="lblRDND">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="payDed6_3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Restday NDOT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QLabel" name="lblRDNDOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="payDed6_4">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Holiday (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLabel" name="lblHldy">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QLabel" name="payDed6_5">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Holiday OT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QLabel" name="payDed6_6">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Holiday ND (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QLabel" name="lblHldyND">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QLabel" name="payDed6_7">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Holiday NDOT (hrs)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QLabel" name="lblHldyNDOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QLabel" name="lblHldyOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widgetBTN" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>440</y>
+     <width>1065</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Poppins</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widgetBTN{
+background: rgba(220, 229, 254, 1);
+border: 1px solid black;
+}
+
+#addBTN, #editBTN, #revertBTN, #saveBTN {
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(52, 66, 115, 1);
+    color: white;
+    height: 26px;
+	font-size: 12px;
+    padding: 5px 10px; /* Add padding for spacing */
+}
+</string>
+   </property>
+   <widget class="QLabel" name="lblTitle_2">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>0</y>
+      <width>161</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
+    min-height: 48px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+
+#frmInfo, #groupIdNum, #groupHRNote, #groupEduInfo, #scrollWorkExpArea, #groupCompany {
+background-color: #DCE5FE
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Grand Total:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="deductionTotal">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>0</y>
+      <width>251</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> border: none; background: none;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="earningTotal">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>0</y>
+      <width>251</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> border: none; background: none;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblTitle_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>0</y>
+      <width>161</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* VERTICAL SCROLLBAR */
+QScrollBar:vertical {
+    border: none;
+    background-color: rgba(220, 229, 254, 1); /* Updated background color */
+    width: 12px;
+    margin: 0;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {
+    background-color: rgba(52, 66, 115, 1); /* Handle color */
+    min-height: 48px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* REMOVE THE UP ARROW BUTTON */
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE DOWN ARROW BUTTON */
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* REMOVE THE SPACE LEFT BY THE UP AND DOWN ARROW BUTTONS */
+QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
+    background: none;
+}
+
+#frmInfo, #groupIdNum, #groupHRNote, #groupEduInfo, #scrollWorkExpArea, #groupCompany {
+background-color: #DCE5FE
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Grand Total:</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

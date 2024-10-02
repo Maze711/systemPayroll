@@ -1,21 +1,20 @@
-import sys
-import os
-
-import pandas as pd
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.Payroll.payTrans.bankRegister import bankRegister
 from MainFrame.Payroll.payTrans.payTransMailer import EmailerLoader
+from MainFrame.Payroll.payTrans.earnings import earnings
 from MainFrame.Database_Connection.DBConnection import create_connection
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
+
 
 class PayTransFunctions:
     def __init__(self, parent):
         self.parent = parent
         self.additional_buttons_container = None
+
+        self.parent.paytransTable.itemDoubleClicked.connect(self.openEarnings)
 
     def populatePayTransTable(self, data):
         for row in range(self.parent.paytransTable.rowCount()):
@@ -327,6 +326,14 @@ class PayTransFunctions:
             self.bankRegister.show()
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to create Bank Register window: {e}")
+
+    def openEarnings(self):
+        if self.parent.paytransTable.currentRow() == -1:
+            QMessageBox.warning(self.parent, "No Selection", "Please select an employee from the table first.")
+            return
+
+        self.showEarnings = earnings(self.parent)
+        self.showEarnings.show()
 
 
 class ImportFromExcelLoader(QDialog):
