@@ -147,14 +147,14 @@ class DeductionFunctions:
                 bioNumTxt.setText(bio_num_item.text() if bio_num_item else "")
 
             # Set the deduction values to the input fields
-            for i in range(1, 20):
+            for i in range(1, 19):
                 field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
                 if field:
                     field.setText(deduction_values_mapping[i])
 
             # Now apply the integer validator to the deduction fields
             validator = ValidInteger()
-            ded_fields = [self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}') for i in range(1, 20)]
+            ded_fields = [self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}') for i in range(1, 19)]
             validator.set_validators(*ded_fields)
 
             # Connect the placeBTN if exists

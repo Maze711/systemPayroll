@@ -19,8 +19,9 @@ background-color: #DCE5FE;
 border: 1px solid black;
 }
 
-#employeeDetails{
+#employeeDetails, #widget_4, #widget_3{
 background-color: #DCE5FE;
+border: 1px solid black;
 }
 
 QLineEdit{
@@ -245,9 +246,9 @@ font-family: Poppins;
      <property name="geometry">
       <rect>
        <x>509</x>
-       <y>4</y>
+       <y>40</y>
        <width>531</width>
-       <height>321</height>
+       <height>301</height>
       </rect>
      </property>
      <property name="font">
@@ -314,21 +315,6 @@ border-radius: 5px;
          </property>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
-           <widget class="QLabel" name="lblName_2">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>16</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Deductions</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
            <widget class="QLabel" name="payDed1_2">
             <property name="font">
              <font>
@@ -343,127 +329,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="payDed1_3">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Pag-Ibig</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="payDed1">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>PhilHealth</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="payDed2">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Tax</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="payDed3">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>SSS Loan</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="payDed4">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Pag-Ibig Loan</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="payDed5">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Loan</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="payDed6">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Loan</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="payDed6_2">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Loan</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QLabel" name="lblSSS">
             <property name="font">
              <font>
@@ -478,7 +344,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="0">
+           <widget class="QLabel" name="payDed1_3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Pag-Ibig</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QLabel" name="lblPagIbig">
             <property name="font">
              <font>
@@ -493,7 +374,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="0">
+           <widget class="QLabel" name="payDed1">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>PhilHealth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
            <widget class="QLabel" name="lblPhilHealth">
             <property name="font">
              <font>
@@ -508,7 +404,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="3" column="0">
+           <widget class="QLabel" name="payDed2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Tax</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
            <widget class="QLabel" name="lblTax">
             <property name="font">
              <font>
@@ -523,7 +434,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="4" column="0">
+           <widget class="QLabel" name="payDed3">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>SSS Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
            <widget class="QLabel" name="lblSSSLoan">
             <property name="font">
              <font>
@@ -538,7 +464,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="5" column="0">
+           <widget class="QLabel" name="payDed4">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Pag-Ibig Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
            <widget class="QLabel" name="lblPagIbigLoan">
             <property name="font">
              <font>
@@ -553,7 +494,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="6" column="0">
+           <widget class="QLabel" name="payDed5">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
            <widget class="QLabel" name="lblLoan">
             <property name="font">
              <font>
@@ -568,7 +524,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="7" column="0">
+           <widget class="QLabel" name="payDed6">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
            <widget class="QLabel" name="lblLoan_2">
             <property name="font">
              <font>
@@ -583,7 +554,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="8" column="0">
+           <widget class="QLabel" name="payDed6_2">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Loan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
            <widget class="QLabel" name="lblLoan_3">
             <property name="font">
              <font>
@@ -608,15 +594,17 @@ border-radius: 5px;
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>10</y>
+       <y>40</y>
        <width>501</width>
        <height>301</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>poppins</family>
+       <family>Poppins</family>
        <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -677,21 +665,6 @@ border-radius: 5px;
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="lblName_3">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>16</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Earnings</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
            <widget class="QLabel" name="payDed1_4">
             <property name="font">
              <font>
@@ -706,7 +679,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QLabel" name="lblReg">
             <property name="font">
              <font>
@@ -721,7 +694,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="payDed1_5">
             <property name="font">
              <font>
@@ -736,7 +709,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="QLabel" name="lblRegOT">
             <property name="font">
              <font>
@@ -751,7 +724,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="payDed1_6">
             <property name="font">
              <font>
@@ -766,7 +739,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="1">
            <widget class="QLabel" name="lblRegND">
             <property name="font">
              <font>
@@ -781,7 +754,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="payDed2_2">
             <property name="font">
              <font>
@@ -796,7 +769,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="3" column="1">
            <widget class="QLabel" name="lblRegNDOT">
             <property name="font">
              <font>
@@ -811,7 +784,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="payDed3_2">
             <property name="font">
              <font>
@@ -826,7 +799,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="4" column="1">
            <widget class="QLabel" name="lblSpclRD">
             <property name="font">
              <font>
@@ -841,7 +814,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="payDed4_2">
             <property name="font">
              <font>
@@ -856,7 +829,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="5" column="1">
            <widget class="QLabel" name="lblRDOT">
             <property name="font">
              <font>
@@ -871,7 +844,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="payDed5_2">
             <property name="font">
              <font>
@@ -886,7 +859,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="6" column="1">
            <widget class="QLabel" name="lblRDND">
             <property name="font">
              <font>
@@ -901,7 +874,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="payDed6_3">
             <property name="font">
              <font>
@@ -916,7 +889,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="7" column="1">
            <widget class="QLabel" name="lblRDNDOT">
             <property name="font">
              <font>
@@ -931,7 +904,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="8" column="0">
            <widget class="QLabel" name="payDed6_4">
             <property name="font">
              <font>
@@ -946,7 +919,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="8" column="1">
            <widget class="QLabel" name="lblHldy">
             <property name="font">
              <font>
@@ -961,7 +934,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="10" column="0">
+          <item row="9" column="0">
            <widget class="QLabel" name="payDed6_5">
             <property name="font">
              <font>
@@ -976,7 +949,22 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="11" column="0">
+          <item row="9" column="1">
+           <widget class="QLabel" name="lblHldyOT">
+            <property name="font">
+             <font>
+              <family>poppins</family>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
            <widget class="QLabel" name="payDed6_6">
             <property name="font">
              <font>
@@ -991,7 +979,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="11" column="1">
+          <item row="10" column="1">
            <widget class="QLabel" name="lblHldyND">
             <property name="font">
              <font>
@@ -1006,7 +994,7 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="11" column="0">
            <widget class="QLabel" name="payDed6_7">
             <property name="font">
              <font>
@@ -1021,23 +1009,8 @@ border-radius: 5px;
             </property>
            </widget>
           </item>
-          <item row="12" column="1">
+          <item row="11" column="1">
            <widget class="QLabel" name="lblHldyNDOT">
-            <property name="font">
-             <font>
-              <family>poppins</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QLabel" name="lblHldyOT">
             <property name="font">
              <font>
               <family>poppins</family>
@@ -1056,6 +1029,48 @@ border-radius: 5px;
        </item>
       </layout>
      </widget>
+    </widget>
+    <widget class="QLabel" name="lblName_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Earnings</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lblName_2">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>20</y>
+       <width>361</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>poppins</family>
+       <pointsize>16</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Payables</string>
+     </property>
     </widget>
    </widget>
   </widget>

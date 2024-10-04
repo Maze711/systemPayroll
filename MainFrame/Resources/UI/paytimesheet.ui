@@ -566,7 +566,7 @@ background-color: #485ba1;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Create Pay Trans</string>
+         <string>Process PayTrans</string>
         </property>
         <property name="iconSize">
          <size>

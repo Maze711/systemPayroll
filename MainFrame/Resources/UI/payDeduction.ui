@@ -123,38 +123,37 @@ background-color: &quot;#dce5fe&quot;;
       <string>Date To:</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QTableWidget" name="paytimesheetTable">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>60</y>
-      <width>1441</width>
-      <height>605</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="font">
-     <font>
-      <family>Poppins SemiBold</family>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
-    </property>
-    <property name="contextMenuPolicy">
-     <enum>Qt::DefaultContextMenu</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">/* Header Design */
+    <widget class="QTableWidget" name="paytimesheetTable">
+     <property name="geometry">
+      <rect>
+       <x>-10</x>
+       <y>70</y>
+       <width>1441</width>
+       <height>605</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins SemiBold</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* Header Design */
 
 QHeaderView::section {
 	font-family: Poppins;
@@ -174,225 +173,221 @@ QTableView::item:selected:active {
 QTableWidget {
 	alternate-background-color: &quot;#DDDDDD&quot;;
 }</string>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAsNeeded</enum>
-    </property>
-    <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustIgnored</enum>
-    </property>
-    <property name="editTriggers">
-     <set>QAbstractItemView::NoEditTriggers</set>
-    </property>
-    <property name="tabKeyNavigation">
-     <bool>false</bool>
-    </property>
-    <property name="showDropIndicator" stdset="0">
-     <bool>false</bool>
-    </property>
-    <property name="dragDropOverwriteMode">
-     <bool>false</bool>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
-    </property>
-    <property name="selectionBehavior">
-     <enum>QAbstractItemView::SelectRows</enum>
-    </property>
-    <property name="textElideMode">
-     <enum>Qt::ElideRight</enum>
-    </property>
-    <property name="showGrid">
-     <bool>false</bool>
-    </property>
-    <property name="gridStyle">
-     <enum>Qt::SolidLine</enum>
-    </property>
-    <property name="sortingEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="cornerButtonEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="columnCount">
-     <number>24</number>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderCascadingSectionResizes">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>50</number>
-    </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>150</number>
-    </attribute>
-    <attribute name="horizontalHeaderHighlightSections">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderStretchLastSection">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderCascadingSectionResizes">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderMinimumSectionSize">
-     <number>23</number>
-    </attribute>
-    <attribute name="verticalHeaderDefaultSectionSize">
-     <number>31</number>
-    </attribute>
-    <attribute name="verticalHeaderHighlightSections">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-     <bool>false</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string>Emp Number</string>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Bio Num</string>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Employee Name</string>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustIgnored</enum>
      </property>
-     <property name="font">
-      <font>
-       <strikeout>false</strikeout>
-      </font>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="foreground">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </brush>
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Late/Absent</string>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>SSS_Loan</string>
+     <property name="dragDropOverwriteMode">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Pag_Ibig_Loan</string>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Cash_Advance</string>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Canteen</string>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Tax</string>
+     <property name="textElideMode">
+      <enum>Qt::ElideRight</enum>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>SSS</string>
+     <property name="showGrid">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Medicare/PhilHealth</string>
+     <property name="gridStyle">
+      <enum>Qt::SolidLine</enum>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>PAGIBIG</string>
+     <property name="sortingEnabled">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Clinic</string>
+     <property name="cornerButtonEnabled">
+      <bool>false</bool>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Arayata_Annual</string>
+     <property name="columnCount">
+      <number>23</number>
      </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>HMI</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Funeral</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Voluntary</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>TYLS</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>OS_Allowance</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>CBA_Allowance</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Hazard_Pay</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>PA</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>HolEarn_SunND</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Backpay</string>
-     </property>
-    </column>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>50</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>150</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>23</number>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>31</number>
+     </attribute>
+     <attribute name="verticalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Emp Number</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Bio Num</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Employee Name</string>
+      </property>
+      <property name="font">
+       <font>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="foreground">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>SSS_Loan</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Pag_Ibig_Loan</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Cash_Advance</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Canteen</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tax</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>SSS</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Medicare/PhilHealth</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>PAGIBIG</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Clinic</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Arayata_Annual</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>HMI</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Funeral</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Voluntary</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TYLS</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>OS_Allowance</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>CBA_Allowance</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Hazard_Pay</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>PA</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>HolEarn_SunND</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Backpay</string>
+      </property>
+     </column>
+    </widget>
    </widget>
    <widget class="QFrame" name="sideBar">
     <property name="geometry">
@@ -485,7 +480,7 @@ background-color: #c75657;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Import</string>
+         <string>Import Timesheet</string>
         </property>
         <property name="icon">
          <iconset>
@@ -522,7 +517,7 @@ background-color: #c75657;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>EDIT DEDUCTION</string>
+         <string>Edit Payables</string>
         </property>
         <property name="iconSize">
          <size>
