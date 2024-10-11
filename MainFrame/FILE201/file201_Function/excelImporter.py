@@ -347,13 +347,24 @@ class ImportProcessor(QObject):
             # Fetch the headers from the DataFrame
             headers = sheet.columns.tolist()
 
+            # TABLES IN THIS CODE IS EDUC_INFORMATION, EMP_INFO, EMERGENCY_LIST, EMP_LIST_ID, EMP_POSNSCHED, EMP_RATE, EMP_STATUS,
+            # VACN_SICK_COUNT, EMP_IMAGES, FAMILY_BACKGROUND,
+            # MISSING TABLES:  TECH_SKILLS, WORK_EXP
             required_columns = {
+                'education': [
+                    'empl_no', 'empl_id', 'idnum', 'empid', 'college', 'highSchool', 'elemSchool', 'collegeAdd',
+                    'highschoolAdd', 'elemAdd', 'collegeCourse', 'highschoolStrand', 'collegeYear', 'highschoolYear',
+                    'elemYear'
+                ],
+                'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
+                'emp_image': [
+                    'empl_no', 'empl_id', 'empid', 'empl_img'
+                ],
                 'personal': [
                     'empl_no', 'empl_id', 'idnum', 'empid', 'surname', 'firstname', 'mi', 'street', 'city', 'zipcode',
                     'birthday',
                     'birthplace', 'religion', 'status', 'sex', 'height', 'weight', 'mobile', 'blood_type', 'email'
                 ],
-                'emergency': ['empl_no', 'empl_id', 'idnum', 'emer_name'],
                 'list': ['empl_no', 'empl_id', 'idnum', 'taxstat', 'sss', 'tin', 'pagibig', 'philhealth', 'bank_code',
                          'cola'],
                 'posnsched': ['empl_no', 'empl_id', 'empid', 'idnum', 'pos_descr', 'sched_in', 'sched_out',
@@ -361,6 +372,12 @@ class ImportProcessor(QObject):
                 'rate': ['empl_no', 'empl_id', 'idnum', 'rph', 'rate', 'mth_salary', 'dailyallow', 'mntlyallow'],
                 'status': ['empl_no', 'empl_id', 'idnum', 'compcode', 'dept_code', 'position', 'emp_stat', 'date_hired',
                            'resigned', 'dtresign'],
+                'family_background': [
+                    'empl_no', 'empl_id', 'idnum', 'empid', 'fathersLastName', 'fathersFirstName', 'fathersMiddleName',
+                    'mothersLastName', 'mothersFirstName', 'mothersMiddleName', 'spouseLastName', 'spouseFirstName',
+                    'spouseMiddleName', 'beneficiaryLastName', 'beneficiaryFirstName', 'beneficiaryMiddleName',
+                    'dependentsName'
+                ],
                 'vacnsick': ['empl_no', 'empl_id', 'idnum', 'max_vacn', 'max_sick']
             }
 
@@ -381,8 +398,18 @@ class ImportProcessor(QObject):
 
                 # Prepare queries
                 insert_queries = {
+                    'education': """
+                        INSERT IGNORE INTO educ_information (empl_no, empl_id, idnum, empid, college, highSchool, elemSchool, 
+                        collegeAdd, highschoolAdd, elemAdd, collegeCourse, highschoolStrand, collegeYear, highschoolYear,
+                        elemYear)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
                     'emergency': """
                         INSERT IGNORE INTO emergency_list (empl_no, empl_id, idnum, emer_name)
+                        VALUES (%s, %s, %s, %s)
+                    """,
+                    'emp_image': """
+                        INSERT IGNORE INTO emp_images (empl_no, empl_id, empid, empl_img)
                         VALUES (%s, %s, %s, %s)
                     """,
                     'personal': """
@@ -406,6 +433,13 @@ class ImportProcessor(QObject):
                         INSERT IGNORE INTO emp_status (empl_no, empl_id, idnum, compcode, dept_code, position, emp_stat, date_hired, resigned, dtresign)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """,
+                    'family_background': """
+                        INSERT IGNORE INTO family_background (empl_no, empl_id, idnum, empid, fathersLastName, fathersFirstName, fathersMiddleName,
+                        mothersLastName, mothersFirstName, mothersMiddleName, spouseLastName, spouseFirstName,
+                        spouseMiddleName, beneficiaryLastName, beneficiaryFirstName, beneficiaryMiddleName,
+                        dependentsName)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
                     'vacnsick': """
                         INSERT IGNORE INTO vacn_sick_count (empl_no, empl_id, idnum, max_vacn, max_sick)
                         VALUES (%s, %s, %s, %s, %s)
@@ -413,13 +447,16 @@ class ImportProcessor(QObject):
                 }
 
                 data = {
+                    'education': [],
+                    'emp_image': [],
                     'emergency': [],
                     'personal': [],
                     'list': [],
                     'posnsched': [],
                     'rate': [],
                     'status': [],
-                    'vacnsick': []
+                    'vacnsick': [],
+                    'family_background': []
                 }
 
                 # Manually split data into chunks

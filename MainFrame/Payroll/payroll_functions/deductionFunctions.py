@@ -128,9 +128,7 @@ class DeductionFunctions:
                 19: self.parent.paytimesheetTable.item(selected_row, 21).text() if self.parent.paytimesheetTable.item(
                     selected_row, 21) else "",
                 20: self.parent.paytimesheetTable.item(selected_row, 22).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 22) else "",
-                21: self.parent.paytimesheetTable.item(selected_row, 23).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 23) else ""
+                    selected_row, 22) else ""
             }
 
             ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\deduction.ui")
@@ -178,30 +176,29 @@ class DeductionFunctions:
                 return
 
             deductions_mapping = {
-                1: 'Late/Absent',
-                2: 'SSS_Loan',
-                3: 'Pag_Ibig_Loan',
-                4: 'Cash_Advance',
-                5: 'Canteen',
-                6: 'Tax',
-                7: 'SSS',
-                8: 'Medicare/PhilHealth',
-                9: 'PAGIBIG',
-                10: 'Clinic',
-                11: 'Arayata_Annual',
-                12: 'HMI',
-                13: 'Funeral',
-                14: 'Voluntary',
-                15: 'TYLS',
-                16: 'OS_Allowance',
-                17: 'CBA_Allowance',
-                18: 'Hazard_Pay',
-                19: 'PA',
-                20: 'HolEarn_SunND',
-                21: 'Backpay'
+                1: 'SSS_Loan',
+                2: 'Pag_Ibig_Loan',
+                3: 'Cash_Advance',
+                4: 'Canteen',
+                5: 'Tax',
+                6: 'SSS',
+                7: 'Medicare/PhilHealth',
+                8: 'PAGIBIG',
+                9: 'Clinic',
+                10: 'Arayata_Annual',
+                11: 'HMI',
+                12: 'Funeral',
+                13: 'Voluntary',
+                14: 'TYLS',
+                15: 'OS_Allowance',
+                16: 'CBA_Allowance',
+                17: 'Hazard_Pay',
+                18: 'PA',
+                19: 'HolEarn_SunND',
+                20: 'Backpay'
             }
 
-            for i in range(1, 22):
+            for i in range(1, 21):
                 deduction_field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
                 if deduction_field:
                     deduction_value = deduction_field.text()
@@ -230,7 +227,6 @@ class DeductionFunctions:
         column_count = self.parent.paytimesheetTable.columnCount()
 
         deductions_column_mapping = {
-            1: 'Late/Absent',
             2: 'SSS_Loan',
             3: 'Pag_Ibig_Loan',
             4: 'Cash_Advance',
