@@ -37,7 +37,6 @@ class StoringDeductionProcessor(QObject):
                         empNum INT(11),
                         bioNum INT(11),
                         empName VARCHAR(225),
-                        late_absent INT(11),
                         sss_loan INT(11),
                         pag_ibig_loan INT(11),
                         cash_advance INT(11),
@@ -85,7 +84,6 @@ class StoringDeductionProcessor(QObject):
                         each_data.get('Emp Number', 0),  # Default to 0 if not present
                         each_data.get('Bio Num', 0),
                         each_data.get('Employee Name', ""),
-                        each_data.get('Late/Absent', 0),
                         each_data.get('SSS_Loan', 0),
                         each_data.get('Pag_Ibig_Loan', 0),
                         each_data.get('Cash_Advance', 0),
@@ -113,36 +111,35 @@ class StoringDeductionProcessor(QObject):
 
                     insert_query = f"""
                         INSERT INTO {table_name} (
-                            empNum, bioNum, empName, late_absent, sss_loan, pag_ibig_loan, cash_advance, 
+                            empNum, bioNum, empName, sss_loan, pag_ibig_loan, cash_advance, 
                             canteen, tax, sss, medicare_philhealth, pag_ibig, clinic, 
                             arayata_manual, hmi, funeral, voluntary, TYLS, osallow, cbaallow,
                             hazpay, pa, holearnsund, backpay, deduction_placed_by, deduction_placed_date
                         ) 
                         VALUES (
-                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
                             %s, %s, %s, %s, %s, NOW()
                         ) 
                         ON DUPLICATE KEY UPDATE 
-                            late_absent = VALUES(late_absent), 
-                            sss_loan = VALUES(sss_loan), 
-                            pag_ibig_loan = VALUES(pag_ibig_loan),
-                            cash_advance = VALUES(cash_advance), 
-                            canteen = VALUES(canteen), 
-                            tax = VALUES(tax),
-                            sss = VALUES(sss), 
-                            medicare_philhealth = VALUES(medicare_philhealth), 
-                            pag_ibig = VALUES(pag_ibig),
-                            clinic = VALUES(clinic), 
-                            arayata_manual = VALUES(arayata_manual), 
-                            hmi = VALUES(hmi), 
-                            funeral = VALUES(funeral), 
-                            voluntary = VALUES(voluntary), 
-                            TYLS = VALUES(TYLS),
-                            osallow = VALUES(osallow), 
-                            cbaallow = VALUES(cbaallow), 
-                            hazpay = VALUES(hazpay), 
-                            holearnsund = VALUES(holearnsund), 
-                            backpay = VALUES(backpay), 
+                            sss_loan = IF(VALUES(sss_loan) > sss_loan, VALUES(sss_loan), sss_loan),
+                            pag_ibig_loan = IF(VALUES(pag_ibig_loan) > pag_ibig_loan, VALUES(pag_ibig_loan), pag_ibig_loan),
+                            cash_advance = IF(VALUES(cash_advance) > cash_advance, VALUES(cash_advance), cash_advance),
+                            canteen = IF(VALUES(canteen) > canteen, VALUES(canteen), canteen),
+                            tax = IF(VALUES(tax) > tax, VALUES(tax), tax),
+                            sss = IF(VALUES(sss) > sss, VALUES(sss), sss),
+                            medicare_philhealth = IF(VALUES(medicare_philhealth) > medicare_philhealth, VALUES(medicare_philhealth), medicare_philhealth),
+                            pag_ibig = IF(VALUES(pag_ibig) > pag_ibig, VALUES(pag_ibig), pag_ibig),
+                            clinic = IF(VALUES(clinic) > clinic, VALUES(clinic), clinic),
+                            arayata_manual = IF(VALUES(arayata_manual) > arayata_manual, VALUES(arayata_manual), arayata_manual),
+                            hmi = IF(VALUES(hmi) > hmi, VALUES(hmi), hmi),
+                            funeral = IF(VALUES(funeral) > funeral, VALUES(funeral), funeral),
+                            voluntary = IF(VALUES(voluntary) > voluntary, VALUES(voluntary), voluntary),
+                            TYLS = IF(VALUES(TYLS) > TYLS, VALUES(TYLS), TYLS),
+                            osallow = IF(VALUES(osallow) > osallow, VALUES(osallow), osallow),
+                            cbaallow = IF(VALUES(cbaallow) > cbaallow, VALUES(cbaallow), cbaallow),
+                            hazpay = IF(VALUES(hazpay) > hazpay, VALUES(hazpay), hazpay),
+                            holearnsund = IF(VALUES(holearnsund) > holearnsund, VALUES(holearnsund), holearnsund),
+                            backpay = IF(VALUES(backpay) > backpay, VALUES(backpay), backpay),
                             deduction_placed_by = VALUES(deduction_placed_by), 
                             deduction_placed_date = NOW()
                     """
