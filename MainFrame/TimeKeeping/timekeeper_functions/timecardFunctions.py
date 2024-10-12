@@ -423,11 +423,13 @@ class buttonTimecardFunction:
                     sched_out = self.parent.TimeListTable.item(row, 7).text()
 
                     # Validate the schedule before adding to timesheet data
-                    if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum, trans_date):
+                    if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum,
+                                                                   trans_date):
                         return  # Stop the process if validation fails
 
                     # Calculate late and undertime
-                    late, undertime = self.time_computation.calculate_late_and_undertime(sched_in, sched_out, check_in, check_out)
+                    late, undertime = self.time_computation.calculate_late_and_undertime(sched_in, sched_out, check_in,
+                                                                                         check_out)
 
                     timesheet_data.append(
                         (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out, late,
@@ -469,14 +471,42 @@ class buttonTimecardFunction:
                         'ndot_hours': 0,
                         'late': 0,
                         'undertime': 0,
+                        'reg_holiday_hours': 0,
+                        'reg_holiday_ot_hours': 0,
+                        'reg_holiday_nd_hours': 0,
+                        'reg_holiday_ndot_hours': 0,
+                        'spl_holiday_hours': 0,
+                        'spl_holiday_ot_hours': 0,
+                        'spl_holiday_nd_hours': 0,
+                        'spl_holiday_ndot_hours': 0,
                         'days_work': set()
                     }
 
+                # Aggregate results
                 aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
                 aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
                 aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
                 aggregated_results[bio_num]['late'] += result['late']
                 aggregated_results[bio_num]['undertime'] += result['undertime']
+
+                # Aggregate holiday hours directly from results
+                if result.get('RegHlyday_Hrs'):
+                    aggregated_results[bio_num]['reg_holiday_hours'] += result['RegHlyday_Hrs']
+                if result.get('RegHlydayOT_Hrs'):
+                    aggregated_results[bio_num]['reg_holiday_ot_hours'] += result['RegHlydayOT_Hrs']
+                if result.get('RegHlydayND_Hrs'):
+                    aggregated_results[bio_num]['reg_holiday_nd_hours'] += result['RegHlydayND_Hrs']
+                if result.get('RegHlydayNDOT_Hrs'):
+                    aggregated_results[bio_num]['reg_holiday_ndot_hours'] += result['RegHlydayNDOT_Hrs']
+                if result.get('SplHlyday_Hrs'):
+                    aggregated_results[bio_num]['spl_holiday_hours'] += result['SplHlyday_Hrs']
+                if result.get('SplHlydayOT_Hrs'):
+                    aggregated_results[bio_num]['spl_holiday_ot_hours'] += result['SplHlydayOT_Hrs']
+                if result.get('SplHlydayND_Hrs'):
+                    aggregated_results[bio_num]['spl_holiday_nd_hours'] += result['SplHlydayND_Hrs']
+                if result.get('SplHlydayNDOT_Hrs'):
+                    aggregated_results[bio_num]['spl_holiday_ndot_hours'] += result['SplHlydayNDOT_Hrs']
+
                 aggregated_results[bio_num]['days_work'].add(result['trans_date'])
 
             # Prepare data for display
@@ -493,7 +523,6 @@ class buttonTimecardFunction:
                     'Days_Present': len(data['days_work']),
                     'Late': f"{data['late']:.2f}",
                     'Undertime': f"{data['undertime']:.2f}",
-                    'OrdDay_Hrs': 0,
                     'OrdDayOT_Hrs': 0,
                     'OrdDayND_Hrs': 0,
                     'OrdDayNDOT_Hrs': 0,
@@ -501,14 +530,14 @@ class buttonTimecardFunction:
                     'RstDayOT_Hrs': 0,
                     'RstDayND_Hrs': 0,
                     'RstDayNDOT_Hrs': 0,
-                    'SplHlyday_Hrs': 0,
-                    'SplHlydayOT_Hrs': 0,
-                    'SplHlydayND_Hrs': 0,
-                    'SplHlydayNDOT_Hrs': 0,
-                    'RegHlyday_Hrs': 0,
-                    'RegHlydayOT_Hrs': 0,
-                    'RegHlydayND_Hrs': 0,
-                    'RegHlydayNDOT_Hrs': 0,
+                    'SplHlyday_Hrs': data['spl_holiday_hours'],
+                    'SplHlydayOT_Hrs': data['spl_holiday_ot_hours'],
+                    'SplHlydayND_Hrs': data['spl_holiday_nd_hours'],
+                    'SplHlydayNDOT_Hrs': data['spl_holiday_ndot_hours'],
+                    'RegHlyday_Hrs': data['reg_holiday_hours'],
+                    'RegHlydayOT_Hrs': data['reg_holiday_ot_hours'],
+                    'RegHlydayND_Hrs': data['reg_holiday_nd_hours'],
+                    'RegHlydayNDOT_Hrs': data['reg_holiday_ndot_hours'],
                     'SplHldyRD_Hrs': 0,
                     'SplHldyRDOT_Hrs': 0,
                     'SplHldyRDND_Hrs': 0,
@@ -540,15 +569,24 @@ class buttonTimecardFunction:
 
             # Calculate ND and NDOT
             _, nd_hours, ndot_hours = self.time_computation.calculate_hours(check_in_datetime, check_out_datetime)
+
+            # Calculate total hours worked
             total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
                            datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
+
+            # Print out the trans_date before checking holiday type
+            print(f"Checking holiday type for TransDate: {trans_date}")
+
+            # Check the holiday type using check_holiday_type function
+            holiday_type = self.time_computation.check_holiday_type(trans_date)
 
             # Debug output
             print(f"BioNum: {bio_num}, EmpName: {emp_name}, TransDate: {trans_date}, "
                   f"CheckIn: {check_in}, CheckOut: {check_out}, TotalHours: {round(total_hours, 2)}, "
-                  f"ND_Hours: {round(nd_hours, 2)}, NDOT_Hours: {round(ndot_hours, 2)}")
+                  f"ND_Hours: {round(nd_hours, 2)}, NDOT_Hours: {round(ndot_hours, 2)}, HolidayType: {holiday_type}")
 
-            results.append({
+            # Prepare result entry
+            result_entry = {
                 'bio_num': bio_num,
                 'emp_name': emp_name,
                 'trans_date': trans_date,
@@ -558,8 +596,39 @@ class buttonTimecardFunction:
                 'nd_hours': round(nd_hours, 2),
                 'ndot_hours': round(ndot_hours, 2),
                 'late': round(late, 2),
-                'undertime': round(undertime, 2)
-            })
+                'undertime': round(undertime, 2),
+                'holiday_type': holiday_type  # Store the holiday type in the result
+            }
+
+            # Add holiday specific data if applicable
+            if holiday_type:
+                if holiday_type == 'Regular Holiday':
+                    reg_hlyday_hours = total_hours
+                    reg_hlyday_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
+                                                                                         check_out_datetime)
+                    reg_hlyday_nd_hours = nd_hours
+                    reg_hlyday_ndot_hours = ndot_hours
+                    result_entry.update({
+                        'RegHlyday_Hrs': reg_hlyday_hours,
+                        'RegHlydayOT_Hrs': reg_hlyday_ot_hours,
+                        'RegHlydayND_Hrs': reg_hlyday_nd_hours,
+                        'RegHlydayNDOT_Hrs': reg_hlyday_ndot_hours
+                    })
+                elif holiday_type == 'Special Holiday':
+                    spl_hlyday_hours = total_hours
+                    spl_hlyday_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
+                                                                                         check_out_datetime)
+                    spl_hlyday_nd_hours = nd_hours
+                    spl_hlyday_ndot_hours = ndot_hours
+                    result_entry.update({
+                        'SplHlyday_Hrs': spl_hlyday_hours,
+                        'SplHlydayOT_Hrs': spl_hlyday_ot_hours,
+                        'SplHlydayND_Hrs': spl_hlyday_nd_hours,
+                        'SplHlydayNDOT_Hrs': spl_hlyday_ndot_hours
+                    })
+
+            results.append(result_entry)
+
         return results
 
     def CheckSched(self, checked=False):
@@ -588,7 +657,7 @@ class buttonTimecardFunction:
 
             try:
                 # Calculate total_hours only
-                total_hours, _, _ = self.getTotalHoursWorked(checkIn, checkOut)
+                total_hours = self.time_computation.get_total_hours_worked(checkIn, checkOut)  # Updated here
             except Exception as e:
                 logging.error(f"Error calculating hours: {e}")
                 QMessageBox.warning(self.parent, "Calculation Error", f"Error calculating hours: {e}")
@@ -616,6 +685,42 @@ class buttonTimecardFunction:
 class TimeComputation:
     def __init__(self, parent):
         self.parent = parent
+
+    from datetime import datetime
+
+    def check_holiday_type(self, trans_date):
+        # Use create_connection to establish a connection
+        connection = create_connection('NTP_HOLIDAY_LIST')
+        if not connection:
+            logging.error("Error: Unable to connect to NTP_HOLIDAY_LIST database.")
+            return None  # Early exit if the connection fails
+
+        try:
+            cursor = connection.cursor()
+
+            # Execute the query to retrieve holidayName and dateType
+            cursor.execute("SELECT holidayName, dateType FROM TYPE_OF_DATES WHERE holidayDate = '2024-03-28'")
+            result = cursor.fetchone()
+
+            if result:
+                holiday_name, date_type = result  # Unpack the tuple to get both values
+                print(f"Holiday Name: {holiday_name}, Date Type: {date_type}")  # Print the results
+                return {
+                    'holiday_name': holiday_name,
+                    'date_type': date_type
+                }
+            else:
+                print(f"No holiday found for {trans_date}")
+                return None
+
+        except Exception as e:
+            logging.error(f"Error checking holiday type for date {trans_date}: {e}")
+            return None  # Return None if an error occurs
+
+        finally:
+            # Ensure the connection is closed after use
+            if connection:
+                connection.close()
 
     def validate_schedule(self, sched_in, sched_out, check_in, check_out, bio_num, trans_date):
         """
@@ -733,8 +838,8 @@ class TimeComputation:
 
     def get_total_hours_worked(self, check_in, check_out):
         # Parse the check-in and check-out times
-        time_in = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
-        time_out = datetime.strptime(check_out, "%Y-%m-%d %H:%M:%S")
+        time_in = datetime.strptime(check_in, "%H:%M:%S")
+        time_out = datetime.strptime(check_out, "%H:%M:%S")
 
         # Handle the case where the time crosses midnight
         if time_out <= time_in:

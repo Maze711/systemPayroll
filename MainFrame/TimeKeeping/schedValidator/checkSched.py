@@ -33,7 +33,7 @@ class chkSched(QDialog):
         self.holidayNameTxt.setText(self.getHolidayName(trans_date))
         self.typeOfDayCb.setCurrentText(timekeepingFunction.getTypeOfDate(trans_date))
 
-    def getHolidayName(self, trans_date, parent):
+    def getHolidayName(self, trans_date):
         try:
             connection = create_connection('NTP_HOLIDAY_LIST')
             if connection is None:
@@ -42,7 +42,7 @@ class chkSched(QDialog):
             cursor = connection.cursor()
 
             # Fetches the holiday name in type_of_dates database
-            fetch_holiday_name = "SELECT holidayName FROM type_of_dates WHERE date = %s"
+            fetch_holiday_name = "SELECT holidayName FROM type_of_dates WHERE holidayDate = %s"
             cursor.execute(fetch_holiday_name, (trans_date, ))
 
             result = cursor.fetchone()
@@ -52,7 +52,7 @@ class chkSched(QDialog):
             return "Normal Day"
 
         except Error as e:
-            QMessageBox.critical(parent, "Error",
+            QMessageBox.critical(self, "Error",
                                  "An error occurred while fetching the holiday information. Please try again.")
             logging.error(f"Error fetching holiday name: {e}")
             return
