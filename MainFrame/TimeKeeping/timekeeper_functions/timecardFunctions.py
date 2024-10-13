@@ -4,6 +4,7 @@ from openpyxl.workbook import Workbook
 from MainFrame.notificationMaker import notificationLoader
 from MainFrame.Database_Connection.DBConnection import create_connection
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
+from MainFrame.TimeKeeping.schedValidator.schedule import schedule
 from MainFrame.TimeKeeping.timeCardMaker.filter import FilterDialog
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.systemFunctions import timekeepingFunction, globalFunction
@@ -668,17 +669,17 @@ class buttonTimecardFunction:
 
             if len(data) == 7:
                 try:
-                    dialog = chkSched(data)
+                    dialog = schedule(data)
                     dialog.exec_()
                 except Exception as e:
-                    logging.error(f"Error opening chkSched dialog: {e}")
-                    QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the chkSched dialog: {e}")
+                    logging.error(f"Error opening schedule dialog: {e}")
+                    QMessageBox.warning(self.parent, "Dialog Error", f"Failed to open the schedule dialog: {e}")
             else:
                 QMessageBox.warning(self.parent, "Data Error",
                                     f"Insufficient data to process. Expected 7 items, got {len(data)}. Please check the row data.")
 
         except Exception as e:
-            logging.error(f"Unexpected error in CheckSched: {e}")
+            logging.error(f"Unexpected error in schedule: {e}")
             QMessageBox.critical(self.parent, "Critical Error", f"An unexpected error occurred: {e}")
 
 

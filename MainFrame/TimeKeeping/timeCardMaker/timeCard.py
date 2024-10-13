@@ -28,7 +28,7 @@ class timecard(QDialog):
 
     def setup_initial_state(self):
         self.btnFilter.setVisible(False)
-        self.btnCheckSched.setVisible(False)
+        self.btnCheckSched.setVisible(True)
 
     def setupTimecardUI(self):
         try:
