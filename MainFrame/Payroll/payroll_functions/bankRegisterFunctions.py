@@ -10,7 +10,6 @@ class BankRegisterFunctions:
         self.parent = parent
         self.data = data
         self.getAccountNumber(self.data)
-        self.calculateGrossPay(self.data)
 
     def getAccountNumber(self, paytrans_data):
         """Retrieves the account_no from emp_list_id table"""
@@ -40,40 +39,11 @@ class BankRegisterFunctions:
             if connection and connection.is_connected():
                 connection.close()
 
-    def calculateGrossPay(self, paytrans_data):
-        """Sums all the earnings of each employee"""
-        for row in paytrans_data:
-            reg_day_earn = float(row['RegDay_Earn'])
-            ot_earn = float(row['OT_Earn'])
-            reg_day_night_diff = float(row['RegDayNightDiffEarn'])
-            reg_day_night_diff_ot = float(row['RegDayNightDiffOTEarn'])
-            rest_day_earn = float(row['RestDay_Earn'])
-            holiday_earn = float(row['HolidayDay_Earn'])
-            rest_holiday_earn = float(row['RestHolidayDay_Earn'])
-            rest_day_ot_earn = float(row['RestDayOT_Earn'])
-            holiday_ot_earn = float(row['HolidayDayOT_Earn'])
-            rest_holiday_ot = float(row['RestHolidayDayOT_Earn'])
-            rest_day_nd_earn = float(row['RestDayND_Earn'])
-            holiday_nd_earn = float(row['HolidayDayND_Earn'])
-            rest_holiday_nd_earn = float(row['RestHolidayDayND_Earn'])
-            rest_day_nd_ot_earn = float(row['RestDayNDOT_Earn'])
-            holiday_nd_ot_earn = float(row['HolidayNDOT_Earn'])
-            rest_holiday_nd_ot_earn = float(row['RestHolidayDayNDOT_Earn'])
-
-            earnings = [reg_day_earn, ot_earn, reg_day_night_diff, reg_day_night_diff_ot, rest_day_earn, holiday_earn,
-                        rest_holiday_earn, rest_day_ot_earn, holiday_ot_earn, rest_holiday_ot, rest_day_nd_earn,
-                        holiday_nd_earn, rest_holiday_nd_earn, rest_day_nd_ot_earn, holiday_nd_ot_earn,
-                        rest_holiday_nd_ot_earn]
-
-            gross_pay = sum(earnings)
-
-            row['Gross_Pay'] = round(gross_pay, 2)
-
     def getGrandTotal(self, paytrans_data):
         """Retrieves the grand total of all net pays"""
         netpays = []
         for row in paytrans_data:
-            eachNetpay = float(row['Gross_Pay'])
+            eachNetpay = float(row['Gross_Income'])
             netpays.append(eachNetpay)
 
         grand_total = sum(netpays)
@@ -91,7 +61,7 @@ class BankRegisterFunctions:
             bio_num = QTableWidgetItem(row['BioNum'])
             emp_name = QTableWidgetItem(row['EmpName'])
             account_num = QTableWidgetItem(str(row['AccountNo']))
-            net_pay = QTableWidgetItem(str(row['Gross_Pay'])) # Tentatively Gross pay but should be net pay value
+            net_pay = QTableWidgetItem(str(row['Gross_Income'])) # Tentatively Gross pay but should be net pay value
 
             for item in [emp_num, bio_num, emp_name, account_num, net_pay]:
                 item.setTextAlignment(Qt.AlignCenter)

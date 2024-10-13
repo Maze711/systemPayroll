@@ -381,3 +381,101 @@ class PayComputation:
             item['RestHolidayDayNDOT_Earn'] = round(rest_holiday_nd_ot_rate_total, 2)
             logging.info(
                 f"Calculated rest holiday nd ot value for EmpNo {item['EmpNo']}: {item['RestHolidayDayNDOT_Earn']}")
+
+    def calculateGrossIncome(self):
+        """Sums all the earnings of each employee"""
+        for item in self.data:
+            try:
+                reg_day_earn = item.get('RegDay_Earn')
+                ot_earn = item.get('OT_Earn')
+                reg_day_night_diff = item.get('RegDayNightDiffEarn')
+                reg_day_night_diff_ot = item.get('RegDayNightDiffOTEarn')
+                rest_day_earn = item.get('RestDay_Earn')
+                holiday_earn = item.get('HolidayDay_Earn')
+                rest_holiday_earn = item.get('RestHolidayDay_Earn')
+                rest_day_ot_earn = item.get('RestDayOT_Earn')
+                holiday_ot_earn = item.get('HolidayDayOT_Earn')
+                rest_holiday_ot = item.get('RestHolidayDayOT_Earn')
+                rest_day_nd_earn = item.get('RestDayND_Earn')
+                holiday_nd_earn = item.get('HolidayDayND_Earn')
+                rest_holiday_nd_earn = item.get('RestHolidayDayND_Earn')
+                rest_day_nd_ot_earn = item.get('RestDayNDOT_Earn')
+                holiday_nd_ot_earn = item.get('HolidayNDOT_Earn')
+                rest_holiday_nd_ot_earn = item.get('RestHolidayDayNDOT_Earn')
+
+                earnings = [reg_day_earn, ot_earn, reg_day_night_diff, reg_day_night_diff_ot, rest_day_earn,
+                            holiday_earn,
+                            rest_holiday_earn, rest_day_ot_earn, holiday_ot_earn, rest_holiday_ot, rest_day_nd_earn,
+                            holiday_nd_earn, rest_holiday_nd_earn, rest_day_nd_ot_earn, holiday_nd_ot_earn,
+                            rest_holiday_nd_ot_earn]
+
+                late_total = item.get('LateUndertime')
+                undertime_total = item.get('undertime')
+
+                gross_income = sum(earnings) - sum([late_total, undertime_total])
+
+                item['Gross_Income'] = round(gross_income, 2)
+            except ValueError as e:
+                logging.error(
+                    f"Error calculating the sum of gross income value for {item['EmpNo']}: {e}")
+
+
+class PayContributions:
+    """ Class that Handles All Contribution Calculations """
+    def __init__(self, data):
+        self.data = data
+
+    def SSSContributionComputation(self):
+        """ Calculates the SSS Contribution based on each employee's gross income per cut-off """
+        for item in self.data:
+            try:
+                gross_income = item.get('Gross_Income')
+
+                sss_employees_share_rate = 0.045 # Employee's Share Rate of 4.5%
+                employees_compensation = round(gross_income/500) * 500 # Get the average compensation
+
+                sss_employees_share_contribution = employees_compensation * sss_employees_share_rate
+
+                item['sss_contribution'] = round(sss_employees_share_contribution, 2)
+            except ValueError as e:
+                logging.error(
+                    f"Error calculating the SSS Contrubution for {item['EmpNo']}: {e}")
+
+    def philHealthContributionComputation(self):
+        """ Calculates the PhilHealth Contribution based on each employee's gross income per cut-off """
+        for item in self.data:
+            try:
+                gross_income = item.get('Gross_Income')
+                premium_rate = 0.05 # premium_rate of 5%
+
+                if 0 < gross_income <= 10000:
+                    philhealth_employees_contribution = (10000 * premium_rate) / 2
+
+                elif gross_income > 10000 or gross_income < 100000:
+                    philhealth_employees_contribution = (gross_income * premium_rate) / 2
+
+                else:
+                    philhealth_employees_contribution = (100000 * premium_rate) / 2
+
+                item['medicare_philhealth'] = round(philhealth_employees_contribution, 2)
+            except ValueError as e:
+                logging.error(
+                    f"Error calculating the PhilHealth Contrubution for {item['EmpNo']}: {e}")
+
+    def pagibigContributionComputation(self):
+        """ Calculates the Pag-Ibig Contribution based on each employee's gross income per cut-off """
+        for item in self.data:
+            try:
+                gross_income = item.get('Gross_Income')
+
+                if 0 < gross_income < 1500:
+                    pagibig_contribution_rate = 0.01  # pagibig_contribution_rate of 1%
+                else:
+                    pagibig_contribution_rate = 0.02  # pagibig_contribution_rate of 2%
+
+                pagibig_employees_contribution = gross_income * pagibig_contribution_rate
+
+                item['pag_ibig'] = round(pagibig_employees_contribution, 2)
+            except ValueError as e:
+                logging.error(
+                    f"Error calculating the Pagibig Contrubution for {item['EmpNo']}: {e}")

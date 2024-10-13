@@ -131,6 +131,8 @@ class PaytimeSheetFunctions:
         pay_computation.restDayHolidayNDComputation()
         pay_computation.restDayHolidayNDOTComputation()
 
+        pay_computation.calculateGrossIncome()
+
         try:
             self.parent.window = PayTrans(from_date, to_date, selected_data)
             self.parent.main_window.open_dialogs.append(self.parent.window)

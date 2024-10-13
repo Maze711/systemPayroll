@@ -34,6 +34,7 @@ class PayTrans(QMainWindow):
         self.btnBank.clicked.connect(self.functions.createBankRegister)
         self.btnPayTrans.clicked.connect(self.functions.export_to_excel)
         self.btnSendToEmail.clicked.connect(self.functions.openEmailLoader)
+        self.btnCalculateDeductions.clicked.connect(self.functions.calculateContributions)
 
     def eventFilter(self, source, event):
         if source == self.btnInsertDeduction and not source.isEnabled():

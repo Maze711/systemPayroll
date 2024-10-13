@@ -335,31 +335,11 @@ border-radius: 5px;
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed7">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>250</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-          </widget>
           <widget class="QLineEdit" name="txtDed4">
            <property name="geometry">
             <rect>
              <x>180</x>
              <y>130</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed6">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>210</y>
              <width>160</width>
              <height>27</height>
             </rect>
@@ -384,48 +364,6 @@ border-radius: 5px;
            </property>
            <property name="text">
             <string>Canteen</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="payDed8">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>250</y>
-             <width>170</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Medicare/Philhealth</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="payDed7">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>210</y>
-             <width>120</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>SSS</string>
            </property>
           </widget>
           <widget class="QLabel" name="payDed6">
@@ -459,52 +397,11 @@ border-radius: 5px;
             </rect>
            </property>
           </widget>
-          <widget class="QLabel" name="payDed9">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>290</y>
-             <width>120</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Pagibig</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed9">
+          <widget class="QLineEdit" name="txtDed6">
            <property name="geometry">
             <rect>
              <x>180</x>
-             <y>330</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed11">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>410</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed8">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>290</y>
+             <y>210</y>
              <width>160</width>
              <height>27</height>
             </rect>
@@ -514,9 +411,9 @@ border-radius: 5px;
            <property name="geometry">
             <rect>
              <x>5</x>
-             <y>330</y>
-             <width>120</width>
-             <height>30</height>
+             <y>209</y>
+             <width>101</width>
+             <height>31</height>
             </rect>
            </property>
            <property name="font">
@@ -531,11 +428,11 @@ border-radius: 5px;
             <string>Clinic</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed10">
+          <widget class="QLineEdit" name="txtDed7">
            <property name="geometry">
             <rect>
              <x>180</x>
-             <y>370</y>
+             <y>250</y>
              <width>160</width>
              <height>27</height>
             </rect>
@@ -545,8 +442,8 @@ border-radius: 5px;
            <property name="geometry">
             <rect>
              <x>5</x>
-             <y>370</y>
-             <width>170</width>
+             <y>250</y>
+             <width>171</width>
              <height>30</height>
             </rect>
            </property>
@@ -560,95 +457,6 @@ border-radius: 5px;
            </property>
            <property name="text">
             <string>Arayata_Annual</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="payDed12">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>410</y>
-             <width>120</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>HMI</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed12">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>450</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="payDed13">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>450</y>
-             <width>120</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Funeral</string>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="txtDed13">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>490</y>
-             <width>160</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="payDed14">
-           <property name="geometry">
-            <rect>
-             <x>5</x>
-             <y>490</y>
-             <width>120</width>
-             <height>30</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>poppins</family>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Voluntary</string>
            </property>
           </widget>
          </widget>
@@ -787,7 +595,7 @@ border-radius: 5px;
             <string>TYLS</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed14">
+          <widget class="QLineEdit" name="txtDed8">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -797,7 +605,7 @@ border-radius: 5px;
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed15">
+          <widget class="QLineEdit" name="txtDed9">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -828,7 +636,7 @@ border-radius: 5px;
             <string>OS ALLOWANCE</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed16">
+          <widget class="QLineEdit" name="txtDed10">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -880,7 +688,7 @@ border-radius: 5px;
             <string>HAZARD PAY</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed17">
+          <widget class="QLineEdit" name="txtDed11">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -890,7 +698,7 @@ border-radius: 5px;
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed18">
+          <widget class="QLineEdit" name="txtDed12">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -900,7 +708,7 @@ border-radius: 5px;
             </rect>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed20">
+          <widget class="QLineEdit" name="txtDed14">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -973,7 +781,7 @@ border-radius: 5px;
             <string>HOL EARN/SUN ND</string>
            </property>
           </widget>
-          <widget class="QLineEdit" name="txtDed19">
+          <widget class="QLineEdit" name="txtDed13">
            <property name="geometry">
             <rect>
              <x>180</x>
@@ -1184,22 +992,16 @@ border-radius: 5px;
   <tabstop>txtDed5</tabstop>
   <tabstop>txtDed6</tabstop>
   <tabstop>txtDed7</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>placeBTN</tabstop>
   <tabstop>txtDed8</tabstop>
   <tabstop>txtDed9</tabstop>
   <tabstop>txtDed10</tabstop>
   <tabstop>txtDed11</tabstop>
   <tabstop>txtDed12</tabstop>
-  <tabstop>scrollArea</tabstop>
-  <tabstop>scrollArea_2</tabstop>
-  <tabstop>placeBTN</tabstop>
-  <tabstop>txtDed13</tabstop>
   <tabstop>txtDed14</tabstop>
-  <tabstop>txtDed15</tabstop>
-  <tabstop>txtDed16</tabstop>
-  <tabstop>txtDed17</tabstop>
-  <tabstop>txtDed18</tabstop>
-  <tabstop>txtDed20</tabstop>
-  <tabstop>txtDed19</tabstop>
+  <tabstop>txtDed13</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -4,6 +4,7 @@ from MainFrame.Payroll.payTrans.bankRegister import bankRegister
 from MainFrame.Payroll.payTrans.payTransMailer import EmailerLoader
 from MainFrame.Payroll.payTrans.earnings import earnings
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.Payroll.payroll_functions.payComputations import PayContributions
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -55,14 +56,17 @@ class PayTransFunctions:
             cash_earn_item = QTableWidgetItem(str(row.get('cash_advance', '0')))
             canteen_earn_item = QTableWidgetItem(str(row.get('canteen', '0')))
             tax_earn_item = QTableWidgetItem(str(row.get('tax', '0')))
-            sss_earn_item = QTableWidgetItem(str(row.get('sss', '0')))
-            philhealth_earn_item = QTableWidgetItem(str(row.get('medicare_philhealth', '0')))
-            pagibig_earn_item = QTableWidgetItem(str(row.get('pag_ibig', '0')))
             clinic_earn_item = QTableWidgetItem(str(row.get('clinic', '0')))
             arayata_earn_item = QTableWidgetItem(str(row.get('arayata_manual', '0')))
             hmi_earn_item = QTableWidgetItem(str(row.get('hmi', '0')))
             funeral_earn_item = QTableWidgetItem(str(row.get('funeral', '0')))
             voluntary_earn_item = QTableWidgetItem(str(row.get('voluntary', '0')))
+
+            # Contributions
+            sss_earn_item = QTableWidgetItem(str(row.get('sss_contribution', '0')))
+            philhealth_earn_item = QTableWidgetItem(str(row.get('medicare_philhealth', '0')))
+            pagibig_earn_item = QTableWidgetItem(str(row.get('pag_ibig', '0')))
+            gross_income_item = QTableWidgetItem(str(row.get('Gross_Income', '0')))
 
             # Center all the items
             for item in [emp_no_item, bio_num_item, emp_name_item, basic_item, present_days_item, rate_item,
@@ -72,9 +76,9 @@ class PayTransFunctions:
                          holiday_nd_ot_earn_item, rest_holiday_earn_item, rest_holiday_ot_earn_item,
                          rest_holiday_nd_earn_item, rest_holiday_nd_ot_earn_item,
                          absent_earn_item, sss_loan_earn_item, pagibig_loan_earn_item,
-                         cash_earn_item, canteen_earn_item, tax_earn_item, sss_earn_item, philhealth_earn_item,
-                         pagibig_earn_item, clinic_earn_item, arayata_earn_item, hmi_earn_item, funeral_earn_item,
-                         voluntary_earn_item]:
+                         cash_earn_item, canteen_earn_item, tax_earn_item, clinic_earn_item, arayata_earn_item,
+                         hmi_earn_item, funeral_earn_item, voluntary_earn_item, sss_earn_item, philhealth_earn_item,
+                         pagibig_earn_item, gross_income_item]:
                 item.setTextAlignment(Qt.AlignCenter)
                 # set tool tip for employee name item
                 if item == emp_name_item:
@@ -111,14 +115,15 @@ class PayTransFunctions:
             self.parent.paytransTable.setItem(i, 27, cash_earn_item)
             self.parent.paytransTable.setItem(i, 28, canteen_earn_item)
             self.parent.paytransTable.setItem(i, 29, tax_earn_item)
-            self.parent.paytransTable.setItem(i, 30, sss_earn_item)
-            self.parent.paytransTable.setItem(i, 31, philhealth_earn_item)
-            self.parent.paytransTable.setItem(i, 32, pagibig_earn_item)
-            self.parent.paytransTable.setItem(i, 33, clinic_earn_item)
-            self.parent.paytransTable.setItem(i, 34, arayata_earn_item)
-            self.parent.paytransTable.setItem(i, 35, hmi_earn_item)
-            self.parent.paytransTable.setItem(i, 36, funeral_earn_item)
-            self.parent.paytransTable.setItem(i, 37, voluntary_earn_item)
+            self.parent.paytransTable.setItem(i, 30, clinic_earn_item)
+            self.parent.paytransTable.setItem(i, 31, arayata_earn_item)
+            self.parent.paytransTable.setItem(i, 32, hmi_earn_item)
+            self.parent.paytransTable.setItem(i, 33, funeral_earn_item)
+            self.parent.paytransTable.setItem(i, 34, voluntary_earn_item)
+            self.parent.paytransTable.setItem(i, 35, sss_earn_item)
+            self.parent.paytransTable.setItem(i, 36, philhealth_earn_item)
+            self.parent.paytransTable.setItem(i, 37, pagibig_earn_item)
+            self.parent.paytransTable.setItem(i, 38, gross_income_item)
 
     def export_to_excel(self):
         # Get the number of rows and column from the paytransTable
@@ -212,17 +217,15 @@ class PayTransFunctions:
 
             for index, row in enumerate(self.parent.original_data):
                 emp_no = row['EmpNo']
-                query = f""" SELECT late_absent, sss_loan, pag_ibig_loan, cash_advance, canteen, tax, sss, 
-                                medicare_philhealth, pag_ibig, clinic, arayata_manual, hmi, funeral, voluntary 
-                             FROM deductions WHERE empNum = %s
+                query = f""" SELECT sss_loan, pag_ibig_loan, cash_advance, canteen, tax, clinic, arayata_manual, hmi, 
+                    funeral, voluntary FROM deductions WHERE empNum = %s
                 """
                 cursor.execute(query, (emp_no,))
                 result = cursor.fetchone()
 
                 # Mapping deduction items to their respective fields
-                deduction_items = ['late_absent', 'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax',
-                                   'sss', 'medicare_philhealth', 'pag_ibig', 'clinic', 'arayata_manual', 'hmi',
-                                   'funeral', 'voluntary']
+                deduction_items = ['sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax', 'clinic',
+                                   'arayata_manual', 'hmi', 'funeral', 'voluntary', ]
 
                 # Adds the deductions to each dictionary
                 for i, deduction_key in enumerate(deduction_items):
@@ -334,6 +337,24 @@ class PayTransFunctions:
 
         self.showEarnings = earnings(self.parent)
         self.showEarnings.show()
+
+    def calculateContributions(self):
+        try:
+            pay_contribution = PayContributions(self.parent.original_data)
+
+            # Perform Automated Contribution Calculations
+            pay_contribution.SSSContributionComputation()
+            pay_contribution.philHealthContributionComputation()
+            pay_contribution.pagibigContributionComputation()
+
+            QMessageBox.information(self.parent, "Calculation Successful", "Successfully Calculated and Inserted "
+                                                                           "all Contributions!")
+
+            # repopulate the table with the updated data
+            self.populatePayTransTable(self.parent.original_data)
+
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Calculation Error", f"Failed to Calculate Contributions: {e}")
 
 
 class ImportFromExcelLoader(QDialog):
