@@ -42,9 +42,6 @@ class StoringDeductionProcessor(QObject):
                         cash_advance INT(11),
                         canteen INT(11),
                         tax INT(11),
-                        sss INT(11),
-                        medicare_philhealth INT(11),
-                        pag_ibig INT(11),
                         clinic INT(11),
                         arayata_manual INT(11),
                         hmi INT(11),
@@ -89,9 +86,6 @@ class StoringDeductionProcessor(QObject):
                         each_data.get('Cash_Advance', 0),
                         each_data.get('Canteen', 0),
                         each_data.get('Tax', 0),
-                        each_data.get('SSS', 0),
-                        each_data.get('Medicare/PhilHealth', 0),
-                        each_data.get('PAGIBIG', 0),
                         each_data.get('Clinic', 0),
                         each_data.get('Arayata_Annual', 0),
                         each_data.get('HMI', 0),
@@ -112,12 +106,11 @@ class StoringDeductionProcessor(QObject):
                     insert_query = f"""
                         INSERT INTO {table_name} (
                             empNum, bioNum, empName, sss_loan, pag_ibig_loan, cash_advance, 
-                            canteen, tax, sss, medicare_philhealth, pag_ibig, clinic, 
-                            arayata_manual, hmi, funeral, voluntary, TYLS, osallow, cbaallow,
+                            canteen, tax, clinic, arayata_manual, hmi, funeral, voluntary, TYLS, osallow, cbaallow,
                             hazpay, pa, holearnsund, backpay, deduction_placed_by, deduction_placed_date
                         ) 
                         VALUES (
-                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
                             %s, %s, %s, %s, %s, NOW()
                         ) 
                         ON DUPLICATE KEY UPDATE 
@@ -126,9 +119,6 @@ class StoringDeductionProcessor(QObject):
                             cash_advance = IF(VALUES(cash_advance) > cash_advance, VALUES(cash_advance), cash_advance),
                             canteen = IF(VALUES(canteen) > canteen, VALUES(canteen), canteen),
                             tax = IF(VALUES(tax) > tax, VALUES(tax), tax),
-                            sss = IF(VALUES(sss) > sss, VALUES(sss), sss),
-                            medicare_philhealth = IF(VALUES(medicare_philhealth) > medicare_philhealth, VALUES(medicare_philhealth), medicare_philhealth),
-                            pag_ibig = IF(VALUES(pag_ibig) > pag_ibig, VALUES(pag_ibig), pag_ibig),
                             clinic = IF(VALUES(clinic) > clinic, VALUES(clinic), clinic),
                             arayata_manual = IF(VALUES(arayata_manual) > arayata_manual, VALUES(arayata_manual), arayata_manual),
                             hmi = IF(VALUES(hmi) > hmi, VALUES(hmi), hmi),
@@ -217,7 +207,7 @@ class StoreDeductionLoader(QDialog):
         self.thread.wait()
 
         QMessageBox.critical(self.paytimeSheet_window, "Storing Deduction Error",
-                             f"An unexpected error occurred while sending emails:\n{error}")
+                             f"An unexpected error occurred while storing deductions:\n{error}")
         self.close()
 
     def move_to_bottom_right(self):

@@ -28,9 +28,6 @@ class DeductionFunctions:
             'Cash_Advance': 'cash_advance',
             'Canteen': 'canteen',
             'Tax': 'tax',
-            'SSS': 'sss',
-            'Medicare/PhilHealth': 'medicare_philhealth',
-            'PAGIBIG': 'pag_ibig',
             'Clinic': 'clinic',
             'Arayata_Annual': 'arayata_manual',
             'HMI': 'hmi',
@@ -103,32 +100,26 @@ class DeductionFunctions:
                     selected_row, 8) else "",
                 7: self.parent.paytimesheetTable.item(selected_row, 9).text() if self.parent.paytimesheetTable.item(
                     selected_row, 9) else "",
-                8: self.parent.paytimesheetTable.item(selected_row, 10).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 10) else "",
-                9: self.parent.paytimesheetTable.item(selected_row, 11).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 11) else "",
-                10: self.parent.paytimesheetTable.item(selected_row, 12).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 12) else "",
-                11: self.parent.paytimesheetTable.item(selected_row, 13).text() if self.parent.paytimesheetTable.item(
+                # 8: self.parent.paytimesheetTable.item(selected_row, 10).text() if self.parent.paytimesheetTable.item(
+                #     selected_row, 10) else "",
+                # 9: self.parent.paytimesheetTable.item(selected_row, 11).text() if self.parent.paytimesheetTable.item(
+                #     selected_row, 11) else "",
+                # 10: self.parent.paytimesheetTable.item(selected_row, 12).text() if self.parent.paytimesheetTable.item(
+                #     selected_row, 12) else "",
+                8: self.parent.paytimesheetTable.item(selected_row, 13).text() if self.parent.paytimesheetTable.item(
                     selected_row, 13) else "",
-                12: self.parent.paytimesheetTable.item(selected_row, 14).text() if self.parent.paytimesheetTable.item(
+                9: self.parent.paytimesheetTable.item(selected_row, 14).text() if self.parent.paytimesheetTable.item(
                     selected_row, 14) else "",
-                13: self.parent.paytimesheetTable.item(selected_row, 15).text() if self.parent.paytimesheetTable.item(
+                10: self.parent.paytimesheetTable.item(selected_row, 15).text() if self.parent.paytimesheetTable.item(
                     selected_row, 15) else "",
-                14: self.parent.paytimesheetTable.item(selected_row, 16).text() if self.parent.paytimesheetTable.item(
+                11: self.parent.paytimesheetTable.item(selected_row, 16).text() if self.parent.paytimesheetTable.item(
                     selected_row, 16) else "",
-                15: self.parent.paytimesheetTable.item(selected_row, 17).text() if self.parent.paytimesheetTable.item(
+                12: self.parent.paytimesheetTable.item(selected_row, 17).text() if self.parent.paytimesheetTable.item(
                     selected_row, 17) else "",
-                16: self.parent.paytimesheetTable.item(selected_row, 18).text() if self.parent.paytimesheetTable.item(
+                13: self.parent.paytimesheetTable.item(selected_row, 18).text() if self.parent.paytimesheetTable.item(
                     selected_row, 18) else "",
-                17: self.parent.paytimesheetTable.item(selected_row, 19).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 19) else "",
-                18: self.parent.paytimesheetTable.item(selected_row, 20).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 20) else "",
-                19: self.parent.paytimesheetTable.item(selected_row, 21).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 21) else "",
-                20: self.parent.paytimesheetTable.item(selected_row, 22).text() if self.parent.paytimesheetTable.item(
-                    selected_row, 22) else ""
+                14: self.parent.paytimesheetTable.item(selected_row, 19).text() if self.parent.paytimesheetTable.item(
+                    selected_row, 19) else ""
             }
 
             ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\deduction.ui")
@@ -145,14 +136,14 @@ class DeductionFunctions:
                 bioNumTxt.setText(bio_num_item.text() if bio_num_item else "")
 
             # Set the deduction values to the input fields
-            for i in range(1, 19):
+            for i in range(1, 15):
                 field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
                 if field:
                     field.setText(deduction_values_mapping[i])
 
             # Now apply the integer validator to the deduction fields
             validator = ValidInteger()
-            ded_fields = [self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}') for i in range(1, 19)]
+            ded_fields = [self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}') for i in range(1, 15)]
             validator.set_validators(*ded_fields)
 
             # Connect the placeBTN if exists
@@ -181,24 +172,21 @@ class DeductionFunctions:
                 3: 'Cash_Advance',
                 4: 'Canteen',
                 5: 'Tax',
-                6: 'SSS',
-                7: 'Medicare/PhilHealth',
-                8: 'PAGIBIG',
-                9: 'Clinic',
-                10: 'Arayata_Annual',
-                11: 'HMI',
-                12: 'Funeral',
-                13: 'Voluntary',
-                14: 'TYLS',
-                15: 'OS_Allowance',
-                16: 'CBA_Allowance',
-                17: 'Hazard_Pay',
-                18: 'PA',
-                19: 'HolEarn_SunND',
-                20: 'Backpay'
+                6: 'Clinic',
+                7: 'Arayata_Annual',
+                # 8: 'HMI',
+                # 9: 'Funeral',
+                # 10: 'Voluntary',
+                8: 'TYLS',
+                9: 'OS_Allowance',
+                10: 'CBA_Allowance',
+                11: 'Hazard_Pay',
+                12: 'PA',
+                13: 'HolEarn_SunND',
+                14: 'Backpay'
             }
 
-            for i in range(1, 21):
+            for i in range(1, 15):
                 deduction_field = self.deductionQDialog.findChild(QLineEdit, f'txtDed{i}')
                 if deduction_field:
                     deduction_value = deduction_field.text()
@@ -226,28 +214,25 @@ class DeductionFunctions:
         row_count = self.parent.paytimesheetTable.rowCount()
         column_count = self.parent.paytimesheetTable.columnCount()
 
-        deductions_column_mapping = {
-            2: 'SSS_Loan',
-            3: 'Pag_Ibig_Loan',
-            4: 'Cash_Advance',
-            5: 'Canteen',
-            6: 'Tax',
-            7: 'SSS',
-            8: 'Medicare/PhilHealth',
-            9: 'PAGIBIG',
-            10: 'Clinic',
-            11: 'Arayata_Annual',
-            12: 'HMI',
-            13: 'Funeral',
-            14: 'Voluntary',
-            15: 'TYLS',
-            16: 'OS_Allowance',
-            17: 'CBA_Allowance',
-            18: 'Hazard_Pay',
-            19: 'PA',
-            20: 'HolEarn_SunND',
-            21: 'Backpay'
-        }
+        deductions_column_mapping = [
+            'SSS_Loan',
+            'Pag_Ibig_Loan',
+            'Cash_Advance',
+            'Canteen',
+            'Tax',
+            'Clinic',
+            'Arayata_Annual',
+            'HMI',
+            'Funeral',
+            'Voluntary',
+            'TYLS',
+            'OS_Allowance',
+            'CBA_Allowance',
+            'Hazard_Pay',
+            'PA',
+            'HolEarn_SunND',
+            'Backpay'
+        ]
 
         for row_index in range(row_count):
             row_data = {}
@@ -257,7 +242,7 @@ class DeductionFunctions:
                 cell_item = self.parent.paytimesheetTable.item(row_index, column_index)
                 cell_data = cell_item.text() if cell_item else None
 
-                if column_name in deductions_column_mapping.values():
+                if column_name in deductions_column_mapping:
                     row_data[column_name] = int(cell_data) if cell_data else 0
                 else:
                     row_data[column_name] = cell_data

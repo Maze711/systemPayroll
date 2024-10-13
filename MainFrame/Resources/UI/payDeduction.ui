@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1700</width>
-    <height>665</height>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
       <x>0</x>
       <y>0</y>
       <width>1441</width>
-      <height>665</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -129,7 +129,7 @@ background-color: &quot;#dce5fe&quot;;
        <x>-10</x>
        <y>70</y>
        <width>1450</width>
-       <height>605</height>
+       <height>594</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -217,7 +217,7 @@ QTableWidget {
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>23</number>
+      <number>20</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>true</bool>
@@ -310,21 +310,6 @@ QTableWidget {
      <column>
       <property name="text">
        <string>Tax</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>SSS</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Medicare/PhilHealth</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>PAGIBIG</string>
       </property>
      </column>
      <column>
