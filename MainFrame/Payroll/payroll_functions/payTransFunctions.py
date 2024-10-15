@@ -449,10 +449,9 @@ class FileProcessor(QObject):
             # Fetch the headers from the DataFrame
             headers = sheet.columns.tolist()
 
-            required_columns = ['ID', 'empNum', 'bioNum', 'empName', 'late_absent', 'sss_loan', 'pag_ibig_loan',
-                                'cash_advance', 'canteen', 'tax', 'sss', 'medicare_philhealth', 'pag_ibig', 'clinic',
-                                'arayata_manual', 'hmi', 'funeral', 'voluntary', 'tyls','osallow','cbaallow','hazpay',
-                                'pa','holearnsund', 'backpay']
+            required_columns = ['ID', 'empNum', 'bioNum', 'empName', 'sss_loan', 'pag_ibig_loan',
+                                'cash_advance', 'canteen', 'tax', 'clinic', 'arayata_manual', 'hmi', 'funeral',
+                                'voluntary', 'tyls', 'osallow', 'cbaallow', 'hazpay', 'pa', 'holearnsund', 'backpay']
 
             missing_columns = [col for col in required_columns if
                                col not in headers[:25]]  # excludes the deduction placed by and date
@@ -477,10 +476,9 @@ class FileProcessor(QObject):
 
                 if not matching_rows.empty:
                     # Update the EmpNo with deductions
-                    deduction_items = ['late_absent', 'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax',
-                                       'sss', 'medicare_philhealth', 'pag_ibig', 'clinic', 'arayata_manual', 'hmi',
-                                       'funeral', 'voluntary', 'tyls','osallow','cbaallow','hazpay','pa','holearnsund',
-                                       'backpay']
+                    deduction_items = ['sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax', 'clinic',
+                                       'arayata_manual', 'hmi', 'funeral', 'voluntary', 'tyls', 'osallow', 'cbaallow',
+                                       'hazpay', 'pa', 'holearnsund', 'backpay']
 
                     for deduction in deduction_items:
                         row[deduction] = int(matching_rows.iloc[0][deduction])
