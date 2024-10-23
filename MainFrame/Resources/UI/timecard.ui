@@ -114,7 +114,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>8</number>
+    <number>9</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -146,6 +146,11 @@ QTableWidget {
    <attribute name="verticalHeaderHighlightSections">
     <bool>false</bool>
    </attribute>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
    <column>
     <property name="text">
      <string>BioNum</string>
