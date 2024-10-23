@@ -1080,7 +1080,7 @@ class FetchDataToPopulateTableProcessor(QObject):
         self.data = data
 
     def process_populate_time_list_table(self):
-        """Populate the time list table with check-in and check-out times, machCode, and employee data."""
+        """Populate the time list table with check-in and check-out times, machCode, and employee data from NTP_LOG_IMPORTS."""
         selected_year_month = self.parent.yearCC.currentText()
         from_day = self.parent.dateFromCC.currentText()
         to_day = self.parent.dateToCC.currentText()
@@ -1094,16 +1094,15 @@ class FetchDataToPopulateTableProcessor(QObject):
         to_date = f"{selected_year_month}-{to_day.zfill(2)}"
         table_name = f"table_{selected_year_month.replace('-', '_')}"
 
+        # Connect to NTP_LOG_IMPORTS database
         connection_list_log = create_connection('NTP_LOG_IMPORTS')
-        connection_file201 = create_connection('NTP_EMP_LIST')
 
-        if not connection_list_log or not connection_file201:
+        if not connection_list_log:
             self.error.emit("Failed to connect to database.")
             return
 
         try:
             cursor_list_log = connection_list_log.cursor()
-            cursor_file201 = connection_file201.cursor()
 
             # Check if the table exists
             cursor_list_log.execute(f"SHOW TABLES LIKE '{table_name}'")
@@ -1111,34 +1110,16 @@ class FetchDataToPopulateTableProcessor(QObject):
                 self.error.emit(f"Error: Table does not exist: {table_name}")
                 return
 
-            # Fetch time records (filtered by bioNum 7635)
+            # Fetch records from the log table
             query_list_log = f"""
-                   SELECT bioNum, date, time_in, time_out, machCode
-                   FROM `{table_name}`
-                   WHERE date BETWEEN '{from_date}' AND '{to_date}'
-                   ORDER BY bioNum, date, time_in
-               """
+                SELECT ID, bioNum, Name, date, time_in, time_out, machCode, sched_in, sched_out
+                FROM `{table_name}`
+                WHERE date BETWEEN '{from_date}' AND '{to_date}'
+                ORDER BY bioNum, date, time_in
+            """
             cursor_list_log.execute(query_list_log)
             records = cursor_list_log.fetchall()
 
-            # Fetch employee data
-            bio_nums = set(record[0] for record in records)
-            if not bio_nums:
-                self.finished.emit([])
-                return
-
-            # Fetch employee data (filtered by empid 7635)
-            emp_query = f"""
-                   SELECT pi.empid, pi.surname, pi.firstname, pi.mi, ps.sched_in, ps.sched_out
-                   FROM emp_info pi
-                   JOIN emp_posnsched ps ON pi.empid = ps.empid
-                   WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
-               """
-            cursor_file201.execute(emp_query)
-            emp_records = cursor_file201.fetchall()
-            emp_data_cache = {record[0]: record[1:] for record in emp_records}
-
-            # Total records retrieved
             total_records = len(records)
             if total_records == 0:
                 self.finished.emit([])  # No data to process
@@ -1147,23 +1128,21 @@ class FetchDataToPopulateTableProcessor(QObject):
             # Prepare time data
             time_data = []
 
-            for i, (bioNum, trans_date, time_in, time_out, mach_code) in enumerate(records):
+            for i, (ID, bioNum, name, trans_date, time_in, time_out, mach_code, sched_in, sched_out) in enumerate(records):
                 check_in_time = time_in or "00:00:00"
                 check_out_time = time_out or "00:00:00"
-                employee_data = emp_data_cache.get(bioNum, ("Unknown", "Unknown", "Unknown", "00:00:00", "00:00:00"))
-                emp_name = f"{employee_data[0]}, {employee_data[1]} {employee_data[2]}"
-                sched_in = employee_data[3] or "00:00:00"
-                sched_out = employee_data[4] or "00:00:00"
 
+                # Prepare each row's data for the table
                 time_data.append([
-                    bioNum, emp_name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
+                    ID, bioNum, name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
                 ])
 
-                # Navigates the current progress
+                # Update progress
                 progress = int(((i + 1) / total_records) * 100)
                 self.progressChanged.emit(progress)
                 QThread.msleep(1)
 
+            # Emit the finished signal with the populated time data
             self.finished.emit(time_data)
 
         except Exception as e:
@@ -1172,6 +1151,5 @@ class FetchDataToPopulateTableProcessor(QObject):
 
         finally:
             cursor_list_log.close()
-            cursor_file201.close()
             connection_list_log.close()
-            connection_file201.close()
+
