@@ -151,24 +151,28 @@ class populateList:
 
     def populate_table_with_data(self, data):
         try:
+            print(data)
             logging.info("Populating table with data.")
             self.parent.TimeListTable.setUpdatesEnabled(False)
             self.parent.TimeListTable.setSortingEnabled(False)
 
             # Sort data alphabetically by employee name (assuming it's the second column)
-            sorted_data = sorted(data, key=operator.itemgetter(1))
+            sorted_data = sorted(data, key=operator.itemgetter(2))
 
             self.parent.TimeListTable.setRowCount(len(sorted_data))
 
             # Prepopulate combo box options with hour-only format
             combo_items = [f"{hour:02d}:00:00" for hour in range(24)]
 
-            # Set the custom delegate for the sched_in and sched_out columns (6 and 7)
+            # Set the custom delegate for the sched_in and sched_out columns (7 and 8)
             combo_delegate = ComboBoxDelegate(combo_items, self.parent.TimeListTable)
 
+            # connects the cbValueChanged signal to slot
+            combo_delegate.cbValueChanged.connect(self.updateSchedInAndOut)
+
             # Setting delegate outside the loop
-            self.parent.TimeListTable.setItemDelegateForColumn(6, combo_delegate)
             self.parent.TimeListTable.setItemDelegateForColumn(7, combo_delegate)
+            self.parent.TimeListTable.setItemDelegateForColumn(8, combo_delegate)
 
             # Populate table data
             for row_position, row_data in enumerate(sorted_data):
@@ -177,7 +181,7 @@ class populateList:
                     item.setTextAlignment(Qt.AlignCenter)
 
                     # Allow editing only for columns 6 and 7
-                    if col == 6 or col == 7:
+                    if col == 7 or col == 8:
                         item.setFlags(item.flags() | Qt.ItemIsEditable)
                     else:
                         item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Disable editing for other columns
@@ -199,8 +203,45 @@ class populateList:
         # Ensure the edit triggers are set to make cells easier to edit
         self.parent.TimeListTable.setEditTriggers(QAbstractItemView.AllEditTriggers)
 
+    def updateSchedInAndOut(self, row, updated_value):
+        """ Updates the Sched in/out once the combo box has been changed"""
+        selected_year_month = self.parent.yearCC.currentText()
+        id = int(self.parent.TimeListTable.item(row, 0).text())
+        sched_in = self.parent.TimeListTable.item(row, 7).text()
+        sched_out = self.parent.TimeListTable.item(row, 8).text()
+
+        # Use create_connection to establish a connection
+        connection = create_connection('NTP_LOG_IMPORTS')
+
+        if not connection:
+            logging.error("Error: Unable to connect to NTP_LOG_IMPORTS database.")
+            return
+
+        try:
+            cursor = connection.cursor()
+
+            table_name = f"table_{selected_year_month}"
+            update_sched_in_and_out = f"UPDATE {table_name} SET sched_in = %s, sched_out = %s WHERE ID = %s"
+            cursor.execute(update_sched_in_and_out, (sched_in, sched_out, id))
+            connection.commit()
+
+            if cursor.rowcount > 0:
+                print(f'Updated Successfully sched in and out for id: {id}')
+
+        except Exception as e:
+            print(f"Error updating sched in and out with for id: {id}: {e}")
+            QMessageBox.critical(self.parent, "Error",
+                                 f"Error updating sched in/out with for 8id: {id}: {e}")
+            return
+
+        finally:
+            # Ensure the connection is closed after use
+            if connection:
+                connection.close()
+
 
 class ComboBoxDelegate(QStyledItemDelegate):
+    cbValueChanged = pyqtSignal(int, str) # signal to emit the row and updated value
     def __init__(self, items, parent=None):
         super(ComboBoxDelegate, self).__init__(parent)
         self.items = items
@@ -208,6 +249,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
     def createEditor(self, parent, option, index):
         combo = QComboBox(parent)
         combo.addItems(self.items)
+        combo.currentIndexChanged.connect(lambda: self.commitData.emit(combo))
         return combo
 
     def setEditorData(self, editor, index):
@@ -215,7 +257,13 @@ class ComboBoxDelegate(QStyledItemDelegate):
         editor.setCurrentText(value)
 
     def setModelData(self, editor, model, index):
-        model.setData(index, editor.currentText())
+        current_value = index.data()
+        new_value = editor.currentText()
+
+        # Only emit signal if the value is actually changed
+        if current_value != new_value:
+            model.setData(index, new_value)
+            self.cbValueChanged.emit(index.row(), new_value)
 
 
 class buttonTimecardFunction:
@@ -340,14 +388,14 @@ class buttonTimecardFunction:
             # Loop through the table to collect data per employee
             for row in range(rows):
                 # Access each row from the TimeListTable
-                bio_num = self.parent.TimeListTable.item(row, 0).text()  # BioNum
-                emp_name = self.parent.TimeListTable.item(row, 1).text()  # Employee name
-                trans_date = pd.to_datetime(self.parent.TimeListTable.item(row, 2).text())  # Date
-                machcode = self.parent.TimeListTable.item(row, 3).text()  # Machcode
-                check_in = self.parent.TimeListTable.item(row, 4).text()  # Check-in time
-                check_out = self.parent.TimeListTable.item(row, 5).text()  # Check-out time
-                sched_in = self.parent.TimeListTable.item(row, 6).text()  # Time-In
-                sched_out = self.parent.TimeListTable.item(row, 7).text()  # Time-Out
+                bio_num = self.parent.TimeListTable.item(row, 1).text()  # BioNum
+                emp_name = self.parent.TimeListTable.item(row, 2).text()  # Employee name
+                trans_date = pd.to_datetime(self.parent.TimeListTable.item(row, 3).text())  # Date
+                machcode = self.parent.TimeListTable.item(row, 4).text()  # Machcode
+                check_in = self.parent.TimeListTable.item(row, 5).text()  # Check-in time
+                check_out = self.parent.TimeListTable.item(row, 6).text()  # Check-out time
+                sched_in = self.parent.TimeListTable.item(row, 7).text()  # Time-In
+                sched_out = self.parent.TimeListTable.item(row, 8).text()  # Time-Out
 
                 # Initialize employee entry if not already present
                 if bio_num not in employee_data:
@@ -416,14 +464,14 @@ class buttonTimecardFunction:
             # Collecting timesheet data
             for row in range(self.parent.TimeListTable.rowCount()):
                 try:
-                    bioNum = self.parent.TimeListTable.item(row, 0).text()
-                    emp_name = self.parent.TimeListTable.item(row, 1).text()
-                    trans_date = self.parent.TimeListTable.item(row, 2).text()
-                    mach_code = self.parent.TimeListTable.item(row, 3).text()
-                    check_in = self.parent.TimeListTable.item(row, 4).text()
-                    check_out = self.parent.TimeListTable.item(row, 5).text()
-                    sched_in = self.parent.TimeListTable.item(row, 6).text()
-                    sched_out = self.parent.TimeListTable.item(row, 7).text()
+                    bioNum = self.parent.TimeListTable.item(row, 1).text()
+                    emp_name = self.parent.TimeListTable.item(row, 2).text()
+                    trans_date = self.parent.TimeListTable.item(row, 3).text()
+                    mach_code = self.parent.TimeListTable.item(row, 4).text()
+                    check_in = self.parent.TimeListTable.item(row, 5).text()
+                    check_out = self.parent.TimeListTable.item(row, 6).text()
+                    sched_in = self.parent.TimeListTable.item(row, 7).text()
+                    sched_out = self.parent.TimeListTable.item(row, 8).text()
 
                     # Validate the schedule before adding to timesheet data
                     if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum,
@@ -649,11 +697,11 @@ class buttonTimecardFunction:
                 item = self.parent.TimeListTable.item(row, col)
                 return item.text() if item else "N/A"
 
-            bioNum = get_cell_value(selected_row, 0)
-            empName = get_cell_value(selected_row, 1)
-            trans_date = get_cell_value(selected_row, 2)
-            checkIn = get_cell_value(selected_row, 4)
-            checkOut = get_cell_value(selected_row, 5)
+            bioNum = get_cell_value(selected_row, 1)
+            empName = get_cell_value(selected_row, 2)
+            trans_date = get_cell_value(selected_row, 3)
+            checkIn = get_cell_value(selected_row, 5)
+            checkOut = get_cell_value(selected_row, 6)
 
             logging.info(f"Extracted data: bioNum={bioNum}, empName={empName}, trans_date={trans_date}, "
                          f"checkIn={checkIn}, checkOut={checkOut}")
@@ -861,22 +909,18 @@ class searchBioNum:
 
     def search_bioNum(self):
         search_text = self.parent.searchBioNum.text().strip().lower()
-        logging.info(f"Search text: '{search_text}'")
-
-        if not hasattr(self.parent, 'original_data') or not isinstance(self.parent.original_data, list):
-            logging.error("original_data is not properly initialized or is not a list.")
-            QMessageBox.critical(self.parent, "Error", "Original data is not properly initialized.")
-            return
 
         if not search_text:
-            logging.info("Search text is empty. Restoring original data.")
-            self.populate_list_instance.populate_table_with_data(self.parent.original_data)
-            return
+            # unhides all the row if search_text is empty
+            for row in range(self.parent.TimeListTable.rowCount()):
+                self.parent.TimeListTable.setRowHidden(row, False)
 
-        filtered_data = [row for row in self.parent.original_data if search_text in str(row[0]).lower()]
-        logging.info(f"Filtered data contains {len(filtered_data)} rows.")
-
-        self.populate_list_instance.populate_table_with_data(filtered_data)
+        for row in range(self.parent.TimeListTable.rowCount()):
+            item = self.parent.TimeListTable.item(row, 1)  # Bio Num column at index 1
+            if item and search_text in item.text().lower():
+                self.parent.TimeListTable.setRowHidden(row, False)
+            else:
+                self.parent.TimeListTable.setRowHidden(row, True)
 
 
 class FilterDialog(QDialog):
