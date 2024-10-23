@@ -189,18 +189,34 @@ class FileProcessor(QObject):
         return chunks
 
     def importChunkToDatabase(self, chunk_file, chunk_name):
-        """Imports the chunk data into the database, handling 'N/A' values."""
+        """Imports the chunk data into the database, handling 'N/A' values, and adds employee names and schedule info."""
 
-        # Create a connection to the MySQL database using SQLAlchemy
+        # Create a connection to the MySQL database using SQLAlchemy for NTP_LOG_IMPORTS
         engine = create_engine('mysql+pymysql://root@localhost/NTP_LOG_IMPORTS')
 
+        # Connect to the NTP_EMP_LIST database to fetch employee info
+        connection_emp = create_connection('NTP_EMP_LIST')
+
+        # Fetch unique bio_nums from the chunk file for employee name and schedule retrieval
+        chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, na_values=['N/A'], keep_default_na=False)
+        bio_nums = chunk_data[0].dropna().unique()  # Column 0 is bio_no
+
         try:
-            # Create table if it doesn't exist
-            table_name = chunk_name
+            # Fetch employee name and schedule data from emp_info and emp_posnsched tables
+            emp_query = f"""
+                SELECT pi.empid, CONCAT(pi.surname, ', ', pi.firstname, ' ', pi.mi) AS Name, 
+                       ps.sched_in, ps.sched_out
+                FROM emp_info pi
+                JOIN emp_posnsched ps ON pi.empid = ps.empid
+                WHERE pi.empid IN ({', '.join(map(str, bio_nums))})
+            """
+            emp_data = pd.read_sql(emp_query, connection_emp)
+            emp_data.set_index('empid', inplace=True)
+
+            # Create the table with the new columns: Name, sched_in, and sched_out
             with engine.connect() as connection:
-                # Create table using raw SQL query wrapped in text()
                 create_table_query = text(f"""
-                    CREATE TABLE IF NOT EXISTS {table_name} (
+                    CREATE TABLE IF NOT EXISTS {chunk_name} (
                         ID INT AUTO_INCREMENT PRIMARY KEY, 
                         bioNum INT,
                         Name VARCHAR(225),
@@ -208,91 +224,86 @@ class FileProcessor(QObject):
                         machCode VARCHAR(225),
                         time_in TIME,
                         time_out TIME,
-                        edited_by VARCHAR(225),
-                        edited_by_when DATETIME,
                         sched_in VARCHAR(225),
                         sched_out VARCHAR(225),
+                        edited_by VARCHAR(225),
+                        edited_by_when DATETIME,
                         UNIQUE KEY unique_entry (bioNum, date, machCode, time_in)
                     )
                 """)
                 connection.execute(create_table_query)
 
-                # Read chunk data from the file - using numeric index access
-                chunk_data = pd.read_csv(chunk_file, sep='\t', header=None, na_values=['N/A'], keep_default_na=False)
-                chunk_data = chunk_data.fillna('N/A')
-
                 # Insert data into the MySQL table
                 for _, row in chunk_data.iterrows():
                     try:
-                        # Clean and validate data using index-based access
                         bio_num_cleaned = str(row[0]).strip() if pd.notna(row[0]) else None
                         date_cleaned = str(row[1]).strip() if pd.notna(row[1]) else None
                         mach_code_cleaned = str(row[2]).strip() if pd.notna(row[2]) else None
                         time_in_cleaned = str(row[3]).strip() if pd.notna(row[3]) else None
                         time_out_cleaned = str(row[4]).strip() if pd.notna(row[4]) else None
 
-                        # Skip if bioNum is empty
-                        if not bio_num_cleaned:
-                            print("Skipping empty bioNum entry.")
+                        if not bio_num_cleaned or not date_cleaned or not mach_code_cleaned:
+                            print(f"Missing required fields for bioNum={bio_num_cleaned}, skipping.")
                             continue
 
-                        # Convert bio_num to int
-                        try:
-                            bio_num_cleaned = int(bio_num_cleaned)
-                        except ValueError:
-                            print(f"Invalid bioNum: {bio_num_cleaned}")
-                            continue
+                        bio_num_cleaned = int(bio_num_cleaned)
 
-                        # Skip if required fields are missing
-                        if not date_cleaned or not mach_code_cleaned:
-                            print(f"Missing required fields: date={date_cleaned}, machCode={mach_code_cleaned}")
-                            continue
+                        # Get employee name, sched_in, and sched_out from emp_data
+                        if bio_num_cleaned in emp_data.index:
+                            emp_name = emp_data.loc[bio_num_cleaned, 'Name']
+                            sched_in = emp_data.loc[bio_num_cleaned, 'sched_in']
+                            sched_out = emp_data.loc[bio_num_cleaned, 'sched_out']
+                        else:
+                            emp_name = "Unknown"
+                            sched_in = sched_out = None
 
                         # Prepare insert query
                         insert_query = text(f"""
-                            INSERT INTO {table_name} 
-                            (bioNum, date, machCode, time_in, time_out)
+                            INSERT INTO {chunk_name} 
+                            (bioNum, Name, date, machCode, time_in, time_out, sched_in, sched_out)
                             VALUES 
-                            (:bioNum, :date, :machCode, :time_in, :time_out)
+                            (:bioNum, :Name, :date, :machCode, :time_in, :time_out, :sched_in, :sched_out)
                             ON DUPLICATE KEY UPDATE
                             machCode = VALUES(machCode),
                             time_in = VALUES(time_in),
-                            time_out = VALUES(time_out)
+                            time_out = VALUES(time_out),
+                            Name = VALUES(Name),
+                            sched_in = VALUES(sched_in),
+                            sched_out = VALUES(sched_out)
                         """)
 
-                        # Execute insert with parameters
-                        connection.execute(
-                            insert_query,
-                            {
-                                'bioNum': bio_num_cleaned,
-                                'date': date_cleaned,
-                                'machCode': mach_code_cleaned,
-                                'time_in': time_in_cleaned,
-                                'time_out': time_out_cleaned
-                            }
-                        )
+                        # Execute the insert with the fetched employee data
+                        connection.execute(insert_query, {
+                            'bioNum': bio_num_cleaned,
+                            'Name': emp_name,
+                            'date': date_cleaned,
+                            'machCode': mach_code_cleaned,
+                            'time_in': time_in_cleaned,
+                            'time_out': time_out_cleaned,
+                            'sched_in': sched_in,
+                            'sched_out': sched_out
+                        })
 
-                        print(f"Successfully inserted: bioNum={bio_num_cleaned}, date={date_cleaned}")
+                        print(f"Successfully inserted: bioNum={bio_num_cleaned}, date={date_cleaned}, Name={emp_name}")
 
                     except Exception as row_error:
                         print(f"Error inserting row: {row_error}")
                         continue
 
-                # Commit all changes
+                # Commit changes
                 connection.commit()
                 print(f"Completed processing chunk file: {chunk_file}")
+
+                # Delete the chunk file after successful import
+                try:
+                    os.remove(chunk_file)
+                    print(f"Successfully deleted chunk file: {chunk_file}")
+                except Exception as file_error:
+                    print(f"Error deleting chunk file: {file_error}")
 
         except Exception as e:
             self.error.emit(f"Error importing chunk: {e}")
             print(f"Error importing chunk: {e}")
-
-        # finally:
-        #     try:
-        #         os.remove(chunk_file)
-        #         print(f"Deleted chunk file: {chunk_file}")
-        #     except OSError as e:
-        #         self.error.emit(f"Error deleting chunk file: {chunk_file}, {e}")
-        #         print(f"Error deleting chunk file: {e}")
 
 
 class notificationLoader(QDialog):
