@@ -21,3 +21,4 @@ css-inline==0.14.1
 Flask==3.0.3
 Werkzeug==3.0.4
 requests==2.32.2
+xlsxwriter==3.2.0

@@ -23,12 +23,17 @@ class timecard(QDialog):
         self.setup_initial_state()
 
         # Initialize data attributes
-        self.original_data = []
-        self.filtered_data = self.original_data.copy()
+        self.original_data = []  # Holds the initial data
+        self.temp_data = []      # Holds updates made to the data
+        self.filtered_data = []  # Current view data
 
     def setup_initial_state(self):
         self.btnFilter.setVisible(False)
         self.btnCheckSched.setVisible(True)
+
+        # Ensure original_data is initialized
+        self.original_data = []  # Initially empty, should be filled when data is imported
+        self.filtered_data = self.original_data.copy()  # Should initially be empty too
 
     def setupTimecardUI(self):
         try:
@@ -50,9 +55,9 @@ class timecard(QDialog):
 
             self.searchBioNum.textChanged.connect(self.searchFunction.search_bioNum)
 
-            # self.btnFilter.clicked.connect(self.filteringFunction.filterModal)
-
+            # Initialize data attributes
             self.original_data = []
+            self.temp_data = []
             self.filtered_data = self.original_data.copy()
 
         except Exception as e:
