@@ -307,8 +307,8 @@ class buttonTimecardFunction:
             end_day = self.parent.dateToCC.currentText()
 
             # Define headers for employee data
-            headers = ["No.", "Names", "Employee No", "BioNum", "Machcode", "Time-In",
-                       "Time-Out"]
+            headers = ["No.", "Names", "Employee No", "BioNum", "Machcode", "Check_In",
+                       "Check_Out"]
             start_date = datetime(int(year), int(month), int(start_day))
             end_date = datetime(int(year), int(month), int(end_day))
 
@@ -357,6 +357,8 @@ class buttonTimecardFunction:
                         "Employee No": bio_num,
                         "BioNum": bio_num,
                         "Machcode": machcode,
+                        "Check_In": check_in,
+                        "Check_Out": check_out,
                         "Sched-In": sched_in,
                         "Sched-Out": sched_out,
                         "Dates": {str(date.date()): "" for date in date_range}  # Empty slots for each date
@@ -372,7 +374,7 @@ class buttonTimecardFunction:
             for emp in employee_data.values():
                 row_data = [
                     emp["No"], emp["Names"], emp["Employee No"], emp["BioNum"],
-                    emp["Machcode"], emp["Time-In"], emp["Time-Out"]
+                    emp["Machcode"], emp["Check_In"], emp["Check_Out"]
                 ]
 
                 # Append check-in and check-out times for each date
@@ -700,7 +702,7 @@ class TimeComputation:
             cursor = connection.cursor()
 
             # Execute the query to retrieve holidayName and dateType
-            cursor.execute("SELECT holidayName, dateType FROM TYPE_OF_DATES WHERE holidayDate = '2024-03-28'")
+            cursor.execute("SELECT holidayName, dateType FROM TYPE_OF_DATES WHERE holidayDate = ?", (trans_date,))
             result = cursor.fetchone()
 
             if result:
@@ -743,15 +745,15 @@ class TimeComputation:
 
             # Compare Sched_In and Check_In
             in_match = abs(sched_in_time - check_in_time) <= time_tolerance
-            out_match = abs(sched_out_time - check_out_time) <= time_tolerance
+            # out_match = abs(sched_out_time - check_out_time) <= time_tolerance
 
-            if not in_match or not out_match:
+            if not in_match: # or not out_match
                 # Log the mismatches for debugging
                 if not in_match:
                     logging.debug(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
 
-                if not out_match:
-                    logging.debug(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
+                # if not out_match:
+                     # logging.debug(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
 
                 QMessageBox.warning(self.parent, "Validation Error",
                                     f"BioNum: {bio_num}, TransDate: {trans_date} has unmatched schedule.")

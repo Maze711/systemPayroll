@@ -6,7 +6,12 @@ import sys
 import os
 import os.path
 import mysql.connector
+
 import pandas as pd
+from sqlalchemy import create_engine # SQLAlchemny 2.0.36
+from sqlalchemy import text
+import pymysql
+
 import xlsxwriter
 import logging
 import xlrd
