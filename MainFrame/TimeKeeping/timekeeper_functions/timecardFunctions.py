@@ -581,11 +581,11 @@ class buttonTimecardFunction:
                     'RstDayOT_Hrs': 0,
                     'RstDayND_Hrs': 0,
                     'RstDayNDOT_Hrs': 0,
-                    'SplHlyday_Hrs': data['spl_holiday_hours'],
+                    'SplHlyday_Hrs': f"{data['spl_holiday_hours']:.2f}",
                     'SplHlydayOT_Hrs': data['spl_holiday_ot_hours'],
                     'SplHlydayND_Hrs': data['spl_holiday_nd_hours'],
                     'SplHlydayNDOT_Hrs': data['spl_holiday_ndot_hours'],
-                    'RegHlyday_Hrs': data['reg_holiday_hours'],
+                    'RegHlyday_Hrs': f"{data['reg_holiday_hours']:.2f}",
                     'RegHlydayOT_Hrs': data['reg_holiday_ot_hours'],
                     'RegHlydayND_Hrs': data['reg_holiday_nd_hours'],
                     'RegHlydayNDOT_Hrs': data['reg_holiday_ndot_hours'],
@@ -652,7 +652,9 @@ class buttonTimecardFunction:
             }
 
             # Add holiday specific data if applicable
+            holiday_type = self.time_computation.check_holiday_type(trans_date)
             if holiday_type:
+                print(f"Found holiday type: {holiday_type} for date: {trans_date}")
                 if holiday_type == 'Regular Holiday':
                     reg_hlyday_hours = total_hours
                     reg_hlyday_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
@@ -749,20 +751,30 @@ class TimeComputation:
         try:
             cursor = connection.cursor()
 
-            # Execute the query to retrieve holidayName and dateType
-            cursor.execute("SELECT holidayName, dateType FROM TYPE_OF_DATES WHERE holidayDate = ?", (trans_date,))
+            # Corrected format of date
+            if isinstance(trans_date, str):
+                parsed_date = datetime.strptime(trans_date, "%Y-%m-%d").strftime("%Y-%m-%d")
+            else:
+                return None
+
+            # Direct query without parameters
+            query = f"SELECT holidayName, dateType FROM type_of_dates WHERE holidayDate = '{parsed_date}'"
+
+            # Debug output
+            print(f"Executing query: {query}")
+
+            cursor.execute(query)
             result = cursor.fetchone()
 
             if result:
-                holiday_name, date_type = result  # Unpack the tuple to get both values
-                print(f"Holiday Name: {holiday_name}, Date Type: {date_type}")  # Print the results
-                return {
-                    'holiday_name': holiday_name,
-                    'date_type': date_type
-                }
-            else:
-                print(f"No holiday found for {trans_date}")
-                return None
+                holiday_name = result[0]  # Holiday name
+                date_type = result[1]  # Date type
+                print(f"Holiday Name: {holiday_name}, Date Type: {date_type}")
+                if date_type == 'Special Holiday':
+                    return 'Special Holiday'
+                elif date_type == 'Regular Holiday':
+                    return 'Regular Holiday'
+            return None
 
         except Exception as e:
             logging.error(f"Error checking holiday type for date {trans_date}: {e}")
@@ -772,6 +784,26 @@ class TimeComputation:
             # Ensure the connection is closed after use
             if connection:
                 connection.close()
+
+    def calculate_overtime_hours(self, check_in_str, check_out_str):
+        try:
+            check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
+            check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
+
+            if check_out <= check_in:
+                check_out += timedelta(days=1)
+
+            total_hours = (check_out - check_in).total_seconds() / 3600
+
+            regular_hours = 8
+
+            overtime_hours = max(0, total_hours - regular_hours)
+
+            return round(overtime_hours, 2)
+
+        except Exception as e:
+            logging.error(f"Error calculating overtime hours: {e}")
+            return 0
 
     def validate_schedule(self, sched_in, sched_out, check_in, check_out, bio_num, trans_date):
         """
