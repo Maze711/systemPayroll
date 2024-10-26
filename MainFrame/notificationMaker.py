@@ -266,10 +266,7 @@ class FileProcessor(QObject):
                             ON DUPLICATE KEY UPDATE
                             machCode = VALUES(machCode),
                             time_in = VALUES(time_in),
-                            time_out = VALUES(time_out),
-                            Name = VALUES(Name),
-                            sched_in = VALUES(sched_in),
-                            sched_out = VALUES(sched_out)
+                            time_out = VALUES(time_out)
                         """)
 
                         # Execute the insert with the fetched employee data
