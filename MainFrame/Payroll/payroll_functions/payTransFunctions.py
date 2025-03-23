@@ -21,6 +21,7 @@ class PayTransFunctions:
         for row in range(self.parent.paytransTable.rowCount()):
             self.parent.paytransTable.setRowHidden(row, False)
 
+        print("Paytrans Data: ", data[0])
         self.parent.paytransTable.setRowCount(len(data))
 
         for i, row in enumerate(data):
@@ -28,7 +29,7 @@ class PayTransFunctions:
             bio_num_item = QTableWidgetItem(row['BioNum'])
             emp_name_item = QTableWidgetItem(row['EmpName'])
             basic_item = QTableWidgetItem(str(row['Basic']))
-            present_days_item = QTableWidgetItem(row['Present Days'])
+            present_days_item = QTableWidgetItem(str(row['Present Days']))
             reg_day_earn_item = QTableWidgetItem(str(row['RegDay_Earn']))
             reg_day_night_diff_item = QTableWidgetItem(str(row['RegDayNightDiffEarn']))
             reg_day_night_diff_ot_item = QTableWidgetItem(str(row['RegDayNightDiffOTEarn']))
