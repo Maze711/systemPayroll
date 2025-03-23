@@ -49,6 +49,7 @@ class populateList:
             year_months = set()
             for (table_name,) in tables:
                 match = re.search(r'table_(\d{4})_(\d{2})', table_name)
+                print(f"ito yon: ", match)
                 if match:
                     year_months.add(f"{match.group(1)}_{match.group(2)}")
 
@@ -66,6 +67,7 @@ class populateList:
 
     def populate_date_combo_boxes(self):
         selected_year_month = self.parent.yearCC.currentText()
+        print(f"📅 Selected Year-Month: {selected_year_month} (populate_date_combo_boxes called)")
         if not selected_year_month:
             return
 
@@ -79,7 +81,7 @@ class populateList:
             try:
                 cursor = connection.cursor()
                 table_name = f"table_{selected_year_month}"
-                cursor.execute(f"SELECT DISTINCT DATE_FORMAT(date, '%d') AS day FROM {table_name}")
+                cursor.execute(f"SELECT DISTINCT DATE_FORMAT(date, '%d') AS day FROM {table_name} ORDER BY day ASC")
                 days = [day[0] for day in cursor.fetchall()]
                 self.data_cache[selected_year_month] = days
             except Exception as e:
@@ -94,7 +96,6 @@ class populateList:
         self.parent.dateToCC.clear()
         self.parent.dateFromCC.addItems(sorted(days))
         self.parent.dateToCC.addItems(sorted(days))
-
     def populateCostCenterBox(self):
         """Populate the costCenterBox with values from the dept_name column in the emp_posnsched table."""
         if self.cost_center_cache is not None:
@@ -151,7 +152,6 @@ class populateList:
 
     def populate_table_with_data(self, data):
         try:
-            print(data)
             logging.info("Populating table with data.")
             self.parent.TimeListTable.setUpdatesEnabled(False)
             self.parent.TimeListTable.setSortingEnabled(False)
@@ -474,9 +474,9 @@ class buttonTimecardFunction:
                     sched_out = self.parent.TimeListTable.item(row, 8).text()
 
                     # Validate the schedule before adding to timesheet data
-                    if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum,
-                                                                   trans_date):
-                        return  # Stop the process if validation fails
+                    # if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum,
+                    #                                                trans_date):
+                    #     return  # Stop the process if validation fails
 
                     # Calculate late and undertime
                     late, undertime = self.time_computation.calculate_late_and_undertime(sched_in, sched_out, check_in,
@@ -522,6 +522,15 @@ class buttonTimecardFunction:
                         'ndot_hours': 0,
                         'late': 0,
                         'undertime': 0,
+                        'OrdDay_Hrs': 0,  # Added
+                        'OrdDayOT_Hrs': 0,  # Added
+                        'OrdDayND_Hrs': 0,  # Added
+                        'OrdDayNDOT_Hrs': 0,  # Added
+                        'RstDay_Hrs': 0,  # Added
+                        'RstDayOT_Hrs': 0,  # Added
+                        'RstDayND_Hrs': 0,  # Added
+                        'RstDayNDOT_Hrs': 0,  # Added
+                        'ordinary_day_hours': 0,
                         'reg_holiday_hours': 0,
                         'reg_holiday_ot_hours': 0,
                         'reg_holiday_nd_hours': 0,
@@ -533,12 +542,33 @@ class buttonTimecardFunction:
                         'days_work': set()
                     }
 
+                # Modify the aggregation section to include ordinary day and rest day hours:
                 # Aggregate results
                 aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
                 aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
                 aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
                 aggregated_results[bio_num]['late'] += result['late']
                 aggregated_results[bio_num]['undertime'] += result['undertime']
+
+                # Aggregate ordinary day hours
+                if result.get('OrdDay_Hrs'):
+                    aggregated_results[bio_num]['OrdDay_Hrs'] += result['OrdDay_Hrs']
+                if result.get('OrdDayOT_Hrs'):
+                    aggregated_results[bio_num]['OrdDayOT_Hrs'] += result['OrdDayOT_Hrs']
+                if result.get('OrdDayND_Hrs'):
+                    aggregated_results[bio_num]['OrdDayND_Hrs'] += result['OrdDayND_Hrs']
+                if result.get('OrdDayNDOT_Hrs'):
+                    aggregated_results[bio_num]['OrdDayNDOT_Hrs'] += result['OrdDayNDOT_Hrs']
+
+                # Aggregate rest day hours
+                if result.get('RstDay_Hrs'):
+                    aggregated_results[bio_num]['RstDay_Hrs'] += result['RstDay_Hrs']
+                if result.get('RstDayOT_Hrs'):
+                    aggregated_results[bio_num]['RstDayOT_Hrs'] += result['RstDayOT_Hrs']
+                if result.get('RstDayND_Hrs'):
+                    aggregated_results[bio_num]['RstDayND_Hrs'] += result['RstDayND_Hrs']
+                if result.get('RstDayNDOT_Hrs'):
+                    aggregated_results[bio_num]['RstDayNDOT_Hrs'] += result['RstDayNDOT_Hrs']
 
                 # Aggregate holiday hours directly from results
                 if result.get('RegHlyday_Hrs'):
@@ -574,13 +604,14 @@ class buttonTimecardFunction:
                     'Days_Present': len(data['days_work']),
                     'Late': f"{data['late']:.2f}",
                     'Undertime': f"{data['undertime']:.2f}",
-                    'OrdDayOT_Hrs': 0,
-                    'OrdDayND_Hrs': 0,
-                    'OrdDayNDOT_Hrs': 0,
-                    'RstDay_Hrs': 0,
-                    'RstDayOT_Hrs': 0,
-                    'RstDayND_Hrs': 0,
-                    'RstDayNDOT_Hrs': 0,
+                    'OrdDay_Hrs': f"{data['OrdDay_Hrs']:.2f}",  # Added
+                    'OrdDayOT_Hrs': f"{data['OrdDayOT_Hrs']:.2f}",  # Added
+                    'OrdDayND_Hrs': f"{data['OrdDayND_Hrs']:.2f}",  # Added
+                    'OrdDayNDOT_Hrs': f"{data['OrdDayNDOT_Hrs']:.2f}",  # Added
+                    'RstDay_Hrs': f"{data['RstDay_Hrs']:.2f}",  # Added
+                    'RstDayOT_Hrs': f"{data['RstDayOT_Hrs']:.2f}",  # Added
+                    'RstDayND_Hrs': f"{data['RstDayND_Hrs']:.2f}",  # Added
+                    'RstDayNDOT_Hrs': f"{data['RstDayNDOT_Hrs']:.2f}",  # Added
                     'SplHlyday_Hrs': f"{data['spl_holiday_hours']:.2f}",
                     'SplHlydayOT_Hrs': data['spl_holiday_ot_hours'],
                     'SplHlydayND_Hrs': data['spl_holiday_nd_hours'],
@@ -679,6 +710,33 @@ class buttonTimecardFunction:
                         'SplHlydayND_Hrs': spl_hlyday_nd_hours,
                         'SplHlydayNDOT_Hrs': spl_hlyday_ndot_hours
                     })
+
+                else:  # Ordinary Day
+                    ord_day_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
+                                                                                      check_out_datetime)
+                    result_entry.update({
+                        'OrdDayOT_Hrs': ord_day_ot_hours,
+                        'OrdDayND_Hrs': nd_hours,
+                        'OrdDayNDOT_Hrs': ndot_hours
+                    })
+
+            else:  # Ordinary Day
+                # Get total hours, ND hours and NDOT hours using existing calculate_hours method
+                total_hours, nd_hours, ndot_hours = self.time_computation.calculate_hours(check_in_datetime,
+                                                                                          check_out_datetime)
+
+                # Get overtime hours using existing calculate_overtime_hours method
+                overtime_hours = self.time_computation.calculate_overtime_hours(check_in_datetime, check_out_datetime)
+
+                # Calculate regular hours (total hours minus overtime, capped at 8)
+                regular_hours = min(total_hours, 8)  # Regular hours capped at 8
+
+                result_entry.update({
+                    'OrdDay_Hrs': regular_hours,
+                    'OrdDayOT_Hrs': overtime_hours,
+                    'OrdDayND_Hrs': nd_hours,
+                    'OrdDayNDOT_Hrs': ndot_hours
+                })
 
             results.append(result_entry)
 
@@ -1157,11 +1215,13 @@ class FetchDataToPopulateTableProcessor(QObject):
 
     def process_populate_time_list_table(self):
         """Populate the time list table with check-in and check-out times, machCode, and employee data from NTP_LOG_IMPORTS."""
+        QThread.msleep(100)
         selected_year_month = self.parent.yearCC.currentText()
         from_day = self.parent.dateFromCC.currentText()
         to_day = self.parent.dateToCC.currentText()
 
         if not selected_year_month or not from_day or not to_day:
+            self.error.emit(f"selected_year_month: {selected_year_month}\nfrom_day: {from_day}\nto_day: {to_day}")
             return
 
         logging.info(f"Populating time list table for: {selected_year_month}, from {from_day} to {to_day}")
