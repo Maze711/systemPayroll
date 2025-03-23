@@ -65,37 +65,40 @@ class FileProcessor(QObject):
     def __init__(self, fileName):
         super().__init__()
         self.fileName = fileName
-        # When using a book1 excel file the daypresent should be dayspresent
         self.column_mapping = {
-            'bionum': ['bionum'],
-            'empnumber': ['empnumber'],
-            'empname': ['empname'],
-            'costcenter': ['costcenter'],
-            'fromdate': ['fromdate'],
-            'todate': ['todate'],
-            'daypresent': ['daypresent', 'dayspresent'],
-            'restday': ['restday'],
-            'holiday': ['holiday'],
-            'rsthlyday': ['rsthlyday'],
-            'orddaynite': ['orddaynite'],
-            'orddaynit2': ['orddaynit2'],
-            'rstdaynite': ['rstdaynite'],
-            'rstdaynit2': ['rstdaynit2'],
-            'hlydaynite': ['hlydaynite'],
-            'hlydaynit2': ['hlydaynit2'],
-            'rsthlydayn': ['rsthlydayn'],
-            'rsthlyday2': ['rsthlyday2'],
-            'orddayot': ['orddayot'],
-            'rstdayot': ['rstdayot'],
-            'hlydayot': ['hlydayot'],
-            'rsthlydayo': ['rsthlydayo'],
-            'late': ['late'],
-            'undertime': ['undertime'],
-            'absent': ['absent'],
-            'dateposted': ['dateposted'],
-            'remarks': ['remarks'],
-            'empcompany': ['empcompany'],
-            'legalholid': ['legalholid']
+            'Bio_No.': ['Bio_No.'],
+            'Emp_Number': ['Emp_Number'],
+            'Emp_Name': ['Emp_Name'],
+            'Cost_Center': ['Cost_Center'],
+            'Days_Work': ['Days_Work'],
+            'Days_Present': ['Days_Present'],
+            'Hours_Work': ['Hours_Work'],
+            'Late': ['Late'],
+            'Undertime': ['Undertime'],
+            'OrdDay_Hrs': ['OrdDay_Hrs'],
+            'OrdDayOT_Hrs': ['OrdDayOT_Hrs'],
+            'OrdDayND_Hrs': ['OrdDayND_Hrs'],
+            'OrdDayNDOT_Hrs': ['OrdDayNDOT_Hrs'],
+            'RstDay_Hrs': ['RstDay_Hrs'],
+            'RstDayOT_Hrs': ['RstDayOT_Hrs'],
+            'RstDayND_Hrs': ['RstDayND_Hrs'],
+            'RstDayNDOT_Hrs': ['RstDayNDOT_Hrs'],
+            'SplHlyday_Hrs': ['SplHlyday_Hrs'],
+            'SplHlydayOT_Hrs': ['SplHlydayOT_Hrs'],
+            'SplHlydayND_Hrs': ['SplHlydayND_Hrs'],
+            'SplHlydayNDOT_Hrs': ['SplHlydayNDOT_Hrs'],
+            'RegHlyday_Hrs': ['RegHlyday_Hrs'],
+            'RegHlydayOT_Hrs': ['RegHlydayOT_Hrs'],
+            'RegHlydayND_Hrs': ['RegHlydayND_Hrs'],
+            'RegHlydayNDOT_Hrs': ['RegHlydayNDOT_Hrs'],
+            'SplHldyRD_Hrs': ['SplHldyRD_Hrs'],
+            'SplHldyRDOT_Hrs': ['SplHldyRDOT_Hrs'],
+            'SplHldyRDND_Hrs': ['SplHldyRDND_Hrs'],
+            'SplHldyRDNDOT_Hrs': ['SplHldyRDNDOT_Hrs'],
+            'RegHldyRD_Hrs': ['RegHldyRD_Hrs'],
+            'RegHldyRDOT_Hrs': ['RegHldyRDOT_Hrs'],
+            'RegHldyRDND_Hrs': ['RegHldyRDND_Hrs'],
+            'RegHldyRDNDOT_Hrs': ['RegHldyRDNDOT_Hrs'],
         }
         self.required_columns = list(self.column_mapping.keys())
 
@@ -107,20 +110,25 @@ class FileProcessor(QObject):
             if file_ext.endswith('.xlsx'):
                 workbook = openpyxl.load_workbook(self.fileName, data_only=True)
                 sheet = workbook.active
-                headers = [cell.value for cell in sheet[1]]
+                headers = [cell.value for cell in sheet[1]]  # Read headers
                 total_rows = sheet.max_row
-                for row_idx in range(1, total_rows):
+
+                # Include headers and data
+                for row_idx in range(1, total_rows + 1):  # Start from 1 to include header
                     row = [sheet.cell(row=row_idx, column=col_idx).value for col_idx in range(1, sheet.max_column + 1)]
                     content.append(row)
                     progress = int((row_idx / total_rows) * 100)
                     self.progressChanged.emit(progress)
                     QThread.msleep(1)  # Simulate work being done
+
             elif file_ext.endswith('.xls'):
                 workbook = xlrd.open_workbook(self.fileName, encoding_override="cp1252")
                 sheet = workbook.sheet_by_index(0)
-                headers = sheet.row_values(0)
+                headers = sheet.row_values(0)  # Read headers
                 total_rows = sheet.nrows
-                for row_idx in range(0, total_rows):  # Skip header row
+
+                # Include headers and data
+                for row_idx in range(total_rows):  # Start from 0 to include header
                     row = sheet.row_values(row_idx)
                     content.append(row)
                     progress = int((row_idx / total_rows) * 100)
@@ -129,16 +137,19 @@ class FileProcessor(QObject):
             else:
                 raise ValueError(f"Unsupported file format: {file_ext.split('.')[-1]}")
 
-            # Validate and standardize columns
-            standardized_headers = self.standardize_headers(headers)
-            missing_columns = [col for col in self.required_columns if col not in standardized_headers]
+            # Validate required columns directly from headers
+            missing_columns = [col for col in self.required_columns if col not in headers]
 
             if missing_columns:
                 raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
 
-            # Replace original headers with standardized headers
-            content[0] = standardized_headers
+            # Print the content after processing
+            print("Processed Content:")
+            for row in content:
+                print(row)
+
             self.finished.emit(content)
+
         except ValueError as ve:
             self.error.emit(str(ve))
         except Exception as e:

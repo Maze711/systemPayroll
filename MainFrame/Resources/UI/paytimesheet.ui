@@ -204,6 +204,16 @@ QTableWidget {
     </column>
     <column>
      <property name="text">
+      <string>Late</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Undertime</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
       <string>OrdDay_Hrs</string>
      </property>
     </column>
@@ -320,16 +330,6 @@ QTableWidget {
     <column>
      <property name="text">
       <string>RegHldyRDNDOT_Hrs</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Late</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Undertime</string>
      </property>
     </column>
     <column>

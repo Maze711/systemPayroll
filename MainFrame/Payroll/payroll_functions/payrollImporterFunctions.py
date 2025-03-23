@@ -16,32 +16,41 @@ class FileProcessor(QObject):
         self.fileName = fileName
         # When using a book1 excel file the daypresent should be dayspresent
         self.column_mapping = {
-            'bionum': ['bionum'],
-            'empnumber': ['empnumber'],
-            'empname': ['empname'],
-            'costcenter': ['costcenter'],
-            'fromdate': ['fromdate'],
-            'todate': ['todate'],
-            'daypresent': ['daypresent', 'dayspresent'],
-            'restday': ['restday'],
-            'holiday': ['holiday'],
-            'rsthlyday': ['rsthlyday'],
-            'orddaynite': ['orddaynite'],
-            'rstdaynite': ['rstdaynite'],
-            'hlydaynite': ['hlydaynite'],
-            'rsthlydayn': ['rsthlydayn'],
-            'orddayot': ['orddayot'],
-            'rstdayot': ['rstdayot'],
-            'hlydayot': ['hlydayot'],
-            'rsthlydayo': ['rsthlydayo'],
-            'late': ['late'],
-            'undertime': ['undertime'],
-            'absent': ['absent'],
-            'dateposted': ['dateposted'],
-            'remarks': ['remarks'],
-            'empcompany': ['empcompany'],
-            'legalholid': ['legalholid']
+            'Bio_No.': ['Bio_No.'],
+            'Emp_Number': ['Emp_Number'],
+            'Emp_Name': ['Emp_Name'],
+            'Cost_Center': ['Cost_Center'],
+            'Days_Work': ['Days_Work'],
+            'Days_Present': ['Days_Present'],
+            'Hours_Work': ['Hours_Work'],
+            'Late': ['Late'],
+            'Undertime': ['Undertime'],
+            'OrdDay_Hrs': ['OrdDay_Hrs'],
+            'OrdDayOT_Hrs': ['OrdDayOT_Hrs'],
+            'OrdDayND_Hrs': ['OrdDayND_Hrs'],
+            'OrdDayNDOT_Hrs': ['OrdDayNDOT_Hrs'],
+            'RstDay_Hrs': ['RstDay_Hrs'],
+            'RstDayOT_Hrs': ['RstDayOT_Hrs'],
+            'RstDayND_Hrs': ['RstDayND_Hrs'],
+            'RstDayNDOT_Hrs': ['RstDayNDOT_Hrs'],
+            'SplHlyday_Hrs': ['SplHlyday_Hrs'],
+            'SplHlydayOT_Hrs': ['SplHlydayOT_Hrs'],
+            'SplHlydayND_Hrs': ['SplHlydayND_Hrs'],
+            'SplHlydayNDOT_Hrs': ['SplHlydayNDOT_Hrs'],
+            'RegHlyday_Hrs': ['RegHlyday_Hrs'],
+            'RegHlydayOT_Hrs': ['RegHlydayOT_Hrs'],
+            'RegHlydayND_Hrs': ['RegHlydayND_Hrs'],
+            'RegHlydayNDOT_Hrs': ['RegHlydayNDOT_Hrs'],
+            'SplHldyRD_Hrs': ['SplHldyRD_Hrs'],
+            'SplHldyRDOT_Hrs': ['SplHldyRDOT_Hrs'],
+            'SplHldyRDND_Hrs': ['SplHldyRDND_Hrs'],
+            'SplHldyRDNDOT_Hrs': ['SplHldyRDNDOT_Hrs'],
+            'RegHldyRD_Hrs': ['RegHldyRD_Hrs'],
+            'RegHldyRDOT_Hrs': ['RegHldyRDOT_Hrs'],
+            'RegHldyRDND_Hrs': ['RegHldyRDND_Hrs'],
+            'RegHldyRDNDOT_Hrs': ['RegHldyRDNDOT_Hrs'],
         }
+
         self.required_columns = list(self.column_mapping.keys())
 
     def process(self):
@@ -150,13 +159,13 @@ class PayrollImporterFunctions:
             # ]
 
             #When using a XLS this will be the column
-            required_columns = [
-                'bionum', 'empnumber', 'empname', 'costcenter', 'fromdate', 'todate', 'daypresent', 'restday',
-                'holiday', 'rsthlyday', 'orddaynite', 'rstdaynite', 'hlydaynite', 'rsthlydayn', 'orddayot',
-                'rstdayot', 'hlydayot', 'rsthlydayo', 'orddaynit2', 'rstdaynit2', 'hlydaynit2', 'rsthlyday2',
-                'late', 'undertime', 'absent', 'dateposted', 'remarks', 'rstshlyday', 'rstshlyda2', 'rstshlyda3',
-                'rstshlyda4', 'empcompany', 'legalholid'
-            ]
+            required_columns = ['Bio_No.', 'Emp_Number', 'Emp_Name', 'Cost_Center', 'Days_Work', 'Days_Present',
+                                'Hours_Work', 'Late', 'Undertime', 'OrdDay_Hrs', 'OrdDayOT_Hrs', 'OrdDayND_Hrs',
+                                'OrdDayNDOT_Hrs', 'RstDay_Hrs', 'RstDayOT_Hrs', 'RstDayND_Hrs', 'RstDayNDOT_Hrs',
+                                'SplHlyday_Hrs', 'SplHlydayOT_Hrs', 'SplHlydayND_Hrs', 'SplHlydayNDOT_Hrs',
+                                'RegHlyday_Hrs', 'RegHlydayOT_Hrs', 'RegHlydayND_Hrs', 'RegHlydayNDOT_Hrs',
+                                'SplHldyRD_Hrs', 'SplHldyRDOT_Hrs', 'SplHldyRDND_Hrs', 'SplHldyRDNDOT_Hrs',
+                                'RegHldyRD_Hrs', 'RegHldyRDOT_Hrs', 'RegHldyRDND_Hrs', 'RegHldyRDNDOT_Hrs']
 
             # Check for None and safely strip and lower case headers
             formatted_headers = [header.strip().lower() if header is not None else '' for header in headers]
