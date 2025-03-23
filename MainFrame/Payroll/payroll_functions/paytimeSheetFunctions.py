@@ -59,97 +59,44 @@ class PaytimeSheetFunctions:
 
             print(f"Creating PayTrans from {from_date} to {to_date}")
 
-            # Define the column_names dictionary
-            column_names = {
-                'Emp_Num': ('Emp Number', 0),
-                'Bio_No.': ('Bio Num', 1),
-                'Emp_Name': ('Employee Name', 2),
-                'Basic': ('Basic', 3),
-                'DailyRate': ('DailyRate', 4),
-                'Days_Work': ('DaysWork', 5),
-                'OrdDay_Earn': ('OrdDay_Earn', 6),
-                'OrdDayOT_Earn': ('OrdDayOT_Earn', 7),
-                'OrdDayND_Earn': ('OrdDayND_Earn', 8),
-                'OrdDayNDOT_Earn': ('OrdDayNDOT_Earn', 9),
-                'RestDay_Earn': ('RestDay_Earn', 10),
-                'RestDayOT_Earn': ('RestDayOT_Earn', 11),
-                'RestDayND_Earn': ('RestDayND_Earn', 12),
-                'RestDayNDOT_Earn': ('RestDayNDOT_Earn', 13),
-                'RegHldy_Earn': ('RegHldy_Earn', 14),
-                'RegHldyOT_Earn': ('RegHldyOT_Earn', 15),
-                'RegHldyND_Earn': ('RegHldyND_Earn', 16),
-                'RegHldyNDOT_Earn': ('RegHldyNDOT_Earn', 17),
-                'RestHoli_Earn': ('RestHoli_Earn', 18),
-                'RestHoliOT_Earn': ('RestHoliOT_Earn', 19),
-                'RestHoliND_Earn': ('RestHoliND_Earn', 20),
-                'RestHoliNDOT_Earn': ('RestHoliNDOT_Earn', 21),
-                'Late': ('Late', 22),
-                'Undertime': ('Undertime', 23),
-                'Late/Absent': ('Late/Absent', 24),
-                'SSS_Loan': ('SSS_Loan', 25),
-                'Pagibig_Loan': ('Pagibig_Loan', 26),
-                'Cash_Advance': ('Cash_Advance', 27),
-                'Canteen': ('Canteen', 28),
-                'Tax': ('Tax', 29),
-                'Clinic': ('Clinic', 30),
-                'Arayata_Annual': ('Arayata_Annual', 31),
-                'HMI': ('HMI', 32),
-                'Funeral': ('Funeral', 33),
-                'Voluntary': ('Voluntary', 34),
-                'SSS': ('SSS', 35),
-                'Medicare/Philhealth': ('Medicare/Philhealth', 36),
-                'Pagibig': ('Pagibig', 37),
-                'Gross_Income': ('Gross_Income', 38)
-            }
-
             # Collect selected data from the table
             selected_data = []
+
             for row in range(self.parent.paytimesheetTable.rowCount()):
                 try:
-                    bio_num_item = self.parent.paytimesheetTable.item(row, column_names['Bio_No.'][1])
-                    emp_no_item = self.parent.paytimesheetTable.item(row, column_names['Emp_Num'][1])
-                    emp_name_item = self.parent.paytimesheetTable.item(row, column_names['Emp_Name'][1])
-                    basic_item = self.parent.paytimesheetTable.item(row, column_names['Basic'][1])
-                    daily_rate_item = self.parent.paytimesheetTable.item(row, column_names['DailyRate'][1])
-                    days_work_item = self.parent.paytimesheetTable.item(row, column_names['Days_Work'][1])
-                    ord_day_earn_item = self.parent.paytimesheetTable.item(row, column_names['OrdDay_Earn'][1])
-                    ord_day_ot_earn_item = self.parent.paytimesheetTable.item(row, column_names['OrdDayOT_Earn'][1])
-                    ord_day_nd_earn_item = self.parent.paytimesheetTable.item(row, column_names['OrdDayND_Earn'][1])
-                    ord_day_ndot_earn_item = self.parent.paytimesheetTable.item(row, column_names['OrdDayNDOT_Earn'][1])
-                    rest_day_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestDay_Earn'][1])
-                    rest_day_ot_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestDayOT_Earn'][1])
-                    rest_day_nd_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestDayND_Earn'][1])
-                    rest_day_ndot_earn_item = self.parent.paytimesheetTable.item(row,
-                                                                                 column_names['RestDayNDOT_Earn'][1])
-                    reg_hldy_earn_item = self.parent.paytimesheetTable.item(row, column_names['RegHldy_Earn'][1])
-                    reg_hldy_ot_earn_item = self.parent.paytimesheetTable.item(row, column_names['RegHldyOT_Earn'][1])
-                    reg_hldy_nd_earn_item = self.parent.paytimesheetTable.item(row, column_names['RegHldyND_Earn'][1])
-                    reg_hldy_ndot_earn_item = self.parent.paytimesheetTable.item(row,
-                                                                                 column_names['RegHldyNDOT_Earn'][1])
-                    rest_holi_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestHoli_Earn'][1])
-                    rest_holi_ot_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestHoliOT_Earn'][1])
-                    rest_holi_nd_earn_item = self.parent.paytimesheetTable.item(row, column_names['RestHoliND_Earn'][1])
-                    rest_holi_ndot_earn_item = self.parent.paytimesheetTable.item(row,
-                                                                                  column_names['RestHoliNDOT_Earn'][1])
-                    late_item = self.parent.paytimesheetTable.item(row, column_names['Late'][1])
-                    undertime_item = self.parent.paytimesheetTable.item(row, column_names['Undertime'][1])
-                    late_absent_item = self.parent.paytimesheetTable.item(row, column_names['Late/Absent'][1])
-                    sss_loan_item = self.parent.paytimesheetTable.item(row, column_names['SSS_Loan'][1])
-                    pagibig_loan_item = self.parent.paytimesheetTable.item(row, column_names['Pagibig_Loan'][1])
-                    cash_advance_item = self.parent.paytimesheetTable.item(row, column_names['Cash_Advance'][1])
-                    canteen_item = self.parent.paytimesheetTable.item(row, column_names['Canteen'][1])
-                    tax_item = self.parent.paytimesheetTable.item(row, column_names['Tax'][1])
-                    clinic_item = self.parent.paytimesheetTable.item(row, column_names['Clinic'][1])
-                    arayata_annual_item = self.parent.paytimesheetTable.item(row, column_names['Arayata_Annual'][1])
-                    hmi_item = self.parent.paytimesheetTable.item(row, column_names['HMI'][1])
-                    funeral_item = self.parent.paytimesheetTable.item(row, column_names['Funeral'][1])
-                    voluntary_item = self.parent.paytimesheetTable.item(row, column_names['Voluntary'][1])
-                    sss_item = self.parent.paytimesheetTable.item(row, column_names['SSS'][1])
-                    medicare_philhealth_item = self.parent.paytimesheetTable.item(row,
-                                                                                  column_names['Medicare/Philhealth'][
-                                                                                      1])
-                    pagibig_item = self.parent.paytimesheetTable.item(row, column_names['Pagibig'][1])
-                    gross_income_item = self.parent.paytimesheetTable.item(row, column_names['Gross_Income'][1])
+                    bio_num_item = self.parent.paytimesheetTable.item(row, 0)
+                    emp_no_item = self.parent.paytimesheetTable.item(row, 1)
+                    emp_name_item = self.parent.paytimesheetTable.item(row, 2)
+                    present_days_item = self.parent.paytimesheetTable.item(row, 5)
+
+                    late_item = self.parent.paytimesheetTable.item(row, 7)
+                    undertime_item = self.parent.paytimesheetTable.item(row, 8)
+
+                    ord_day_item = self.parent.paytimesheetTable.item(row, 9)
+                    ord_day_ot_item = self.parent.paytimesheetTable.item(row, 10)
+                    ord_day_nd_item = self.parent.paytimesheetTable.item(row, 11)
+                    ord_day_ndot_item = self.parent.paytimesheetTable.item(row, 12)
+
+                    rest_day_item = self.parent.paytimesheetTable.item(row, 13)
+                    rest_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
+                    rest_day_nd_item = self.parent.paytimesheetTable.item(row, 15)
+                    rest_day_ndot_item = self.parent.paytimesheetTable.item(row, 16)
+
+                    #SplHlyday_hrs list might be added right here
+
+                    reg_hldy_item = self.parent.paytimesheetTable.item(row, 21)
+                    reg_hldy_ot_item = self.parent.paytimesheetTable.item(row, 22)
+                    reg_hldy_nd_item = self.parent.paytimesheetTable.item(row, 23)
+                    reg_hldy_ndot_item = self.parent.paytimesheetTable.item(row, 24)
+
+                    #SplHldyRD_hrs list might be added right here
+
+                    rest_holi_item = self.parent.paytimesheetTable.item(row, 29)
+                    rest_holi_ot_item = self.parent.paytimesheetTable.item(row, 30)
+                    rest_holi_nd_item = self.parent.paytimesheetTable.item(row, 31)
+                    rest_holi_ndot_item = self.parent.paytimesheetTable.item(row, 32)
+
+                    # absent_item = self.parent.paytimesheetTable.item(row, 33)
 
                     # Check for None values
                     if bio_num_item is None or emp_no_item is None or emp_name_item is None:
@@ -165,52 +112,40 @@ class PaytimeSheetFunctions:
 
                     # Ensure numeric fields are not None before converting to float
                     def safe_float(value):
-                        return float(value) if value is not None and value != "" else 0.0
+                        if value is None:
+                            return 0.0
+                        return float(value.strip()) if value else 0.0
 
                     selected_data.append({
                         'EmpNo': emp_no_item.text(),
                         'BioNum': bio_num,
                         'EmpName': emp_name_item.text(),
-                        'Basic': safe_float(basic_item.text()) if basic_item else 0.0,
-                        'DailyRate': safe_float(daily_rate_item.text()) if daily_rate_item else 0.0,
-                        'DaysWork': safe_float(days_work_item.text()) if days_work_item else 0.0,
-                        'OrdDay_Earn': safe_float(ord_day_earn_item.text()) if ord_day_earn_item else 0.0,
-                        'OrdDayOT_Earn': safe_float(ord_day_ot_earn_item.text()) if ord_day_ot_earn_item else 0.0,
-                        'OrdDayND_Earn': safe_float(ord_day_nd_earn_item.text()) if ord_day_nd_earn_item else 0.0,
-                        'OrdDayNDOT_Earn': safe_float(ord_day_ndot_earn_item.text()) if ord_day_ndot_earn_item else 0.0,
-                        'RestDay_Earn': safe_float(rest_day_earn_item.text()) if rest_day_earn_item else 0.0,
-                        'RestDayOT_Earn': safe_float(rest_day_ot_earn_item.text()) if rest_day_ot_earn_item else 0.0,
-                        'RestDayND_Earn': safe_float(rest_day_nd_earn_item.text()) if rest_day_nd_earn_item else 0.0,
-                        'RestDayNDOT_Earn': safe_float(
-                            rest_day_ndot_earn_item.text()) if rest_day_ndot_earn_item else 0.0,
-                        'RegHldy_Earn': safe_float(reg_hldy_earn_item.text()) if reg_hldy_earn_item else 0.0,
-                        'RegHldyOT_Earn': safe_float(reg_hldy_ot_earn_item.text()) if reg_hldy_ot_earn_item else 0.0,
-                        'RegHldyND_Earn': safe_float(reg_hldy_nd_earn_item.text()) if reg_hldy_nd_earn_item else 0.0,
-                        'RegHldyNDOT_Earn': safe_float(
-                            reg_hldy_ndot_earn_item.text()) if reg_hldy_ndot_earn_item else 0.0,
-                        'RestHoli_Earn': safe_float(rest_holi_earn_item.text()) if rest_holi_earn_item else 0.0,
-                        'RestHoliOT_Earn': safe_float(rest_holi_ot_earn_item.text()) if rest_holi_ot_earn_item else 0.0,
-                        'RestHoliND_Earn': safe_float(rest_holi_nd_earn_item.text()) if rest_holi_nd_earn_item else 0.0,
-                        'RestHoliNDOT_Earn': safe_float(
-                            rest_holi_ndot_earn_item.text()) if rest_holi_ndot_earn_item else 0.0,
-                        'Late': safe_float(late_item.text()) if late_item else 0.0,
-                        'Undertime': safe_float(undertime_item.text()) if undertime_item else 0.0,
-                        'Late/Absent': safe_float(late_absent_item.text()) if late_absent_item else 0.0,
-                        'SSS_Loan': safe_float(sss_loan_item.text()) if sss_loan_item else 0.0,
-                        'Pagibig_Loan': safe_float(pagibig_loan_item.text()) if pagibig_loan_item else 0.0,
-                        'Cash_Advance': safe_float(cash_advance_item.text()) if cash_advance_item else 0.0,
-                        'Canteen': safe_float(canteen_item.text()) if canteen_item else 0.0,
-                        'Tax': safe_float(tax_item.text()) if tax_item else 0.0,
-                        'Clinic': safe_float(clinic_item.text()) if clinic_item else 0.0,
-                        'Arayata_Annual': safe_float(arayata_annual_item.text()) if arayata_annual_item else 0.0,
-                        'HMI': safe_float(hmi_item.text()) if hmi_item else 0.0,
-                        'Funeral': safe_float(funeral_item.text()) if funeral_item else 0.0,
-                        'Voluntary': safe_float(voluntary_item.text()) if voluntary_item else 0.0,
-                        'SSS': safe_float(sss_item.text()) if sss_item else 0.0,
-                        'Medicare/Philhealth': safe_float(
-                            medicare_philhealth_item.text()) if medicare_philhealth_item else 0.0,
-                        'Pagibig': safe_float(pagibig_item.text()) if pagibig_item else 0.0,
-                        'Gross_Income': safe_float(gross_income_item.text()) if gross_income_item else 0.0
+                        'Present Days': safe_float(present_days_item.text()),
+                        
+                        'Ordinary Day Hours': safe_float(ord_day_item.text()),
+                        'Ordinary Day OT Hours': safe_float(ord_day_ot_item.text()),
+                        'Ordinary Day Night Diff Hours': safe_float(ord_day_nd_item.text()),
+                        'Ordinary Day NDOT Hours': safe_float(ord_day_ndot_item.text()),
+                        
+                        'Rest Day Hours': safe_float(rest_day_item.text()),
+                        'Rest Day OT Hours': safe_float(rest_day_ot_item.text()),
+                        'Rest Day Night Diff Hours': safe_float(rest_day_nd_item.text()),
+                        'Rest Day Night Diff OT': safe_float(rest_day_ndot_item.text()),
+
+                        'Regular Holiday Hours': safe_float(reg_hldy_item.text()),
+                        'Regular Holiday OT Hours': safe_float(reg_hldy_ot_item.text()),
+                        'Regular Holiday Night Diff Hours': safe_float(reg_hldy_nd_item.text()),
+                        'Regular Holiday Night Diff OT Hours': safe_float(reg_hldy_ndot_item.text()),
+
+                        'Rest Holiday Hours': safe_float(rest_holi_item.text()),
+                        'Rest Holiday OT Hours': safe_float(rest_holi_ot_item.text()),
+                        'Rest Holiday Night Diff Hours': safe_float(rest_holi_nd_item.text()),
+                        'Rest Holiday Night Diff OT Hours': safe_float(rest_holi_ndot_item.text()),
+
+                        'Late': safe_float(late_item.text()),
+                        'Undertime': safe_float(undertime_item.text()),
+
+                        # 'Absent': safe_float(absent_item.text())
                     })
 
                 except Exception as e:
@@ -255,7 +190,16 @@ class PaytimeSheetFunctions:
             pay_computation.calculateGrossIncome()
             print("Pay computation completed.")
 
+            print("Selected Data: ", selected_data[0])
+
             try:
+
+                # If there's no selected data to be inserted, throw an error
+                if len(selected_data) == 0:
+                    QMessageBox.warning(self.parent, "Error",
+                                        "Please import the timesheet first, before creating Paytrans.")
+                    return
+
                 self.parent.window = PayTrans(from_date, to_date, selected_data)
                 self.parent.main_window.open_dialogs.append(self.parent.window)
                 self.parent.window.show()
