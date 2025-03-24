@@ -259,7 +259,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>33</number>
+    <number>38</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -477,6 +477,31 @@ QTableWidget {
    <column>
     <property name="text">
      <string>RegHldyRDNDOT_Hrs</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Absent</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Date_Posted</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Remarks</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Emp_Company</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Legal_Holiday</string>
     </property>
    </column>
   </widget>

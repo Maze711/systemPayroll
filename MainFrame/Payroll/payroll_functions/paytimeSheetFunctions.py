@@ -23,28 +23,77 @@ class PaytimeSheetFunctions:
         bio_num_to_rate = {}
 
         try:
-            workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
-            sheet = workbook.sheet_by_index(0)  # Use the first sheet
+            file_extension = os.path.splitext(file_path)[1].lower()
 
-            headers = [sheet.cell_value(0, col_idx).strip().lower() for col_idx in range(sheet.ncols)]
-            empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
-            rate_index = headers.index('rate') if 'rate' in headers else None
-
-            if empl_id_index is None or rate_index is None:
-                logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
+            if file_extension not in ['.xls', '.xlsx', '.xlsm', '.xlsb']:
+                logging.error(f"Unsupported file extension: {file_extension}")
+                QMessageBox.critical(self.parent, "Error Reading File", f"Unsupported file extension: {file_extension}")
                 return bio_num_to_rate
 
-            for row_idx in range(1, sheet.nrows):  # Skip the header row
-                empl_id_value = str(sheet.cell_value(row_idx, empl_id_index))
-                rate_value = str(sheet.cell_value(row_idx, rate_index))
+            # Use openpyxl for .xlsx, .xlsm, .xlsb
+            if file_extension in ['.xlsx', '.xlsm', '.xlsb']:
+                workbook = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
+                sheet = workbook.active
 
-                # Remove trailing '.0' from empl_id_value, if present
-                if empl_id_value.endswith('.0'):
-                    empl_id_value = empl_id_value[:-2]
+                # Read headers (handle None values)
+                headers = []
+                first_row = next(sheet.iter_rows(values_only=True))
+                for cell in first_row:
+                    headers.append(str(cell).strip().lower() if cell is not None else "")
 
-                bio_num_to_rate[empl_id_value] = rate_value
+                empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
+                rate_index = headers.index('rate') if 'rate' in headers else None
 
-            logging.info(f"Processed {sheet.nrows - 1} rows from Excel file.")
+                if empl_id_index is None or rate_index is None:
+                    logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
+                    return bio_num_to_rate
+
+                row_count = 0
+                for row in sheet.iter_rows(min_row=2, values_only=True):  # Skip header
+                    empl_id_value = str(row[empl_id_index]) if row[empl_id_index] is not None else ""
+                    rate_value = str(row[rate_index]) if row[rate_index] is not None else ""
+
+                    # Remove trailing '.0' if present (e.g., "123.0" → "123")
+                    if empl_id_value.endswith('.0'):
+                        empl_id_value = empl_id_value[:-2]
+
+                    # Store both full ID and last digits (without first 2 digits)
+                    if len(empl_id_value) > 2:
+                        bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
+                    else:
+                        bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
+
+                    row_count += 1
+
+                logging.info(f"Processed {row_count} rows from Excel file (openpyxl).")
+
+            # Use xlrd for legacy .xls files
+            elif file_extension == '.xls':
+                workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
+                sheet = workbook.sheet_by_index(0)
+
+                headers = [str(sheet.cell_value(0, col_idx)).strip().lower() for col_idx in range(sheet.ncols)]
+                empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
+                rate_index = headers.index('rate') if 'rate' in headers else None
+
+                if empl_id_index is None or rate_index is None:
+                    logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
+                    return bio_num_to_rate
+
+                for row_idx in range(1, sheet.nrows):  # Skip header
+                    empl_id_value = str(sheet.cell_value(row_idx, empl_id_index))
+                    rate_value = str(sheet.cell_value(row_idx, rate_index))
+
+                    if empl_id_value.endswith('.0'):
+                        empl_id_value = empl_id_value[:-2]
+
+                    # Store both full ID and last digits (without first 2 digits)
+                    if len(empl_id_value) > 2:
+                        bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
+                    else:
+                        bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
+
+                logging.info(f"Processed {sheet.nrows - 1} rows from Excel file (xlrd).")
 
         except Exception as e:
             logging.error(f"Error reading Excel file: {e}")
@@ -61,91 +110,55 @@ class PaytimeSheetFunctions:
 
             # Collect selected data from the table
             selected_data = []
-
             for row in range(self.parent.paytimesheetTable.rowCount()):
                 try:
-                    bio_num_item = self.parent.paytimesheetTable.item(row, 0)
-                    emp_no_item = self.parent.paytimesheetTable.item(row, 1)
-                    emp_name_item = self.parent.paytimesheetTable.item(row, 2)
-                    present_days_item = self.parent.paytimesheetTable.item(row, 5)
+                    bio_num_item = self.parent.paytimesheetTable.item(row, 0)  # Bio_No.
+                    emp_no_item = self.parent.paytimesheetTable.item(row, 1)  # Emp_Number
+                    emp_name_item = self.parent.paytimesheetTable.item(row, 2)  # Emp_Name
+                    present_days_item = self.parent.paytimesheetTable.item(row, 5)  # Days_Present
+                    ordinary_day_ot_item = self.parent.paytimesheetTable.item(row, 10)  # OrdDayOT_Hrs
+                    reg_day_night_diff_item = self.parent.paytimesheetTable.item(row, 11)  # OrdDayND_Hrs
+                    reg_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 12)  # OrdDayNDOT_Hrs
+                    rest_day_item = self.parent.paytimesheetTable.item(row, 13)  # RstDay_Hrs
+                    rest_day_ot_item = self.parent.paytimesheetTable.item(row, 14)  # RstDayOT_Hrs
+                    rest_day_night_item = self.parent.paytimesheetTable.item(row, 15)  # RstDayND_Hrs
+                    rest_day_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 16)  # RstDayNDOT_Hrs
+                    holiday_item = self.parent.paytimesheetTable.item(row, 17)  # RegHlyday_Hrs
+                    holiday_ot_item = self.parent.paytimesheetTable.item(row, 18)  # RegHlydayOT_Hrs
+                    holiday_night_item = self.parent.paytimesheetTable.item(row, 19)  # RegHlydayND_Hrs
+                    holiday_night_ot_item = self.parent.paytimesheetTable.item(row, 20)  # RegHlydayNDOT_Hrs
+                    rest_holiday_item = self.parent.paytimesheetTable.item(row, 21)  # RegHldyRD_Hrs
+                    rest_holiday_ot_item = self.parent.paytimesheetTable.item(row, 28)  # RegHldyRDOT_Hrs
+                    rest_holiday_night_item = self.parent.paytimesheetTable.item(row, 29)  # RegHldyRDND_Hrs
+                    rest_holiday_night_diff_ot_item = self.parent.paytimesheetTable.item(row, 30)  # RegHldyRDNDOT_Hrs
+                    late_item = self.parent.paytimesheetTable.item(row, 7)  # Late
+                    undertime_item = self.parent.paytimesheetTable.item(row, 8)  # Undertime
 
-                    late_item = self.parent.paytimesheetTable.item(row, 7)
-                    undertime_item = self.parent.paytimesheetTable.item(row, 8)
+                    bio_num = bio_num_item.text() if bio_num_item and bio_num_item.text() else ""
 
-                    ord_day_item = self.parent.paytimesheetTable.item(row, 9)
-                    ord_day_ot_item = self.parent.paytimesheetTable.item(row, 10)
-                    ord_day_nd_item = self.parent.paytimesheetTable.item(row, 11)
-                    ord_day_ndot_item = self.parent.paytimesheetTable.item(row, 12)
-
-                    rest_day_item = self.parent.paytimesheetTable.item(row, 13)
-                    rest_day_ot_item = self.parent.paytimesheetTable.item(row, 14)
-                    rest_day_nd_item = self.parent.paytimesheetTable.item(row, 15)
-                    rest_day_ndot_item = self.parent.paytimesheetTable.item(row, 16)
-
-                    #SplHlyday_hrs list might be added right here
-
-                    reg_hldy_item = self.parent.paytimesheetTable.item(row, 21)
-                    reg_hldy_ot_item = self.parent.paytimesheetTable.item(row, 22)
-                    reg_hldy_nd_item = self.parent.paytimesheetTable.item(row, 23)
-                    reg_hldy_ndot_item = self.parent.paytimesheetTable.item(row, 24)
-
-                    #SplHldyRD_hrs list might be added right here
-
-                    rest_holi_item = self.parent.paytimesheetTable.item(row, 29)
-                    rest_holi_ot_item = self.parent.paytimesheetTable.item(row, 30)
-                    rest_holi_nd_item = self.parent.paytimesheetTable.item(row, 31)
-                    rest_holi_ndot_item = self.parent.paytimesheetTable.item(row, 32)
-
-                    # absent_item = self.parent.paytimesheetTable.item(row, 33)
-
-                    # Check for None values
-                    if bio_num_item is None or emp_no_item is None or emp_name_item is None:
-                        logging.warning(
-                            f"Row {row}: Missing essential items (Bio_No, Emp_Number, or Emp_Name). Skipping this row.")
-                        continue
-
-                    bio_num = bio_num_item.text()[3:] if bio_num_item and bio_num_item.text() else ""
-
-                    # Print the collected data for debugging
-                    print(
-                        f"Row {row}: BioNum={bio_num}, Emp_Number={emp_no_item.text()}, EmpName={emp_name_item.text()}")
-
-                    # Ensure numeric fields are not None before converting to float
-                    def safe_float(value):
-                        if value is None:
-                            return 0.0
-                        return float(value.strip()) if value else 0.0
-
+                    # Append data to selected_data list
                     selected_data.append({
-                        'EmpNo': emp_no_item.text(),
-                        'BioNum': bio_num,
-                        'EmpName': emp_name_item.text(),
-                        'Present Days': safe_float(present_days_item.text()),
-                        
-                        'Ordinary Day Hours': safe_float(ord_day_item.text()),
-                        'Ordinary Day OT Hours': safe_float(ord_day_ot_item.text()),
-                        'Ordinary Day Night Diff Hours': safe_float(ord_day_nd_item.text()),
-                        'Ordinary Day NDOT Hours': safe_float(ord_day_ndot_item.text()),
-                        
-                        'Rest Day Hours': safe_float(rest_day_item.text()),
-                        'Rest Day OT Hours': safe_float(rest_day_ot_item.text()),
-                        'Rest Day Night Diff Hours': safe_float(rest_day_nd_item.text()),
-                        'Rest Day Night Diff OT': safe_float(rest_day_ndot_item.text()),
-
-                        'Regular Holiday Hours': safe_float(reg_hldy_item.text()),
-                        'Regular Holiday OT Hours': safe_float(reg_hldy_ot_item.text()),
-                        'Regular Holiday Night Diff Hours': safe_float(reg_hldy_nd_item.text()),
-                        'Regular Holiday Night Diff OT Hours': safe_float(reg_hldy_ndot_item.text()),
-
-                        'Rest Holiday Hours': safe_float(rest_holi_item.text()),
-                        'Rest Holiday OT Hours': safe_float(rest_holi_ot_item.text()),
-                        'Rest Holiday Night Diff Hours': safe_float(rest_holi_nd_item.text()),
-                        'Rest Holiday Night Diff OT Hours': safe_float(rest_holi_ndot_item.text()),
-
-                        'Late': safe_float(late_item.text()),
-                        'Undertime': safe_float(undertime_item.text()),
-
-                        # 'Absent': safe_float(absent_item.text())
+                        'EmpNo': emp_no_item.text() if emp_no_item else '',
+                        'BioNum': bio_num_item.text() if bio_num_item else '',
+                        'EmpName': emp_name_item.text() if emp_name_item else '',
+                        'Present Days': present_days_item.text() if present_days_item else '',
+                        'Rest Day Hours': rest_day_item.text() if rest_day_item else '',
+                        'Holiday Hours': holiday_item.text() if holiday_item else '',
+                        'Rest Holiday Hours': rest_holiday_item.text() if rest_holiday_item else '',
+                        'Regular Day Night Diff': reg_day_night_diff_item.text() if reg_day_night_diff_item else '',
+                        'Rest Day Night Diff Hours': rest_day_night_item.text() if rest_day_night_item else '',
+                        'Holiday Night Diff Hours': holiday_night_item.text() if holiday_night_item else '',
+                        'Rest Holiday Night Diff Hours': rest_holiday_night_item.text() if rest_holiday_night_item else '',
+                        'OrdinaryDayOT': ordinary_day_ot_item.text() if ordinary_day_ot_item else '',
+                        'Rest Day OT Hours': rest_day_ot_item.text() if rest_day_ot_item else '',
+                        'Holiday OT Hours': holiday_ot_item.text() if holiday_ot_item else '',
+                        'Rest Holiday OT Hours': rest_holiday_ot_item.text() if rest_holiday_ot_item else '',
+                        'Regular Day Night Diff OT': reg_day_night_diff_ot_item.text() if reg_day_night_diff_ot_item else '',
+                        'Rest Day Night Diff OT': rest_day_night_diff_ot_item.text() if rest_day_night_diff_ot_item else '',
+                        'Holiday Night Diff OT': holiday_night_ot_item.text() if holiday_night_ot_item else '',
+                        'Rest Holiday Night Diff OT': rest_holiday_night_diff_ot_item.text() if rest_holiday_night_diff_ot_item else '',
+                        'Late': late_item.text() if late_item else '',
+                        'Undertime': undertime_item.text() if undertime_item else ''
                     })
 
                 except Exception as e:
@@ -153,7 +166,7 @@ class PaytimeSheetFunctions:
 
             print(f"Selected data length: {len(selected_data)}")
 
-            bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\file201.xls')
+            bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\rate_list.xls')
 
             print("Rates read from Excel.")
 
@@ -190,17 +203,27 @@ class PaytimeSheetFunctions:
             pay_computation.calculateGrossIncome()
             print("Pay computation completed.")
 
-            print("Selected Data: ", selected_data[0])
+            for i, emp_data in enumerate(selected_data, 1):
+                print(f"\nEmployee #{i}:")
+                for key, value in emp_data.items():
+                    # Skip printing empty/zero values to reduce clutter
+                    if value != "" and value != 0 and value != 0.0:
+                        print(f"  {key}: {value}")
+
+            # Print summary info
+            print("\nSummary:")
+            print(f"Total employees: {len(selected_data)}")
+            print(f"First employee BioNum: {selected_data[0]['BioNum'] if selected_data else 'N/A'}")
+            print(f"First employee Rate: {selected_data[0].get('Rate', 'N/A') if selected_data else 'N/A'}")
 
             try:
-
-                # If there's no selected data to be inserted, throw an error
                 if len(selected_data) == 0:
                     QMessageBox.warning(self.parent, "Error",
                                         "Please import the timesheet first, before creating Paytrans.")
                     return
 
                 self.parent.window = PayTrans(from_date, to_date, selected_data)
+                self.parent.window.original_data = selected_data
                 self.parent.main_window.open_dialogs.append(self.parent.window)
                 self.parent.window.show()
                 self.parent.close()
@@ -295,7 +318,6 @@ class PaytimeSheetFunctions:
                 'Bio_No.': ('Bio_No.', 0),
                 'Emp_Number': ('Emp_Number', 1),
                 'Emp_Name': ('Emp_Name', 2),
-                'Cost_Center': ('Cost_Center', 3),
                 'Days_Work': ('Days_Work', 4),
                 'Days_Present': ('Days_Present', 5),
                 'Hours_Work': ('Hours_Work', 6),
@@ -320,7 +342,12 @@ class PaytimeSheetFunctions:
                 'SplHlyday_Hrs': ('SplHlyday_Hrs', 31),
                 'SplHlydayOT_Hrs': ('SplHlydayOT_Hrs', 32),
                 'SplHlydayND_Hrs': ('SplHlydayND_Hrs', 33),
-                'SplHlydayNDOT_Hrs': ('SplHlydayNDOT_Hrs', 34)
+                'SplHlydayNDOT_Hrs': ('SplHlydayNDOT_Hrs', 34),
+                'Absent': ('Absent', 35),
+                'Date_Posted': ('Date_Posted', 36),
+                'Remarks': ('Remarks', 37),
+                'Emp_Company': ('Emp_Company', 38),
+                'Legal_Holiday': ('Legal_Holiday', 39)
             }
 
             # Extract the header row
