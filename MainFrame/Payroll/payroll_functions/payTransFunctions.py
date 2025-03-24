@@ -20,8 +20,6 @@ class PayTransFunctions:
     def populatePayTransTable(self, data):
         for row in range(self.parent.paytransTable.rowCount()):
             self.parent.paytransTable.setRowHidden(row, False)
-
-        print("Paytrans Data: ", data[0])
         self.parent.paytransTable.setRowCount(len(data))
 
         for i, row in enumerate(data):
@@ -254,6 +252,21 @@ class PayTransFunctions:
         message = QMessageBox.question(self.parent, "Sending Email", "Are you sure you want to send an email?",
                                        QMessageBox.Yes | QMessageBox.No, defaultButton=QMessageBox.No)
         if message == QMessageBox.Yes:
+            for index, row in enumerate(self.parent.original_data):
+                deduction_keys = [
+                    'sss_loan', 'pag_ibig_loan', 'cash_advance', 'canteen', 'tax', 'clinic',
+                    'arayata_manual', 'hmi', 'funeral', 'voluntary', 'sss_contribution',
+                    'medicare_philhealth', 'pag_ibig'
+                ]
+
+                missing_deductions = [key for key in deduction_keys if key not in row or row[key] in [None, '']]
+
+                if missing_deductions:
+                    QMessageBox.warning(
+                        self.parent, "Missing Deductions", f"Empty deductions found: {', '.join(missing_deductions)}"
+                    )
+                    return
+
             self.emailerLoader = EmailerLoader(self.parent.original_data, self.parent)
             self.emailerLoader.show()
 
