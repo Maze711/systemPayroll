@@ -86,9 +86,6 @@ class EmailerProcessor(QObject):
         except smtplib.SMTPException as e:
             self.error.emit(f"SMTP error: {e}")
 
-        except Exception as e:
-            self.error.emit(f"Error in sending email: {e}")
-
     def prepare_email_body(self, row, date_sent):
         """ Prepares the content/body of an email"""
         employee_number = row['EmpNo']
@@ -452,6 +449,7 @@ class EmailerLoader(QDialog):
 
         QMessageBox.critical(self.paytrans_window, "Sending Email Error", f"An unexpected error occurred while sending emails:\n{error}")
         self.close()
+
     def move_to_bottom_right(self):
         """Position the dialog at the bottom right of the screen."""
         screen = QApplication.primaryScreen()

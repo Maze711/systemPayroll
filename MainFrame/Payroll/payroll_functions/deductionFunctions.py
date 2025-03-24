@@ -19,9 +19,9 @@ class DeductionFunctions:
             self.parent.paytimesheetTable.setRowHidden(row, False)
 
         column_names = {
-            'Emp Number': 'empnumber',
-            'Bio Num': 'empnumber',
-            'Employee Name': 'empname',
+            'Bio Num': 'Bio_No.',
+            'Emp Number': 'Emp_Number',
+            'Employee Name': 'Emp_Name',
             'Late/Absent': 'late_absent',
             'SSS_Loan': 'sss_loan',
             'Pag_Ibig_Loan': 'pag_ibig_loan',
@@ -42,7 +42,7 @@ class DeductionFunctions:
             'Backpay': 'backpay'
         }
 
-        headers = [col.lower().strip() if col else 'unknown' for col in data[0]]
+        headers = [col.strip() if col else 'unknown' for col in data[0]]
         col_indices = {name: headers.index(col_name) for name, col_name in column_names.items() if col_name in headers}
 
         if not col_indices:
