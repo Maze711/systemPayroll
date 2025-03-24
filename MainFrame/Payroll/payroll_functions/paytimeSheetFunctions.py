@@ -398,3 +398,4 @@ class PaytimeSheetFunctions:
         except Exception as e:
             logging.error(f"Error in filterTable: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to filter table: {e}")
+          
