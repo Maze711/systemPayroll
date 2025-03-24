@@ -52,6 +52,11 @@ class TimeSheet(QDialog):
             undertime_item = QTableWidgetItem(str(row['Undertime']))
             ordday_nd_hrs_item = QTableWidgetItem(str(row['Night_Differential']))
             ordday_nd_ot_hrs_item = QTableWidgetItem(str(row['Night_Differential_OT']))
+            absent_item = QTableWidgetItem(str(row.get('Absent', 0)))  # New field
+            date_posted_item = QTableWidgetItem(str(row.get('Date_Posted', '')))  # New field
+            remarks_item = QTableWidgetItem(str(row.get('Remarks', '')))  # New field
+            emp_company_item = QTableWidgetItem(str(row.get('Emp_Company', '')))  # New field
+            legal_holiday_item = QTableWidgetItem(str(row.get('Legal_Holiday', 0)))  # New field
 
             # Additional fields as per your request
             ordday_hrs_item = QTableWidgetItem(str(row.get('OrdDay_Hrs', 0)))
@@ -83,11 +88,10 @@ class TimeSheet(QDialog):
                 total_hours_work_item, cost_center, ordday_hrs_item, ordday_ot_hrs_item, ordday_nd_hrs_item,
                 ordday_nd_ot_hrs_item, rstday_hrs_item, rstday_ot_hrs_item, rstday_nd_hrs_item, rstday_nd_ot_hrs_item,
                 spl_hldy_hrs_item, spl_hldy_ot_hrs_item, spl_hldy_nd_hrs_item, spl_hldy_nd_ot_hrs_item,
-                reg_hldy_hrs_item,
-                reg_hldy_ot_hrs_item, reg_hldy_nd_hrs_item, reg_hldy_nd_ot_hrs_item, spl_hldy_rd_hrs_item,
-                spl_hldy_rd_ot_hrs_item,
-                spl_hldy_rd_nd_hrs_item, spl_hldy_rd_nd_ot_hrs_item, reg_hldy_rd_hrs_item, reg_hldy_rd_ot_hrs_item,
-                reg_hldy_rd_nd_hrs_item, reg_hldy_rd_nd_ot_hrs_item
+                reg_hldy_hrs_item, reg_hldy_ot_hrs_item, reg_hldy_nd_hrs_item, reg_hldy_nd_ot_hrs_item,
+                spl_hldy_rd_hrs_item, spl_hldy_rd_ot_hrs_item, spl_hldy_rd_nd_hrs_item, spl_hldy_rd_nd_ot_hrs_item,
+                reg_hldy_rd_hrs_item, reg_hldy_rd_ot_hrs_item, reg_hldy_rd_nd_hrs_item, reg_hldy_rd_nd_ot_hrs_item,
+                absent_item, date_posted_item, remarks_item, emp_company_item, legal_holiday_item  # New fields
             ]
             for item in items:
                 item.setTextAlignment(Qt.AlignCenter)
@@ -96,7 +100,7 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 0, bio_num_item)  # Bio No.
             self.TimeSheetTable.setItem(i, 1, emp_num_item)  # Employee No.
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee Name
-            self.TimeSheetTable.setItem(i, 3, cost_center)  # Employee Name
+            self.TimeSheetTable.setItem(i, 3, cost_center)  # Cost Center
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Days Worked
             self.TimeSheetTable.setItem(i, 5, days_present_item)  # Days Present
             self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours work
@@ -126,6 +130,11 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
             self.TimeSheetTable.setItem(i, 31, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
             self.TimeSheetTable.setItem(i, 32, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 33, absent_item)  # Absent (new column)
+            self.TimeSheetTable.setItem(i, 34, date_posted_item)  # Date Posted (new column)
+            self.TimeSheetTable.setItem(i, 35, remarks_item)  # Remarks (new column)
+            self.TimeSheetTable.setItem(i, 36, emp_company_item)  # Employee Company (new column)
+            self.TimeSheetTable.setItem(i, 37, legal_holiday_item)  # Legal Holiday (new column)
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')

@@ -511,8 +511,8 @@ class buttonTimecardFunction:
                 total_hours_worked += result['total_hours']
                 total_nd_hours += result['nd_hours']
                 total_ndot_hours += result['ndot_hours']
-                total_late += result['late']
-                total_undertime += result['undertime']
+                # total_late += result['late']
+                # total_undertime += result['undertime']
 
                 if bio_num not in aggregated_results:
                     aggregated_results[bio_num] = {
@@ -547,8 +547,8 @@ class buttonTimecardFunction:
                 aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
                 aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
                 aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
-                aggregated_results[bio_num]['late'] += result['late']
-                aggregated_results[bio_num]['undertime'] += result['undertime']
+                # aggregated_results[bio_num]['late'] += result['late']
+                # aggregated_results[bio_num]['undertime'] += result['undertime']
 
                 # Aggregate ordinary day hours
                 if result.get('OrdDay_Hrs'):

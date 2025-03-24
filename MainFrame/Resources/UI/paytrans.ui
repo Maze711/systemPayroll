@@ -155,12 +155,12 @@ QTableWidget {
     </attribute>
     <column>
      <property name="text">
-      <string>Emp Number</string>
+      <string>Bio Num</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Bio Num</string>
+      <string>Emp Number</string>
      </property>
     </column>
     <column>
