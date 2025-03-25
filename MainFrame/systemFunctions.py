@@ -143,11 +143,6 @@ class FileProcessor(QObject):
             if missing_columns:
                 raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
 
-            # Print the content after processing
-            print("Processed Content:")
-            for row in content:
-                print(row)
-
             self.finished.emit(content)
 
         except ValueError as ve:

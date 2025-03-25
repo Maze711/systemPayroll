@@ -1,15 +1,8 @@
-import logging
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QTableWidgetItem, QApplication, QDialog
-from PyQt5.QtCore import QThread, Qt
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction, FileProcessor
 from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
 from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
-
-# Configure logging
-logging.basicConfig(filename='paytimeSheet.log', level=logging.ERROR,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -26,7 +19,6 @@ class PaytimeSheetFunctions:
             file_extension = os.path.splitext(file_path)[1].lower()
 
             if file_extension not in ['.xls', '.xlsx', '.xlsm', '.xlsb']:
-                logging.error(f"Unsupported file extension: {file_extension}")
                 QMessageBox.critical(self.parent, "Error Reading File", f"Unsupported file extension: {file_extension}")
                 return bio_num_to_rate
 
@@ -45,7 +37,6 @@ class PaytimeSheetFunctions:
                 rate_index = headers.index('rate') if 'rate' in headers else None
 
                 if empl_id_index is None or rate_index is None:
-                    logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
                     return bio_num_to_rate
 
                 row_count = 0
@@ -65,8 +56,6 @@ class PaytimeSheetFunctions:
 
                     row_count += 1
 
-                logging.info(f"Processed {row_count} rows from Excel file (openpyxl).")
-
             # Use xlrd for legacy .xls files
             elif file_extension == '.xls':
                 workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
@@ -77,7 +66,6 @@ class PaytimeSheetFunctions:
                 rate_index = headers.index('rate') if 'rate' in headers else None
 
                 if empl_id_index is None or rate_index is None:
-                    logging.error("Required columns 'empl_id' or 'rate' not found in the Excel file.")
                     return bio_num_to_rate
 
                 for row_idx in range(1, sheet.nrows):  # Skip header
@@ -93,10 +81,7 @@ class PaytimeSheetFunctions:
                     else:
                         bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
 
-                logging.info(f"Processed {sheet.nrows - 1} rows from Excel file (xlrd).")
-
         except Exception as e:
-            logging.error(f"Error reading Excel file: {e}")
             QMessageBox.critical(self.parent, "Error Reading File", f"Error reading Excel file: {e}")
 
         return bio_num_to_rate
@@ -105,8 +90,6 @@ class PaytimeSheetFunctions:
         try:
             from_date = self.parent.lblFrom.text()
             to_date = self.parent.lblTo.text()
-
-            print(f"Creating PayTrans from {from_date} to {to_date}")
 
             # Collect selected data from the table
             selected_data = []
@@ -162,23 +145,16 @@ class PaytimeSheetFunctions:
                     })
 
                 except Exception as e:
-                    logging.error(f"Error processing row {row}: {e}")
-
-            print(f"Selected data length: {len(selected_data)}")
+                    print(f"Error processing row {row}: {e}")
 
             bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\rate_list.xls')
-
-            print("Rates read from Excel.")
 
             # Update selected_data with rate
             for item in selected_data:
                 item['Rate'] = bio_num_to_rate.get(item['BioNum'], "Missing")
 
-            print("Rates updated in selected data.")
-
             # Perform automated calculations
             pay_computation = PayComputation(selected_data)
-            print("Starting pay computation...")
 
             pay_computation.basicComputation()
             pay_computation.regularDayEarnComputation()
@@ -201,20 +177,6 @@ class PaytimeSheetFunctions:
             pay_computation.restDayHolidayNDOTComputation()
 
             pay_computation.calculateGrossIncome()
-            print("Pay computation completed.")
-
-            for i, emp_data in enumerate(selected_data, 1):
-                print(f"\nEmployee #{i}:")
-                for key, value in emp_data.items():
-                    # Skip printing empty/zero values to reduce clutter
-                    if value != "" and value != 0 and value != 0.0:
-                        print(f"  {key}: {value}")
-
-            # Print summary info
-            print("\nSummary:")
-            print(f"Total employees: {len(selected_data)}")
-            print(f"First employee BioNum: {selected_data[0]['BioNum'] if selected_data else 'N/A'}")
-            print(f"First employee Rate: {selected_data[0].get('Rate', 'N/A') if selected_data else 'N/A'}")
 
             try:
                 if len(selected_data) == 0:
@@ -228,11 +190,9 @@ class PaytimeSheetFunctions:
                 self.parent.window.show()
                 self.parent.close()
             except Exception as e:
-                logging.error(f"Failed to create PayTrans window: {e}")
                 QMessageBox.critical(self.parent, "Error", f"Failed to create PayTrans window: {e}")
 
         except Exception as e:
-            logging.error(f"Error in createPayTrans: {e}")
             QMessageBox.critical(self.parent, "Error", f"An error occurred: {e}")
 
     def showNewListEmployee(self):
@@ -240,7 +200,6 @@ class PaytimeSheetFunctions:
             payAddEmployee_dialog = payAddEmployee()
             payAddEmployee_dialog.exec_()
         except Exception as e:
-            logging.error(f"Error in showNewListEmployee: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to show employee list: {e}")
 
     def buttonImport(self):
@@ -267,7 +226,6 @@ class PaytimeSheetFunctions:
             self.thread.start()
 
         except Exception as e:
-            logging.error(f"Error in buttonImport: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to import file: {e}")
 
     def updateProgressBar(self, value):
@@ -276,7 +234,7 @@ class PaytimeSheetFunctions:
                 self.import_dialog.progressBar.setValue(value)
                 QApplication.processEvents()
         except Exception as e:
-            logging.error(f"Error in updateProgressBar: {e}")
+            QMessageBox.critical(self.parent, "Error", f"Error in updateProgressBar: {e}")
 
     def importFinished(self, content):
         try:
@@ -292,7 +250,6 @@ class PaytimeSheetFunctions:
             else:
                 QMessageBox.warning(self.parent, "Import Failed", "No data was imported.")
         except Exception as e:
-            logging.error(f"Error in importFinished: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to finish import: {e}")
 
     def importError(self, error_message):
@@ -303,13 +260,12 @@ class PaytimeSheetFunctions:
                 self.import_dialog.close()
             QMessageBox.critical(self.parent, "Import Error", f"An error occurred during import:\n{error_message}")
         except Exception as e:
-            logging.error(f"Error in importError: {e}")
+            QMessageBox.critical(self.parent, "Error", f"Error in importError: {e}")
 
     def populatePaytimeSheetTable(self, data):
         try:
             # Ensure data is not empty and contains at least a header and one row of data
             if not data or len(data) < 2:
-                logging.error("No data or insufficient data to populate the table.")
                 QMessageBox.critical(self.parent, "Error", "No data available to populate the table.")
                 return
 
@@ -359,7 +315,6 @@ class PaytimeSheetFunctions:
 
             # Check for missing columns
             if len(col_indices) < len(column_names):
-                logging.error("No matching columns found in headers.")
                 QMessageBox.critical(self.parent, "Error", "No matching columns found in headers.")
                 return
 
@@ -382,7 +337,6 @@ class PaytimeSheetFunctions:
                         self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name], QTableWidgetItem('unknown'))
 
         except Exception as e:
-            logging.error(f"Error in populatePaytimeSheetTable: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to populate table: {e}")
 
     def filterTable(self):
@@ -396,6 +350,5 @@ class PaytimeSheetFunctions:
                 else:
                     self.parent.paytimesheetTable.hideRow(row)
         except Exception as e:
-            logging.error(f"Error in filterTable: {e}")
             QMessageBox.critical(self.parent, "Error", f"Failed to filter table: {e}")
           
