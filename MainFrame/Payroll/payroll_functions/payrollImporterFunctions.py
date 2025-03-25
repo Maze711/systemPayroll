@@ -191,6 +191,5 @@ class PayrollImporterFunctions:
     def showData(self, content, user_role):
         self.paytimesheet = PaytimeSheet(self.dialog.main_window, content, user_role)  # Pass user_role
         self.dialog.main_window.open_dialogs.append(self.paytimesheet)
-        print(content)
         self.paytimesheet.show()
         self.dialog.close()
