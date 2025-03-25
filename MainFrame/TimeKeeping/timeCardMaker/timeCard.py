@@ -48,7 +48,7 @@ class timecard(QDialog):
 
             self.btnCCSched.clicked.connect(self.buttonFunctions.updateSchedule)
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)
-            self.btnImport.clicked.connect(self.populateComboBox.import_dat_file)
+            self.btnImport.clicked.connect(lambda: self.populateComboBox.import_dat_file(self))
             self.btnTimeSheet.clicked.connect(self.buttonFunctions.createTimeSheet)
             self.btnCheckSched.clicked.connect(self.buttonFunctions.CheckSched)
             self.TimeListTable.cellDoubleClicked.connect(self.buttonFunctions.CheckSched)
