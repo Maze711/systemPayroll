@@ -22,14 +22,25 @@ class populateList:
         fileName, _ = QFileDialog.getOpenFileName(dialog, "Open DAT File", "", "DAT Files (*.DAT)")
         try:
             if fileName:
+                # Block signals before showing notification dialog
+                self.parent.dateFromCC.blockSignals(True)
+                self.parent.dateToCC.blockSignals(True)
 
                 notification_dialog = notificationLoader(fileName)
+                notification_dialog.importSuccessful.connect(self.update_after_import)
+                notification_dialog.finished.connect(lambda: [
+                    self.parent.dateFromCC.blockSignals(False),
+                    self.parent.dateToCC.blockSignals(False)
+                ])
                 notification_dialog.exec_()
             else:
                 QMessageBox.information(dialog, "No File Selected", "Please select a DAT file to import.")
                 return
         except Exception as e:
             print(f"error to ng import {e}")
+            # Ensure signals are unblocked even if error occurs
+            self.parent.dateFromCC.blockSignals(False)
+            self.parent.dateToCC.blockSignals(False)
 
     def update_after_import(self):
         self.populate_year_combo_box()
@@ -48,12 +59,16 @@ class populateList:
             year_months = set()
             for (table_name,) in tables:
                 match = re.search(r'table_(\d{4})_(\d{2})', table_name)
-                print(f"ito yon: ", match)
                 if match:
                     year_months.add(f"{match.group(1)}_{match.group(2)}")
 
-            self.parent.yearCC.clear()
-            self.parent.yearCC.addItems(sorted(year_months, reverse=True))
+            sorted_year_months = sorted(year_months, reverse=True)
+
+            if set(self.parent.yearCC.itemText(i) for i in range(self.parent.yearCC.count())) != set(
+                    sorted_year_months):
+                self.parent.yearCC.clear()
+                self.parent.yearCC.addItems(sorted_year_months)
+
             self.parent.yearCC.setCurrentIndex(-1)
 
         except Exception as e:
@@ -66,7 +81,6 @@ class populateList:
 
     def populate_date_combo_boxes(self):
         selected_year_month = self.parent.yearCC.currentText()
-        print(f"📅 Selected Year-Month: {selected_year_month} (populate_date_combo_boxes called)")
         if not selected_year_month:
             return
 
@@ -91,10 +105,21 @@ class populateList:
                 cursor.close()
                 connection.close()
 
-        self.parent.dateFromCC.clear()
-        self.parent.dateToCC.clear()
-        self.parent.dateFromCC.addItems(sorted(days))
-        self.parent.dateToCC.addItems(sorted(days))
+        current_from_selection = self.parent.dateFromCC.currentText()
+        current_to_selection = self.parent.dateToCC.currentText()
+
+        if set(self.parent.dateFromCC.itemText(i) for i in range(self.parent.dateFromCC.count())) != set(days):
+            self.parent.dateFromCC.clear()
+            self.parent.dateFromCC.addItems(sorted(days))
+
+        if set(self.parent.dateToCC.itemText(i) for i in range(self.parent.dateToCC.count())) != set(days):
+            self.parent.dateToCC.clear()
+            self.parent.dateToCC.addItems(sorted(days))
+
+        self.parent.dateFromCC.setCurrentText("")
+        self.parent.dateToCC.setCurrentText("")
+
+
     def populateCostCenterBox(self):
         """Populate the costCenterBox with values from the dept_name column in the emp_posnsched table."""
         if self.cost_center_cache is not None:
@@ -1136,9 +1161,8 @@ class TablePopulationLoader(QDialog):
         self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
 
         try:
-
-            self.data = data
             self.parent = timeCardWindow
+            self.data = data
 
             self.functions = populateList(self.parent)
 

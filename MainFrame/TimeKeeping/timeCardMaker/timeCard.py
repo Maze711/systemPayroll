@@ -21,6 +21,7 @@ class timecard(QDialog):
         self.filteringFunction = FilterDialog(self)
         self.setupTimecardUI()
         self.setup_initial_state()
+        self.is_importing = False
 
         # Initialize data attributes
         self.original_data = []  # Holds the initial data
@@ -43,8 +44,13 @@ class timecard(QDialog):
             self.populateComboBox.populate_year_combo_box()
             self.populateComboBox.populateCostCenterBox()
             self.yearCC.currentTextChanged.connect(self.populateComboBox.populate_date_combo_boxes)
-            self.dateFromCC.currentTextChanged.connect(self.populateComboBox.populate_table_loader)
-            self.dateToCC.currentTextChanged.connect(self.populateComboBox.populate_table_loader)
+
+            def safe_populate_loader():
+                if not self.is_importing:
+                    self.populateComboBox.populate_table_loader()
+
+            self.dateFromCC.currentTextChanged.connect(safe_populate_loader)
+            self.dateToCC.currentTextChanged.connect(safe_populate_loader)
 
             self.btnCCSched.clicked.connect(self.buttonFunctions.updateSchedule)
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)
