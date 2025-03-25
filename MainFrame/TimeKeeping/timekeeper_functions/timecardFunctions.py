@@ -69,7 +69,7 @@ class populateList:
                 self.parent.yearCC.clear()
                 self.parent.yearCC.addItems(sorted_year_months)
 
-            self.parent.yearCC.setCurrentIndex(-1)
+            self.parent.yearCC.setCurrentText("")
 
         except Exception as e:
             logging.error(f"Error populating year combo box: {e}")

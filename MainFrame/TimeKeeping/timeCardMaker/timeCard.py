@@ -1,3 +1,5 @@
+from pandas.core.interchange.from_dataframe import primitive_column_to_ndarray
+
 from MainFrame.Resources.lib import *
 from MainFrame.TimeKeeping.schedValidator.checkSched import chkSched
 from MainFrame.TimeKeeping.timekeeper_functions.dialogFunctions import import_dat_file
@@ -15,6 +17,8 @@ class timecard(QDialog):
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\timecard.ui")
         loadUi(ui_file, self)
 
+        self.replaceComboBox()
+
         self.populateComboBox = populateList(self)
         self.buttonFunctions = buttonTimecardFunction(self)
         self.searchFunction = searchBioNum(self)
@@ -27,6 +31,16 @@ class timecard(QDialog):
         self.original_data = []  # Holds the initial data
         self.temp_data = []      # Holds updates made to the data
         self.filtered_data = []  # Current view data
+
+    def replaceComboBox(self):
+        """Replace the existing yearCC with CustomComboBox."""
+        new_combo = CustomComboBox(self)  # Pass self (timecard instance)
+        new_combo.setGeometry(self.yearCC.geometry())
+        new_combo.addItems([self.yearCC.itemText(i) for i in range(self.yearCC.count())])
+        new_combo.setCurrentIndex(self.yearCC.currentIndex())
+
+        self.yearCC.deleteLater()
+        self.yearCC = new_combo
 
     def setup_initial_state(self):
         self.btnFilter.setVisible(False)
@@ -69,3 +83,21 @@ class timecard(QDialog):
         except Exception as e:
             logging.error(f"Error in setupTimecardUI: {e}")
             QMessageBox.critical(self, "Error", f"Failed to set up Timecard UI: {str(e)}")
+
+class CustomComboBox(QComboBox):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent  # Store the parent reference
+
+    def showPopup(self):
+        try:
+            if self.parent:  # Ensure parent exists
+                self.parent.dateFromCC.blockSignals(True)
+                self.parent.dateToCC.blockSignals(True)
+                self.parent.populateComboBox.update_after_import()
+                self.parent.dateFromCC.blockSignals(False)
+                self.parent.dateToCC.blockSignals(False)
+                print("Dropdown clicked!")  # Debugging log
+            super().showPopup()  # Call the original method
+        except Exception as e:
+            print(f"Error when clicking: {e}")
