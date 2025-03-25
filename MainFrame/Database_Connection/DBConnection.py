@@ -17,7 +17,8 @@ if os.path.exists(dotenv_path):
 
 def create_connection(db_key):
     try:
-        host = os.getenv(f'DB_HOST_{db_key}', 'localhost')
+        # host = os.getenv(f'DB_HOST_{db_key}', 'localhost')
+        host = os.getenv(f'DB_HOST_{db_key}', '192.168.68.59')
         database = os.getenv(f'DB_DATABASE_{db_key}')
         user = os.getenv(f'DB_USER_{db_key}', 'root')
         password = os.getenv(f'DB_PASSWORD_{db_key}', '')
