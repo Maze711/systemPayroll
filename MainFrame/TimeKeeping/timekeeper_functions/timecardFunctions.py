@@ -18,19 +18,18 @@ class populateList:
         self.data_cache = {}
         self.cost_center_cache = None
 
-    def import_dat_file(self):
+    def import_dat_file(self, dialog):
+        fileName, _ = QFileDialog.getOpenFileName(dialog, "Open DAT File", "", "DAT Files (*.DAT)")
         try:
-            fileName, _ = QFileDialog.getOpenFileName(self.parent, "Open DAT File", "", "DAT Files (*.DAT)")
             if fileName:
-                logging.info(f"Selected file: {fileName}")
+
                 notification_dialog = notificationLoader(fileName)
-                notification_dialog.importSuccessful.connect(self.update_after_import)
                 notification_dialog.exec_()
             else:
-                QMessageBox.information(self.parent, "No File Selected", "Please select a DAT file to import.")
+                QMessageBox.information(dialog, "No File Selected", "Please select a DAT file to import.")
+                return
         except Exception as e:
-            logging.error(f"Error in import_dat_file: {e}")
-            QMessageBox.critical(self.parent, "File Import Error", f"An error occurred: {e}")
+            print(f"error to ng import {e}")
 
     def update_after_import(self):
         self.populate_year_combo_box()
@@ -656,16 +655,9 @@ class buttonTimecardFunction:
             total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
                            datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
 
-            # Print out the trans_date before checking holiday type
-            print(f"Checking holiday type for TransDate: {trans_date}")
 
             # Check the holiday type using check_holiday_type function
             holiday_type = self.time_computation.check_holiday_type(trans_date)
-
-            # Debug output
-            print(f"BioNum: {bio_num}, EmpName: {emp_name}, TransDate: {trans_date}, "
-                  f"CheckIn: {check_in}, CheckOut: {check_out}, TotalHours: {round(total_hours, 2)}, "
-                  f"ND_Hours: {round(nd_hours, 2)}, NDOT_Hours: {round(ndot_hours, 2)}, HolidayType: {holiday_type}")
 
             # Prepare result entry
             result_entry = {
@@ -818,8 +810,6 @@ class TimeComputation:
             # Direct query without parameters
             query = f"SELECT holidayName, dateType FROM type_of_dates WHERE holidayDate = '{parsed_date}'"
 
-            # Debug output
-            print(f"Executing query: {query}")
 
             cursor.execute(query)
             result = cursor.fetchone()
@@ -1215,10 +1205,13 @@ class FetchDataToPopulateTableProcessor(QObject):
 
     def process_populate_time_list_table(self):
         """Populate the time list table with check-in and check-out times, machCode, and employee data from NTP_LOG_IMPORTS."""
-        QThread.msleep(100)
-        selected_year_month = self.parent.yearCC.currentText()
-        from_day = self.parent.dateFromCC.currentText()
-        to_day = self.parent.dateToCC.currentText()
+        try:
+            QThread.msleep(100)
+            selected_year_month = self.parent.yearCC.currentText()
+            from_day = self.parent.dateFromCC.currentText()
+            to_day = self.parent.dateToCC.currentText()
+        except Exception as e:
+            print(e)
 
         if not selected_year_month or not from_day or not to_day:
             self.error.emit(f"selected_year_month: {selected_year_month}\nfrom_day: {from_day}\nto_day: {to_day}")
