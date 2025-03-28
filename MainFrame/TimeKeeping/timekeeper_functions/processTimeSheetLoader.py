@@ -1,10 +1,15 @@
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta
+import math
+from threading import Lock
 
 
 class processTimeSheetLoader(QDialog):
-    """Displays a dialog with progress bar for visualization of creating timesheet"""
+    """Dialog with progress bar for timesheet creation"""
+
     def __init__(self, TimeComputation, timeCardWindow=None):
         super(processTimeSheetLoader, self).__init__(timeCardWindow)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\showNotification.ui")
@@ -15,12 +20,8 @@ class processTimeSheetLoader(QDialog):
 
         try:
             self.parent = timeCardWindow
-
             self.TimeComputation = TimeComputation
-
-            # Get UI elements
             self.progressBar = self.findChild(QProgressBar, 'progressBar')
-
             self.progressBar.setVisible(True)
             self.progressBar.setValue(0)
 
@@ -38,34 +39,38 @@ class processTimeSheetLoader(QDialog):
             return
 
     def updateProgressBar(self, value):
-        self.progressBar.setValue(value)
-        if value == 100:
-            self.progressBar.setFormat("Finishing Up..")
-        QApplication.processEvents()
+        """Optimized progress updates with 5% granularity"""
+        if abs(value - self.progressBar.value()) >= 5 or value == 100:
+            self.progressBar.setValue(value)
+            if value == 100:
+                self.progressBar.setFormat("Finishing Up..")
+            QApplication.processEvents()
 
     def fetchingDataFinished(self, metadata):
-        [dataMerge, date_from, date_to, mach_code] = metadata
+        """Handle successful completion"""
+        try:
+            [dataMerge, date_from, date_to, mach_code] = metadata
+            self.progressBar.setVisible(False)
+            self.thread.quit()
+            self.thread.wait()
 
-        self.progressBar.setVisible(False)
-        self.thread.quit()
-        self.thread.wait()
+            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
+            dialog.exec_()
 
-        dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
-        dialog.exec_()
-
-        self.close()
-        self.parent.processTimeSheetLoader = None
+            self.close()
+            self.parent.processTimeSheetLoader = None
+        except Exception as e:
+            print(f"Finalization error: {e}")
 
     def fetchingDataError(self, error):
+        """Handle processing errors"""
         self.progressBar.setVisible(False)
         self.thread.quit()
         self.thread.wait()
-
         QMessageBox.critical(self.parent, "Creating Timesheet Error", error)
-
-        # Closes and reset the instance of dialog
         self.close()
         self.parent.processTimeSheetLoader = None
+
 
 class CreateTimeSheetProcessor(QObject):
     progressChanged = pyqtSignal(int)
@@ -76,295 +81,309 @@ class CreateTimeSheetProcessor(QObject):
         super().__init__()
         self.parent = timeCardWindow
         self.time_computation = TimeComputation
+        self.holiday_cache = {}
+        self.lock = Lock()
+        self.mach_codes = set()
 
     def process_creating_timesheet(self):
-        """The main processor of timecard data for timesheet conversion"""
+        """Main processing workflow with enhanced error handling"""
         try:
-            if self.parent.TimeListTable.rowCount() == 0:
-                self.error.emit("No rows detected!")
+            if not self.validate_input():
                 return
 
-            timesheet_data = []
-            date_from = self.parent.dateFromCC.currentText()
-            date_to = self.parent.dateToCC.currentText()
-
-            # Collecting timesheet data
-            for row in range(self.parent.TimeListTable.rowCount()):
-                try:
-                    bioNum = self.parent.TimeListTable.item(row, 1).text()
-                    emp_name = self.parent.TimeListTable.item(row, 2).text()
-                    trans_date = self.parent.TimeListTable.item(row, 3).text()
-                    mach_code = self.parent.TimeListTable.item(row, 4).text()
-                    check_in = self.parent.TimeListTable.item(row, 5).text()
-                    check_out = self.parent.TimeListTable.item(row, 6).text()
-                    sched_in = self.parent.TimeListTable.item(row, 7).text()
-                    sched_out = self.parent.TimeListTable.item(row, 8).text()
-
-                    # Validate the schedule before adding to timesheet data
-                    # if not self.time_computation.validate_schedule(sched_in, sched_out, check_in, check_out, bioNum,
-                    #                                                trans_date):
-                    #     return  # Stop the process if validation fails
-
-                    # Calculate late and undertime
-                    late, undertime = self.time_computation.calculate_late_and_undertime(sched_in, sched_out, check_in,
-                                                                                         check_out)
-
-                    timesheet_data.append(
-                        (bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out, late,
-                         undertime)
-                    )
-
-                except Exception as e:
-                    self.error.emit(f"Error processing row {row}: {e}")
-
+            # Precompute holidays for all unique dates
+            timesheet_data = self.collect_timesheet_data()
             if not timesheet_data:
-                self.error.emit("No valid data could be extracted.")
                 return
 
-            # Process timesheet data
-            results = self.calculate_timesheet(timesheet_data)
+            self.precompute_holidays(timesheet_data)
 
+            # Process in optimized batches
+            results = self.process_in_batches(timesheet_data)
             if not results:
-                self.error.emit("No results generated.")
+                self.error.emit("Something went wrong processing timesheet, please try again!")
                 return
 
-            # Aggregate totals
-            aggregated_results = {}
-            total_hours_worked = total_nd_hours = total_ndot_hours = total_late = total_undertime = 0
-
-            for result in results:
-                bio_num = result['bio_num']
-                total_hours_worked += result['total_hours']
-                total_nd_hours += result['nd_hours']
-                total_ndot_hours += result['ndot_hours']
-                # total_late += result['late']
-                # total_undertime += result['undertime']
-
-                if bio_num not in aggregated_results:
-                    aggregated_results[bio_num] = {
-                        'emp_name': result['emp_name'],
-                        'total_hours_worked': 0,
-                        'nd_hours': 0,
-                        'ndot_hours': 0,
-                        'late': 0,
-                        'undertime': 0,
-                        'OrdDay_Hrs': 0,  # Added
-                        'OrdDayOT_Hrs': 0,  # Added
-                        'OrdDayND_Hrs': 0,  # Added
-                        'OrdDayNDOT_Hrs': 0,  # Added
-                        'RstDay_Hrs': 0,  # Added
-                        'RstDayOT_Hrs': 0,  # Added
-                        'RstDayND_Hrs': 0,  # Added
-                        'RstDayNDOT_Hrs': 0,  # Added
-                        'ordinary_day_hours': 0,
-                        'reg_holiday_hours': 0,
-                        'reg_holiday_ot_hours': 0,
-                        'reg_holiday_nd_hours': 0,
-                        'reg_holiday_ndot_hours': 0,
-                        'spl_holiday_hours': 0,
-                        'spl_holiday_ot_hours': 0,
-                        'spl_holiday_nd_hours': 0,
-                        'spl_holiday_ndot_hours': 0,
-                        'days_work': set()
-                    }
-
-                # Modify the aggregation section to include ordinary day and rest day hours:
-                # Aggregate results
-                aggregated_results[bio_num]['total_hours_worked'] += result['total_hours']
-                aggregated_results[bio_num]['nd_hours'] += result['nd_hours']
-                aggregated_results[bio_num]['ndot_hours'] += result['ndot_hours']
-                # aggregated_results[bio_num]['late'] += result['late']
-                # aggregated_results[bio_num]['undertime'] += result['undertime']
-
-                # Aggregate ordinary day hours
-                if result.get('OrdDay_Hrs'):
-                    aggregated_results[bio_num]['OrdDay_Hrs'] += result['OrdDay_Hrs']
-                if result.get('OrdDayOT_Hrs'):
-                    aggregated_results[bio_num]['OrdDayOT_Hrs'] += result['OrdDayOT_Hrs']
-                if result.get('OrdDayND_Hrs'):
-                    aggregated_results[bio_num]['OrdDayND_Hrs'] += result['OrdDayND_Hrs']
-                if result.get('OrdDayNDOT_Hrs'):
-                    aggregated_results[bio_num]['OrdDayNDOT_Hrs'] += result['OrdDayNDOT_Hrs']
-
-                # Aggregate rest day hours
-                if result.get('RstDay_Hrs'):
-                    aggregated_results[bio_num]['RstDay_Hrs'] += result['RstDay_Hrs']
-                if result.get('RstDayOT_Hrs'):
-                    aggregated_results[bio_num]['RstDayOT_Hrs'] += result['RstDayOT_Hrs']
-                if result.get('RstDayND_Hrs'):
-                    aggregated_results[bio_num]['RstDayND_Hrs'] += result['RstDayND_Hrs']
-                if result.get('RstDayNDOT_Hrs'):
-                    aggregated_results[bio_num]['RstDayNDOT_Hrs'] += result['RstDayNDOT_Hrs']
-
-                # Aggregate holiday hours directly from results
-                if result.get('RegHlyday_Hrs'):
-                    aggregated_results[bio_num]['reg_holiday_hours'] += result['RegHlyday_Hrs']
-                if result.get('RegHlydayOT_Hrs'):
-                    aggregated_results[bio_num]['reg_holiday_ot_hours'] += result['RegHlydayOT_Hrs']
-                if result.get('RegHlydayND_Hrs'):
-                    aggregated_results[bio_num]['reg_holiday_nd_hours'] += result['RegHlydayND_Hrs']
-                if result.get('RegHlydayNDOT_Hrs'):
-                    aggregated_results[bio_num]['reg_holiday_ndot_hours'] += result['RegHlydayNDOT_Hrs']
-                if result.get('SplHlyday_Hrs'):
-                    aggregated_results[bio_num]['spl_holiday_hours'] += result['SplHlyday_Hrs']
-                if result.get('SplHlydayOT_Hrs'):
-                    aggregated_results[bio_num]['spl_holiday_ot_hours'] += result['SplHlydayOT_Hrs']
-                if result.get('SplHlydayND_Hrs'):
-                    aggregated_results[bio_num]['spl_holiday_nd_hours'] += result['SplHlydayND_Hrs']
-                if result.get('SplHlydayNDOT_Hrs'):
-                    aggregated_results[bio_num]['spl_holiday_ndot_hours'] += result['SplHlydayNDOT_Hrs']
-
-                aggregated_results[bio_num]['days_work'].add(result['trans_date'])
-
-            # Prepare data for display
-            dataMerge = []
-            for i, (bio_num, data) in enumerate(aggregated_results.items()):
-                total_aggregated_results = len(aggregated_results)
-
-                dataMerge.append({
-                    'BioNum': bio_num,
-                    'EmpNumber': bio_num,
-                    'Employee': data['emp_name'],
-                    'Total_Hours_Worked': f"{data['total_hours_worked']:.2f}",
-                    'Night_Differential': f"{data['nd_hours']:.2f}",
-                    'Night_Differential_OT': f"{data['ndot_hours']:.2f}",
-                    'Days_Work': len(data['days_work']),
-                    'Days_Present': len(data['days_work']),
-                    'Late': f"{data['late']:.2f}",
-                    'Undertime': f"{data['undertime']:.2f}",
-                    'OrdDay_Hrs': f"{data['OrdDay_Hrs']:.2f}",  # Added
-                    'OrdDayOT_Hrs': f"{data['OrdDayOT_Hrs']:.2f}",  # Added
-                    'OrdDayND_Hrs': f"{data['OrdDayND_Hrs']:.2f}",  # Added
-                    'OrdDayNDOT_Hrs': f"{data['OrdDayNDOT_Hrs']:.2f}",  # Added
-                    'RstDay_Hrs': f"{data['RstDay_Hrs']:.2f}",  # Added
-                    'RstDayOT_Hrs': f"{data['RstDayOT_Hrs']:.2f}",  # Added
-                    'RstDayND_Hrs': f"{data['RstDayND_Hrs']:.2f}",  # Added
-                    'RstDayNDOT_Hrs': f"{data['RstDayNDOT_Hrs']:.2f}",  # Added
-                    'SplHlyday_Hrs': f"{data['spl_holiday_hours']:.2f}",
-                    'SplHlydayOT_Hrs': data['spl_holiday_ot_hours'],
-                    'SplHlydayND_Hrs': data['spl_holiday_nd_hours'],
-                    'SplHlydayNDOT_Hrs': data['spl_holiday_ndot_hours'],
-                    'RegHlyday_Hrs': f"{data['reg_holiday_hours']:.2f}",
-                    'RegHlydayOT_Hrs': data['reg_holiday_ot_hours'],
-                    'RegHlydayND_Hrs': data['reg_holiday_nd_hours'],
-                    'RegHlydayNDOT_Hrs': data['reg_holiday_ndot_hours'],
-                    'SplHldyRD_Hrs': 0,
-                    'SplHldyRDOT_Hrs': 0,
-                    'SplHldyRDND_Hrs': 0,
-                    'SplHldyRDNDOT_Hrs': 0,
-                    'RegHldyRD_Hrs': 0,
-                    'RegHldyRDOT_Hrs': 0,
-                    'RegHldyRDND_Hrs': 0,
-                    'RegHldyRDNDOT_Hrs': 0,
-                })
-
-            meta_data = [dataMerge, date_from, date_to, mach_code]
-            self.finished.emit(meta_data)
+            # Prepare final output
+            meta_data = self.prepare_final_metadata(results)
+            if meta_data:
+                self.finished.emit(meta_data)
 
         except Exception as e:
-            self.error.emit(f"An unexpected error occurred: {e}")
+            self.error.emit(f"Processing failed: {str(e)}")
 
-    def calculate_timesheet(self, timesheet_data):
+    def validate_input(self):
+        """Validate table input before processing"""
+        if self.parent.TimeListTable.rowCount() == 0:
+            self.error.emit("No rows detected in timesheet table!")
+            return False
+        return True
+
+    def collect_timesheet_data(self):
+        """Collect and validate raw table data with mach_code tracking"""
+        timesheet_data = []
+        for row in range(self.parent.TimeListTable.rowCount()):
+            try:
+                items = [self.parent.TimeListTable.item(row, col).text()
+                         for col in range(1, 9)]  # Columns 1-8
+
+                if not all(items):
+                    continue
+
+                bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out = items
+
+                # Validate the schedule before adding to timesheet data
+                if not self.time_computation.validate_schedule(self, sched_in, sched_out, check_in, check_out,
+                                                               bioNum, trans_date):
+                    return  # Stop the process if validation fails
+
+                self.mach_codes.add(mach_code)
+
+                late, undertime = self.time_computation.calculate_late_and_undertime(
+                    sched_in, sched_out, check_in, check_out)
+
+                timesheet_data.append((
+                    bioNum, emp_name, trans_date, mach_code,
+                    check_in, check_out, sched_in, sched_out,
+                    late, undertime
+                ))
+            except Exception as e:
+                self.error.emit(f"Row {row} error: {str(e)}")
+        return timesheet_data
+
+    def precompute_holidays(self, timesheet_data):
+        """Batch precompute holiday types for all unique dates"""
+        unique_dates = {entry[2] for entry in timesheet_data}  # trans_date is at index 2
+        self.holiday_cache = {
+            date: self.time_computation.check_holiday_type(date)
+            for date in unique_dates
+        }
+
+    def process_in_batches(self, timesheet_data):
+        """Process data in parallel batches with progress updates"""
+        batch_size = 50
         results = []
-        total_entries = len(timesheet_data)
+        total_batches = math.ceil(len(timesheet_data) / batch_size)
+        last_reported = 0
 
-        for i, entry in enumerate(timesheet_data):
-            bio_num, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out, late, undertime = entry
+        for batch_num in range(total_batches):
+            start_idx = batch_num * batch_size
+            end_idx = start_idx + batch_size
+            batch_results = list(self.process_batch_parallel(timesheet_data[start_idx:end_idx]))
+            results.extend(batch_results)
 
-            check_in_datetime = f"{trans_date} {check_in}"
-            check_out_datetime = f"{trans_date} {check_out}"
+            # Throttled progress reporting
+            current_progress = int((batch_num + 1) / total_batches * 100)
+            if current_progress - last_reported >= 5 or current_progress == 100:
+                self.progressChanged.emit(current_progress)
+                last_reported = current_progress
 
-            if datetime.strptime(check_out, "%H:%M:%S") < datetime.strptime(check_in, "%H:%M:%S"):
-                check_out_date = datetime.strptime(trans_date, "%Y-%m-%d") + timedelta(days=1)
-                check_out_datetime = f"{check_out_date.strftime('%Y-%m-%d')} {check_out}"
+        return results
+
+    def process_batch_parallel(self, batch):
+        """Process batch using thread pool with error handling"""
+        with ThreadPoolExecutor() as executor:
+            for result in executor.map(self.process_single_entry, batch):
+                if result:  # Skip None results from failed entries
+                    yield result
+
+    def process_single_entry(self, entry):
+        """Process single timesheet entry with comprehensive validation"""
+        try:
+            bio_num, emp_name, trans_date, mach_code, check_in, check_out, _, _, late, undertime = entry
+
+            # Time calculations with overnight shift handling
+            check_in_dt = datetime.strptime(f"{trans_date} {check_in}", "%Y-%m-%d %H:%M:%S")
+            check_out_dt = datetime.strptime(f"{trans_date} {check_out}", "%Y-%m-%d %H:%M:%S")
+
+            if check_out_dt < check_in_dt:
+                check_out_dt += timedelta(days=1)
 
             # Calculate ND and NDOT
-            _, nd_hours, ndot_hours = self.time_computation.calculate_hours(check_in_datetime, check_out_datetime)
+            _, nd_hours, ndot_hours = self.time_computation.calculate_hours(
+                check_in_dt.strftime("%Y-%m-%d %H:%M:%S"),
+                check_out_dt.strftime("%Y-%m-%d %H:%M:%S")
+            )
 
             # Calculate total hours worked
-            total_hours = (datetime.strptime(check_out_datetime, "%Y-%m-%d %H:%M:%S") -
-                           datetime.strptime(check_in_datetime, "%Y-%m-%d %H:%M:%S")).total_seconds() / 3600
+            total_hours = (check_out_dt - check_in_dt).total_seconds() / 3600
 
-
-            # Check the holiday type using check_holiday_type function
-            holiday_type = self.time_computation.check_holiday_type(trans_date)
-
-            # Prepare result entry
+            # Build result entry
             result_entry = {
                 'bio_num': bio_num,
                 'emp_name': emp_name,
                 'trans_date': trans_date,
-                'check_in': check_in,
-                'check_out': check_out,
+                'mach_code': mach_code,
                 'total_hours': round(total_hours, 2),
                 'nd_hours': round(nd_hours, 2),
                 'ndot_hours': round(ndot_hours, 2),
                 'late': round(late, 2),
                 'undertime': round(undertime, 2),
-                'holiday_type': holiday_type  # Store the holiday type in the result
+                'holiday_type': self.holiday_cache.get(trans_date, '')
             }
 
-            # Add holiday specific data if applicable
-            holiday_type = self.time_computation.check_holiday_type(trans_date)
-            if holiday_type:
-                print(f"Found holiday type: {holiday_type} for date: {trans_date}")
-                if holiday_type == 'Regular Holiday':
-                    reg_hlyday_hours = total_hours
-                    reg_hlyday_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
-                                                                                         check_out_datetime)
-                    reg_hlyday_nd_hours = nd_hours
-                    reg_hlyday_ndot_hours = ndot_hours
-                    result_entry.update({
-                        'RegHlyday_Hrs': reg_hlyday_hours,
-                        'RegHlydayOT_Hrs': reg_hlyday_ot_hours,
-                        'RegHlydayND_Hrs': reg_hlyday_nd_hours,
-                        'RegHlydayNDOT_Hrs': reg_hlyday_ndot_hours
-                    })
-                elif holiday_type == 'Special Holiday':
-                    spl_hlyday_hours = total_hours
-                    spl_hlyday_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
-                                                                                         check_out_datetime)
-                    spl_hlyday_nd_hours = nd_hours
-                    spl_hlyday_ndot_hours = ndot_hours
-                    result_entry.update({
-                        'SplHlyday_Hrs': spl_hlyday_hours,
-                        'SplHlydayOT_Hrs': spl_hlyday_ot_hours,
-                        'SplHlydayND_Hrs': spl_hlyday_nd_hours,
-                        'SplHlydayNDOT_Hrs': spl_hlyday_ndot_hours
-                    })
+            # Add holiday-specific calculations
+            self.add_holiday_details(result_entry, check_in_dt, check_out_dt)
+            return result_entry
 
-                else:  # Ordinary Day
-                    ord_day_ot_hours = self.time_computation.calculate_overtime_hours(check_in_datetime,
-                                                                                      check_out_datetime)
-                    result_entry.update({
-                        'OrdDayOT_Hrs': ord_day_ot_hours,
-                        'OrdDayND_Hrs': nd_hours,
-                        'OrdDayNDOT_Hrs': ndot_hours
-                    })
+        except Exception as e:
+            self.error.emit(f"Entry processing error: {str(e)}")
+            return None
 
-            else:  # Ordinary Day
-                # Get total hours, ND hours and NDOT hours using existing calculate_hours method
-                total_hours, nd_hours, ndot_hours = self.time_computation.calculate_hours(check_in_datetime,
-                                                                                          check_out_datetime)
+    def add_holiday_details(self, result_entry, check_in_dt, check_out_dt):
+        """Add holiday-specific time calculations"""
+        holiday_type = result_entry['holiday_type']
+        overtime = self.time_computation.calculate_overtime_hours(
+            check_in_dt.strftime("%Y-%m-%d %H:%M:%S"),
+            check_out_dt.strftime("%Y-%m-%d %H:%M:%S")
+        )
 
-                # Get overtime hours using existing calculate_overtime_hours method
-                overtime_hours = self.time_computation.calculate_overtime_hours(check_in_datetime, check_out_datetime)
+        if holiday_type == 'Regular Holiday':
+            result_entry.update({
+                'RegHlyday_Hrs': result_entry['total_hours'],
+                'RegHlydayOT_Hrs': overtime,
+                'RegHlydayND_Hrs': result_entry['nd_hours'],
+                'RegHlydayNDOT_Hrs': result_entry['ndot_hours']
+            })
+        elif holiday_type == 'Special Holiday':
+            result_entry.update({
+                'SplHlyday_Hrs': result_entry['total_hours'],
+                'SplHlydayOT_Hrs': overtime,
+                'SplHlydayND_Hrs': result_entry['nd_hours'],
+                'SplHlydayNDOT_Hrs': result_entry['ndot_hours']
+            })
+        else:
+            # Align with non-optimized version: cap OrdDay_Hrs at 8 for ordinary days
+            result_entry.update({
+                'OrdDay_Hrs': min(result_entry['total_hours'], 8),  # Capped at 8
+                'OrdDayOT_Hrs': overtime,
+                'OrdDayND_Hrs': result_entry['nd_hours'],
+                'OrdDayNDOT_Hrs': result_entry['ndot_hours']
+            })
 
-                # Calculate regular hours (total hours minus overtime, capped at 8)
-                regular_hours = min(total_hours, 8)  # Regular hours capped at 8
+    def prepare_final_metadata(self, results):
+        """Prepare final output with validation"""
+        if not results:
+            self.error.emit("No valid results to output")
+            return None
 
-                result_entry.update({
-                    'OrdDay_Hrs': regular_hours,
-                    'OrdDayOT_Hrs': overtime_hours,
-                    'OrdDayND_Hrs': nd_hours,
-                    'OrdDayNDOT_Hrs': ndot_hours
-                })
+        date_from = self.parent.dateFromCC.currentText()
+        date_to = self.parent.dateToCC.currentText()
+        mach_code = results[0]['mach_code']
 
-            results.append(result_entry)
+        aggregated = self.aggregate_results(results)
+        if not aggregated:
+            return None
 
-            # Update progress for each entry processed
-            progress = int(((i + 1) / total_entries) * 100)
-            self.progressChanged.emit(progress)
-            QThread.msleep(1)
+        final_data = self.prepare_final_data(aggregated)
+        return [final_data, date_from, date_to, mach_code]
 
-        return results
+    def aggregate_results(self, results):
+        """Thread-safe aggregation of results"""
+        aggregated = {}
+        for result in results:
+            bio_num = result['bio_num']
+            with self.lock:
+                if bio_num not in aggregated:
+                    aggregated[bio_num] = self.init_employee_data(result)
+                self.update_employee_data(aggregated[bio_num], result)
+        return aggregated
+
+    def init_employee_data(self, result):
+        """Initialize employee data structure"""
+        return {
+            'emp_name': result['emp_name'],
+            'total_hours_worked': 0.0,
+            'nd_hours': 0.0,
+            'ndot_hours': 0.0,
+            'late': 0.0,
+            'undertime': 0.0,
+            'OrdDay_Hrs': 0.0,
+            'OrdDayOT_Hrs': 0.0,
+            'OrdDayND_Hrs': 0.0,
+            'OrdDayNDOT_Hrs': 0.0,
+            'RstDay_Hrs': 0.0,
+            'RstDayOT_Hrs': 0.0,
+            'RstDayND_Hrs': 0.0,
+            'RstDayNDOT_Hrs': 0.0,
+            'reg_holiday_hours': 0.0,
+            'reg_holiday_ot_hours': 0.0,
+            'reg_holiday_nd_hours': 0.0,
+            'reg_holiday_ndot_hours': 0.0,
+            'spl_holiday_hours': 0.0,
+            'spl_holiday_ot_hours': 0.0,
+            'spl_holiday_nd_hours': 0.0,
+            'spl_holiday_ndot_hours': 0.0,
+            'days_work': set()
+        }
+
+    def update_employee_data(self, employee_data, result):
+        """Update aggregated employee data"""
+        employee_data['total_hours_worked'] += result['total_hours']
+        employee_data['nd_hours'] += result['nd_hours']
+        employee_data['ndot_hours'] += result['ndot_hours']
+        employee_data['late'] += result['late']
+        employee_data['undertime'] += result['undertime']
+        employee_data['days_work'].add(result['trans_date'])
+
+        # Update all holiday-related fields
+        for key in ['OrdDay', 'RstDay', 'RegHlyday', 'SplHlyday']:
+            for suffix in ['_Hrs', 'OT_Hrs', 'ND_Hrs', 'NDOT_Hrs']:
+                field = f"{key}{suffix}"
+                if field in result:
+                    employee_data[field] += result[field]
+
+    def prepare_final_data(self, aggregated):
+        """Format final output data"""
+        required_fields = [
+            'BioNum', 'Employee', 'Total_Hours_Worked',
+            'Night_Differential', 'Days_Work'
+        ]
+
+        dataMerge = []
+        for bio_num, data in aggregated.items():
+            entry = {
+                'BioNum': bio_num,
+                'EmpNumber': bio_num,
+                'Employee': data['emp_name'],
+                'Total_Hours_Worked': f"{data['total_hours_worked']:.2f}",
+                'Night_Differential': f"{data['nd_hours']:.2f}",
+                'Night_Differential_OT': f"{data['ndot_hours']:.2f}",
+                'Days_Work': len(data['days_work']),
+                'Days_Present': len(data['days_work']),
+                'Late': f"{data['late']:.2f}",
+                'Undertime': f"{data['undertime']:.2f}",
+                'OrdDay_Hrs': f"{data['OrdDay_Hrs']:.2f}",  # Added
+                'OrdDayOT_Hrs': f"{data['OrdDayOT_Hrs']:.2f}",  # Added
+                'OrdDayND_Hrs': f"{data['OrdDayND_Hrs']:.2f}",  # Added
+                'OrdDayNDOT_Hrs': f"{data['OrdDayNDOT_Hrs']:.2f}",  # Added
+                'RstDay_Hrs': f"{data['RstDay_Hrs']:.2f}",  # Added
+                'RstDayOT_Hrs': f"{data['RstDayOT_Hrs']:.2f}",  # Added
+                'RstDayND_Hrs': f"{data['RstDayND_Hrs']:.2f}",  # Added
+                'RstDayNDOT_Hrs': f"{data['RstDayNDOT_Hrs']:.2f}",  # Added
+                'SplHlyday_Hrs': f"{data['spl_holiday_hours']:.2f}",
+                'SplHlydayOT_Hrs': data['spl_holiday_ot_hours'],
+                'SplHlydayND_Hrs': data['spl_holiday_nd_hours'],
+                'SplHlydayNDOT_Hrs': data['spl_holiday_ndot_hours'],
+                'RegHlyday_Hrs': f"{data['reg_holiday_hours']:.2f}",
+                'RegHlydayOT_Hrs': data['reg_holiday_ot_hours'],
+                'RegHlydayND_Hrs': data['reg_holiday_nd_hours'],
+                'RegHlydayNDOT_Hrs': data['reg_holiday_ndot_hours'],
+                'SplHldyRD_Hrs': 0,
+                'SplHldyRDOT_Hrs': 0,
+                'SplHldyRDND_Hrs': 0,
+                'SplHldyRDNDOT_Hrs': 0,
+                'RegHldyRD_Hrs': 0,
+                'RegHldyRDOT_Hrs': 0,
+                'RegHldyRDND_Hrs': 0,
+                'RegHldyRDNDOT_Hrs': 0,
+            }
+
+            # Verify required fields
+            if not all(field in entry for field in required_fields):
+                self.error.emit(f"Incomplete data for employee {bio_num}")
+                continue
+
+            dataMerge.append(entry)
+
+        return dataMerge
