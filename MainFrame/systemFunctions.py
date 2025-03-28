@@ -253,10 +253,11 @@ class timekeepingFunction():
                         instance.populatePayTransTable(instance.original_data)
                     elif hasattr(instance, 'bankregisterTable'):
                         instance.functions.populateBankRegisterTable(instance.original_data)
-                    elif hasattr(instance, 'timeSheetTable'):
-                        instance.populateTimeSheet(instance.original_data)
                     elif hasattr(instance, 'timeListTable'):
                         instance.populateTimeList(instance.original_data)
+                else:
+                    if hasattr(instance, 'TimeSheetTable'):
+                        instance.populateTimeSheet(instance.data)
                 return
 
             # Clear the table before populating it with filtered data

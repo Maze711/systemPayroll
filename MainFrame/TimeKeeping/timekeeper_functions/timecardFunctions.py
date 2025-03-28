@@ -608,7 +608,7 @@ class TimeComputation:
             logging.error(f"Error calculating overtime hours: {e}")
             return 0
 
-    def validate_schedule(self, sched_in, sched_out, check_in, check_out, bio_num, trans_date):
+    def validate_schedule(self, processor, sched_in, sched_out, check_in, check_out, bio_num, trans_date):
         """
         Validate if Sched_In and Sched_Out are within acceptable tolerance of Check_In and Check_Out.
         """
@@ -633,17 +633,18 @@ class TimeComputation:
             if not in_match: # or not out_match
                 # Log the mismatches for debugging
                 if not in_match:
-                    logging.debug(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
+                    # logging.debug(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
+                    print(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
 
                 # if not out_match:
-                     # logging.debug(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
+                #     logging.debug(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
+                #     print(f"Check-Out mismatch: Sched_Out {sched_out_time}, Check_Out {check_out_time}")
 
-                QMessageBox.warning(self.parent, "Validation Error",
-                                    f"BioNum: {bio_num}, TransDate: {trans_date} has unmatched schedule.")
+                processor.error.emit(f"BioNum: {bio_num}, TransDate: {trans_date} has unmatched schedule.")
                 return False
         except Exception as e:
             logging.error(f"Error in schedule validation for {bio_num} on {trans_date}: {e}")
-            QMessageBox.critical(self.parent, "Validation Error", f"Error validating schedule: {e}")
+            processor.error.emit(f"Error validating schedule: {e}")
             return False
 
         # Schedule is valid
