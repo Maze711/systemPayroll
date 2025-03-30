@@ -3,6 +3,7 @@ from MainFrame.systemFunctions import globalFunction, FileProcessor
 from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
 from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
+from MainFrame.Payroll.paymaster_Employee.paytimeSheetViewList import paytimesheetViewList
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -202,9 +203,18 @@ class PaytimeSheetFunctions:
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to show employee list: {e}")
 
+    def showViewList(self):
+        #This functions will show the Table for USER Rate/Salary Information
+        try:
+            paytimesheetViewList_View = paytimesheetViewList()
+            paytimesheetViewList_View.exec_()
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Error", f"Failed to show employee list of salary: {e}")
+
     def buttonImport(self):
         try:
-            fileName, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "", "Excel Files (*.xls *.xlsx)")
+            fileName, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "",
+                                                      "Excel Files (*.xls *.xlsx)")
             if not fileName:
                 return
 
@@ -334,7 +344,8 @@ class PaytimeSheetFunctions:
                         self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name], item)
                     else:
                         # Handle cases where the data row may have fewer columns than expected
-                        self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name], QTableWidgetItem('unknown'))
+                        self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name],
+                                                              QTableWidgetItem('unknown'))
 
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to populate table: {e}")
@@ -351,4 +362,3 @@ class PaytimeSheetFunctions:
                     self.parent.paytimesheetTable.hideRow(row)
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to filter table: {e}")
-          

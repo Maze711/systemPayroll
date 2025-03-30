@@ -54,6 +54,7 @@ class PaytimeSheet(QMainWindow):
 
             self.btnPayTrans.clicked.connect(self.payTimeFunctions.createPayTrans)
             self.btnNotification.clicked.connect(self.payTimeFunctions.showNewListEmployee)
+            self.btnViewList.clicked.connect(self.payTimeFunctions.showViewList)
             self.btnImport.clicked.connect(self.payTimeFunctions.buttonImport)
 
             self.searchBioNum.textChanged.connect(lambda: self.payTimeFunctions.filterTable())

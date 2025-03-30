@@ -825,9 +825,9 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-566</y>
       <width>1218</width>
-      <height>1568</height>
+      <height>1818</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -836,7 +836,7 @@ border-radius:5px
        <property name="minimumSize">
         <size>
          <width>1200</width>
-         <height>1550</height>
+         <height>1800</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -912,7 +912,7 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
         <property name="geometry">
          <rect>
           <x>520</x>
-          <y>800</y>
+          <y>1049</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -931,7 +931,7 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>800</y>
+          <y>1049</y>
           <width>200</width>
           <height>21</height>
          </rect>
@@ -950,7 +950,7 @@ QScrollBar::sub-page:vertical, QScrollBar::add-page:vertical {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1120</y>
+          <y>1369</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -2582,7 +2582,7 @@ color: white;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>1141</y>
+          <y>1390</y>
           <width>770</width>
           <height>340</height>
          </rect>
@@ -3208,7 +3208,7 @@ border: 1px solid black;</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>820</y>
+          <y>1069</y>
           <width>500</width>
           <height>291</height>
          </rect>
@@ -3480,7 +3480,7 @@ color: black;</string>
         <property name="geometry">
          <rect>
           <x>513</x>
-          <y>820</y>
+          <y>1069</y>
           <width>265</width>
           <height>311</height>
          </rect>
@@ -3524,6 +3524,229 @@ border: 1px solid black;</string>
           <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
         </widget>
+       </widget>
+       <widget class="QScrollArea" name="govIDListFrame">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>810</y>
+          <width>761</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QScrollArea{
+border: 1px solid black;
+}
+
+#scrollWorkContent_2 {
+background-color: #DCE5FE
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollWorkContent_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>759</width>
+           <height>229</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QFrame" name="workExpFrame_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLineEdit{
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+border: 1px solid black;
+font-family: Poppins;
+}
+
+QDateEdit{
+background-color: rgb(255, 255, 255);
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QFrame" name="groupExp1_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>741</width>
+               <height>211</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QFrame{
+background-color: rgba(231, 226, 226, 0.66);
+border: 1px solid black;
+}
+
+QLabel{
+border: none;
+}
+</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="1" colspan="2">
+               <widget class="QLineEdit" name="sssIDTextEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>312</width>
+                  <height>33</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="philheatlhIDLabel">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>PhilHealth No.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="sssIDLabel">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>SSS ID No.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="pagibigIDLabel">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Pag-Ibig No.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1" colspan="2">
+               <widget class="QLineEdit" name="philheatlhIDTextEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>312</width>
+                  <height>33</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="tinIDLabel">
+                <property name="font">
+                 <font>
+                  <family>Poppins</family>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>TIN ID No.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="tinIDTextEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>312</width>
+                  <height>33</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1" colspan="2">
+               <widget class="QLineEdit" name="pagibigIDTextEdit">
+                <property name="minimumSize">
+                 <size>
+                  <width>312</width>
+                  <height>33</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="govIDList">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>790</y>
+          <width>200</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Poppins</family>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Government ID List</string>
+        </property>
        </widget>
       </widget>
      </item>

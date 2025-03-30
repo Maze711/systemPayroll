@@ -133,9 +133,9 @@ class CreateTimeSheetProcessor(QObject):
                 bioNum, emp_name, trans_date, mach_code, check_in, check_out, sched_in, sched_out = items
 
                 # Validate the schedule before adding to timesheet data
-                if not self.time_computation.validate_schedule(self, sched_in, sched_out, check_in, check_out,
-                                                               bioNum, trans_date):
-                    return  # Stop the process if validation fails
+                # if not self.time_computation.validate_schedule(self, sched_in, sched_out, check_in, check_out,
+                #                                                bioNum, trans_date):
+                #     return  # Stop the process if validation fails
 
                 self.mach_codes.add(mach_code)
 
