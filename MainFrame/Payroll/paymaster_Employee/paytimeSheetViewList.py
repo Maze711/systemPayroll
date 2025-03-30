@@ -1,3 +1,4 @@
+from MainFrame.Payroll.payroll_functions.payViewListFunctions import viewListFunctions
 from MainFrame.Resources.lib import *
 from MainFrame.systemFunctions import globalFunction
 
@@ -10,3 +11,7 @@ class paytimesheetViewList(QDialog):
         self.setFixedSize(1070, 670)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\employeeList_Rate.ui")
         loadUi(ui_file, self)
+
+        self.functions = viewListFunctions(self)
+
+        self.functions.populateEmpSalaryList()
