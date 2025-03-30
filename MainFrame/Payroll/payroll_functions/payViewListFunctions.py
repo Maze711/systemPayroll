@@ -1,5 +1,6 @@
 from MainFrame.Resources.lib import *
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.systemFunctions import ValidInteger
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -9,6 +10,8 @@ class viewListFunctions:
     def __init__(self, parent):
         self.parent = parent
         self.data = []  # Initialize empty data
+        self.validator = ValidInteger()
+        self.setup_double_click_handler()
 
     def getEmpRate(self):
         """Retrieves salary details from emp_rate and employee info from emp_info"""
@@ -124,3 +127,104 @@ class viewListFunctions:
                                         f"Employee salary list has been successfully exported to {file_name}")
             except Exception as e:
                 QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
+
+    def setup_double_click_handler(self):
+        """Sets up double-click handler for the table widget"""
+        if hasattr(self.parent, 'empSalaryList'):
+            self.parent.empSalaryList.cellDoubleClicked.connect(self.handle_cell_double_click)
+
+    def handle_cell_double_click(self, row, column):
+        """Handles double-click events on editable cells"""
+        # Only allow editing for specific columns (3-RPH to 11-Pag-Ibig Amount)
+        if 3 <= column <= 11:
+            table = self.parent.empSalaryList
+            item = table.item(row, column)
+
+            if item is None:
+                return
+
+            # Get employee ID from the first column
+            emp_id_item = table.item(row, 0)
+            if emp_id_item is None:
+                return
+
+            emp_id = emp_id_item.text()
+            column_name = self.get_column_name(column)
+
+            # Create line edit for editing
+            line_edit = QLineEdit(table)
+            line_edit.setText(item.text())
+            line_edit.setAlignment(Qt.AlignCenter)
+            self.validator.set_validators(line_edit)
+
+            # Set the line edit as the cell widget
+            table.setCellWidget(row, column, line_edit)
+            line_edit.setFocus()
+
+            # Connect editing finished signal
+            line_edit.editingFinished.connect(
+                lambda: self.handle_edit_finished(row, column, line_edit, emp_id, column_name)
+            )
+
+    def get_column_name(self, column):
+        """Maps column index to database column name"""
+        column_map = {
+            3: 'rph',
+            4: 'rate',
+            5: 'Basic',
+            6: 'mth_salary',
+            7: 'dailyallow',
+            8: 'mntlyallow',
+            9: 'SSS Loaned',
+            10: 'SSS Loan Amount',
+            11: 'Pag-Ibig Amount'
+        }
+        return column_map.get(column, '')
+
+    def handle_edit_finished(self, row, column, line_edit, emp_id, column_name):
+        """Handles when editing is finished (saves to database)"""
+        table = self.parent.empSalaryList
+        new_value = line_edit.text()
+
+        # Remove the line edit widget
+        table.removeCellWidget(row, column)
+
+        # Update the table item
+        item = QTableWidgetItem(new_value)
+        item.setTextAlignment(Qt.AlignCenter)
+        table.setItem(row, column, item)
+
+        # Update the data structure
+        if 0 <= row < len(self.data):
+            self.data[row][column_name] = int(new_value) if new_value else 0
+
+        # Update database
+        self.update_database_value(emp_id, column_name, new_value)
+
+    def update_database_value(self, emp_id, column_name, new_value):
+        """Updates the database with the new value"""
+        # Skip if it's one of the non-database columns (Basic, SSS, Pag-Ibig)
+        if column_name in ['Basic', 'SSS Loaned', 'SSS Loan Amount', 'Pag-Ibig Amount']:
+            return
+
+        connection = create_connection('NTP_EMP_LIST')
+        if connection is None:
+            QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database.")
+            return
+
+        try:
+            with connection.cursor() as cursor:
+                # Convert empty string to NULL
+                db_value = int(new_value) if new_value else None
+
+                query = f"UPDATE emp_rate SET {column_name} = %s WHERE empl_id = %s"
+                cursor.execute(query, (db_value, emp_id))
+                connection.commit()
+
+                QMessageBox.information(self.parent, "Update Successful",
+                                        f"Updated {column_name} for employee {emp_id}")
+        except Exception as e:
+            QMessageBox.warning(self.parent, "Update Error", f"Error updating database: {e}")
+        finally:
+            if connection and connection.is_connected():
+                connection.close()
