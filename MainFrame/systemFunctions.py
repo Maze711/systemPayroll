@@ -246,7 +246,7 @@ class timekeepingFunction():
 
             # Restore original data if no search term is provided
             if not search_text:
-                if hasattr(instance, 'original_data'):
+                if hasattr(instance, 'original_data') and instance.original_data:
                     if hasattr(instance, 'paytimesheetTable'):
                         instance.populatePaytimeSheetTable(instance.original_data)
                     elif hasattr(instance, 'paytransTable'):
@@ -255,39 +255,42 @@ class timekeepingFunction():
                         instance.functions.populateBankRegisterTable(instance.original_data)
                     elif hasattr(instance, 'timeListTable'):
                         instance.populateTimeList(instance.original_data)
+                    elif hasattr(instance, 'empSalaryList'):
+                        instance.functions.populateEmpSalaryList(instance.original_data)  # ✅ Pass original data
                 else:
-                    if hasattr(instance, 'TimeSheetTable'):
-                        instance.populateTimeSheet(instance.data)
+                    if hasattr(instance.functions, 'data'):
+                        instance.functions.populateEmpSalaryList(instance.functions.data)  # ✅ Ensure data is used
                 return
 
-            # Clear the table before populating it with filtered data
+            # Clear table before repopulating with filtered data
             if hasattr(instance, 'TimeSheetTable'):
                 instance.TimeSheetTable.clearContents()
 
-            # Search logic for PaytimeSheet, PayTrans, BankRegister, TimeSheet, or TimeList
+            # Filter and update tables accordingly
             if hasattr(instance, 'paytimesheetTable'):
                 for row in range(instance.paytimesheetTable.rowCount()):
                     item = instance.paytimesheetTable.item(row, 1)  # Bio Num column at index 1
-                    if item and search_text in item.text().lower():
-                        instance.paytimesheetTable.setRowHidden(row, False)
-                    else:
-                        instance.paytimesheetTable.setRowHidden(row, True)
+                    instance.paytimesheetTable.setRowHidden(row,
+                                                            search_text not in item.text().lower() if item else True)
+
             elif hasattr(instance, 'paytransTable'):
                 for row in range(instance.paytransTable.rowCount()):
-                    item = instance.paytransTable.item(row, 1)  # Bio Num column at index 1
-                    if item and search_text in item.text().lower():
-                        instance.paytransTable.setRowHidden(row, False)
-                    else:
-                        instance.paytransTable.setRowHidden(row, True)
+                    item = instance.paytransTable.item(row, 1)
+                    instance.paytransTable.setRowHidden(row, search_text not in item.text().lower() if item else True)
+
             elif hasattr(instance, 'bankregisterTable'):
                 for row in range(instance.bankregisterTable.rowCount()):
-                    item = instance.bankregisterTable.item(row, 1)  # Bio Num column at index 1
-                    if item and search_text in item.text().lower():
-                        instance.bankregisterTable.setRowHidden(row, False)
-                    else:
-                        instance.bankregisterTable.setRowHidden(row, True)
+                    item = instance.bankregisterTable.item(row, 1)
+                    instance.bankregisterTable.setRowHidden(row,
+                                                            search_text not in item.text().lower() if item else True)
+
+            elif hasattr(instance, 'empSalaryList'):
+                if hasattr(instance.functions, 'data'):
+                    filtered_data = [row for row in instance.functions.data if search_text in row['BioNum'].lower()]
+                    instance.functions.populateEmpSalaryList(filtered_data)  # ✅ Pass filtered data
+
             elif hasattr(instance, 'filtered_data'):
-                filtered_data = [row for row in instance.filtered_data if row['BioNum'].startswith(search_text)]
+                filtered_data = [row for row in instance.filtered_data if row['BioNum'].lower().startswith(search_text)]
                 if hasattr(instance, 'populateTimeSheet'):
                     instance.populateTimeSheet(filtered_data)
                 elif hasattr(instance, 'populateTimeList'):
@@ -296,14 +299,11 @@ class timekeepingFunction():
                     instance.populatePaytimeSheetTable(filtered_data)
                 elif hasattr(instance, 'populatePayTransTable'):
                     instance.populatePayTransTable(filtered_data)
+                elif hasattr(instance, 'populateEmpSalaryList'):
+                    instance.functions.populateEmpSalaryList(filtered_data)
 
-            elif hasattr(instance, 'data'):
-                # Filter data based on BioNum for TimeSheet
-                filtered_data = [row for row in instance.data if search_text in row['BioNum'].lower()]
-                if hasattr(instance, 'populateTimeSheet'):
-                    instance.populateTimeSheet(filtered_data)
         except Exception as e:
-            print('Error searching bio num: ', e)
+            print('Error searching bio num:', e)
 
 
 class ValidInteger:

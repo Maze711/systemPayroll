@@ -61,14 +61,15 @@ class viewListFunctions:
             if connection and connection.is_connected():
                 connection.close()
 
-    def populateEmpSalaryList(self):
-        if not self.data:
-            self.getEmpRate()
+    def populateEmpSalaryList(self, data=None):
+        if data is None:
+            if not self.data:  # Ensure data is populated
+                self.getEmpRate()
+            data = self.data
 
-        # Set the new row count
-        self.parent.empSalaryList.setRowCount(len(self.data))
+        self.parent.empSalaryList.setRowCount(len(data))
 
-        for i, row in enumerate(self.data):
+        for i, row in enumerate(data):
             emp_num = QTableWidgetItem(row['EmpNo'])
             bio_num = QTableWidgetItem(row['BioNum'])
             emp_name = QTableWidgetItem(row['EmpName'])
@@ -82,15 +83,12 @@ class viewListFunctions:
             sss_loan_amount = QTableWidgetItem(str(row['SSS Loan Amount']))
             pagibig_amount = QTableWidgetItem(str(row['Pag-Ibig Amount']))
 
-            # Align all text to center
             for item in [emp_num, bio_num, emp_name, rph, rate, basic, monthly_salary, daily_allowance,
                          monthly_allowance, sss_loaned, sss_loan_amount, pagibig_amount]:
                 item.setTextAlignment(Qt.AlignCenter)
 
-            # Set tooltip for employee name
             emp_name.setToolTip(row['EmpName'])
 
-            # Add items to the table
             self.parent.empSalaryList.setItem(i, 0, emp_num)
             self.parent.empSalaryList.setItem(i, 1, bio_num)
             self.parent.empSalaryList.setItem(i, 2, emp_name)
