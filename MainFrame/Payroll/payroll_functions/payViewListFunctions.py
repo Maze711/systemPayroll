@@ -104,70 +104,25 @@ class viewListFunctions:
             self.parent.empSalaryList.setItem(i, 10, sss_loan_amount)
             self.parent.empSalaryList.setItem(i, 11, pagibig_amount)
 
-    def exportBankRegisterToExcel(self):
-        """Exports the bankRegister data into excel file"""
-        try:
-            rows = self.parent.empSalaryList.rowCount()
-            columns = self.parent.empSalaryList.columnCount()
+    def exportEmpRateList(self):
+        """Exports the employee salary list to an Excel file."""
+        if not self.data:
+            QMessageBox.warning(self.parent, "Export Error", "No data available to export.")
+            return
 
-            # Gets the header columns
-            headers = [self.parent.empSalaryList.horizontalHeaderItem(i).text() for i in range(columns)]
+        df = pd.DataFrame(self.data)
 
-            table_data = []
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getSaveFileName(
+            self.parent, "Save As", "",
+            "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;CSV Files (*.csv);;All Files (*)",
+            options=options
+        )
 
-            # Iterate over rows and columns to retrieve data in the table UI
-            for row in range(rows):
-                row_data = []
-                for col in range(columns):
-                    item = self.parent.empSalaryList.item(row, col)
-                    if item:
-                        item_text = item.text().strip()
-                        # Converts the numeric text to float or integer
-                        try:
-                            value = float(item_text) if '.' in item_text else int(item_text)
-                        except ValueError:
-                            value = item_text
-                        row_data.append(value)
-                table_data.append(row_data)
-
-            # Create the DataFrame from the table data
-            df = pd.DataFrame(table_data, columns=headers)
-
-            grand_total = float(self.parent.grandTotal.text().replace(',', ''))  # Get the grand total
-
-            # Add the grand total in the last row
-            total_row = [''] * (columns - 2) + ['Grand Total', grand_total]
-            df.loc[len(df)] = total_row
-
-            # Prompt the user to save the data to a specified file path
-            options = QFileDialog.Options()
-            file_name, _ = QFileDialog.getSaveFileName(self.parent, "Save As", "",
-                                                       "Excel Files (*.xlsx);;Excel 97-2003 Files (*.xls);;"
-                                                       "CSV Files (*.csv);;All Files (*)",
-                                                       options=options)
-
-            if file_name:
-                try:
-                    with pd.ExcelWriter(file_name, engine='xlsxwriter') as writer:
-                        df.to_excel(writer, index=False, sheet_name='BankRegister')
-
-                        workbook = writer.book
-                        worksheet = writer.sheets['BankRegister']
-
-                        # Creates a format for the 'Grand Total' row
-                        format_grand_total = workbook.add_format({'align': 'right', 'bold': True, 'bottom': 6})
-                        format_total_value = workbook.add_format({'bottom': 6,
-                                                                  'num_format': '#,##0.00', 'bold': True})
-
-                        # Apply the format to the 'Grand Total' row (last row of the DataFrame)
-                        worksheet.write(f'D{len(df) + 1}', 'Grand Total', format_grand_total)
-                        worksheet.write(f'E{len(df) + 1}', grand_total, format_total_value)
-
-                    QMessageBox.information(self.parent, "Export Successful",
-                                            f"BankRegister has been successfully exported to {file_name}")
-                except Exception as e:
-                    QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
-
-        except Exception as es:
-            QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {es}")
-            print(f"Exporting Bank Register Error: {es}")
+        if file_name:
+            try:
+                df.to_excel(file_name, index=False, sheet_name='EmployeeSalaryList')
+                QMessageBox.information(self.parent, "Export Successful",
+                                        f"Employee salary list has been successfully exported to {file_name}")
+            except Exception as e:
+                QMessageBox.warning(self.parent, "Export Error", f"An error occurred while exporting data: {e}")
