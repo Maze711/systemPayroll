@@ -11,7 +11,12 @@ class paytimesheetViewList(QDialog):
         self.setFixedSize(1070, 670)
         ui_file = globalFunction.resource_path("MainFrame\\Resources\\UI\\employeeList_Rate.ui")
         loadUi(ui_file, self)
+        self.btnExportRateList = self.findChild(QPushButton, "btnExportRateList")
 
         self.functions = viewListFunctions(self)
 
         self.functions.populateEmpSalaryList()
+        if self.btnExportRateList:
+            self.btnExportRateList.clicked.connect(self.functions.exportEmpRateList)
+        else:
+            print("btnExportRateList not found!")
