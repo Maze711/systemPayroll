@@ -20,7 +20,7 @@ def add_employee(data):
         # Insert other related data
         insert_family_background(cursor, generated_id, data)
         insert_emergency_list(cursor, generated_id, data)
-        # insert_list_of_id(cursor, generated_id, data)
+        insert_list_of_id(cursor, generated_id, data)
         insert_work_exp(cursor, generated_id, data)
         insert_educ_information(cursor, generated_id, data)
         insert_tech_skills(cursor, generated_id, data)
@@ -105,17 +105,17 @@ def insert_emergency_list(cursor, empl_id, data):
     cursor.execute(query, values)
     logging.info("Inserted into emergency_list table")
 
-# def insert_list_of_id(cursor, empl_id, data):
-#     query = """
-#     INSERT INTO emp_list_id (empl_id, sss, tin, pagibig, philhealth)
-#     VALUES (%s, %s, %s, %s, %s)
-#     """
-#     values = (
-#         empl_id, data.get('SSS Number', ''), data.get('TIN Number', ''), data.get('Pag-IBIG Number', ''),
-#         data.get('PhilHealth Number', '')
-#     )
-#     cursor.execute(query, values)
-#     logging.info("Inserted into emp_list_id table")
+def insert_list_of_id(cursor, empl_id, data):
+    query = """
+    INSERT INTO emp_list_id (empl_id, empid, sss, tin, pagibig, philhealth)
+    VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    values = (
+        empl_id, empl_id,data.get('SSS ID Number', ''), data.get('TIN ID Number', ''), data.get('Pag-IBIG ID Number', ''),
+        data.get('PhilHealth ID Number', '')
+    )
+    cursor.execute(query, values)
+    logging.info("Inserted into emp_list_id table")
 
 
 def insert_work_exp(cursor, empl_id, data):
@@ -312,13 +312,13 @@ def save_employee(empl_id, data):
                        (data['Emergency Name'], empl_id))
                 
         # # Update list_of_id table
-        # update_list_of_id = """
-        # UPDATE emp_list_id
-        # SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
-        # WHERE empl_id = %s
-        # """
-        # cursor.execute(update_list_of_id, (
-        #     data['SSS Number'], data['TIN Number'], data['Pag-IBIG Number'], data['PhilHealth Number'], empl_id))
+        update_list_of_id = """
+        UPDATE emp_list_id
+        SET sss = %s, tin = %s, pagibig = %s, philhealth = %s
+        WHERE empl_id = %s
+        """
+        cursor.execute(update_list_of_id, (
+            data['SSS ID Number'], data['TIN ID Number'], data['Pag-IBIG ID Number'], data['PhilHealth ID Number'], empl_id))
 
         # Update work_exp table
         update_work_exp = """

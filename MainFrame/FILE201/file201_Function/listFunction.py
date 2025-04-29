@@ -148,6 +148,7 @@ class ListFunction:
                    f.mothersLastName, f.mothersFirstName, f.mothersMiddleName, f.spouseLastName, f.spouseFirstName, 
                    f.spouseMiddleName, f.beneficiaryLastName, f.beneficiaryFirstName, f.beneficiaryMiddleName, 
                    f.dependentsName, m.emer_name, w.fromDate, w.toDate, w.companyName, w.companyAdd, w.empPosition,
+                   i.sss, i.tin, i.pagibig, i.philhealth,
                    t.techSkill1, t.certificate1, t.validationDate1, t.techSkill2, t.certificate2, t.validationDate2,
                    t.techSkill3, t.certificate3, t.validationDate3, e.college, e.highSchool, e.elemSchool,
                    e.collegeAdd, e.highschoolAdd, e.elemAdd, e.collegeCourse, e.highschoolStrand, e.collegeYear,
@@ -158,6 +159,7 @@ class ListFunction:
             LEFT JOIN emergency_list m ON p.empl_id = m.empl_id
             LEFT JOIN family_background f ON p.empl_id = f.empl_id
             LEFT JOIN work_exp w ON p.empl_id = w.empl_id
+            LEFT JOIN emp_list_id i ON p.empl_id = i.empl_id
             LEFT JOIN tech_skills t ON p.empl_id = t.empl_id
             LEFT JOIN emp_images img ON p.empl_id = img.empl_id
             LEFT JOIN emp_status s ON p.empl_id = s.empl_id
@@ -233,6 +235,11 @@ class ListFunction:
                 "companyTextEdit_4": data['companyName'],
                 "addressTextEdit_4": data['companyAdd'],
                 "positionTextEdit_4": data['empPosition'],
+                # EMP_LIST_ID TABLE
+                "sssIDTextEdit": data['sss'],
+                "pagibigIDTextEdit": data['pagibig'],
+                "philheatlhIDTextEdit": data['philhealth'],
+                "tinIDTextEdit": data['tin'],
                 # TECH_SKILLS TABLE
                 "techSkillTextEdit": data['techSkill1'],
                 "certiTextEdit1": data['certificate1'],

@@ -81,11 +81,11 @@ class modalFunction:
                 ("Dependent's Name", self.main_window.txtDependent.text()),
                 ("Emergency Name", self.main_window.txtEmergency.text()),
 
-                # # Employee ID inputs
-                # ('SSS Number', self.main_window.sssTextEdit.text()),
-                # ('Pag-IBIG Number', self.main_window.pagibigTextEdit.text()),
-                # ('PhilHealth Number', self.main_window.philHealthTextEdit.text()),
-                # ('TIN Number', self.main_window.tinTextEdit.text()),
+                # Employee ID inputs
+                ('SSS ID Number', self.main_window.sssIDTextEdit.text()),
+                ('Pag-IBIG ID Number', self.main_window.pagibigIDTextEdit.text()),
+                ('PhilHealth ID Number', self.main_window.philheatlhIDTextEdit.text()),
+                ('TIN ID Number', self.main_window.tinIDTextEdit.text()),
                 # ('Taxstat', self.main_window.txtTaxstat.text()),
                 # ('Account no.', self.main_window.txtAccount.text()),
                 # ('Bank code', self.main_window.txtBank.text()),
@@ -243,10 +243,10 @@ class modalFunction:
             "Dependent's Name": self.main_window.txtDependent.text(),
             "Emergency Name": self.main_window.txtEmergency.text(),
 
-            # 'SSS Number': self.main_window.sssTextEdit.text(),
-            # 'Pag-IBIG Number': self.main_window.pagibigTextEdit.text(),
-            # 'PhilHealth Number': self.main_window.philHealthTextEdit.text(),
-            # 'TIN Number': self.main_window.tinTextEdit.text(),
+            'SSS ID Number': self.main_window.sssIDTextEdit.text(),
+            'Pag-IBIG ID Number': self.main_window.pagibigIDTextEdit.text(),
+            'PhilHealth ID Number': self.main_window.philheatlhIDTextEdit.text(),
+            'TIN ID Number': self.main_window.tinIDTextEdit.text(),
             # 'Taxstat': self.main_window.txtTaxstat.text(),
             # 'Account no.': self.main_window.txtAccount.text(),
             # 'Bank code': self.main_window.txtBank.text(),
