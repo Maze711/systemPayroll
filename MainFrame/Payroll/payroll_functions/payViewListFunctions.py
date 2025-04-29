@@ -24,7 +24,7 @@ class viewListFunctions:
         query = """
             SELECT 
                 er.empl_id, 
-                ei.empl_id AS bio_num,
+                ei.empid AS bio_num,
                 CONCAT(ei.surname, ', ', ei.firstname, ' ', COALESCE(ei.mi, '')) AS emp_name,
                 er.rph, 
                 er.rate, 
