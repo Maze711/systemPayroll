@@ -4,6 +4,7 @@ from MainFrame.Payroll.payTrans.payTransLoader import PayTrans
 from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
 from MainFrame.Payroll.paymaster_Employee.paytimeSheetViewList import paytimesheetViewList
+from MainFrame.Database_Connection.DBConnection import create_connection
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -13,79 +14,107 @@ class PaytimeSheetFunctions:
     def __init__(self, parent):
         self.parent = parent
 
-    def readRatesFromExcel(self, file_path):
-        bio_num_to_rate = {}
+    def readRatesFromDB(self):
+        """Retrieves the empid (bio_num) and rate from database then returns a dictionary"""
+        connection = create_connection('NTP_EMP_LIST')
+        if connection is None:
+            print("Failed to connect to SYSTEM_EMP_LIST database.")
+            QMessageBox.warning(self.parent, "Connection Error", "Failed to connect to database. Please check your "
+                                                                 "connection or contact the system administrator")
+            return
+
+        cursor = connection.cursor()
 
         try:
-            file_extension = os.path.splitext(file_path)[1].lower()
+            query = f""" SELECT empid, rate FROM emp_rate"""
+            cursor.execute(query)
+            result = cursor.fetchall()
 
-            if file_extension not in ['.xls', '.xlsx', '.xlsm', '.xlsb']:
-                QMessageBox.critical(self.parent, "Error Reading File", f"Unsupported file extension: {file_extension}")
-                return bio_num_to_rate
+            # Convert fetched data (empid and rate) into dictionary
+            bio_num_to_rate = {str(empid): str(rate) for empid, rate in result}
 
-            # Use openpyxl for .xlsx, .xlsm, .xlsb
-            if file_extension in ['.xlsx', '.xlsm', '.xlsb']:
-                workbook = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
-                sheet = workbook.active
-
-                # Read headers (handle None values)
-                headers = []
-                first_row = next(sheet.iter_rows(values_only=True))
-                for cell in first_row:
-                    headers.append(str(cell).strip().lower() if cell is not None else "")
-
-                empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
-                rate_index = headers.index('rate') if 'rate' in headers else None
-
-                if empl_id_index is None or rate_index is None:
-                    return bio_num_to_rate
-
-                row_count = 0
-                for row in sheet.iter_rows(min_row=2, values_only=True):  # Skip header
-                    empl_id_value = str(row[empl_id_index]) if row[empl_id_index] is not None else ""
-                    rate_value = str(row[rate_index]) if row[rate_index] is not None else ""
-
-                    # Remove trailing '.0' if present (e.g., "123.0" → "123")
-                    if empl_id_value.endswith('.0'):
-                        empl_id_value = empl_id_value[:-2]
-
-                    # Store both full ID and last digits (without first 2 digits)
-                    if len(empl_id_value) > 2:
-                        bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
-                    else:
-                        bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
-
-                    row_count += 1
-
-            # Use xlrd for legacy .xls files
-            elif file_extension == '.xls':
-                workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
-                sheet = workbook.sheet_by_index(0)
-
-                headers = [str(sheet.cell_value(0, col_idx)).strip().lower() for col_idx in range(sheet.ncols)]
-                empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
-                rate_index = headers.index('rate') if 'rate' in headers else None
-
-                if empl_id_index is None or rate_index is None:
-                    return bio_num_to_rate
-
-                for row_idx in range(1, sheet.nrows):  # Skip header
-                    empl_id_value = str(sheet.cell_value(row_idx, empl_id_index))
-                    rate_value = str(sheet.cell_value(row_idx, rate_index))
-
-                    if empl_id_value.endswith('.0'):
-                        empl_id_value = empl_id_value[:-2]
-
-                    # Store both full ID and last digits (without first 2 digits)
-                    if len(empl_id_value) > 2:
-                        bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
-                    else:
-                        bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
+            return bio_num_to_rate
 
         except Exception as e:
-            QMessageBox.critical(self.parent, "Error Reading File", f"Error reading Excel file: {e}")
+            QMessageBox.critical(self.parent, "Database Error", f"An error occurred: {e}")
+            return
+        finally:
+            cursor.close()
+            connection.close()
 
-        return bio_num_to_rate
+    # def readRatesFromExcel(self, file_path):
+    #     bio_num_to_rate = {}
+    #
+    #     try:
+    #         file_extension = os.path.splitext(file_path)[1].lower()
+    #
+    #         if file_extension not in ['.xls', '.xlsx', '.xlsm', '.xlsb']:
+    #             QMessageBox.critical(self.parent, "Error Reading File", f"Unsupported file extension: {file_extension}")
+    #             return bio_num_to_rate
+    #
+    #         # Use openpyxl for .xlsx, .xlsm, .xlsb
+    #         if file_extension in ['.xlsx', '.xlsm', '.xlsb']:
+    #             workbook = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
+    #             sheet = workbook.active
+    #
+    #             # Read headers (handle None values)
+    #             headers = []
+    #             first_row = next(sheet.iter_rows(values_only=True))
+    #             for cell in first_row:
+    #                 headers.append(str(cell).strip().lower() if cell is not None else "")
+    #
+    #             empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
+    #             rate_index = headers.index('rate') if 'rate' in headers else None
+    #
+    #             if empl_id_index is None or rate_index is None:
+    #                 return bio_num_to_rate
+    #
+    #             row_count = 0
+    #             for row in sheet.iter_rows(min_row=2, values_only=True):  # Skip header
+    #                 empl_id_value = str(row[empl_id_index]) if row[empl_id_index] is not None else ""
+    #                 rate_value = str(row[rate_index]) if row[rate_index] is not None else ""
+    #
+    #                 # Remove trailing '.0' if present (e.g., "123.0" → "123")
+    #                 if empl_id_value.endswith('.0'):
+    #                     empl_id_value = empl_id_value[:-2]
+    #
+    #                 # Store both full ID and last digits (without first 2 digits)
+    #                 if len(empl_id_value) > 2:
+    #                     bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
+    #                 else:
+    #                     bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
+    #
+    #                 row_count += 1
+    #
+    #         # Use xlrd for legacy .xls files
+    #         elif file_extension == '.xls':
+    #             workbook = xlrd.open_workbook(file_path, encoding_override='latin-1')
+    #             sheet = workbook.sheet_by_index(0)
+    #
+    #             headers = [str(sheet.cell_value(0, col_idx)).strip().lower() for col_idx in range(sheet.ncols)]
+    #             empl_id_index = headers.index('empl_id') if 'empl_id' in headers else None
+    #             rate_index = headers.index('rate') if 'rate' in headers else None
+    #
+    #             if empl_id_index is None or rate_index is None:
+    #                 return bio_num_to_rate
+    #
+    #             for row_idx in range(1, sheet.nrows):  # Skip header
+    #                 empl_id_value = str(sheet.cell_value(row_idx, empl_id_index))
+    #                 rate_value = str(sheet.cell_value(row_idx, rate_index))
+    #
+    #                 if empl_id_value.endswith('.0'):
+    #                     empl_id_value = empl_id_value[:-2]
+    #
+    #                 # Store both full ID and last digits (without first 2 digits)
+    #                 if len(empl_id_value) > 2:
+    #                     bio_num_to_rate[empl_id_value[2:]] = rate_value  # Store without first 2 digits
+    #                 else:
+    #                     bio_num_to_rate[empl_id_value] = rate_value  # Store as-is if too short
+    #
+    #     except Exception as e:
+    #         QMessageBox.critical(self.parent, "Error Reading File", f"Error reading Excel file: {e}")
+    #
+    #     return bio_num_to_rate
 
     def createPayTrans(self, checked=False):
         try:
@@ -118,7 +147,7 @@ class PaytimeSheetFunctions:
                     late_item = self.parent.paytimesheetTable.item(row, 7)  # Late
                     undertime_item = self.parent.paytimesheetTable.item(row, 8)  # Undertime
 
-                    bio_num = bio_num_item.text() if bio_num_item and bio_num_item.text() else ""
+                    # bio_num = bio_num_item.text() if bio_num_item and bio_num_item.text() else ""
 
                     # Append data to selected_data list
                     selected_data.append({
@@ -148,7 +177,8 @@ class PaytimeSheetFunctions:
                 except Exception as e:
                     print(f"Error processing row {row}: {e}")
 
-            bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\rate_list.xls')
+            # bio_num_to_rate = self.readRatesFromExcel('MainFrame\\Files Testers\\rate_list.xls')
+            bio_num_to_rate = self.readRatesFromDB()
 
             # Update selected_data with rate
             for item in selected_data:
