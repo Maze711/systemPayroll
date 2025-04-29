@@ -192,7 +192,9 @@ class FileProcessor(QObject):
         """Imports the chunk data into the database, handling 'N/A' values, and adds employee names and schedule info."""
 
         # Create a connection to the MySQL database using SQLAlchemy for NTP_LOG_IMPORTS
-        engine = create_engine('mysql+pymysql://root@localhost/NTP_LOG_IMPORTS')
+        # engine = create_engine('mysql+pymysql://root@localhost/NTP_LOG_IMPORTS')
+        engine = create_engine('mysql+pymysql://root@192.168.68.51/NTP_LOG_IMPORTS')
+
 
         # Connect to the NTP_EMP_LIST database to fetch employee info
         connection_emp = create_connection('NTP_EMP_LIST')

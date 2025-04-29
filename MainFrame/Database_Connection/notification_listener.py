@@ -6,7 +6,8 @@ class NotificationService:
     def __init__(self):
         self.app = Flask(__name__)
         self.mysql_config = {
-            'host': 'localhost',
+            # 'host': 'localhost',
+            'host': '192.168.68.51',
             'database': 'NTP_ACCOUNTANT_NOTIFICATION',
             'user': 'root',
             'password': '',
