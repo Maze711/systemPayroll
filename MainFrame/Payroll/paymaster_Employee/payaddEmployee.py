@@ -73,23 +73,13 @@ class payAddEmployee(QDialog):
                 'host': 'localhost',
                 'user': 'root',
                 'password': '',
-                'database': 'ntp_emp_rate'
+                'database': 'ntp_emp_list'
             }
 
             connection = mysql.connector.connect(**db_config)
             cursor = connection.cursor()
 
             try:
-                # Step 1: Insert into user_info table
-                query_user_info = """
-                INSERT INTO user_info (empl_no, empl_id, empid, idnum, surname, firstname, mi)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """
-                cursor.execute(query_user_info, (
-                    empl_id, empl_id, empl_id, empl_id, surname, firstname, mi
-                ))
-
-                # Step 2: Insert into emp_rate table
                 query_emp_rate = """
                 INSERT INTO emp_rate (empl_no, empl_id, empid, idnum, rph, rate, mth_salary, dailyallow, mntlyallow)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
