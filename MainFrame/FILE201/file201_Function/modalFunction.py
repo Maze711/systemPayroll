@@ -137,8 +137,8 @@ class modalFunction:
                 ('Date Resign', self.main_window.dateResigned.date().toString("dd-MMM-yy"))
             ]
 
-            not_required_fields = ['Suffix', 'zipcode', 'Height', 'Weight', 'Place of Birth', 'Date From', 'Date To',
-                                   'Employee Image', 'Company', 'Company Address', 'Position',
+            not_required_fields = ['Suffix', 'Religion', 'Height', 'Weight', 'Civil Status', 'Place of Birth',
+                                   'Date From', 'Date To', 'Blood Type', 'Employee Image', 'Company', 'Company Address', 'Position',
                                    "Father's Last Name", "Father's First Name", "Father's Middle Name",
                                    "Mother's Last Name", "Mother's First Name", "Mother's Middle Name",
                                    "Spouse's Last Name", "Spouse's First Name", "Spouse's Middle Name",

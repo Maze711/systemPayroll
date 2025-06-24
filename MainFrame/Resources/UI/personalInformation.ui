@@ -513,7 +513,7 @@ font-family: Poppins;
       <string notr="true">color: white; border: none; background: none;</string>
      </property>
      <property name="text">
-      <string>Status</string>
+      <string>Status*</string>
      </property>
     </widget>
     <widget class="QLabel" name="lblTitle_7">
@@ -843,7 +843,7 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-464</y>
       <width>1218</width>
       <height>1818</height>
      </rect>
@@ -1109,7 +1109,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Last Name</string>
+          <string>Last Name*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtLastName">
@@ -1152,7 +1152,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>First Name</string>
+          <string>First Name*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtFirstName">
@@ -1211,7 +1211,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Middle Name</string>
+          <string>Middle Name*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtSuffix">
@@ -1272,7 +1272,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Street</string>
+          <string>Street*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtStreet">
@@ -1331,7 +1331,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Barangay</string>
+          <string>Barangay*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtCity">
@@ -1371,7 +1371,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>City</string>
+          <string>City*</string>
          </property>
         </widget>
         <widget class="QLabel" name="lblProvince">
@@ -1392,7 +1392,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Province</string>
+          <string>Province*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtProvince">
@@ -1451,7 +1451,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Zip</string>
+          <string>Zip*</string>
          </property>
         </widget>
         <widget class="QLabel" name="lblPhone">
@@ -1472,7 +1472,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Phone Number</string>
+          <string>Phone Number*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtPhone">
@@ -1555,7 +1555,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Citizenship</string>
+          <string>Citizenship*</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="txtCitizenship">
@@ -1614,7 +1614,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Email</string>
+          <string>Email*</string>
          </property>
         </widget>
         <widget class="QLabel" name="lblHeight">
@@ -1885,7 +1885,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Date of Birth</string>
+          <string>Date of Birth*</string>
          </property>
         </widget>
         <widget class="QLabel" name="lblGender">
@@ -1906,7 +1906,7 @@ font-family: Poppins;
           </font>
          </property>
          <property name="text">
-          <string>Gender</string>
+          <string>Gender*</string>
          </property>
         </widget>
         <widget class="QComboBox" name="cmbGender">
@@ -3658,7 +3658,7 @@ border: none;
                  </font>
                 </property>
                 <property name="text">
-                 <string>PhilHealth No.</string>
+                 <string>PhilHealth No.*</string>
                 </property>
                </widget>
               </item>
@@ -3671,7 +3671,7 @@ border: none;
                  </font>
                 </property>
                 <property name="text">
-                 <string>SSS ID No.</string>
+                 <string>SSS ID No.*</string>
                 </property>
                </widget>
               </item>
@@ -3684,7 +3684,7 @@ border: none;
                  </font>
                 </property>
                 <property name="text">
-                 <string>Pag-Ibig No.</string>
+                 <string>Pag-Ibig No.*</string>
                 </property>
                </widget>
               </item>
@@ -3710,7 +3710,7 @@ border: none;
                  </font>
                 </property>
                 <property name="text">
-                 <string>TIN ID No.</string>
+                 <string>TIN ID No.*</string>
                 </property>
                </widget>
               </item>
