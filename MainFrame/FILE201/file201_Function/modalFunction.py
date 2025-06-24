@@ -289,7 +289,7 @@ class modalFunction:
 
             'Computer Code': self.main_window.lblComp.text(),
             'Department Code': self.main_window.lblDept_2.text(),
-            'Status': self.main_window.txtStatus.text(),
+            'Status': self.main_window.boxStatus.currentText(),
             'Date Hired': self.main_window.dateHired_2.date().toString("dd-MMM-yy"),
             'Resigned': self.main_window.cmbResigned_2.currentText(),
             'Date Resign': self.main_window.dateResigned.date().toString("dd-MMM-yy")
@@ -309,7 +309,7 @@ class modalFunction:
                 if success:
                     QMessageBox.information(self.main_window, "Success", "Employee data saved successfully.")
                     self.image_value = None
-                    self.main_window.close()  # Close the modal upon successful save
+                    # self.main_window.close()  # Close the modal upon successful save
                 else:
                     logging.error(f"Failed to save employee data for Employee ID: {empID}.")
                     QMessageBox.critical(self.main_window, "Error", "Failed to save employee data.")

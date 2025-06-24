@@ -267,7 +267,7 @@ class ListFunction:
                 # EMP_STATUS TABLE
                 "lblComp": data['compcode'],
                 "lblDept_2": data['dept_code'],
-                "txtStatus": data['emp_stat'],
+                "boxStatus": data['emp_stat'],
                 "dateHired_2": QDate.fromString(data['date_hired'], "dd-MMM-yy"),
                 "cmbResigned_2": data['resigned'],
                 "dateResigned": QDate.fromString(data['dtresign'], "dd-MMM-yy")
