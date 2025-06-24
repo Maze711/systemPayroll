@@ -28,7 +28,7 @@ class ListFunction:
             self.main_window.employeeListTable.setRowCount(0)
 
             # Select only the required columns and order by surname
-            query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY surname"
+            query = "SELECT empl_id, surname, firstname, mi FROM emp_info ORDER BY empl_id"
             employees = executeQuery(query)
 
             if employees is None:
@@ -353,3 +353,76 @@ class ListFunction:
         except Exception as e:
             QMessageBox.critical(self.main_window, "Error", "An unexpected disconnection has occurred. Please check your network connection or "
                                  "contact the system administrator.")
+
+    def handle_checkbox_change(self, checkbox):
+        """Handles the checkbox state changes for employee status filters"""
+        try:
+            boxAllEmp = self.main_window.boxAllEmp
+            boxActEmp = self.main_window.boxActEmp
+            boxResEmp = self.main_window.boxResEmp
+
+            if not checkbox.isChecked():
+                return
+
+            if checkbox == boxAllEmp:
+                boxActEmp.setChecked(False)
+                boxResEmp.setChecked(False)
+                self.displayEmployees()  # Show all employees
+            elif checkbox == boxActEmp:
+                boxAllEmp.setChecked(False)
+                boxResEmp.setChecked(False)
+                self.displayActiveEmployees()
+            elif checkbox == boxResEmp:
+                boxAllEmp.setChecked(False)
+                boxActEmp.setChecked(False)
+                self.displayResignedEmployees()
+
+        except Exception as e:
+            logging.error(f"Error in handle_checkbox_change: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"An error occurred: {str(e)}")
+
+    def displayActiveEmployees(self):
+        """Displays only active employees in the table"""
+        try:
+            self.main_window.employeeListTable.setRowCount(0)
+            query = """
+                SELECT e.empl_id, e.surname, e.firstname, e.mi 
+                FROM emp_info e
+                INNER JOIN emp_status s ON e.empl_id = s.empl_id
+                WHERE s.resigned = 'N'
+                ORDER BY e.surname
+            """
+            employees = executeQuery(query)
+
+            if employees:
+                for rowNum, eachRow in enumerate(employees):
+                    self.main_window.employeeListTable.insertRow(rowNum)
+                    for column, data in enumerate(eachRow):
+                        self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+
+        except Exception as e:
+            logging.error(f"Error displaying active employees: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"Failed to load active employees: {str(e)}")
+
+    def displayResignedEmployees(self):
+        """Displays only resigned employees in the table"""
+        try:
+            self.main_window.employeeListTable.setRowCount(0)
+            query = """
+                SELECT e.empl_id, e.surname, e.firstname, e.mi 
+                FROM emp_info e
+                INNER JOIN emp_status s ON e.empl_id = s.empl_id
+                WHERE s.resigned = 'Y'
+                ORDER BY e.surname
+            """
+            employees = executeQuery(query)
+
+            if employees:
+                for rowNum, eachRow in enumerate(employees):
+                    self.main_window.employeeListTable.insertRow(rowNum)
+                    for column, data in enumerate(eachRow):
+                        self.main_window.employeeListTable.setItem(rowNum, column, QTableWidgetItem(str(data)))
+
+        except Exception as e:
+            logging.error(f"Error displaying resigned employees: {e}")
+            QMessageBox.critical(self.main_window, "Error", f"Failed to load resigned employees: {str(e)}")

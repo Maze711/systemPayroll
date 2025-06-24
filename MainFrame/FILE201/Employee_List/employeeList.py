@@ -43,8 +43,17 @@ class EmployeeList(QMainWindow):
         self.txtSearch.textChanged.connect(self.functions.searchEmployees)
         self.btnExport.clicked.connect(self.handle_export)
         self.btnImport = self.findChild(QPushButton, 'btnImport')
-        self.btnImport.clicked.connect(lambda: importIntoDB(self, self.functions.displayEmployees))
+        self.btnImport.hide()
+        # self.btnImport.clicked.connect(lambda: importIntoDB(self, self.functions.displayEmployees))
         #self.btnImport.clicked.connect(lambda: update_db_for_missing_row_columns(self))
+
+        # Connect checkbox signals
+        self.boxAllEmp.stateChanged.connect(lambda: self.functions.handle_checkbox_change(self.boxAllEmp))
+        self.boxActEmp.stateChanged.connect(lambda: self.functions.handle_checkbox_change(self.boxActEmp))
+        self.boxResEmp.stateChanged.connect(lambda: self.functions.handle_checkbox_change(self.boxResEmp))
+
+        # Set default state (All Employees checked)
+        self.boxAllEmp.setChecked(True)
 
     def handle_export(self):
         try:
