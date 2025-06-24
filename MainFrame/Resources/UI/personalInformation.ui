@@ -462,19 +462,6 @@ font-family: Poppins;
       </property>
      </item>
     </widget>
-    <widget class="QLineEdit" name="txtStatus">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QLabel" name="lblDept_2">
      <property name="geometry">
       <rect>
@@ -729,6 +716,37 @@ font-family: Poppins;
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QComboBox" name="boxStatus">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Regular</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Contractual</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Proby</string>
+      </property>
+     </item>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -825,7 +843,7 @@ border-radius:5px
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-566</y>
+      <y>0</y>
       <width>1218</width>
       <height>1818</height>
      </rect>
@@ -3823,7 +3841,6 @@ border: none;
   <tabstop>courseTextEdit3</tabstop>
   <tabstop>schoolYear3</tabstop>
   <tabstop>btnUploadImg</tabstop>
-  <tabstop>txtStatus</tabstop>
   <tabstop>cmbResigned_2</tabstop>
   <tabstop>dateHired_2</tabstop>
   <tabstop>dateResigned</tabstop>
