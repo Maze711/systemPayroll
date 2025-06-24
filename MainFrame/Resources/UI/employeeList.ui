@@ -358,9 +358,9 @@ background-color: &quot;#DCE5FE&quot;;
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>180</y>
+      <y>200</y>
       <width>641</width>
-      <height>501</height>
+      <height>481</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -798,7 +798,7 @@ QTableWidget {
       </font>
      </property>
      <property name="text">
-      <string>Year 2024</string>
+      <string>Year 2025</string>
      </property>
     </widget>
    </widget>
@@ -879,6 +879,69 @@ QTableWidget {
       <width>22</width>
       <height>22</height>
      </size>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="boxAllEmp">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>180</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>All Employee</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="boxActEmp">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>180</y>
+      <width>131</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Active Employee</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="boxResEmp">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>180</y>
+      <width>151</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Resigned Employee</string>
     </property>
    </widget>
   </widget>
