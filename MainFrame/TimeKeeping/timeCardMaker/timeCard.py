@@ -18,6 +18,7 @@ class timecard(QDialog):
         loadUi(ui_file, self)
 
         self.replaceComboBox()
+        self.TimeListTable.setColumnHidden(0, True)
 
         self.populateComboBox = populateList(self)
         self.buttonFunctions = buttonTimecardFunction(self)

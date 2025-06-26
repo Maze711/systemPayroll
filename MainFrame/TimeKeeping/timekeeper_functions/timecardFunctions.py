@@ -281,7 +281,8 @@ class populateList:
 
 
 class ComboBoxDelegate(QStyledItemDelegate):
-    cbValueChanged = pyqtSignal(int, str) # signal to emit the row and updated value
+    cbValueChanged = pyqtSignal(int, str)  # signal to emit the row and updated value
+
     def __init__(self, items, parent=None):
         super(ComboBoxDelegate, self).__init__(parent)
         self.items = items
@@ -580,7 +581,6 @@ class TimeComputation:
             # Direct query without parameters
             query = f"SELECT holidayName, dateType FROM type_of_dates WHERE holidayDate = '{parsed_date}'"
 
-
             cursor.execute(query)
             result = cursor.fetchone()
 
@@ -645,7 +645,7 @@ class TimeComputation:
             in_match = abs(sched_in_time - check_in_time) <= time_tolerance
             # out_match = abs(sched_out_time - check_out_time) <= time_tolerance
 
-            if not in_match: # or not out_match
+            if not in_match:  # or not out_match
                 # Log the mismatches for debugging
                 if not in_match:
                     # logging.debug(f"Check-In mismatch: Sched_In {sched_in_time}, Check_In {check_in_time}")
@@ -1013,10 +1013,10 @@ class FetchDataToPopulateTableProcessor(QObject):
             query_list_log = f"""
                 SELECT ID, bioNum, Name, date, time_in, time_out, machCode, sched_in, sched_out
                 FROM `{table_name}`
-                WHERE date BETWEEN '{from_date}' AND '{to_date}'
-                ORDER BY bioNum, date, time_in
+                WHERE date BETWEEN %s AND %s
+                ORDER BY ID, date, time_in
             """
-            cursor_list_log.execute(query_list_log)
+            cursor_list_log.execute(query_list_log, (from_date, to_date))
             records = cursor_list_log.fetchall()
 
             total_records = len(records)
@@ -1026,19 +1026,19 @@ class FetchDataToPopulateTableProcessor(QObject):
 
             # Prepare time data
             time_data = []
-
-            for i, (ID, bioNum, name, trans_date, time_in, time_out, mach_code, sched_in, sched_out) in enumerate(records):
+            for i, (pk, bioNum, name, trans_date, time_in, time_out,
+                    mach_code, sched_in, sched_out) in enumerate(records):
                 check_in_time = time_in or "00:00:00"
                 check_out_time = time_out or "00:00:00"
 
-                # Prepare each row's data for the table
+                # keep pk for later logic, but it will be hidden in the table
                 time_data.append([
-                    ID, bioNum, name, trans_date, mach_code, check_in_time, check_out_time, sched_in, sched_out
+                    pk, bioNum, name, trans_date,
+                    mach_code, check_in_time, check_out_time,
+                    sched_in, sched_out
                 ])
 
-                # Update progress
-                progress = int(((i + 1) / total_records) * 100)
-                self.progressChanged.emit(progress)
+                self.progressChanged.emit(int(((i + 1) / len(records)) * 100))
                 QThread.msleep(1)
 
             # Emit the finished signal with the populated time data
@@ -1051,4 +1051,3 @@ class FetchDataToPopulateTableProcessor(QObject):
         finally:
             cursor_list_log.close()
             connection_list_log.close()
-
