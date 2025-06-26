@@ -9,6 +9,7 @@ from MainFrame.TimeKeeping.timeCardMaker.filter import FilterDialog
 from MainFrame.TimeKeeping.timeSheet.timeSheet import TimeSheet
 from MainFrame.systemFunctions import timekeepingFunction, globalFunction
 from MainFrame.TimeKeeping.timekeeper_functions.processTimeSheetLoader import processTimeSheetLoader
+import calendar
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -18,6 +19,7 @@ class populateList:
         self.parent = parent
         self.data_cache = {}
         self.cost_center_cache = None
+        self._last_loaded_year_month = None
 
     def import_dat_file(self, dialog):
         fileName, _ = QFileDialog.getOpenFileName(dialog, "Open DAT File", "", "DAT Files (*.DAT)")
@@ -85,41 +87,54 @@ class populateList:
         if not selected_year_month:
             return
 
-        if selected_year_month in self.data_cache:
-            days = self.data_cache[selected_year_month]
-        else:
-            connection = create_connection('NTP_LOG_IMPORTS')
-            if not connection:
-                return
+        if selected_year_month != self._last_loaded_year_month:
+            self.parent.TimeListTable.clearContents()
+            self.parent.TimeListTable.setRowCount(0)
+            self.parent.original_data = []  # reset your cached copy
+            self._last_loaded_year_month = selected_year_month
 
-            try:
-                cursor = connection.cursor()
-                table_name = f"table_{selected_year_month}"
-                cursor.execute(f"SELECT DISTINCT DATE_FORMAT(date, '%d') AS day FROM {table_name} ORDER BY day ASC")
-                days = [day[0] for day in cursor.fetchall()]
-                self.data_cache[selected_year_month] = days
-            except Exception as e:
-                logging.error(f"Error populating date combo boxes for {selected_year_month}: {e}")
-                QMessageBox.critical(self.parent, "Error", f"Failed to populate date combo boxes: {str(e)}")
-                return
-            finally:
-                cursor.close()
-                connection.close()
+        year, month = map(int, selected_year_month.split('_'))
+        last_day = calendar.monthrange(year, month)[1]
 
-        current_from_selection = self.parent.dateFromCC.currentText()
-        current_to_selection = self.parent.dateToCC.currentText()
+        # Define cutoff pairs
+        cutoff1 = ("1", "15")
+        cutoff2 = ("16", str(last_day))
+        cutoff_groups = [cutoff1, cutoff2]
 
-        if set(self.parent.dateFromCC.itemText(i) for i in range(self.parent.dateFromCC.count())) != set(days):
-            self.parent.dateFromCC.clear()
-            self.parent.dateFromCC.addItems(sorted(days))
+        from_items = [group[0] for group in cutoff_groups]
+        to_items = [group[1] for group in cutoff_groups]
 
-        if set(self.parent.dateToCC.itemText(i) for i in range(self.parent.dateToCC.count())) != set(days):
-            self.parent.dateToCC.clear()
-            self.parent.dateToCC.addItems(sorted(days))
+        self.parent.dateFromCC.blockSignals(True)
+        self.parent.dateToCC.blockSignals(True)
 
-        self.parent.dateFromCC.setCurrentText("")
-        self.parent.dateToCC.setCurrentText("")
+        self.parent.dateFromCC.clear()
+        self.parent.dateFromCC.addItems(from_items)
+        self.parent.dateToCC.clear()
+        self.parent.dateToCC.addItems(to_items)
 
+        self.parent.dateFromCC.setCurrentIndex(-1)
+        self.parent.dateToCC.setCurrentIndex(-1)
+
+        self.parent.dateFromCC.blockSignals(False)
+        self.parent.dateToCC.blockSignals(False)
+
+        # Add event connections to auto-select partner dates
+        def sync_from(index):
+            text = self.parent.dateFromCC.itemText(index)
+            if text == "1":
+                self.parent.dateToCC.setCurrentText("15")
+            elif text == "16":
+                self.parent.dateToCC.setCurrentText(str(last_day))
+
+        def sync_to(index):
+            text = self.parent.dateToCC.itemText(index)
+            if text == "15":
+                self.parent.dateFromCC.setCurrentText("1")
+            elif text == str(last_day):
+                self.parent.dateFromCC.setCurrentText("16")
+
+        self.parent.dateFromCC.currentIndexChanged.connect(sync_from)
+        self.parent.dateToCC.currentIndexChanged.connect(sync_to)
 
     def populateCostCenterBox(self):
         """Populate the costCenterBox with values from the dept_name column in the emp_posnsched table."""
