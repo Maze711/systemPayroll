@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../Icons/logo.svg</normaloff>../Icons/logo.svg</iconset>
+    <normaloff>../../../../../.designer/Icons/logo.svg</normaloff>../../../../../.designer/Icons/logo.svg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralwidget {
@@ -218,7 +218,7 @@ background-color: &quot;#DCE5FE&quot;;
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>HR</string>
+      <string>HR FILE201</string>
      </property>
      <property name="iconSize">
       <size>
@@ -290,7 +290,7 @@ background-color: &quot;#DCE5FE&quot;;
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Payroll</string>
+      <string>PAYROLL</string>
      </property>
      <property name="iconSize">
       <size>
@@ -636,7 +636,7 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../MainFrame/Resources/Icons/user-plus.svg</iconset>
+         <normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -850,7 +850,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/user-name.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/user-name.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -938,7 +938,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/key.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1026,7 +1026,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/key.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1086,7 +1086,7 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../MainFrame/Resources/Icons/user-plus.svg</iconset>
+         <normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -1245,7 +1245,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/user-name.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/user-name.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1314,7 +1314,7 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../MainFrame/Resources/Icons/user-plus.svg</iconset>
+         <normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -1452,7 +1452,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/key.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1540,7 +1540,7 @@ background-color: &quot;#DCE5FE&quot;;
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../Icons/key.svg</pixmap>
+         <pixmap>../../../../../.designer/Icons/key.svg</pixmap>
         </property>
         <property name="scaledContents">
          <bool>false</bool>
@@ -1600,7 +1600,7 @@ background-color: &quot;#DCE5FE&quot;;
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../MainFrame/Resources/Icons/user-plus.svg</iconset>
+         <normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</normaloff>../../../../../MainFrame/Resources/Icons/user-plus.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
