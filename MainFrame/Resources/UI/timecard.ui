@@ -114,7 +114,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>9</number>
+    <number>16</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -194,6 +194,41 @@ QTableWidget {
    <column>
     <property name="text">
      <string>Sched_Out</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>REMARKS</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Late/UT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hours Work</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>OTNote</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Leave</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>LaeveNote</string>
     </property>
    </column>
   </widget>
