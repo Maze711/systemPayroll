@@ -187,78 +187,90 @@ class ListFunction:
                 logging.info("Database connection closed")
 
     def populate_modal_with_employee_data(self, modal, data):
+        def capitalize_string(value):
+            """Capitalize string values while handling None and non-string types"""
+            if not isinstance(value, str):
+                return value
+
+            # Skip capitalization for specific cases
+            if '@' in value or any(c.isdigit() for c in value) or value.isupper():
+                return value
+
+            # Capitalize each word
+            return ' '.join(word.capitalize() for word in value.split())
+
         try:
             # Dictionary mapping modal fields to data keys
             field_mapping = {
                 # EMP_INFO TABLE
                 "nameDisplay": f"{data['surname']} {data['firstname']} {data['mi']}",
                 "idDisplay": data['empl_id'],
-                "txtLastName": data['surname'],
-                "txtFirstName": data['firstname'],
-                "txtMiddleName": data['mi'],
-                "txtSuffix": data['suffix'],
-                "txtStreet": data['street'],
-                "txtBarangay": data['barangay'],
-                "txtCity": data['city'],
-                "txtProvince": data['province'],
+                "txtLastName": capitalize_string(data['surname']),
+                "txtFirstName": capitalize_string(data['firstname']),
+                "txtMiddleName": capitalize_string(data['mi']),
+                "txtSuffix": capitalize_string(data['suffix']),
+                "txtStreet": capitalize_string(data['street']),
+                "txtBarangay": capitalize_string(data['barangay']),
+                "txtCity": capitalize_string(data['city']),
+                "txtProvince": capitalize_string(data['province']),
                 "txtZip": data['zipcode'],
                 "txtPhone": data['mobile'],
                 "txtHeight": data['height'],
                 "txtWeight": data['weight'],
-                "cmbCivil": data['status'],
+                "cmbCivil": capitalize_string(data['status']),
                 "dtDateOfBirth": QDate.fromString(data['birthday'], "dd-MMM-yy"),
-                "txtPlace": data['birthplace'],
-                "cmbGender": data['sex'],
-                "txtReligion": data['religion'],
-                "txtCitizenship": data['citizenship'],
+                "txtPlace": capitalize_string(data['birthplace']),
+                "cmbGender": capitalize_string(data['sex']),
+                "txtReligion": capitalize_string(data['religion']),
+                "txtCitizenship": capitalize_string(data['citizenship']),
                 "txtEmail": data['email'],
                 "cmbBlood": data['blood_type'],
                 # FAMILY_BACKGROUND TABLE
-                "txtFatherLast": data['fathersLastName'],
-                "txtFatherFirst": data['fathersFirstName'],
-                "txtFatherMiddle": data['fathersMiddleName'],
-                "txtMotherLast": data['mothersLastName'],
-                "txtMotherFirst": data['mothersFirstName'],
-                "txtMotherMiddle": data['mothersMiddleName'],
-                "txtSpouseLast": data['spouseLastName'],
-                "txtSpouseFirst": data['spouseFirstName'],
-                "txtSpouseMiddle": data['spouseMiddleName'],
-                "txtBeneLast": data['beneficiaryLastName'],
-                "txtBeneFirst": data['beneficiaryFirstName'],
-                "txtBeneMiddle": data['beneficiaryMiddleName'],
-                "txtDependent": data['dependentsName'],
+                "txtFatherLast": capitalize_string(data['fathersLastName']),
+                "txtFatherFirst": capitalize_string(data['fathersFirstName']),
+                "txtFatherMiddle": capitalize_string(data['fathersMiddleName']),
+                "txtMotherLast": capitalize_string(data['mothersLastName']),
+                "txtMotherFirst": capitalize_string(data['mothersFirstName']),
+                "txtMotherMiddle": capitalize_string(data['mothersMiddleName']),
+                "txtSpouseLast": capitalize_string(data['spouseLastName']),
+                "txtSpouseFirst": capitalize_string(data['spouseFirstName']),
+                "txtSpouseMiddle": capitalize_string(data['spouseMiddleName']),
+                "txtBeneLast": capitalize_string(data['beneficiaryLastName']),
+                "txtBeneFirst": capitalize_string(data['beneficiaryFirstName']),
+                "txtBeneMiddle": capitalize_string(data['beneficiaryMiddleName']),
+                "txtDependent": capitalize_string(data['dependentsName']),
                 # EMERGENCY_LIST TABLE
-                "txtEmergency": data['emer_name'],
+                "txtEmergency": capitalize_string(data['emer_name']),
                 # WORK_EXP TABLE
                 "dateStart_4": QDate.fromString(data['fromDate'], "MM-dd-yyyy"),
                 "dateEnd_4": QDate.fromString(data['toDate'], "MM-dd-yyyy"),
-                "companyTextEdit_4": data['companyName'],
-                "addressTextEdit_4": data['companyAdd'],
-                "positionTextEdit_4": data['empPosition'],
+                "companyTextEdit_4": capitalize_string(data['companyName']),
+                "addressTextEdit_4": capitalize_string(data['companyAdd']),
+                "positionTextEdit_4": capitalize_string(data['empPosition']),
                 # EMP_LIST_ID TABLE
                 "sssIDTextEdit": data['sss'],
                 "pagibigIDTextEdit": data['pagibig'],
                 "philheatlhIDTextEdit": data['philhealth'],
                 "tinIDTextEdit": data['tin'],
                 # TECH_SKILLS TABLE
-                "techSkillTextEdit": data['techSkill1'],
-                "certiTextEdit1": data['certificate1'],
+                "techSkillTextEdit": capitalize_string(data['techSkill1']),
+                "certiTextEdit1": capitalize_string(data['certificate1']),
                 "validationDate1": QDate.fromString(data['validationDate1'], "MM-dd-yyyy"),
-                "techSkillTextEdit_2": data['techSkill2'],
-                "certiTextEdit1_2": data['certificate2'],
+                "techSkillTextEdit_2": capitalize_string(data['techSkill2']),
+                "certiTextEdit1_2": capitalize_string(data['certificate2']),
                 "validationDate1_2": QDate.fromString(data['validationDate2'], "MM-dd-yyyy"),
-                "techSkillTextEdit_3": data['techSkill3'],
-                "certiTextEdit1_3": data['certificate3'],
+                "techSkillTextEdit_3": capitalize_string(data['techSkill3']),
+                "certiTextEdit1_3": capitalize_string(data['certificate3']),
                 "validationDate1_3": QDate.fromString(data['validationDate3'], "MM-dd-yyyy"),
                 # EDUCATION TABLE
-                "collegeTextEdit": data['college'],
-                "highTextEdit": data['highSchool'],
-                "elemTextEdit": data['elemSchool'],
-                "addressTextEdit": data['collegeAdd'],
-                "addressTextEdit2": data['highschoolAdd'],
-                "addressTextEdit3": data['elemAdd'],
-                "courseTextEdit": data['collegeCourse'],
-                "courseTextEdit2": data['highschoolStrand'],
+                "collegeTextEdit": capitalize_string(data['college']),
+                "highTextEdit": capitalize_string(data['highSchool']),
+                "elemTextEdit": capitalize_string(data['elemSchool']),
+                "addressTextEdit": capitalize_string(data['collegeAdd']),
+                "addressTextEdit2": capitalize_string(data['highschoolAdd']),
+                "addressTextEdit3": capitalize_string(data['elemAdd']),
+                "courseTextEdit": capitalize_string(data['collegeCourse']),
+                "courseTextEdit2": capitalize_string(data['highschoolStrand']),
                 "schoolYear": QDate.fromString(data['collegeYear'], "MM-dd-yyyy"),
                 "schoolYear2": QDate.fromString(data['highschoolYear'], "MM-dd-yyyy"),
                 "schoolYear3": QDate.fromString(data['elemYear'], "MM-dd-yyyy"),
@@ -277,6 +289,7 @@ class ListFunction:
             for field, value in field_mapping.items():
                 if hasattr(modal, field):
                     widget = getattr(modal, field)
+
                     if isinstance(widget, QLineEdit):
                         widget.setText(str(value))
                     elif isinstance(widget, QLabel):
@@ -286,9 +299,7 @@ class ListFunction:
                                 pixmap = QPixmap("MainFrame/Resources/Icons/user.svg")
                                 widget.setPixmap(pixmap)
                             else:
-                                # Displays the employee profile image
                                 pixmap = self.convertBLOBToPixmap(value)
-                                # Scale the pixmap to fit the QLabel, keeping the aspect ratio
                                 scaled_pixmap = pixmap.scaled(widget.size(),
                                                               Qt.KeepAspectRatioByExpanding,
                                                               Qt.SmoothTransformation)

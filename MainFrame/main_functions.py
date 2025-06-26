@@ -148,67 +148,99 @@ class MainWindowFunctions(QMainWindow):
     def eventFilter(self, source, event):
         if source == self.btnTimeKeeping and not source.isEnabled():
             return False
+
         if source == self.btnTimeKeeping:
             if event.type() == QEvent.Enter:
                 self.showAdditionalButtons()
             elif event.type() == QEvent.Leave:
-                QTimer.singleShot(10, self.checkAndHideAdditionalButtons)
-        elif self.additional_buttons_container and source in self.additional_buttons_container.children():
-            if event.type() == QEvent.HoverEnter:
-                source.setStyleSheet("background-color: #344273; color: white; font-family: Poppins;")
-            elif event.type() == QEvent.HoverLeave:
-                source.setStyleSheet("background-color: white;")
-            if event.type() == QEvent.Enter:
-                return True
-            elif event.type() == QEvent.Leave:
-                QTimer.singleShot(10, self.checkAndHideAdditionalButtons)
+                # Use longer delay to prevent premature hiding
+                QTimer.singleShot(150, self.checkAndHideAdditionalButtons)
+
+        # Handle container and its children
+        elif self.additional_buttons_container:
+            if source == self.additional_buttons_container or source in self.additional_buttons_container.children():
+                if event.type() == QEvent.HoverEnter:
+                    source.setStyleSheet("background-color: #344273; color: white; font-family: Poppins;")
+                elif event.type() == QEvent.HoverLeave:
+                    source.setStyleSheet("background-color: white;")
+                if event.type() == QEvent.Leave:
+                    # Use longer delay for smoother UX
+                    QTimer.singleShot(150, self.checkAndHideAdditionalButtons)
+
         return super().eventFilter(source, event)
 
     def showAdditionalButtons(self):
         try:
+            # Return if already visible
             if self.additional_buttons_container and self.additional_buttons_container.isVisible():
                 return
 
-            if self.additional_buttons_container:
-                self.additional_buttons_container.show()
-            else:
+            # Create container if it doesn't exist
+            if not self.additional_buttons_container:
                 button_width = 150
                 button_height = 40
+                spacing = 5
+
+                # Define buttons with their actions
+                additional_buttons = [
+                    ("HOLIDAY SCHEDULE", self.openDateChange),
+                    ("UPLOAD ATTENDANCE LOG", self.openTimeLogger),
+                    ("SL/VL EMPLOYEE", self.openSlVlEmployee)  # Placeholder for future function
+                ]
+
+                # Calculate container size based on button count
+                button_count = len(additional_buttons)
                 frame_width = button_width + 20
-                frame_height = 2 * button_height + 25
+                frame_height = 20 + button_count * (button_height + spacing) - spacing
+
+                # Position next to TimeKeeping button
                 left_offset = self.btnTimeKeeping.geometry().right() + 5
                 top_offset = self.btnTimeKeeping.geometry().top()
 
+                # Create container widget
                 self.additional_buttons_container = QWidget(self)
                 self.additional_buttons_container.setGeometry(left_offset, top_offset, frame_width, frame_height)
                 self.additional_buttons_container.setStyleSheet(
                     "background-color: #DCE5FE; border: 1px solid gray; font-family: Poppins;")
+                self.additional_buttons_container.installEventFilter(self)
 
-                additional_button_texts = ["Date Change", "Time Logger"]
-                for i, text in enumerate(additional_button_texts):
+                # Create buttons dynamically
+                for i, (text, action) in enumerate(additional_buttons):
                     button = QPushButton(text, self.additional_buttons_container)
-                    button.setGeometry(10, 10 + i * (button_height + 5), button_width, button_height)
+                    button.setGeometry(10, 10 + i * (button_height + spacing), button_width, button_height)
                     button.setStyleSheet("background-color: white;")
                     button.installEventFilter(self)
-                    button.clicked.connect(self.open_dialog(text))
+                    # Connect to a wrapper function that hides container then calls action
+                    button.clicked.connect(lambda _, a=action: self._onButtonClicked(a))
 
-                self.additional_buttons_container.show()
+            # Show the container
+            self.additional_buttons_container.show()
+
         except Exception as e:
             logging.error(f"Error in showAdditionalButtons: {str(e)}")
 
-    def open_dialog(self, dialog_type):
-        dialogs = {
-            'Date Change': self.openDateChange,
-            'Time Logger': self.openTimeLogger
-        }
-        return dialogs.get(dialog_type)
+    def _onButtonClicked(self, action):
+        """Wrapper function to hide container before executing button action"""
+        self.hideAdditionalButtons()
+        if action:
+            action()
+
+    def openSlVlEmployee(self):
+        """Placeholder for SL/VL employee function"""
+        # Add your implementation here
+        pass
 
     def checkAndHideAdditionalButtons(self):
         cursor_pos = self.mapFromGlobal(QCursor.pos())
-        if not self.btnTimeKeeping.geometry().contains(cursor_pos):
-            if self.additional_buttons_container:
-                if not self.additional_buttons_container.geometry().contains(cursor_pos):
-                    self.hideAdditionalButtons()
+
+        # Check if cursor is over TimeKeeping button or container
+        btn_contains = self.btnTimeKeeping.geometry().contains(cursor_pos)
+        container_contains = self.additional_buttons_container and self.additional_buttons_container.geometry().contains(
+            cursor_pos)
+
+        # Only hide if cursor is outside both elements
+        if not btn_contains and not container_contains:
+            self.hideAdditionalButtons()
 
     def hideAdditionalButtons(self):
         if self.additional_buttons_container:
