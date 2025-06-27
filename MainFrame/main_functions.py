@@ -11,6 +11,7 @@ from MainFrame.Database_Connection.user_auth import UserAuthentication
 from MainFrame.Database_Connection.user_session import UserSession
 from MainFrame.bugReport import BugReportModal
 from MainFrame.FILE201.file201_Function.listFunction import ListFunction
+from MainFrame.TimeKeeping.schedulerChange.scheduleChanger import schedChanger
 
 
 class MainWindowFunctions(QMainWindow):
@@ -44,6 +45,7 @@ class MainWindowFunctions(QMainWindow):
         self.employee_list_window = None
         self.datechange = None
         self.timekeeping_window = None
+        self.schedChange_window = None
         self.payroll_window = None
         self.bugReportModal = None
         self.btnNotification = None
@@ -226,9 +228,10 @@ class MainWindowFunctions(QMainWindow):
             action()
 
     def openSlVlEmployee(self):
-        """Placeholder for SL/VL employee function"""
-        # Add your implementation here
-        pass
+        if self.schedChange_window is None:
+            self.schedChange_window = schedChanger()
+            self.open_dialogs.append(self.schedChange_window)
+        self.schedChange_window.show()
 
     def checkAndHideAdditionalButtons(self):
         cursor_pos = self.mapFromGlobal(QCursor.pos())

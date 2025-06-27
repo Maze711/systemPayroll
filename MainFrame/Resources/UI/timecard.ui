@@ -114,7 +114,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>16</number>
+    <number>17</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -213,7 +213,12 @@ QTableWidget {
    </column>
    <column>
     <property name="text">
-     <string>New Column</string>
+     <string>Hours Work 2</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Allowed OT</string>
     </property>
    </column>
    <column>
