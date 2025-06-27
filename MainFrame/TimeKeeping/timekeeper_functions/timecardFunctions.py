@@ -1014,7 +1014,7 @@ class FetchDataToPopulateTableProcessor(QObject):
                 SELECT ID, bioNum, Name, date, time_in, time_out, machCode, sched_in, sched_out
                 FROM `{table_name}`
                 WHERE date BETWEEN %s AND %s
-                ORDER BY ID, Name, date, time_in
+                ORDER BY ID, Name, date
             """
             cursor_list_log.execute(query_list_log, (from_date, to_date))
             records = cursor_list_log.fetchall()
