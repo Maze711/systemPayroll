@@ -49,12 +49,12 @@ class processTimeSheetLoader(QDialog):
     def fetchingDataFinished(self, metadata):
         """Handle successful completion"""
         try:
-            [dataMerge, date_from, date_to, mach_code] = metadata
+            [dataMerge, date_from, date_to, year_month] = metadata  # changed mach_code to year_month
             self.progressBar.setVisible(False)
             self.thread.quit()
             self.thread.wait()
 
-            dialog = TimeSheet(dataMerge, date_from, date_to, mach_code)
+            dialog = TimeSheet(dataMerge, date_from, date_to, year_month)  # pass year_month
             dialog.exec_()
 
             self.close()
@@ -269,14 +269,14 @@ class CreateTimeSheetProcessor(QObject):
 
         date_from = self.parent.dateFromCC.currentText()
         date_to = self.parent.dateToCC.currentText()
-        mach_code = results[0]['mach_code']
+        year_month = self.parent.yearCC.currentText()  # get year_month from parent
 
         aggregated = self.aggregate_results(results)
         if not aggregated:
             return None
 
         final_data = self.prepare_final_data(aggregated)
-        return [final_data, date_from, date_to, mach_code]
+        return [final_data, date_from, date_to, year_month]  # return year_month instead of mach_code
 
     def aggregate_results(self, results):
         """Thread-safe aggregation of results"""
