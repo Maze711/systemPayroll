@@ -20,7 +20,7 @@ class TimeSheet(QDialog):
         self.populateTimeSheet()
         self.setupLabels()
 
-        self.btnExport.clicked.connect(self.export_to_excel)
+        self.btnUp.clicked.connect(self.btnUps)
 
         self.searchBioNum = self.findChild(QLineEdit, 'txtSearch_4')
         if self.searchBioNum is not None:
@@ -156,36 +156,100 @@ class TimeSheet(QDialog):
         else:
             logging.error("Error: lblMach QLabel not found in the UI.")
 
-    def export_to_excel(self):
+    def btnUps(self):
         try:
-            # Collect data from the table
+            # Extract year_month, from, and to for table name
+            year_month = self.lblMach.replace('-', '_')  # lblMach now holds year_month
+            from_date = self.lblFrom.replace('-', '_')
+            to_date = self.lblTo.replace('-', '_')
+            table_name = f"timesheet_{year_month}_{from_date}_{to_date}"
+
+            # Connect to MySQL database
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="",
+                database="ntp_post_timesheet"
+            )
+            cursor = conn.cursor()
+
+            # Create table if not exists
+            create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS `{table_name}` (
+                bio_num VARCHAR(20),
+                emp_num VARCHAR(20),
+                emp_name VARCHAR(100),
+                cost_center VARCHAR(20),
+                days_work FLOAT,
+                days_present FLOAT,
+                total_hours_work FLOAT,
+                late FLOAT,
+                undertime FLOAT,
+                ordday_hrs FLOAT,
+                ordday_ot_hrs FLOAT,
+                ordday_nd_hrs FLOAT,
+                ordday_nd_ot_hrs FLOAT,
+                rstday_hrs FLOAT,
+                rstday_ot_hrs FLOAT,
+                rstday_nd_hrs FLOAT,
+                rstday_nd_ot_hrs FLOAT,
+                spl_hldy_hrs FLOAT,
+                spl_hldy_ot_hrs FLOAT,
+                spl_hldy_nd_hrs FLOAT,
+                spl_hldy_nd_ot_hrs FLOAT,
+                reg_hldy_hrs FLOAT,
+                reg_hldy_ot_hrs FLOAT,
+                reg_hldy_nd_hrs FLOAT,
+                reg_hldy_nd_ot_hrs FLOAT,
+                spl_hldy_rd_hrs FLOAT,
+                spl_hldy_rd_ot_hrs FLOAT,
+                spl_hldy_rd_nd_hrs FLOAT,
+                spl_hldy_rd_nd_ot_hrs FLOAT,
+                reg_hldy_rd_hrs FLOAT,
+                reg_hldy_rd_ot_hrs FLOAT,
+                reg_hldy_rd_nd_hrs FLOAT,
+                reg_hldy_rd_nd_ot_hrs FLOAT,
+                absent FLOAT,
+                date_posted DATE,
+                remarks TEXT,
+                emp_company VARCHAR(50),
+                legal_holiday FLOAT
+            )
+            """
+            cursor.execute(create_table_query)
+
+            # Collect and insert data
             rows = self.TimeSheetTable.rowCount()
             columns = self.TimeSheetTable.columnCount()
-            data = []
 
             for i in range(rows):
                 row_data = []
                 for j in range(columns):
                     item = self.TimeSheetTable.item(i, j)
-                    row_data.append(item.text() if item is not None else "")
-                data.append(row_data)
+                    row_data.append(item.text() if item else None)
 
-            header_columns = [self.TimeSheetTable.horizontalHeaderItem(i).text() for i in range(columns)]
+                # Convert date_posted to MySQL DATE format
+                if row_data[34]:
+                    try:
+                        row_data[34] = datetime.strptime(row_data[34], '%Y-%m-%d').date()
+                    except ValueError:
+                        row_data[34] = None
 
-            # Create a DataFrame from the collected data
-            df = pd.DataFrame(data, columns=header_columns)
+                # Prepare placeholders and execute insert
+                placeholders = ', '.join(['%s'] * len(row_data))
+                insert_query = f"INSERT INTO `{table_name}` VALUES ({placeholders})"
+                cursor.execute(insert_query, tuple(row_data))
 
-            # Prompt user to select the save location and filename
-            options = QFileDialog.Options()
-            file_path, _ = QFileDialog.getSaveFileName(self, "Save Excel File", "",
-                                                       "Excel Files (*.xlsx);;All Files (*)", options=options)
+            conn.commit()
+            QMessageBox.information(self, "Success", f"Data saved to table {table_name}!")
 
-            if file_path:
-                # Save the DataFrame to an Excel file
-                df.to_excel(file_path, index=False)
-                QMessageBox.information(self, "Success", "Data exported successfully!")
-            else:
-                QMessageBox.warning(self, "Warning", "Export canceled.")
+        except mysql.connector.Error as err:
+            logging.error(f"Database error: {err}")
+            QMessageBox.critical(self, "Database Error", str(err))
         except Exception as e:
-            logging.error(f"Export to Excel failed: {str(e)}")
-            QMessageBox.critical(self, "Error", f"An error occurred while exporting the data:\n{str(e)}")
+            logging.error(f"Unexpected error: {str(e)}")
+            QMessageBox.critical(self, "Error", f"An error occurred:\n{str(e)}")
+        finally:
+            if 'conn' in locals() and conn.is_connected():
+                cursor.close()
+                conn.close()
