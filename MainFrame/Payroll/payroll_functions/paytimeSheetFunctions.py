@@ -5,6 +5,8 @@ from MainFrame.Payroll.payroll_functions.payComputations import PayComputation
 from MainFrame.Payroll.paymaster_Employee.payaddEmployee import payAddEmployee
 from MainFrame.Payroll.paymaster_Employee.paytimeSheetViewList import paytimesheetViewList
 from MainFrame.Database_Connection.DBConnection import create_connection
+from MainFrame.Payroll.payroll_functions.importMethodSelector import ImportMethodSelector
+from MainFrame.Payroll.payroll_functions.databaseImporter import DatabaseImporter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*sipPyTypeDict.*")
@@ -243,6 +245,22 @@ class PaytimeSheetFunctions:
 
     def buttonImport(self):
         try:
+            # Show the modern import method selector
+            import_selector = ImportMethodSelector(self.parent)
+            
+            if import_selector.exec_() == QDialog.Accepted:
+                selected_method = import_selector.get_selected_method()
+                
+                if selected_method == "excel":
+                    self.importFromExcel()
+                elif selected_method == "database":
+                    self.importFromDatabase()
+
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Error", f"Failed to show import dialog: {e}")
+
+    def importFromExcel(self):
+        try:
             fileName, _ = QFileDialog.getOpenFileName(self.parent, "Select Excel File", "",
                                                       "Excel Files (*.xls *.xlsx)")
             if not fileName:
@@ -267,6 +285,59 @@ class PaytimeSheetFunctions:
 
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to import file: {e}")
+
+    def importFromDatabase(self):
+        try:
+            # Create database importer with proper parent and callback
+            database_importer = DatabaseImporter(self.parent, self)
+            database_importer.exec_()
+
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Error", f"Failed to show database import dialog: {e}")
+
+    def handle_database_import(self, table_name, data):
+        """Handle the database import callback"""
+        try:
+            if data:
+                # Format the data for table population
+                formatted_data = self.formatDatabaseDataForTable(data)
+                self.populatePaytimeSheetTable(formatted_data)
+                
+                # Extract dates from table name for label update
+                from_date, to_date = self.extractDatesFromTableName(table_name)
+                if from_date and to_date:
+                    self.updateDateLabels(from_date, to_date)
+                
+                QMessageBox.information(self.parent, "Import Successful", 
+                                      f"Data imported successfully from {table_name}!\nRecords: {len(data)-1}")
+            else:
+                QMessageBox.warning(self.parent, "Import Failed", f"No data found in table {table_name}.")
+                
+        except Exception as e:
+            QMessageBox.critical(self.parent, "Error", f"Failed to handle database import: {e}")
+
+    def extractDatesFromTableName(self, table_name):
+        """Extract from and to dates from table name"""
+        try:
+            # Expected formats: 
+            # timesheet_YYYY_MM_YYYY_MM_DD_YYYY_MM_DD
+            # or timesheet_YYYY_MM_DD_YYYY_MM_DD
+            parts = table_name.split('_')
+            
+            if len(parts) >= 8:
+                # Format: timesheet_YYYY_MM_YYYY_MM_DD_YYYY_MM_DD
+                from_date = f"{parts[1]}-{parts[2]}-{parts[5]}"
+                to_date = f"{parts[6]}-{parts[7]}-{parts[8]}"
+                return from_date, to_date
+            elif len(parts) == 6:
+                # Format: timesheet_YYYY_MM_DD_YYYY_MM_DD
+                from_date = f"{parts[1]}-{parts[2]}-{parts[3]}"
+                to_date = f"{parts[4]}-{parts[5]}-{parts[6] if len(parts) > 6 else '01'}"
+                return from_date, to_date
+            
+            return None, None
+        except Exception:
+            return None, None
 
     def updateProgressBar(self, value):
         try:
@@ -364,21 +435,79 @@ class PaytimeSheetFunctions:
 
             # Populate the table with data
             for row_index, row in enumerate(row_data):
-                for col_name, col_index in col_indices.items():
-                    # Ensure the column index is valid
-                    if col_index < len(row):
-                        value = row[col_index]
-                        item = QTableWidgetItem(str(value) if value is not None else 'unknown')
-                        item.setTextAlignment(Qt.AlignCenter)
-
-                        self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name], item)
-                    else:
-                        # Handle cases where the data row may have fewer columns than expected
-                        self.parent.paytimesheetTable.setItem(row_index, col_indices[col_name],
-                                                              QTableWidgetItem('unknown'))
+                for col_name, (xls_col_name, widget_col_idx) in column_names.items():
+                    if col_name in col_indices:
+                        data_col_index = col_indices[col_name]
+                        # Ensure the column index is valid
+                        if data_col_index < len(row):
+                            value = row[data_col_index]
+                            item = QTableWidgetItem(str(value) if value is not None else 'unknown')
+                            item.setTextAlignment(Qt.AlignCenter)
+                            self.parent.paytimesheetTable.setItem(row_index, widget_col_idx, item)
+                        else:
+                            # Handle cases where the data row may have fewer columns than expected
+                            self.parent.paytimesheetTable.setItem(row_index, widget_col_idx,
+                                                                  QTableWidgetItem('unknown'))
 
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to populate table: {e}")
+
+    def formatDatabaseDataForTable(self, data):
+        """
+        Format database data to match the expected structure for populatePaytimeSheetTable
+        """
+        if not data or len(data) < 2:
+            return data
+        
+        # Extract headers and data rows
+        headers = data[0]
+        data_rows = data[1:]
+        
+        # Create a mapping from database column names to expected column names
+        column_mapping = {
+            'BioNum': 'Bio_No.',
+            'EmpNumber': 'Emp_Number', 
+            'Employee': 'Emp_Name',
+            'Days_Work': 'Days_Work',
+            'Days_Present': 'Days_Present',
+            'Total_Hours_Worked': 'Hours_Work',
+            'Late': 'Late',
+            'Undertime': 'Undertime',
+            'OrdDay_Hrs': 'OrdDay_Hrs',
+            'OrdDayOT_Hrs': 'OrdDayOT_Hrs',
+            'Night_Differential': 'OrdDayND_Hrs',
+            'Night_Differential_OT': 'OrdDayNDOT_Hrs',
+            'RstDay_Hrs': 'RstDay_Hrs',
+            'RstDayOT_Hrs': 'RstDayOT_Hrs',
+            'RstDayND_Hrs': 'RstDayND_Hrs',
+            'RstDayNDOT_Hrs': 'RstDayNDOT_Hrs',
+            'RegHlyday_Hrs': 'RegHlyday_Hrs',
+            'RegHlydayOT_Hrs': 'RegHlydayOT_Hrs',
+            'RegHlydayND_Hrs': 'RegHlydayND_Hrs',
+            'RegHlydayNDOT_Hrs': 'RegHlydayNDOT_Hrs',
+            'RegHldyRD_Hrs': 'RegHldyRD_Hrs',
+            'RegHldyRDOT_Hrs': 'RegHldyRDOT_Hrs',
+            'RegHldyRDND_Hrs': 'RegHldyRDND_Hrs',
+            'RegHldyRDNDOT_Hrs': 'RegHldyRDNDOT_Hrs',
+            'SplHlyday_Hrs': 'SplHlyday_Hrs',
+            'SplHlydayOT_Hrs': 'SplHlydayOT_Hrs',
+            'SplHlydayND_Hrs': 'SplHlydayND_Hrs',
+            'SplHlydayNDOT_Hrs': 'SplHlydayNDOT_Hrs',
+            'Absent': 'Absent',
+            'Date_Posted': 'Date_Posted',
+            'Remarks': 'Remarks',
+            'Emp_Company': 'Emp_Company',
+            'Legal_Holiday': 'Legal_Holiday'
+        }
+        
+        # Map the headers
+        mapped_headers = []
+        for header in headers:
+            mapped_headers.append(column_mapping.get(header, header))
+        
+        # Return formatted data
+        formatted_data = [mapped_headers] + data_rows
+        return formatted_data
 
     def filterTable(self):
         try:
@@ -392,3 +521,12 @@ class PaytimeSheetFunctions:
                     self.parent.paytimesheetTable.hideRow(row)
         except Exception as e:
             QMessageBox.critical(self.parent, "Error", f"Failed to filter table: {e}")
+
+    def updateDateLabels(self, from_date, to_date):
+        """Update the date labels on the parent form"""
+        try:
+            if hasattr(self.parent, 'lblFrom') and hasattr(self.parent, 'lblTo'):
+                self.parent.lblFrom.setText(from_date)
+                self.parent.lblTo.setText(to_date)
+        except Exception as e:
+            print(f"Error updating date labels: {e}")
