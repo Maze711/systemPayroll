@@ -566,7 +566,7 @@ background-color: #485ba1;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Process PayTrans</string>
+         <string>PROCESS PAYTRANS</string>
         </property>
         <property name="iconSize">
          <size>
@@ -599,7 +599,7 @@ background-color: #485ba1;
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Import</string>
+         <string>VIEW TIMESHEET</string>
         </property>
         <property name="icon">
          <iconset>
