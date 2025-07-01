@@ -57,7 +57,6 @@ class timecard(QDialog):
             self.TimeListTable.horizontalHeader().setStretchLastSection(True)
 
             self.populateComboBox.populate_year_combo_box()
-            self.populateComboBox.populateCostCenterBox()
             self.yearCC.currentTextChanged.connect(self.populateComboBox.populate_date_combo_boxes)
 
             def safe_populate_loader():
@@ -67,7 +66,6 @@ class timecard(QDialog):
             self.dateFromCC.currentTextChanged.connect(safe_populate_loader)
             self.dateToCC.currentTextChanged.connect(safe_populate_loader)
 
-            self.btnCCSched.clicked.connect(self.buttonFunctions.updateSchedule)
             self.btnExport.clicked.connect(self.buttonFunctions.export_to_excel)
             self.btnImport.clicked.connect(lambda: self.populateComboBox.import_dat_file(self))
             self.btnTimeSheet.clicked.connect(self.buttonFunctions.createTimeSheet)

@@ -312,76 +312,76 @@ class buttonTimecardFunction:
         self.parent = parent  # Reference to the main UI class
         self.time_computation = TimeComputation(parent)
 
-    def updateSchedule(self):
-        # Access UI elements through self.parent
-        selectedCostCenterFrom = self.parent.costCenterFrom.currentText()
-        selectedCostCenterBox = self.parent.costCenterBox.currentText()
-        selectedCostCenterTo = self.parent.costCenterTo.currentText()
-
-        if not selectedCostCenterFrom or not selectedCostCenterBox or not selectedCostCenterTo:
-            print("Please select all required fields.")
-            return
-
-        # Print the selected data
-        print(f"Selected Cost Center From: {selectedCostCenterFrom}")
-        print(f"Selected Cost Center To: {selectedCostCenterTo}")
-        print(f"Selected Cost Center Box: {selectedCostCenterBox}")
-
-        # Show caution message box
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Warning)
-        msg.setWindowTitle("Caution")
-        msg.setText(f"CAUTION! It will change the schedule of {selectedCostCenterBox}. Do you want to continue?")
-        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        result = msg.exec_()
-
-        # Proceed only if the user clicks "Yes"
-        if result == QMessageBox.Yes:
-            # Database connection (ensure create_connection is defined/imported)
-            connection = create_connection('NTP_EMP_LIST')
-            if not connection:
-                logging.error("Error: Unable to connect to FILE201 database.")
-                return
-
-            try:
-                cursor = connection.cursor()
-
-                # Query to fetch existing schedule
-                query = """
-                    SELECT sched_in, sched_out
-                    FROM emp_posnsched
-                    WHERE dept_name = %s
-                """
-                cursor.execute(query, (selectedCostCenterBox,))
-                result = cursor.fetchone()
-
-                if result:
-                    sched_in, sched_out = result
-                    print(f"Existing Scheduled In: {sched_in}")
-                    print(f"Existing Scheduled Out: {sched_out}")
-
-                    # Update sched_in and sched_out based on selectedCostCenterFrom and selectedCostCenterTo
-                    update_query = """
-                        UPDATE emp_posnsched
-                        SET sched_in = %s, sched_out = %s
-                        WHERE dept_name = %s
-                    """
-                    cursor.execute(update_query, (selectedCostCenterFrom, selectedCostCenterTo, selectedCostCenterBox))
-                    connection.commit()
-
-                    print(f"Updated Scheduled In to: {selectedCostCenterFrom}")
-                    print(f"Updated Scheduled Out to: {selectedCostCenterTo}")
-                else:
-                    print("No schedule found for the selected Cost Center Box.")
-
-            except Exception as e:
-                QMessageBox.critical(self.parent, "Update Error",
-                                     f"An error occurred while updating the schedule: {e}. "
-                                     "Please try again or contact the system administrator.")
-            finally:
-                connection.close()
-        else:
-            print("Update canceled by user.")
+    # def updateSchedule(self):
+    #     # Access UI elements through self.parent
+    #     selectedCostCenterFrom = self.parent.costCenterFrom.currentText()
+    #     selectedCostCenterBox = self.parent.costCenterBox.currentText()
+    #     selectedCostCenterTo = self.parent.costCenterTo.currentText()
+    #
+    #     if not selectedCostCenterFrom or not selectedCostCenterBox or not selectedCostCenterTo:
+    #         print("Please select all required fields.")
+    #         return
+    #
+    #     # Print the selected data
+    #     print(f"Selected Cost Center From: {selectedCostCenterFrom}")
+    #     print(f"Selected Cost Center To: {selectedCostCenterTo}")
+    #     print(f"Selected Cost Center Box: {selectedCostCenterBox}")
+    #
+    #     # Show caution message box
+    #     msg = QMessageBox()
+    #     msg.setIcon(QMessageBox.Warning)
+    #     msg.setWindowTitle("Caution")
+    #     msg.setText(f"CAUTION! It will change the schedule of {selectedCostCenterBox}. Do you want to continue?")
+    #     msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+    #     result = msg.exec_()
+    #
+    #     # Proceed only if the user clicks "Yes"
+    #     if result == QMessageBox.Yes:
+    #         # Database connection (ensure create_connection is defined/imported)
+    #         connection = create_connection('NTP_EMP_LIST')
+    #         if not connection:
+    #             logging.error("Error: Unable to connect to FILE201 database.")
+    #             return
+    #
+    #         try:
+    #             cursor = connection.cursor()
+    #
+    #             # Query to fetch existing schedule
+    #             query = """
+    #                 SELECT sched_in, sched_out
+    #                 FROM emp_posnsched
+    #                 WHERE dept_name = %s
+    #             """
+    #             cursor.execute(query, (selectedCostCenterBox,))
+    #             result = cursor.fetchone()
+    #
+    #             if result:
+    #                 sched_in, sched_out = result
+    #                 print(f"Existing Scheduled In: {sched_in}")
+    #                 print(f"Existing Scheduled Out: {sched_out}")
+    #
+    #                 # Update sched_in and sched_out based on selectedCostCenterFrom and selectedCostCenterTo
+    #                 update_query = """
+    #                     UPDATE emp_posnsched
+    #                     SET sched_in = %s, sched_out = %s
+    #                     WHERE dept_name = %s
+    #                 """
+    #                 cursor.execute(update_query, (selectedCostCenterFrom, selectedCostCenterTo, selectedCostCenterBox))
+    #                 connection.commit()
+    #
+    #                 print(f"Updated Scheduled In to: {selectedCostCenterFrom}")
+    #                 print(f"Updated Scheduled Out to: {selectedCostCenterTo}")
+    #             else:
+    #                 print("No schedule found for the selected Cost Center Box.")
+    #
+    #         except Exception as e:
+    #             QMessageBox.critical(self.parent, "Update Error",
+    #                                  f"An error occurred while updating the schedule: {e}. "
+    #                                  "Please try again or contact the system administrator.")
+    #         finally:
+    #             connection.close()
+    #     else:
+    #         print("Update canceled by user.")
 
     def export_to_excel(self):
         try:
