@@ -14,6 +14,20 @@ class DateChange(QDialog):
         loadUi(ui_file, self)
 
         self.connection = create_connection('NTP_HOLIDAY_LIST')
+        if not self.connection or not self.connection.is_connected():
+            QMessageBox.critical(self, "Error", "Failed to connect to database")
+            self.close()
+            return
+
+        # Verify database structure
+        if not self.verify_database_structure():
+            QMessageBox.critical(self, "Error", "Database table structure is incorrect")
+            self.close()
+            return
+
+        self.add_mode = False
+        self.original_items = []
+
         self.cmbHoliday.currentIndexChanged.connect(self.fetch_holiday_data)
         self.btnUpdate.clicked.connect(self.update_or_cancel)
         self.btnAdd.clicked.connect(self.add_or_save_holiday)
@@ -24,20 +38,23 @@ class DateChange(QDialog):
         self.btnAdd.setEnabled(True)
         self.btnUpdate.setEnabled(False)
 
-        self.add_mode = False
-
-        self.load_holidays()
-        self.load_date_types()
-
-        self.reset_selection()
-
-        self.original_items = [self.cmbHoliday.itemText(i) for i in range(self.cmbHoliday.count())]
+        try:
+            self.load_holidays()
+            self.load_date_types()
+            self.reset_selection()
+            self.original_items = [self.cmbHoliday.itemText(i) for i in range(self.cmbHoliday.count())]
+        except Exception as e:
+            logging.exception("Error during initialization: %s", e)
+            QMessageBox.critical(self, "Error", f"Failed to initialize: {str(e)}")
+            self.close()
+            return
 
     def load_holidays(self):
         try:
             cursor = self.connection.cursor()
             cursor.execute("SELECT DISTINCT holidayName FROM type_of_dates")
             holidays = cursor.fetchall()
+            cursor.close()
             self.cmbHoliday.clear()
             for holiday in holidays:
                 self.cmbHoliday.addItem(holiday[0])
@@ -50,6 +67,7 @@ class DateChange(QDialog):
             cursor = self.connection.cursor()
             cursor.execute("SELECT DISTINCT dateType FROM type_of_dates")
             date_types = cursor.fetchall()
+            cursor.close()
             self.cmbDateType.clear()
             for date_type in date_types:
                 if date_type[0]:
@@ -59,9 +77,13 @@ class DateChange(QDialog):
             QMessageBox.critical(self, "Error", "Failed to load date types")
 
     def reset_selection(self):
-        self.cmbHoliday.setCurrentIndex(0)
+        if self.cmbHoliday.count() > 0:
+            self.cmbHoliday.setCurrentIndex(0)
         self.dateEdit.setDate(QDate.currentDate())
-        self.cmbDateType.setCurrentIndex(1)
+        if self.cmbDateType.count() > 1:
+            self.cmbDateType.setCurrentIndex(1)
+        elif self.cmbDateType.count() > 0:
+            self.cmbDateType.setCurrentIndex(0)
 
     def fetch_holiday_data(self, index=None):
         if self.add_mode:
@@ -71,15 +93,20 @@ class DateChange(QDialog):
         if holiday_name:
             try:
                 cursor = self.connection.cursor()
-                cursor.execute("SELECT date, dateType, holidayIsMovable FROM type_of_dates WHERE holidayName = %s",
+                cursor.execute("SELECT holidayDate, dateType, holidayIsMovable FROM type_of_dates WHERE holidayName = %s",
                                (holiday_name,))
                 result = cursor.fetchone()
-                cursor.fetchall()
                 cursor.close()
                 if result:
-                    date, date_type, holiday_is_movable = result
-                    date_str = date.strftime("%Y-%m-%d")
-                    qdate = QDate.fromString(date_str, "yyyy-MM-dd")
+                    date_str, date_type, holiday_is_movable = result
+                    # Handle date as string since it's stored as varchar in database
+                    if isinstance(date_str, str):
+                        qdate = QDate.fromString(date_str, "yyyy-MM-dd")
+                    else:
+                        # In case it's somehow a date object
+                        date_str = date_str.strftime("%Y-%m-%d")
+                        qdate = QDate.fromString(date_str, "yyyy-MM-dd")
+                    
                     self.dateEdit.setDate(qdate)
                     self.cmbDateType.setCurrentText(date_type)
 
@@ -136,9 +163,10 @@ class DateChange(QDialog):
         try:
             cursor = self.connection.cursor()
             cursor.execute(
-                "INSERT INTO type_of_dates (holidayName, date, dateType, holidayIsMovable) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO type_of_dates (holidayName, holidayDate, dateType, holidayIsMovable) VALUES (%s, %s, %s, %s)",
                 (holiday_name, new_date, date_type, 1))
             self.connection.commit()
+            cursor.close()
             QMessageBox.information(self, "Success", "New holiday added successfully")
 
             self.original_items.append(holiday_name)
@@ -157,7 +185,7 @@ class DateChange(QDialog):
 
         try:
             cursor = self.connection.cursor()
-            cursor.execute("UPDATE type_of_dates SET date = %s WHERE holidayName = %s", (new_date, holiday_name))
+            cursor.execute("UPDATE type_of_dates SET holidayDate = %s WHERE holidayName = %s", (new_date, holiday_name))
             self.connection.commit()
             cursor.close()  # Close the cursor
             QMessageBox.information(self, "Success", "Date updated successfully")
@@ -176,3 +204,26 @@ class DateChange(QDialog):
             self.save_new_holiday()
         else:
             self.toggle_add_mode()
+
+    def verify_database_structure(self):
+        """Verify that the database table exists and has the expected structure"""
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("DESCRIBE type_of_dates")
+            columns = cursor.fetchall()
+            cursor.close()
+            
+            expected_columns = ['ID', 'holidayName', 'holidayDate', 'dateType', 'holidayIsMovable']
+            actual_columns = [col[0] for col in columns]
+            
+            for expected_col in expected_columns:
+                if expected_col not in actual_columns:
+                    logging.error(f"Missing column: {expected_col}")
+                    return False
+            
+            logging.info(f"Database structure verified. Columns: {actual_columns}")
+            return True
+            
+        except Error as e:
+            logging.exception("Error verifying database structure: %s", e)
+            return False

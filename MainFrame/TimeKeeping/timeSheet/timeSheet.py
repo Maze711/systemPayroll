@@ -101,38 +101,38 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee Name
             self.TimeSheetTable.setItem(i, 3, cost_center)  # Cost Center
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Days Worked
-            self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours work
-            self.TimeSheetTable.setItem(i, 7, late_item)  # Late
-            self.TimeSheetTable.setItem(i, 8, undertime_item)  # Undertime
-            self.TimeSheetTable.setItem(i, 9, ordday_hrs_item)  # Ord Day Hrs
-            self.TimeSheetTable.setItem(i, 10, ordday_ot_hrs_item)  # Ord Day OT Hrs
-            self.TimeSheetTable.setItem(i, 11, ordday_nd_hrs_item)  # Ord Day ND Hrs
-            self.TimeSheetTable.setItem(i, 12, ordday_nd_ot_hrs_item)  # Ord Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 13, rstday_hrs_item)  # Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 14, rstday_ot_hrs_item)  # Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 15, rstday_nd_hrs_item)  # Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 16, rstday_nd_ot_hrs_item)  # Rest Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 17, spl_hldy_hrs_item)  # Special Holiday Hrs
-            self.TimeSheetTable.setItem(i, 18, spl_hldy_ot_hrs_item)  # Special Holiday OT Hrs
-            self.TimeSheetTable.setItem(i, 19, spl_hldy_nd_hrs_item)  # Special Holiday ND Hrs
-            self.TimeSheetTable.setItem(i, 20, spl_hldy_nd_ot_hrs_item)  # Special Holiday ND OT Hrs
-            self.TimeSheetTable.setItem(i, 21, reg_hldy_hrs_item)  # Regular Holiday Hrs
-            self.TimeSheetTable.setItem(i, 22, reg_hldy_ot_hrs_item)  # Regular Holiday OT Hrs
-            self.TimeSheetTable.setItem(i, 23, reg_hldy_nd_hrs_item)  # Regular Holiday ND Hrs
-            self.TimeSheetTable.setItem(i, 24, reg_hldy_nd_ot_hrs_item)  # Regular Holiday ND OT Hrs
-            self.TimeSheetTable.setItem(i, 25, spl_hldy_rd_hrs_item)  # Special Holiday Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 26, spl_hldy_rd_ot_hrs_item)  # Special Holiday Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 27, spl_hldy_rd_nd_hrs_item)  # Special Holiday Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 28, spl_hldy_rd_nd_ot_hrs_item)  # Special Holiday Rest Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 29, reg_hldy_rd_hrs_item)  # Regular Holiday Rest Day Hrs
-            self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
-            self.TimeSheetTable.setItem(i, 31, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
-            self.TimeSheetTable.setItem(i, 32, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
-            self.TimeSheetTable.setItem(i, 33, absent_item)  # Absent (new column)
-            self.TimeSheetTable.setItem(i, 34, date_posted_item)  # Date Posted (new column)
-            self.TimeSheetTable.setItem(i, 35, remarks_item)  # Remarks (new column)
-            self.TimeSheetTable.setItem(i, 36, emp_company_item)  # Employee Company (new column)
-            self.TimeSheetTable.setItem(i, 37, legal_holiday_item)  # Legal Holiday (new column)
+            self.TimeSheetTable.setItem(i, 5, total_hours_work_item)  # Total Hours work
+            self.TimeSheetTable.setItem(i, 6, late_item)  # Late
+            self.TimeSheetTable.setItem(i, 7, undertime_item)  # Undertime
+            self.TimeSheetTable.setItem(i, 8, ordday_hrs_item)  # Ord Day Hrs
+            self.TimeSheetTable.setItem(i, 9, ordday_ot_hrs_item)  # Ord Day OT Hrs
+            self.TimeSheetTable.setItem(i, 10, ordday_nd_hrs_item)  # Ord Day ND Hrs
+            self.TimeSheetTable.setItem(i, 11, ordday_nd_ot_hrs_item)  # Ord Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 12, rstday_hrs_item)  # Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 13, rstday_ot_hrs_item)  # Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 14, rstday_nd_hrs_item)  # Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 15, rstday_nd_ot_hrs_item)  # Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 16, spl_hldy_hrs_item)  # Special Holiday Hrs
+            self.TimeSheetTable.setItem(i, 17, spl_hldy_ot_hrs_item)  # Special Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 18, spl_hldy_nd_hrs_item)  # Special Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 19, spl_hldy_nd_ot_hrs_item)  # Special Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 20, reg_hldy_hrs_item)  # Regular Holiday Hrs
+            self.TimeSheetTable.setItem(i, 21, reg_hldy_ot_hrs_item)  # Regular Holiday OT Hrs
+            self.TimeSheetTable.setItem(i, 22, reg_hldy_nd_hrs_item)  # Regular Holiday ND Hrs
+            self.TimeSheetTable.setItem(i, 23, reg_hldy_nd_ot_hrs_item)  # Regular Holiday ND OT Hrs
+            self.TimeSheetTable.setItem(i, 24, spl_hldy_rd_hrs_item)  # Special Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 25, spl_hldy_rd_ot_hrs_item)  # Special Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 26, spl_hldy_rd_nd_hrs_item)  # Special Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 27, spl_hldy_rd_nd_ot_hrs_item)  # Special Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 28, reg_hldy_rd_hrs_item)  # Regular Holiday Rest Day Hrs
+            self.TimeSheetTable.setItem(i, 29, reg_hldy_rd_ot_hrs_item)  # Regular Holiday Rest Day OT Hrs
+            self.TimeSheetTable.setItem(i, 30, reg_hldy_rd_nd_hrs_item)  # Regular Holiday Rest Day ND Hrs
+            self.TimeSheetTable.setItem(i, 31, reg_hldy_rd_nd_ot_hrs_item)  # Regular Holiday Rest Day ND OT Hrs
+            self.TimeSheetTable.setItem(i, 32, absent_item)  # Absent (new column)
+            self.TimeSheetTable.setItem(i, 33, date_posted_item)  # Date Posted (new column)
+            self.TimeSheetTable.setItem(i, 34, remarks_item)  # Remarks (new column)
+            self.TimeSheetTable.setItem(i, 35, emp_company_item)  # Employee Company (new column)
+            self.TimeSheetTable.setItem(i, 36, legal_holiday_item)  # Legal Holiday (new column)
 
     def setupLabels(self):
         lblFrom_widget = self.findChild(QLabel, 'lblFrom')
