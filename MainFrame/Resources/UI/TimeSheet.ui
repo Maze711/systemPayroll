@@ -259,7 +259,7 @@ QTableWidget {
     <bool>false</bool>
    </property>
    <property name="columnCount">
-    <number>38</number>
+    <number>37</number>
    </property>
    <attribute name="horizontalHeaderVisible">
     <bool>true</bool>
@@ -337,11 +337,6 @@ QTableWidget {
    <column>
     <property name="text">
      <string>Days_Work</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Days_Present</string>
     </property>
    </column>
    <column>

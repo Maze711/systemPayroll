@@ -46,7 +46,6 @@ class TimeSheet(QDialog):
             emp_name_item = QTableWidgetItem(row['Employee'])
             cost_center = QTableWidgetItem(row.get('Cost_Center', ''))
             days_work_item = QTableWidgetItem(str(row['Days_Work']))
-            days_present_item = QTableWidgetItem(str(row['Days_Present']))
             total_hours_work_item = QTableWidgetItem(str(row['Total_Hours_Worked']))
             late_item = QTableWidgetItem(str(row['Late']))
             undertime_item = QTableWidgetItem(str(row['Undertime']))
@@ -84,7 +83,7 @@ class TimeSheet(QDialog):
 
             # Align all items to the center
             items = [
-                bio_num_item, emp_num_item, emp_name_item, days_work_item, days_present_item, late_item, undertime_item,
+                bio_num_item, emp_num_item, emp_name_item, days_work_item, late_item, undertime_item,
                 total_hours_work_item, cost_center, ordday_hrs_item, ordday_ot_hrs_item, ordday_nd_hrs_item,
                 ordday_nd_ot_hrs_item, rstday_hrs_item, rstday_ot_hrs_item, rstday_nd_hrs_item, rstday_nd_ot_hrs_item,
                 spl_hldy_hrs_item, spl_hldy_ot_hrs_item, spl_hldy_nd_hrs_item, spl_hldy_nd_ot_hrs_item,
@@ -102,7 +101,6 @@ class TimeSheet(QDialog):
             self.TimeSheetTable.setItem(i, 2, emp_name_item)  # Employee Name
             self.TimeSheetTable.setItem(i, 3, cost_center)  # Cost Center
             self.TimeSheetTable.setItem(i, 4, days_work_item)  # Days Worked
-            self.TimeSheetTable.setItem(i, 5, days_present_item)  # Days Present
             self.TimeSheetTable.setItem(i, 6, total_hours_work_item)  # Total Hours work
             self.TimeSheetTable.setItem(i, 7, late_item)  # Late
             self.TimeSheetTable.setItem(i, 8, undertime_item)  # Undertime

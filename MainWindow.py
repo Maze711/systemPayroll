@@ -19,27 +19,21 @@ class MainWindow(MainWindowFunctions):
         self.setup_page_buttons()
         self.load_fonts()
 
-        # Initialize notification service
+        # Initialize notification service asynchronously for faster startup
         self.notification_service = NotificationService()
-        self.notification_thread = threading.Thread(target=self.notification_service.poll_notifications)
-        self.server_thread = threading.Thread(target=self.notification_service.start_server)
-        self.notification_thread.daemon = True
-        self.server_thread.daemon = True
-        self.notification_thread.start()
-        self.server_thread.start()
+        
+        # Start service asynchronously to avoid blocking startup
+        threading.Thread(
+            target=self.notification_service.start_service_async,
+            daemon=True
+        ).start()
 
     def closeEvent(self, event):
         """ Stop the notification service when the MainWindow is closed """
         try:
-            # Stop the notification service
+            # Stop the notification service gracefully
             if hasattr(self, 'notification_service'):
                 self.notification_service.stop()
-
-            # Wait for threads to finish (with timeout)
-            if hasattr(self, 'notification_thread'):
-                self.notification_thread.join(timeout=5)
-            if hasattr(self, 'server_thread'):
-                self.server_thread.join(timeout=5)
 
             logging.info("NotificationService has stopped.")
         except Exception as e:
